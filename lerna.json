@@ -1,6 +1,24 @@
 {
-  "packages": [
-    "packages/*"
-  ],
+  "changelog": {
+    "labels": {
+      "pr(enhancement)": ":rocket: Enhancement",
+      "pr(bug)": ":bug: Bug Fix",
+      "pr(documentation)": ":book: Documentation",
+      "pr(dependency)": ":deciduous_tree: Dependency",
+      "pr(chore)": ":turtle: Chore"
+    },
+    "repo": "umijs/ui",
+    "cacheDir": ".changelog"
+  },
+  "packages": ["packages/*", "packages/ui/client"],
+  "command": {
+    "version": {
+      "exact": true
+    },
+    "bootstrap": {
+      "npmClientArgs": ["--no-package-lock", "--no-ci", "--ignore-engines"]
+    }
+  },
+  "npmClient": "yarn",
   "version": "independent"
 }

@@ -68,7 +68,7 @@ const config: IConfig = {
   ],
   plugins: [
     [
-      join(__dirname, '../../umi-plugin-react/lib/index.js'),
+      'umi-plugin-react',
       {
         dva: true,
         antd: false,
