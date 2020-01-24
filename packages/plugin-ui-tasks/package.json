@@ -33,9 +33,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/umijs/umi",
-    "directory": "packages/umi-plugin-task"
+    "url": "http://github.com/umijs/ui",
+    "directory": "packages/plugin-ui-tasks"
   },
-  "author": "ikobe",
+  "author": "ycjcl868",
   "license": "MIT"
 }

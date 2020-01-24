@@ -13,7 +13,7 @@
     "@types/node-notifier": "^5.4.0",
     "@types/sockjs": "^0.3.31",
     "umi-types": "0.5.12",
-    "umi-ui-theme": "1.1.2"
+    "@umijs/ui-theme": "0.0.1"
   },
   "repository": {
     "type": "git",
@@ -51,7 +51,7 @@
     "semver": "6.3.0",
     "sockjs": "0.3.19",
     "umi-build-dev": "1.17.1",
-    "umi-ui-theme": "1.2.3",
+    "@umijs/ui-theme": "0.0.1",
     "user-home": "2.0.0"
   }
 }
