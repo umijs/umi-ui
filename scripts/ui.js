@@ -66,6 +66,6 @@ const buildPlugin = plugin => {
     process.exit(0);
   });
 
-  const buildQueue = [uiApp(), ...uiPlugins.map(buildPlugin)];
+  const buildQueue = [...uiPlugins.map(buildPlugin)];
   await Promise.all(buildQueue);
 })();
