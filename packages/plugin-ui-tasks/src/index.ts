@@ -3,6 +3,6 @@ import { IApi } from "umi-types";
 import server from "./server";
 
 export default (api: IApi) => {
-  api.addUIPlugin(join(__dirname, "../src/dist/ui.umd.js"));
+  api.addUIPlugin(join(__dirname, "../dist/index.umd.js"));
   server(api);
 };

@@ -1,14 +1,10 @@
 {
   "name": "@umijs/plugin-ui-blocks",
   "version": "0.0.1",
-  "description": "",
+  "description": "blocks ui",
   "main": "lib/index.js",
-  "scripts": {
-    "dev": "concurrently \"npm run build -- --watch\" \"CURRENT_PROJECT=example DEVELOP_MODE=1 ../umi/bin/umi.js ui\"",
-    "build": "node scripts/build.js",
-    "lint": "eslint --ext .ts,.tsx src"
-  },
   "files": [
+    "dist",
     "lib",
     "src"
   ],
