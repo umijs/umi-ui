@@ -1,6 +1,6 @@
 {
   "name": "@umijs/ui",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./lib/UmiUI.js",
   "files": [
     "lib",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@umijs/launch-editor": "^1.0.0",
-    "@umijs/ui-theme": "0.0.1",
+    "@umijs/ui-theme": "0.0.2",
     "binary-mirror-config": "1.20.3",
     "chalk": "2.4.2",
     "clear-module": "4.0.0",
