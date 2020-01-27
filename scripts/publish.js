@@ -46,7 +46,7 @@ checkUiDist();
 
 const cp = fork(
   join(process.cwd(), "node_modules/.bin/lerna"),
-  ["version"].concat(process.argv.slice(2)),
+  ["publish"].concat(process.argv.slice(2)),
   {
     stdio: "inherit",
     cwd: process.cwd()
@@ -61,7 +61,6 @@ cp.on("close", code => {
     console.error("Failed: lerna publish");
     process.exit(1);
   }
-  publishToNpm();
 });
 
 // check dist existed
@@ -73,9 +72,4 @@ function checkUiDist() {
       process.exit(1);
     }
   });
-}
-
-function publishToNpm() {
-  console.log(`repos to publish: ${updatedRepos.join(", ")}`);
-  shell.exec("./node_modules/.bin/lerna publish");
 }
