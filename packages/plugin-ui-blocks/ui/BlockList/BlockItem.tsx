@@ -8,7 +8,7 @@ import styles from "./index.module.less";
 import HighlightedText from "./HighlightedText";
 import getInsertPosition, { PositionData } from "./getInsertPosition";
 import Context from "../UIApiContext";
-import { Block, AddBlockParams, Resource } from "../../../data.d";
+import { Block, AddBlockParams, Resource } from "../../src/data.d";
 import ImageLoad from "./ImageLoad";
 import ImagePreview from "./ImagePreview";
 

@@ -30,6 +30,7 @@ const GlobalSearch: React.SFC<IGlobalSearch> = props => {
       prefix={<SearchOutlined />}
       className={styles.search}
       allowClear
+      size={api.mini ? "small" : "middle"}
       onChange={e => handleChangeDebounce(e.target.value)}
       placeholder={intl({ id: "org.umi.ui.blocks.content.search_block" })}
     />

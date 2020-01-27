@@ -1,7 +1,6 @@
 const uiPlugins = [
   "packages/plugin-ui/src/plugins/dashboard",
   "packages/plugin-ui/src/plugins/configuration",
-  "packages/plugin-ui-blocks/src/ui/client",
   "packages/plugin-ui-tasks/src",
   "packages/ui/ui"
 ];

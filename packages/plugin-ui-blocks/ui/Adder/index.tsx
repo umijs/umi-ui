@@ -6,7 +6,7 @@ import upperCamelCase from "uppercamelcase";
 
 import Context from "../UIApiContext";
 import useCallData from "../hooks/useCallData";
-import { AddBlockParams, Block, Resource } from "../../../data.d";
+import { AddBlockParams, Block, Resource } from "../../src/data.d";
 import LogPanel from "../LogPanel";
 import ResultPanel from "./ResultPanel";
 import AddTemplateForm from "./AddTemplateForm";

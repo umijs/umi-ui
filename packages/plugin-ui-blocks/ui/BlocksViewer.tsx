@@ -5,7 +5,7 @@ import { IUiApi } from "umi-types";
 import { stringify, parse } from "qs";
 
 import { Clear } from "./icon";
-import { Resource, Block, AddBlockParams } from "../../data.d";
+import { Resource, Block, AddBlockParams } from "../src/data";
 import BlockList from "./BlockList";
 import GlobalSearch from "./GlobalSearch";
 import useCallData from "./hooks/useCallData";

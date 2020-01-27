@@ -1,5 +1,5 @@
 import { IUiApi } from "umi-types";
-import { Block } from "../../../data.d";
+import { Block } from "../../src/data.d";
 
 export const namespace = "org.umi.block";
 

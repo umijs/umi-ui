@@ -2,7 +2,7 @@ import React, { useMemo, useContext, useState, useEffect } from "react";
 import { Empty, Row, Spin, Pagination } from "antd";
 
 import styles from "./index.module.less";
-import { Block, AddBlockParams, Resource } from "../../../data.d";
+import { Block, AddBlockParams, Resource } from "../../src/data.d";
 import Context from "../UIApiContext";
 import BlockItem from "./BlockItem";
 
