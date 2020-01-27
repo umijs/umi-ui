@@ -4,7 +4,6 @@ export default api => {
   // 1. ssr 时
   // 2. 非 dev 或 ui 时
   const [command] = process.argv.slice(2);
-  console.log("command", command);
   if (
     process.env.UMI_UI !== "none" &&
     !api.config.ssr &&

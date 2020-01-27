@@ -27,14 +27,6 @@ export default (api: IApi) => {
     })();
   `);
 
-    api.modifyAFWebpackOpts(memo => {
-      memo.extraBabelIncludes = [
-        ...(memo.extraBabelIncludes || []),
-        join(__dirname, "../bubble")
-      ];
-      return memo;
-    });
-
     api.chainWebpackConfig(config => {
       config
         .plugin("umi-ui-compile-status")
