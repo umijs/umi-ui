@@ -9,6 +9,7 @@
   ],
   "dependencies": {
     "@umijs/plugin-ui-tasks": "0.0.1",
+    "@umijs/plugin-ui-blocks": "0.0.1",
     "got": "9.6.0",
     "immer": "^5.0.0",
     "is-mobile": "2.1.0",
