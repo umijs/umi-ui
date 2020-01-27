@@ -1,5 +1,5 @@
-import React from 'react';
-import Icon from '@ant-design/icons';
+import React from "react";
+import Icon from "@ant-design/icons";
 
 export default props => {
   const SVGIcon = () => (
@@ -13,7 +13,13 @@ export default props => {
           d="M22.563 24.667c3.529 0 6.39-2.85 6.39-6.366 0-3.516-2.861-6.366-6.39-6.366-3.529 0-6.39 2.85-6.39 6.366 0 3.516 2.861 6.366 6.39 6.366z"
           id="prefix__d"
         />
-        <linearGradient x1="50%" y1="-42.059%" x2="50%" y2="100%" id="prefix__b">
+        <linearGradient
+          x1="50%"
+          y1="-42.059%"
+          x2="50%"
+          y2="100%"
+          id="prefix__b"
+        >
           <stop stopColor="#3852F9" offset="0%" />
           <stop stopColor="#1890FF" offset="100%" />
         </linearGradient>
@@ -25,7 +31,11 @@ export default props => {
           filterUnits="objectBoundingBox"
           id="prefix__c"
         >
-          <feMorphology radius={0.5} in="SourceAlpha" result="shadowSpreadOuter1" />
+          <feMorphology
+            radius={0.5}
+            in="SourceAlpha"
+            result="shadowSpreadOuter1"
+          />
           <feOffset in="shadowSpreadOuter1" result="shadowOffsetOuter1" />
           <feMorphology radius={4.3} in="SourceAlpha" result="shadowInner" />
           <feOffset in="shadowInner" result="shadowInner" />
@@ -35,7 +45,11 @@ export default props => {
             operator="out"
             result="shadowOffsetOuter1"
           />
-          <feGaussianBlur stdDeviation={1.5} in="shadowOffsetOuter1" result="shadowBlurOuter1" />
+          <feGaussianBlur
+            stdDeviation={1.5}
+            in="shadowOffsetOuter1"
+            result="shadowBlurOuter1"
+          />
           <feColorMatrix
             values="0 0 0 0 0.062745098 0 0 0 0 0.137254902 0 0 0 0 0.619607843 0 0 0 0.5 0"
             in="shadowBlurOuter1"
@@ -48,7 +62,11 @@ export default props => {
             d="M14.856 19.057L.578 26.169A.4.4 0 010 25.81V11.587a.4.4 0 01.578-.358l14.278 7.112a.4.4 0 010 .716z"
             fill="#0D7EFF"
           />
-          <use fill="url(#prefix__b)" transform="rotate(90 21.54 18.42)" xlinkHref="#prefix__a" />
+          <use
+            fill="url(#prefix__b)"
+            transform="rotate(90 21.54 18.42)"
+            xlinkHref="#prefix__a"
+          />
           <g transform="rotate(-180 22.563 18.301)">
             <use fill="#000" filter="url(#prefix__c)" xlinkHref="#prefix__d" />
             <path

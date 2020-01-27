@@ -68,7 +68,7 @@ export default class UmiUI {
     this.cwd = process.cwd();
     // 兼容旧版 Bigfish
     const defaultBaseUI = process.env.BIGFISH_COMPAT
-      ? join(__dirname, "../ui/dist/ui.umd.js")
+      ? join(__dirname, "../dist/index.umd.js")
       : "";
     this.basicUIPath = process.env.BASIC_UI_PATH || defaultBaseUI;
     // export default { serices, ... }
