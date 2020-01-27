@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import { IUiApi } from "umi-types";
 import { SettingOutlined } from "@ant-design/icons";
-import Dev from "./ui/components/Dev";
-import Build from "./ui/components/Build";
-import Lint from "./ui/components/Lint";
-import Test from "./ui/components/Test";
-import Install from "./ui/components/Install";
-import { initApiToGloal } from "./ui/util";
-import { TaskType } from "./server/core/enums";
-import styles from "./ui/ui.module.less";
+import Dev from "./components/Dev";
+import Build from "./components/Build";
+import Lint from "./components/Lint";
+import Test from "./components/Test";
+import Install from "./components/Install";
+import { initApiToGloal } from "./util";
+import { TaskType } from "../src/server/core/enums";
+import styles from "./ui.module.less";
 import enUS from "./locales/en-US";
 import zhCN from "./locales/zh-CN";
-import model from "./ui/model";
+import model from "./model";
 
 export default (api: IUiApi) => {
   initApiToGloal(api);

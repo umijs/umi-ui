@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Button, Modal, Form, Switch, Radio } from "antd";
+import {
+  Row,
+  Col,
+  Button,
+  Form,
+  Switch,
+  Input,
+  Modal,
+  Badge,
+  Radio
+} from "antd";
 import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
 import styles from "../../ui.module.less";
-import { TaskState } from "../../../server/core/enums";
+import { TaskState } from "../../../src/server/core/enums";
 import { getTerminalRefIns, setTerminalRefIns } from "../../util";
 import { useInit } from "../../hooks";
 import { TaskComponentProps } from "..";
 import Analyze from "../Analyze";
 
-const BuildComponent: React.FC<TaskComponentProps> = ({
+const DevComponent: React.FC<TaskComponentProps> = ({
   taskType,
   namespace,
   api,
@@ -25,12 +35,17 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
   const [log, setLog] = useState("");
   const [view, setView] = useState("log");
   const [env, setEnv] = useState({
-    BABEL_CACHE: true,
+    UMI_UI_SERVER: "none",
+    UMI_UI_PORT: window.location.port,
     BABEL_POLYFILL: true,
-    COMPRESS: true,
-    CSS_COMPRESS: true,
-    HTML: true,
-    FORK_TS_CHECKER: false
+    HMR: true,
+    BABEL_CACHE: true,
+    MOCK: true,
+    BROWSER: true,
+    CLEAR_CONSOLE: true,
+    PORT: null,
+    FORK_TS_CHECKER: false,
+    UMI_UI: null
   });
   const [init] = useInit(detail);
 
@@ -52,8 +67,9 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
       });
     }
     if (iife) {
-      build();
+      dev();
     }
+    // UnMount: reset form
     return () => {
       form.resetFields();
       const terminal = getTerminalRefIns(taskType, api.currentProject.key);
@@ -63,7 +79,7 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
     };
   }, [init, view, iife]);
 
-  async function build() {
+  async function dev() {
     dispatch({
       type: `${namespace}/exec`,
       payload: {
@@ -77,7 +93,7 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
     });
   }
 
-  async function cancelBuild() {
+  async function cancelDev() {
     dispatch({
       type: `${namespace}/cancel`,
       payload: {
@@ -94,16 +110,22 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
     form
       .validateFields()
       .then(values => {
-        setEnv(values as any);
+        setEnv({
+          ...env,
+          ...(values as any)
+        });
         setModalVisible(false);
       })
-      .catch(info => {
-        setModalVisible(false);
-      });
+      .catch(_ => {});
   };
 
   const handleCancel = () => {
     setModalVisible(false);
+  };
+
+  const toggleView = e => {
+    const { value } = e.target;
+    setView(value);
   };
 
   const stopEventPop = e => {
@@ -128,30 +150,71 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
     </div>
   );
 
-  const toggleView = e => {
-    const { value } = e.target;
-    setView(value);
+  const isTaskRunning =
+    detail && [TaskState.ING, TaskState.SUCCESS].indexOf(detail.state) > -1;
+  const outputRunningInfo = ({ state, localUrl, hasError }) => {
+    if (!state || state === TaskState.INIT) {
+      return null;
+    }
+    const map = {
+      [TaskState.ING]: {
+        status: "processing",
+        text: (
+          <span>
+            {intl({
+              id: hasError
+                ? "org.umi.ui.tasks.dev.state.starting.error"
+                : "org.umi.ui.tasks.dev.state.starting"
+            })}
+          </span>
+        )
+      },
+      [TaskState.SUCCESS]: {
+        status: "success",
+        text: (
+          <span>
+            {localUrl ? (
+              <>
+                {intl({ id: "org.umi.ui.tasks.dev.state.success" })}
+                <a href={localUrl} target="_blank">
+                  {localUrl}
+                </a>
+              </>
+            ) : null}
+          </span>
+        )
+      },
+      [TaskState.FAIL]: {
+        status: "error",
+        text: <span>{intl({ id: "org.umi.ui.tasks.dev.state.fail" })}</span>
+      }
+    };
+    return (
+      <div className={styles.runningInfo}>
+        <Badge status={map[state].status} />
+        <span>{map[state].text}</span>
+      </div>
+    );
   };
 
-  const isTaskRunning = detail.state === TaskState.ING;
   const detailHost = `https://umijs.org/${isEnglish ? "" : "zh"}`;
   return (
     <>
-      <h1 className={styles.title}>{intl({ id: "org.umi.ui.tasks.build" })}</h1>
+      <h1 className={styles.title}>{intl({ id: "org.umi.ui.tasks.dev" })}</h1>
       <>
         <Row type="flex" justify="space-between">
           <Col className={styles.buttonGroup}>
             <Button
               size={api.mini ? "small" : "default"}
               type="primary"
-              onClick={isTaskRunning ? cancelBuild : build}
+              onClick={isTaskRunning ? cancelDev : dev}
             >
               {isTaskRunning ? (
                 <>
                   <PauseOutlined />
                   <span className={styles.runningText}>
                     {" "}
-                    {intl({ id: "org.umi.ui.tasks.build.cancel" })}
+                    {intl({ id: "org.umi.ui.tasks.dev.cancel" })}
                   </span>
                 </>
               ) : (
@@ -159,7 +222,7 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
                   <CaretRightOutlined />
                   <span className={styles.runningText}>
                     {" "}
-                    {intl({ id: "org.umi.ui.tasks.build.start" })}
+                    {intl({ id: "org.umi.ui.tasks.dev.start" })}
                   </span>
                 </>
               )}
@@ -167,6 +230,7 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
             <Button size={api.mini ? "small" : "default"} onClick={openModal}>
               {intl({ id: "org.umi.ui.tasks.envs" })}
             </Button>
+            {outputRunningInfo(detail)}
             <Modal
               visible={modalVisible}
               title={intl({ id: "org.umi.ui.tasks.envs" })}
@@ -175,36 +239,16 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
             >
               <div className={styles.modalContainer}>
                 <Form
-                  name="buildEnv"
+                  name="devEnv"
                   form={form}
                   initialValues={env}
                   layout="vertical"
                 >
                   <Form.Item
-                    label={
-                      <EnvLabel
-                        title="org.umi.ui.tasks.envs.compress"
-                        desc="org.umi.ui.tasks.envs.compress.desc"
-                        link={`${detailHost}/guide/env-variables.html#compress`}
-                      />
-                    }
-                    name="COMPRESS"
-                    valuePropName="checked"
+                    label={intl({ id: "org.umi.ui.tasks.envs.port" })}
+                    name="PORT"
                   >
-                    <Switch size="small" />
-                  </Form.Item>
-                  <Form.Item
-                    label={
-                      <EnvLabel
-                        title="org.umi.ui.tasks.envs.cssCompress"
-                        desc="org.umi.ui.tasks.envs.cssCompress.desc"
-                        link={`${detailHost}/guide/env-variables.html#css-compress`}
-                      />
-                    }
-                    name="CSS_COMPRESS"
-                    valuePropName="checked"
-                  >
-                    <Switch size="small" />
+                    <Input />
                   </Form.Item>
                   <Form.Item
                     label={
@@ -215,6 +259,19 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
                       />
                     }
                     name="BABEL_POLYFILL"
+                    valuePropName="checked"
+                  >
+                    <Switch size="small" />
+                  </Form.Item>
+                  <Form.Item
+                    label={
+                      <EnvLabel
+                        title="org.umi.ui.tasks.envs.hmr"
+                        desc="org.umi.ui.tasks.envs.hmr.desc"
+                        link={`${detailHost}/guide/env-variables.html#hmr`}
+                      />
+                    }
+                    name="HMR"
                     valuePropName="checked"
                   >
                     <Switch size="small" />
@@ -235,12 +292,40 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
                   <Form.Item
                     label={
                       <EnvLabel
-                        title="org.umi.ui.tasks.envs.html"
-                        desc="org.umi.ui.tasks.envs.html.desc"
-                        link={`${detailHost}/guide/env-variables.html#html`}
+                        title="org.umi.ui.tasks.envs.mock"
+                        desc="org.umi.ui.tasks.envs.mock.desc"
+                        link={`${detailHost}/guide/env-variables.html#mock`}
                       />
                     }
-                    name="HTML"
+                    name="MOCK"
+                    valuePropName="checked"
+                  >
+                    <Switch size="small" />
+                  </Form.Item>
+                  {window.g_bigfish ? null : (
+                    <Form.Item
+                      label={
+                        <EnvLabel
+                          title="org.umi.ui.tasks.envs.BROWSER"
+                          desc="org.umi.ui.tasks.envs.BROWSER.desc"
+                          link={`${detailHost}/guide/env-variables.html#browser`}
+                        />
+                      }
+                      name="BROWSER"
+                      valuePropName="checked"
+                    >
+                      <Switch size="small" />
+                    </Form.Item>
+                  )}
+                  <Form.Item
+                    label={
+                      <EnvLabel
+                        title="org.umi.ui.tasks.envs.clear"
+                        desc="org.umi.ui.tasks.envs.clear.desc"
+                        link={`${detailHost}/guide/env-variables.html#clear-console`}
+                      />
+                    }
+                    name="CLEAR_CONSOLE"
                     valuePropName="checked"
                   >
                     <Switch size="small" />
@@ -254,6 +339,19 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
                       />
                     }
                     name="FORK_TS_CHECKER"
+                    valuePropName="checked"
+                  >
+                    <Switch size="small" />
+                  </Form.Item>
+                  <Form.Item
+                    label={
+                      <EnvLabel
+                        title="org.umi.ui.tasks.envs.umiUI"
+                        desc="org.umi.ui.tasks.envs.umiUI.desc"
+                        link={`${detailHost}/guide/env-variables.html#umi-ui`}
+                      />
+                    }
+                    name="UMI_UI"
                     valuePropName="checked"
                   >
                     <Switch size="small" />
@@ -283,12 +381,21 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
           {view === "log" ? (
             <Terminal
               onInit={ins => {
-                setTerminalRefIns(taskType, api.currentProject.key, ins);
+                if (ins) {
+                  setTerminalRefIns(taskType, api.currentProject.key, ins);
+                }
               }}
               defaultValue={log}
             />
           ) : (
-            <Analyze api={api} analyze={detail.analyze} />
+            <Analyze
+              api={api}
+              src={
+                detail.analyzePort
+                  ? `http://${window.location.hostname}:${detail.analyzePort}`
+                  : null
+              }
+            />
           )}
         </div>
       </>
@@ -296,4 +403,4 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
   );
 };
 
-export default BuildComponent;
+export default DevComponent;

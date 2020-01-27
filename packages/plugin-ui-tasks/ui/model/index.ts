@@ -11,7 +11,7 @@ import {
 } from "../util";
 
 export const namespace = "org.umi.taskManager";
-import { TaskType, TaskState } from "../../server/core/enums";
+import { TaskType, TaskState } from "../../src/server/core/enums";
 import { Analyze } from "../util";
 
 let init = false;

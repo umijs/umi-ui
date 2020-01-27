@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Button } from "antd";
 import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
 import styles from "../../ui.module.less";
-import { TaskState } from "../../../server/core/enums";
+import { TaskState } from "../../../src/server/core/enums";
 import { getTerminalRefIns, setTerminalRefIns } from "../../util";
 import { TaskComponentProps } from "..";
 import { useInit } from "../../hooks";

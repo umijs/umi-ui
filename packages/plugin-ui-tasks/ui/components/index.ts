@@ -1,6 +1,6 @@
 import { IUiApi, IUi } from "umi-types";
-import { ITaskDetail } from "../../server/core/types";
-import { TaskType } from "../../server/core/enums";
+import { ITaskDetail } from "../../src/server/core/types";
+import { TaskType } from "../../src/server/core/enums";
 
 export interface TaskComponentProps<T = any> {
   api: IUiApi;
