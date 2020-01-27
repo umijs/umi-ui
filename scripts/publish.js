@@ -17,18 +17,6 @@ if (
   process.exit(1);
 }
 
-const cwd = process.cwd();
-const ret = shell.exec("./node_modules/.bin/lerna updated").stdout;
-const updatedRepos = ret
-  .split("\n")
-  .map(line => line.replace("- ", ""))
-  .filter(line => line !== "");
-
-if (updatedRepos.length === 0) {
-  console.log("No package is updated.");
-  process.exit(0);
-}
-
 const { code: buildCode } = shell.exec("npm run build");
 if (buildCode === 1) {
   console.error("Failed: npm run build");
