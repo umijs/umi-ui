@@ -6,12 +6,12 @@ export default {
       routes: [
         {
           path: '/aa',
-          redirect: '/testredirect'
+          redirect: '/testredirect',
         },
         {
           path: '/aa/vv',
           name: 'dd',
-          component: 'adad' // 注释2
+          component: 'adad', // 注释2
         },
         {
           path: '/aa/xx',
@@ -31,21 +31,21 @@ export default {
                 {
                   path: '/aa/xx/sdad/demo',
                   component: './aa/xx/sdad/Demo'
-                }
-              ]
+                },
+              ],
             },
             {
               path: 'aa',
               name: 'aadsda',
               component: 'xxxc'
-            }
-          ]
-        }
-      ]
+            },
+          ],
+        },
+      ],
     },
     {
       path: '/bb',
-      component: 'bb'
+      component: 'bb',
     },
     {
       path: '/',
@@ -53,9 +53,9 @@ export default {
       childRoutes: [
         {
           path: 'test1',
-          component: './test1'
-        }
-      ]
-    }
-  ]
+          component: './test1',
+        },
+      ],
+    },
+  ],
 };
