@@ -24,29 +24,11 @@ jobs:
           command: yarn test:coverage -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
           no_output_timeout: 300m
       - run: bash <(curl -s https://codecov.io/bash)
-  cnpm_build:
-    executor: node
-    steps:
-      - checkout
-      - run: sudo npm install -g cnpm
-      - run: cnpm install --registry=https://registry.npmjs.org
-      - run: cnpm run bootstrap -- --npm-client=cnpm
-      - run: cnpm run build
-      - run:
-          command: npm run test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
-          no_output_timeout: 300m
-      - run: bash <(curl -s https://codecov.io/bash)
 workflows:
   version: 2
   build-test:
     jobs:
       - yarn_build:
-          filters:
-            branches:
-              ignore:
-                - gh-pages
-                - /release\/.*/
-      - cnpm_build:
           filters:
             branches:
               ignore:
