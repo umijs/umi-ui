@@ -1,4 +1,4 @@
-import Demo1 from "./Demo1";
+import Demo1 from './Demo1';
 interface TestPageProps {
   className?: string;
 }

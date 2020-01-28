@@ -26,7 +26,7 @@ export default {
               routes: [
                 {
                   name: 'hehe',
-                  path: 'xxxcc'
+                  path: 'xxxcc',
                 },
                 {
                   path: '/aa/xx/sdad/demo',

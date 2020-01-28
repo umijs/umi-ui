@@ -1,4 +1,4 @@
-import Foo from "./Foo";
+import Foo from './Foo';
 
 @connect(mapStateToProps)
 class App extends React.Component {

@@ -1,4 +1,4 @@
-import Foo from "./Foo";
+import Foo from './Foo';
 export default () => {
   return (
     <div>

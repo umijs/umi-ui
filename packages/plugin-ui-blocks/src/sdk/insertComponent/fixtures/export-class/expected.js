@@ -1,4 +1,4 @@
-import Foo from "./Foo";
+import Foo from './Foo';
 
 class App extends React.Component {
   render() {

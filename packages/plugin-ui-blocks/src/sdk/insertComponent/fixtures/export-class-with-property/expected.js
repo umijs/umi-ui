@@ -1,11 +1,11 @@
-import Foo from "./Foo";
+import Foo from './Foo';
 
 class App extends React.Component {
   state: AccountCenterState = {
     newTags: [],
     inputVisible: false,
-    inputValue: "",
-    tabKey: "articles"
+    inputValue: '',
+    tabKey: 'articles',
   };
 
   render() {
