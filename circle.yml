@@ -21,7 +21,7 @@ jobs:
       - run: yarn build
       - run: yarn ui:build
       - run:
-          command: yarn test:coverage -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
+          command: yarn test:coverage --forceExit --detectOpenHandles --runInBand --maxWorkers=2
           no_output_timeout: 300m
       - run: bash <(curl -s https://codecov.io/bash)
 workflows:
