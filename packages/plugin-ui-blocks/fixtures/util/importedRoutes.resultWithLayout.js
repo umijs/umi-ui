@@ -1,49 +1,49 @@
 export default [
   {
-    path: "/aa",
-    component: "aa",
+    path: '/aa',
+    component: 'aa',
     routes: [
       {
-        path: "/aa/vv",
-        name: "dd",
-        component: "adad" // 注释2
+        path: '/aa/vv',
+        name: 'dd',
+        component: 'adad', // 注释2
       },
       {
-        path: "/aa/xx",
-        name: "xx",
-        component: "xx",
+        path: '/aa/xx',
+        name: 'xx',
+        component: 'xx',
         routes: [
           {
-            path: "/aa/xx/sdad",
+            path: '/aa/xx/sdad',
             //注释3
-            name: "aada",
-            component: "xxx",
+            name: 'aada',
+            component: 'xxx',
             routes: [
               {
-                name: "hehe",
-                path: "xxxcc"
+                name: 'hehe',
+                path: 'xxxcc',
               },
               {
-                path: "/aa/xx/sdad/demo",
-                component: "./aa/xx/sdad/Demo"
-              }
-            ]
+                path: '/aa/xx/sdad/demo',
+                component: './aa/xx/sdad/Demo',
+              },
+            ],
           },
           {
-            path: "aa",
-            name: "aadsda",
-            component: "xxxc"
-          }
-        ]
-      }
-    ]
+            path: 'aa',
+            name: 'aadsda',
+            component: 'xxxc',
+          },
+        ],
+      },
+    ],
   },
   {
-    path: "/bb",
-    component: "bb"
+    path: '/bb',
+    component: 'bb',
   },
   {
-    path: "/",
-    component: "test"
-  }
+    path: '/',
+    component: 'test',
+  },
 ];

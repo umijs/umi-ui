@@ -1,3 +1,6 @@
+
 export default () => {
-  return <App />;
-};
+  return (
+    <App />
+  );
+}

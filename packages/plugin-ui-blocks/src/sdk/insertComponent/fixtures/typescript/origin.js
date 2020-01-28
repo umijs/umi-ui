@@ -8,4 +8,4 @@ export default (props: TestPageProps) => {
       <Demo />
     </React.Fragment>
   );
-};
+}

@@ -1,3 +1,4 @@
+
 const App = () => {
   return (
     <div>
@@ -7,6 +8,6 @@ const App = () => {
       <h4>foo</h4>
     </div>
   );
-};
+}
 
 export default App;

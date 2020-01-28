@@ -30,14 +30,14 @@ export default {
                 },
                 {
                   path: '/aa/xx/sdad/demo',
-                  component: './aa/xx/sdad/Demo'
+                  component: './aa/xx/sdad/Demo',
                 },
               ],
             },
             {
               path: 'aa',
               name: 'aadsda',
-              component: 'xxxc'
+              component: 'xxxc',
             },
           ],
         },

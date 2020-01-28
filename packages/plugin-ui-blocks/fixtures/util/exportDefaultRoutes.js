@@ -26,17 +26,17 @@ export default {
                 {
                   name: 'hehe',
                   path: 'xxxcc',
-                }
-              ]
+                },
+              ],
             },
             {
               path: 'aa',
               name: 'aadsda',
               component: 'xxxc',
-            }
-          ]
-        }
-      ]
+            },
+          ],
+        },
+      ],
     },
     {
       path: '/bb',
@@ -49,8 +49,8 @@ export default {
         {
           path: 'test1',
           component: './test1',
-        }
-      ]
-    }
-  ]
+        },
+      ],
+    },
+  ],
 };

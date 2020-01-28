@@ -27,21 +27,21 @@ export default {
                 {
                   name: 'hehe',
                   path: 'xxxcc',
-                }
-              ]
+                },
+              ],
             },
             {
               path: 'aa',
               name: 'aadsda',
               component: 'xxxc',
-            }
-          ]
-        }
-      ]
+            },
+          ],
+        },
+      ],
     },
     {
       path: '/bb',
-      component: 'bb'
+      component: 'bb',
     },
     {
       path: '/',
@@ -55,7 +55,7 @@ export default {
           path: '/demo',
           component: './Demo',
         },
-      ]
-    }
-  ]
+      ],
+    },
+  ],
 };
