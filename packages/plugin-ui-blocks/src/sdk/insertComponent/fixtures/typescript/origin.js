@@ -1,4 +1,4 @@
-import Demo1 from "./Demo1";
+import Demo1 from './Demo1';
 interface TestPageProps {
   className?: string;
 }
@@ -8,4 +8,4 @@ export default (props: TestPageProps) => {
       <Demo />
     </React.Fragment>
   );
-};
+}

@@ -1,6 +1,6 @@
-import Hoo from "./extract-block/hoo";
-import Bar from "bar";
-import React from "react";
+import Hoo from './extract-block/hoo';
+import Bar from 'bar';
+import React from 'react';
 export default () => {
   return (
     <div>

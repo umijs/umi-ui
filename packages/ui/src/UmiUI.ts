@@ -2,6 +2,9 @@ import "regenerator-runtime/runtime";
 import assert from "assert";
 import chalk from "chalk";
 import emptyDir from "empty-dir";
+import express from "express";
+import url from "url";
+import compression from "compression";
 import clearModule from "clear-module";
 import { join, resolve, dirname } from "path";
 import launchEditor from "@umijs/launch-editor";
@@ -895,9 +898,6 @@ export default class UmiUI {
     return new Promise(async (resolve, reject) => {
       console.log(`🚀 Starting Umi UI using umi@${process.env.UMI_VERSION}...`);
 
-      const url = require("url");
-      const express = require("express");
-      const compression = require("compression");
       const sockjs = require("sockjs");
       const app = express();
       app.use(compression());
@@ -1165,6 +1165,7 @@ export default class UmiUI {
       initTerminal.call(this, server);
       this.socketServer = ss;
       this.server = server;
+      return this.server;
     });
   }
 

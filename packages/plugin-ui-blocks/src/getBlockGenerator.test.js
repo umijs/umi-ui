@@ -135,7 +135,7 @@ export default {
   it("getAllBlockDependencies", () => {
     expect(
       getAllBlockDependencies(
-        join(__dirname, "../../../fixtures/block/test-blocks"),
+        join(__dirname, "../fixtures/block/test-blocks"),
         {
           blockConfig: {
             dependencies: ["demo"]
@@ -150,7 +150,7 @@ export default {
 
     expect(
       getAllBlockDependencies(
-        join(__dirname, "../../../fixtures/block/test-blocks"),
+        join(__dirname, "../fixtures/block/test-blocks"),
         {
           dependencies: {
             moment: "2.3.2"
@@ -163,7 +163,7 @@ export default {
 
     expect(
       getAllBlockDependencies(
-        join(__dirname, "../../../fixtures/block/test-blocks"),
+        join(__dirname, "../fixtures/block/test-blocks"),
         {
           blockConfig: {
             dependencies: ["demo", "demo-with-dependencies"]
@@ -181,7 +181,7 @@ export default {
 
     expect(
       getAllBlockDependencies(
-        join(__dirname, "../../../fixtures/block/test-blocks"),
+        join(__dirname, "../fixtures/block/test-blocks"),
         {
           blockConfig: {
             dependencies: ["demo-with-dependencies"]
@@ -196,7 +196,7 @@ export default {
     try {
       expect(
         getAllBlockDependencies(
-          join(__dirname, "../../../fixtures/block/test-blocks"),
+          join(__dirname, "../fixtures/block/test-blocks"),
           {
             blockConfig: {
               dependencies: ["demo-with-dependencies"]

@@ -1,9 +1,10 @@
+
 class App extends React.Component {
   state: AccountCenterState = {
     newTags: [],
     inputVisible: false,
-    inputValue: "",
-    tabKey: "articles"
+    inputValue: '',
+    tabKey: 'articles',
   };
 
   render() {

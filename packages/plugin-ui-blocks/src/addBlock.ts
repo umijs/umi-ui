@@ -9,7 +9,7 @@ import getNpmRegistry from "getnpmregistry";
 import clipboardy from "clipboardy";
 import { winPath } from "umi-utils";
 import { getParsedData, makeSureMaterialsTempPathExist } from "./download";
-import writeNewRoute from "../../../utils/writeNewRoute";
+import writeNewRoute from "./writeNewRoute";
 import { getNameFromPkg } from "./getBlockGenerator";
 import appendBlockToContainer from "./appendBlockToContainer";
 import { gitClone, gitUpdate } from "./util";

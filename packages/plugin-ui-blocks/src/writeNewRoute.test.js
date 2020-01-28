@@ -3,14 +3,14 @@ import { readFileSync } from "fs";
 import { winEOL } from "umi-utils";
 
 import { getNewRouteCode, writeRouteNode } from "./writeNewRoute";
-import routeNode from "./fixtures/routeNode";
-import relativeRouteNode from "./fixtures/relativeRouteNode";
+import routeNode from "../fixtures/util/routeNode";
+import relativeRouteNode from "../fixtures/util/relativeRouteNode";
 
 const typeMap = [
-  "./fixtures/exportDefaultRoutes.js",
-  "./fixtures/importedRoutes.js",
-  "./fixtures/exportsRoutes.js",
-  "./fixtures/routesWithTypescript.ts"
+  "../fixtures/util/exportDefaultRoutes.js",
+  "../fixtures/util/importedRoutes.js",
+  "../fixtures/util/exportsRoutes.js",
+  "../fixtures/util/routesWithTypescript.ts"
 ];
 const getPath = path => join(__dirname, path);
 
@@ -114,7 +114,7 @@ describe("test get route code", () => {
   it("get rout not found", () => {
     try {
       getNewRouteCode(
-        getPath("./fixtures/notRoutes.js"),
+        getPath("../fixtures/util/notRoutes.js"),
         {
           path: "/aa/xx/sdad",
           component: "./aa/xx/sdad"

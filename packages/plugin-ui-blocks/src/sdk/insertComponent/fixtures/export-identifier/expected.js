@@ -1,4 +1,4 @@
-import Foo from "./Foo";
+import Foo from './Foo';
 
 const App = () => {
   return (

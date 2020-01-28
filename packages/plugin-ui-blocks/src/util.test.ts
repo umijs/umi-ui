@@ -5,7 +5,7 @@ import {
   genRouterToTreeData,
   reduceData
 } from "./util";
-import routerConfig from "../../fixtures/util/routerConfig";
+import routerConfig from "../fixtures/util/routerConfig";
 
 test("not exists", () => {
   expect(routeExists("/foo", [{ path: "/bar" }])).toEqual(false);

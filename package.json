@@ -6,15 +6,15 @@
     "changelog": "lerna-changelog",
     "chore:update-deps": "sh ./scripts/reinstall_deps.sh",
     "clean": "lerna clean -y",
-    "debug": "./packages/umi-test/bin/umi-test.js",
+    "debug": "umi-test",
     "doc:deploy": "rm -rf ./website/yarn.lock && cd ./website && npm run deploy && cd -",
     "doc:dev": "cd ./website && npm run dev",
     "lint": "eslint --ext .js packages",
     "precommit": "lint-staged",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "publish": "./scripts/publish.js",
-    "test": "node scripts/test.js",
-    "test:coverage": "node ./packages/umi-test/bin/umi-test.js --coverage",
+    "test": "umi-test",
+    "test:coverage": "umi-test --coverage",
     "ui:build": "node ./scripts/ui.js"
   },
   "lint-staged": {
@@ -24,7 +24,6 @@
     ]
   },
   "devDependencies": {
-    "umi": "2.x",
     "@babel/preset-typescript": "7.3.3",
     "@types/jest": "^24.0.5",
     "@types/signale": "^1.2.1",
@@ -32,10 +31,10 @@
     "cross-spawn": "^6.0.5",
     "eslint": "5.10.0",
     "eslint-config-airbnb": "17.1.0",
-    "eslint-config-prettier": "^4.2.0",
+    "eslint-config-prettier": "4.2.0",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-jsx-a11y": "6.1.2",
-    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-prettier": "3.1.0",
     "eslint-plugin-react": "7.11.1",
     "express": "^4.17.1",
     "father-build": "^1.17.2",
@@ -49,6 +48,7 @@
     "moment": "^2.24.0",
     "portfinder": "^1.0.24",
     "prettier": "^1.19.1",
+    "puppeteer": "^2.1.0",
     "react": "^16.8.6",
     "react-router-dom": "5.1.2",
     "react-test-renderer": "16.6.3",
@@ -59,6 +59,8 @@
     "signale": "^1.4.0",
     "slash2": "2.0.0",
     "stringify-object": "3.3.0",
-    "test-build-result": "^1.1.2"
+    "test-build-result": "^1.1.2",
+    "umi": "2.x",
+    "umi-test": "^1.9.3"
   }
 }
