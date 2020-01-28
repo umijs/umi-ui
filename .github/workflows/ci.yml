@@ -17,8 +17,9 @@ jobs:
         node-version: ${{ matrix.node_version }}
     - run: npm install
     - run: npm run bootstrap
+    - run: npm run ui:build
     - run: npm run build
-    - run: npm run test -- --forceExit
+    - run: npm run test:coverage -- --forceExit
       env:
         CI: true
         HEADLESS: false

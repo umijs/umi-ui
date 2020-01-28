@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import { IFlowContext, IAddBlockOption } from "../types";
-import writeNewRoute from "./writeNewRoute";
+import writeNewRoute from "../../../../writeNewRoute";
 import appendBlockToContainer from "../../../../appendBlockToContainer";
 
 const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {

@@ -29,7 +29,9 @@ jobs:
         displayName: bootstrap
       - script: yarn build
         displayName: build
-      - script: yarn test -- --forceExit
+      - script: yarn ui:build
+        displayName: ui:build
+      - script: yarn test:coverage -- --forceExit
         env:
           PROGRESS: none
           CI: true
@@ -49,7 +51,9 @@ jobs:
         displayName: bootstrap
       - script: yarn build
         displayName: build
-      - script: yarn test -- --forceExit --detectOpenHandles --runInBand
+      - script: yarn ui:build
+        displayName: ui:build
+      - script: yarn test:coverage -- --forceExit --detectOpenHandles --runInBand
         env:
           PROGRESS: none
           CI: true
