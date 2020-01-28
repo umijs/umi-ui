@@ -2,7 +2,7 @@ import { join } from 'path';
 import slash from 'slash2';
 import LessThemePlugin from 'webpack-less-theme-plugin';
 import { IConfig } from 'umi-types';
-import { dark } from '@umijs/ui-theme';
+import { dark } from '../node_modules/@umijs/ui-theme';
 import { version } from 'antd';
 
 const { NODE_ENV } = process.env;
