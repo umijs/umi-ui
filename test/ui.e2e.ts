@@ -9,12 +9,16 @@ describe('Umi UI e2e', () => {
   process.env.BROWSER = 'none';
   process.env.UMI_UI_TEST = '1';
 
-  const port = process.env.UMI_UI_PORT || 3000;
-  const url = `http://localhost:${port}`;
+  let port = 3000;
+  let url;
 
   beforeAll(async () => {
     const umiui = new UmiUI();
-    server = await umiui.start();
+    const { server: uiServer, port: uiPort } = await umiui.start();
+    server = uiServer;
+    // eslint-disable-next-line prefer-destructuring
+    port = uiPort;
+    url = `http://localhost:${port}`;
     browser = await puppeteer.launch({
       args: [
         '--disable-gpu',
