@@ -1,5 +1,5 @@
-# umi-ui-tasks
+# @umijs/plugin-ui-tasks
 
-### 开发
+任务插件
 
-1. npm run dev
+![](https://user-images.githubusercontent.com/13595509/73431180-c77ab400-437a-11ea-9baa-ebd00109b1d0.png)

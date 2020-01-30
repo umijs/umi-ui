@@ -18,8 +18,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/umijs/umi",
-    "directory": "packages/umi-ui"
+    "url": "http://github.com/umijs/ui",
+    "directory": "packages/ui"
   },
   "authors": [
     "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
