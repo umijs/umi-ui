@@ -1,6 +1,6 @@
 {
   "name": "@umijs/ui",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "main": "./lib/UmiUI.js",
   "files": [
     "lib",
@@ -13,7 +13,7 @@
     "@types/express": "^4.17.2",
     "@types/node-notifier": "^5.4.0",
     "@types/sockjs": "^0.3.31",
-    "@umijs/ui-theme": "0.0.2",
+    "@umijs/ui-theme": "1.0.0",
     "umi-types": "0.5.12"
   },
   "repository": {

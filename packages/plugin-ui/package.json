@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugin-ui",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "main": "./lib/index.js",
   "files": [
     "lib",
@@ -8,8 +8,8 @@
     "src/plugins/*/dist"
   ],
   "dependencies": {
-    "@umijs/plugin-ui-blocks": "0.0.2",
-    "@umijs/plugin-ui-tasks": "0.0.2",
+    "@umijs/plugin-ui-blocks": "1.0.0",
+    "@umijs/plugin-ui-tasks": "1.0.0",
     "got": "9.6.0",
     "immer": "^5.0.0",
     "is-mobile": "2.1.0",
@@ -22,7 +22,7 @@
     "@ant-design/icons": "^4.0.0-alpha.11",
     "@types/got": "9.6.0",
     "@umijs/fabric": "^1.1.9",
-    "@umijs/ui-theme": "0.0.2",
+    "@umijs/ui-theme": "1.0.0",
     "antd": "^4.0.0-alpha.10",
     "classnames": "^2.2.6",
     "decamelize": "3.2.0",
