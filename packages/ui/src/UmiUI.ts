@@ -100,9 +100,10 @@ export default class UmiUI {
     debug(`Service path: ${servicePath}`);
     // eslint-disable-next-line import/no-dynamic-require
     const Service = require(servicePath).default;
-    return new Service({
+    const service = new Service({
       cwd,
     });
+    return service;
   };
 
   openProject(key: string, service?: any, opts?: any) {
