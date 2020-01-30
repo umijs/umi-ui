@@ -17,9 +17,11 @@ $ umi ui
 
 第二种：通过 `UMI_UI=1` 在项目中使用 mini 版
 
-    # in umi project root path
-    - $ umi dev
-    + $ UMI_UI=1 umi dev
+```bash
+# in umi project root path
+- $ umi dev
++ $ UMI_UI=1 umi dev
+```
 
 ## ✨ 主要功能
 
