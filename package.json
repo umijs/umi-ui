@@ -1,6 +1,7 @@
 {
   "private": true,
   "scripts": {
+    "dev": "cross-env DEBUG=umiui* ts-node-dev --respawn --no-notify --transpileOnly scripts/dev.ts",
     "bootstrap": "lerna bootstrap",
     "build": "father-build",
     "changelog": "lerna-changelog",
@@ -27,7 +28,9 @@
     "@babel/preset-typescript": "7.3.3",
     "@types/jest": "^24.0.5",
     "@types/signale": "^1.2.1",
+    "antd": "^4.0.0-rc.1",
     "babel-eslint": "10.0.1",
+    "cross-env": "^7.0.0",
     "cross-spawn": "^6.0.5",
     "eslint": "5.10.0",
     "eslint-config-airbnb": "17.1.0",
@@ -60,7 +63,9 @@
     "slash2": "2.0.0",
     "stringify-object": "3.3.0",
     "test-build-result": "^1.1.2",
+    "ts-node-dev": "^1.0.0-pre.44",
     "umi": "2.x",
+    "umi-plugin-react": "^1.8.0",
     "umi-test": "^1.9.3"
   }
 }

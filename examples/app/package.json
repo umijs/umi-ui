@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "umi dev",
+    "build": "umi build",
+    "test": "umi test",
+    "lint": "eslint {src,mock,tests}/**/*.{ts,tsx} --fix",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": ["eslint --fix", "git add"],
+    "*.{js,jsx}": ["eslint --fix", "git add"]
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}

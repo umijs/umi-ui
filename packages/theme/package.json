@@ -19,7 +19,7 @@
   "repository": {
     "type": "git",
     "url": "http://github.com/umijs/ui",
-    "directory": "packages/ui-theme"
+    "directory": "packages/theme"
   },
   "author": "ycjcl868",
   "license": "MIT"
