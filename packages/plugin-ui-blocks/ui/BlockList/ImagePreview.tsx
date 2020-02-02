@@ -1,56 +1,39 @@
-import React, { useState, useContext } from "react";
-import { EyeOutlined } from "@ant-design/icons";
-import { Tooltip, Button, Modal } from "antd";
-import Context from "../UIApiContext";
+import React, { useState, useContext } from 'react';
+import { EyeOutlined } from '@ant-design/icons';
+import { Tooltip, Button, Spin } from 'antd';
 
 export default props => {
-  const { api } = useContext(Context);
-  const { intl } = api;
   const { cls, img } = props;
-  const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const handleImgLoad = () => {
+    setLoading(false);
+  };
 
   return (
     <>
       <Tooltip
-        title={intl({ id: "org.umi.ui.blocks.list.preview.image" })}
-        placement="bottom"
+        title={
+          <div
+            style={{
+              width: 450,
+            }}
+          >
+            {loading && <Spin />}
+            <img
+              style={{ display: loading ? 'none' : 'block' }}
+              onLoad={handleImgLoad}
+              width="100%"
+              alt="img"
+              draggable="false"
+              src={img}
+            />
+          </div>
+        }
       >
-        <Button
-          className={cls}
-          onClick={() => {
-            setVisible(true);
-          }}
-        >
+        <Button className={cls}>
           <EyeOutlined />
         </Button>
       </Tooltip>
-      <Modal
-        title={intl({ id: "org.umi.ui.blocks.list.preview.image" })}
-        closable
-        visible={visible}
-        destroyOnClose
-        centered
-        width="80vw"
-        bodyStyle={{
-          overflow: "auto"
-        }}
-        footer={null}
-        onCancel={() => {
-          setVisible(false);
-        }}
-        onOk={() => {
-          setVisible(false);
-        }}
-      >
-        <div
-          style={{
-            width: "100%",
-            overflow: "auto"
-          }}
-        >
-          <img style={{ width: "100%" }} src={img} />
-        </div>
-      </Modal>
     </>
   );
 };

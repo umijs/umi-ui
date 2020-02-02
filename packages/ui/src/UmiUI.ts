@@ -164,7 +164,7 @@ export default class UmiUI {
       const localBin = isDepFileExists(cwd, binModule);
       if (process.env.UI_CHECK_LOCAL !== 'none' && localBin) {
         const { version } = JSON.parse(readFileSync(join(cwd, 'node_modules', pkgModule), 'utf-8'));
-        if (!semver.gt(version, process.env.BIGFISH_COMPAT ? '2.23.0' : '2.12.0-beta.2')) {
+        if (!semver.gt(version, process.env.BIGFISH_COMPAT ? '2.27.1' : '2.13.2')) {
           throw new ActiveProjectError({
             title: process.env.BIGFISH_COMPAT
               ? `本地项目的 Bigfish 版本（${version}）过低，请升级到 @alipay/bigfish@2.23 或以上，<a target="_blank" href="https://yuque.antfin-inc.com/bigfish/doc/uzfwoc#ff1deb63">查看详情</a>。`
