@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugin-ui-tasks",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -25,13 +25,13 @@
     "@ant-design/compatible": "^0.0.1-alpha.1",
     "@ant-design/icons": "^4.0.0-alpha.11",
     "@umijs/fabric": "^1.1.9",
+    "@umijs/ui-types": "1.0.1",
     "antd": "^4.0.0-alpha.10",
     "classnames": "^2.2.6",
     "concurrently": "^4.1.1",
     "eslint": "^6.1.0",
     "filesize": "^4.2.0",
-    "umi-types": "^0.5.12",
-    "@umijs/ui-types": "1.0.0"
+    "umi-types": "^0.5.12"
   },
   "repository": {
     "type": "git",
