@@ -2,6 +2,7 @@
   "changelog": {
     "labels": {
       "enhancement": ":rocket: Enhancement",
+      "tweak": ":lipstick: Tweak",
       "bug": ":bug: Bug Fix",
       "documentation": ":book: Documentation",
       "dependency": ":deciduous_tree: Dependency",
