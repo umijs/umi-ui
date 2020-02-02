@@ -1,6 +1,6 @@
-import { IUiApi } from "umi-types";
+import { IUiApi } from '@umijs/ui-types';
 
-const defaultNameArray = ["Two", "Three", "Four", "Five", "Six", "Seven"];
+const defaultNameArray = ['Two', 'Three', 'Four', 'Five', 'Six', 'Seven'];
 
 const getNewName = (name: string, index: number = 0) => {
   return `${name}${defaultNameArray[index]}`;
@@ -16,7 +16,7 @@ export const getNoExitVar = async ({
   path,
   defaultName,
   index = 0,
-  need = true
+  need = true,
 }: {
   name: string;
   path: string;
@@ -30,11 +30,11 @@ export const getNoExitVar = async ({
   }
   try {
     const { exists } = (await api.callRemote({
-      type: "org.umi.block.checkBindingInFile",
+      type: 'org.umi.block.checkBindingInFile',
       payload: {
         path,
-        name
-      }
+        name,
+      },
     })) as { exists: boolean };
 
     if (index < 6 && exists) {
@@ -43,7 +43,7 @@ export const getNoExitVar = async ({
         path,
         api,
         defaultName: defaultName || name,
-        index: index + 1
+        index: index + 1,
       });
     }
     return name;
@@ -63,7 +63,7 @@ export const getNoExitRoute = async ({
   path,
   defaultPath,
   index = 0,
-  need = true
+  need = true,
 }: {
   path: string;
   defaultPath?: string;
@@ -78,22 +78,22 @@ export const getNoExitRoute = async ({
 
   try {
     const { exists } = (await api.callRemote({
-      type: "org.umi.block.checkExistRoute",
+      type: 'org.umi.block.checkExistRoute',
       payload: {
-        path: path.toLowerCase()
-      }
+        path: path.toLowerCase(),
+      },
     })) as {
       exists: boolean;
     };
     if (index < 6 && exists) {
-      const fileArray = (defaultPath || path).split("/");
+      const fileArray = (defaultPath || path).split('/');
       const name = fileArray.pop();
-      const filePath = fileArray.join("/") || "/";
+      const filePath = fileArray.join('/') || '/';
       return getNoExitRoute({
-        path: `${filePath}/${getNewName(name, index)}`.replace(/\/\//g, "/"),
+        path: `${filePath}/${getNewName(name, index)}`.replace(/\/\//g, '/'),
         api,
         defaultPath: defaultPath || path,
-        index: index + 1
+        index: index + 1,
       });
     }
     return path;
@@ -113,7 +113,7 @@ export const getNoExitPath = async ({
   path,
   defaultPath,
   index = 0,
-  need = true
+  need = true,
 }: {
   path: string;
   defaultPath?: string;
@@ -128,23 +128,23 @@ export const getNoExitPath = async ({
 
   try {
     const { exists } = (await api.callRemote({
-      type: "org.umi.block.checkExistFilePath",
+      type: 'org.umi.block.checkExistFilePath',
       payload: {
-        path
-      }
+        path,
+      },
     })) as {
       exists: boolean;
     };
 
     if (index < 6 && exists) {
-      const fileArray = (defaultPath || path).split("/");
+      const fileArray = (defaultPath || path).split('/');
       const name = fileArray.pop();
-      const filePath = fileArray.join("/") || "/";
+      const filePath = fileArray.join('/') || '/';
       return getNoExitPath({
-        path: `${filePath}/${getNewName(name, index)}`.replace(/\/\//g, "/"),
+        path: `${filePath}/${getNewName(name, index)}`.replace(/\/\//g, '/'),
         api,
         defaultPath: defaultPath || path,
-        index: index + 1
+        index: index + 1,
       });
     }
     return path;

@@ -4,6 +4,7 @@
   },
   "peerDependencies": {
     "umi-types": "^0.4.0-beta.4",
+    "@umijs/ui-types": "^1.0.0",
     "umi-build-dev": "^1.13.0",
     "@umijs/ui-theme": "^0.0.1"
   },

@@ -1,7 +1,7 @@
 import get from 'lodash/get';
 import React from 'react';
 import history from '@tmp/history';
-import { IUi } from 'umi-types';
+import * as IUi from '@umijs/ui-types';
 import querystring from 'querystring';
 import {
   getLocale as umiGetLocale,

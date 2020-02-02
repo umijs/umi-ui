@@ -1,0 +1,24 @@
+{
+  "name": "@umijs/ui-types",
+  "version": "1.0.0",
+  "description": "Type definitions for umi ui.",
+  "types": "index.d.ts",
+  "dependencies": {
+    "@types/debug": "^4.1.5",
+    "@types/lodash": "^4.14.136",
+    "@types/moment": "^2.13.0",
+    "@types/react": "^16.8.25",
+    "@types/react-redux": "^7.1.2",
+    "@types/xterm": "^3.0.0",
+    "@umijs/hooks": "^1.5.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/umijs/ui",
+    "directory": "packages/types"
+  },
+  "authors": [
+    "ycjcl868"
+  ],
+  "license": "MIT"
+}

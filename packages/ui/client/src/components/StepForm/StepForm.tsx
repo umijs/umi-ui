@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Steps } from 'antd';
 import { FormInstance } from 'antd/lib/form';
-import { IUi } from 'umi-types';
+import * as IUi from '@umijs/ui-types';
 import StepItem from './StepItem';
 
 const { useState } = React;

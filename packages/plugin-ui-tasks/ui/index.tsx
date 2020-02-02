@@ -1,88 +1,88 @@
-import React, { useEffect } from "react";
-import { IUiApi } from "umi-types";
-import { SettingOutlined } from "@ant-design/icons";
-import Dev from "./components/Dev";
-import Build from "./components/Build";
-import Lint from "./components/Lint";
-import Test from "./components/Test";
-import Install from "./components/Install";
-import { initApiToGloal } from "./util";
-import { TaskType } from "../src/server/core/enums";
-import styles from "./ui.module.less";
-import enUS from "./locales/en-US";
-import zhCN from "./locales/zh-CN";
-import model from "./model";
+import React, { useEffect } from 'react';
+import { IUiApi } from '@umijs/ui-types';
+import { SettingOutlined } from '@ant-design/icons';
+import Dev from './components/Dev';
+import Build from './components/Build';
+import Lint from './components/Lint';
+import Test from './components/Test';
+import Install from './components/Install';
+import { initApiToGloal } from './util';
+import { TaskType } from '../src/server/core/enums';
+import styles from './ui.module.less';
+import enUS from './locales/en-US';
+import zhCN from './locales/zh-CN';
+import model from './model';
 
 export default (api: IUiApi) => {
   initApiToGloal(api);
 
   const { TwoColumnPanel } = api;
   const imgProperty = {
-    width: api.mini ? "24" : "32",
-    height: api.mini ? "24" : "32"
+    width: api.mini ? '24' : '32',
+    height: api.mini ? '24' : '32',
   };
 
   const SCRIPTS = {
     [TaskType.DEV]: {
-      key: "dev",
-      title: "org.umi.ui.tasks.dev",
+      key: 'dev',
+      title: 'org.umi.ui.tasks.dev',
       icon: (
         <img
           {...imgProperty}
           src="https://gw.alipayobjects.com/zos/basement_prod/6000d285-334d-4513-a405-2d9f890f56e9.svg"
         />
       ),
-      description: "org.umi.ui.tasks.dev.desc",
-      Component: Dev
+      description: 'org.umi.ui.tasks.dev.desc',
+      Component: Dev,
     },
     [TaskType.BUILD]: {
-      key: "build",
-      title: "org.umi.ui.tasks.build",
+      key: 'build',
+      title: 'org.umi.ui.tasks.build',
       icon: (
         <img
           {...imgProperty}
           src="https://gw.alipayobjects.com/zos/basement_prod/6000d285-334d-4513-a405-2d9f890f56e9.svg"
         />
       ),
-      description: "org.umi.ui.tasks.build.desc",
-      Component: Build
+      description: 'org.umi.ui.tasks.build.desc',
+      Component: Build,
     },
     [TaskType.LINT]: {
-      key: "lint",
-      title: "org.umi.ui.tasks.lint",
+      key: 'lint',
+      title: 'org.umi.ui.tasks.lint',
       icon: (
         <img
           {...imgProperty}
           src="https://gw.alipayobjects.com/zos/basement_prod/fb3b6fab-253e-41fc-981a-8bfc5dc4fede.svg"
         />
       ),
-      description: "org.umi.ui.tasks.lint.desc",
-      Component: Lint
+      description: 'org.umi.ui.tasks.lint.desc',
+      Component: Lint,
     },
     [TaskType.TEST]: {
-      key: "test",
-      title: "org.umi.ui.tasks.test",
+      key: 'test',
+      title: 'org.umi.ui.tasks.test',
       icon: (
         <img
           {...imgProperty}
           src="https://gw.alipayobjects.com/zos/basement_prod/f0d64a31-1767-4ab7-a7f9-eea044d92ce3.svg"
         />
       ),
-      description: "org.umi.ui.tasks.test.desc",
-      Component: Test
+      description: 'org.umi.ui.tasks.test.desc',
+      Component: Test,
     },
     [TaskType.INSTALL]: {
-      key: "install",
-      title: "org.umi.ui.tasks.install",
+      key: 'install',
+      title: 'org.umi.ui.tasks.install',
       icon: (
         <img
           {...imgProperty}
           src="https://gw.alipayobjects.com/zos/basement_prod/d9fbc2fa-5bb6-46f4-bd15-385a94bc6d1c.svg"
         />
       ),
-      description: "org.umi.ui.tasks.install.desc",
-      Component: Install
-    }
+      description: 'org.umi.ui.tasks.install.desc',
+      Component: Install,
+    },
   };
 
   const { Terminal: ApiTerminal } = api;
@@ -93,9 +93,9 @@ export default (api: IUiApi) => {
         allowTransparency: true,
         fontFamily: `operator mono,SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace`,
         cursorBlink: false,
-        cursorStyle: "underline",
+        cursorStyle: 'underline',
         disableStdin: true,
-        ...(api.isMini() ? { fontSize: 12 } : {})
+        ...(api.isMini() ? { fontSize: 12 } : {}),
       }}
       {...props}
     />
@@ -108,8 +108,8 @@ export default (api: IUiApi) => {
         type: `${model.namespace}/init`,
         payload: {
           currentProject: api.currentProject,
-          getSharedDataDir: api.getSharedDataDir
-        }
+          getSharedDataDir: api.getSharedDataDir,
+        },
       });
     }, []);
     const sections = Object.keys(SCRIPTS).filter(item => {
@@ -121,18 +121,15 @@ export default (api: IUiApi) => {
 
     // 立即执行参数
     const { iife: searchIIFE } = api.getSearchParams();
-    const iife = searchIIFE === "true";
+    const iife = searchIIFE === 'true';
 
     return (
       <TwoColumnPanel
         sections={sections.map((taskType: string) => {
-          const { key, title, icon, description, Component } = SCRIPTS[
-            taskType
-          ];
+          const { key, title, icon, description, Component } = SCRIPTS[taskType];
           const currentProjectKey = api.currentProject.path;
           const detail =
-            taskManager.tasks[currentProjectKey] &&
-            taskManager.tasks[currentProjectKey][taskType];
+            taskManager.tasks[currentProjectKey] && taskManager.tasks[currentProjectKey][taskType];
           const dbPath = taskManager.dbPath[currentProjectKey];
           return {
             key,
@@ -152,7 +149,7 @@ export default (api: IUiApi) => {
                   namespace={model.namespace}
                 />
               </div>
-            )
+            ),
           };
         })}
       />
@@ -163,24 +160,24 @@ export default (api: IUiApi) => {
   api.registerModel(model);
 
   api.addLocales({
-    "zh-CN": zhCN,
-    "en-US": enUS
+    'zh-CN': zhCN,
+    'en-US': enUS,
   });
 
   const { FormattedMessage } = api.intl;
 
   const commonContent = [
-    <a onClick={() => api.redirect("/tasks?type=block&active=build&iife=true")}>
+    <a onClick={() => api.redirect('/tasks?type=block&active=build&iife=true')}>
       <FormattedMessage id="org.umi.ui.tasks.dashboard.build" />
     </a>,
-    <a onClick={() => api.redirect("/tasks?type=block&active=lint&iife=true")}>
+    <a onClick={() => api.redirect('/tasks?type=block&active=lint&iife=true')}>
       <FormattedMessage id="org.umi.ui.tasks.dashboard.lint" />
-    </a>
+    </a>,
   ];
 
   api.addDashboard({
     // 唯一标识，org.umi.dashboard.card.${key}
-    key: "org.umi.dashboard.card.task",
+    key: 'org.umi.dashboard.card.task',
     title: <FormattedMessage id="org.umi.ui.tasks.title" />,
     description: <FormattedMessage id="org.umi.ui.tasks.description" />,
     icon: <SettingOutlined />,
@@ -188,26 +185,20 @@ export default (api: IUiApi) => {
       ? // mini 下没有 dev
         commonContent
       : [
-          <a
-            onClick={() =>
-              api.redirect("/tasks?type=block&active=dev&iife=true")
-            }
-          >
+          <a onClick={() => api.redirect('/tasks?type=block&active=dev&iife=true')}>
             <FormattedMessage id="org.umi.ui.tasks.dashboard.dev" />
           </a>,
-          ...commonContent
-        ]
+          ...commonContent,
+        ],
   });
 
   api.addPanel({
-    title: "org.umi.ui.tasks.title",
-    path: "/tasks",
+    title: 'org.umi.ui.tasks.title',
+    path: '/tasks',
     icon: {
-      type: "project",
-      theme: "filled"
+      type: 'project',
+      theme: 'filled',
     },
-    component: api.connect(state => ({ taskManager: state[model.namespace] }))(
-      TasksView
-    )
+    component: api.connect(state => ({ taskManager: state[model.namespace] }))(TasksView),
   });
 };

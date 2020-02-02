@@ -1,5 +1,5 @@
-import { createContext } from "react";
-import { IUiApi } from "umi-types";
+import { createContext } from 'react';
+import { IUiApi } from '@umijs/ui-types';
 
 const UIApiContext = createContext({} as { api: IUiApi });
 

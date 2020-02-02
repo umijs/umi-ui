@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext, useRef } from 'react';
 import cls from 'classnames';
 import { SearchOutlined, CloseCircleFilled } from '@ant-design/icons';
 import Fuse from 'fuse.js';
-import { IUi } from 'umi-types';
+import * as IUi from '@umijs/ui-types';
 import { Button, Form, Input, Spin, message, Popconfirm } from 'antd';
 import { useDebounceFn, useToggle } from '@umijs/hooks';
 import isEmpty from 'lodash/isEmpty';

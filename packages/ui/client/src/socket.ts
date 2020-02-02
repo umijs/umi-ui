@@ -1,4 +1,4 @@
-import { IUi } from 'umi-types';
+import * as IUi from '@umijs/ui-types';
 import { getLocale } from '@/utils/index';
 
 let sock;

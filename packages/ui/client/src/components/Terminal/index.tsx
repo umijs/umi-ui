@@ -4,7 +4,7 @@ import { Terminal as XTerminal, ITerminalOptions } from 'xterm';
 import cls from 'classnames';
 import debounce from 'lodash/debounce';
 import React, { useRef, useEffect, useState, forwardRef } from 'react';
-import { IUi } from 'umi-types';
+import * as IUi from '@umijs/ui-types';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import { FitAddon } from 'xterm-addon-fit';
 import intl from '@/utils/intl';

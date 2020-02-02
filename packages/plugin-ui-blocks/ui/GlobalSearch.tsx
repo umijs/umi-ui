@@ -1,9 +1,9 @@
-import React from "react";
-import { Input } from "antd";
-import { IUiApi } from "umi-types";
+import React from 'react';
+import { Input } from 'antd';
+import { IUiApi } from '@umijs/ui-types';
 
-import { SearchOutlined } from "@ant-design/icons";
-import styles from "./GlobalSearch.module.less";
+import { SearchOutlined } from '@ant-design/icons';
+import styles from './GlobalSearch.module.less';
 
 interface IGlobalSearch {
   onChange: (v: string) => void;
@@ -30,9 +30,9 @@ const GlobalSearch: React.SFC<IGlobalSearch> = props => {
       prefix={<SearchOutlined />}
       className={styles.search}
       allowClear
-      size={api.mini ? "small" : "middle"}
+      size={api.mini ? 'small' : 'middle'}
       onChange={e => handleChangeDebounce(e.target.value)}
-      placeholder={intl({ id: "org.umi.ui.blocks.content.search_block" })}
+      placeholder={intl({ id: 'org.umi.ui.blocks.content.search_block' })}
     />
   );
 };

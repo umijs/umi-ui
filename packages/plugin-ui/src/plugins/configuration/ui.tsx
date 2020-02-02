@@ -1,5 +1,5 @@
 import React from 'react';
-import { IUiApi } from 'umi-types';
+import { IUiApi } from '@umijs/ui-types';
 import { ControlFilled } from '@ant-design/icons';
 import { Button } from 'antd';
 import ConfigManager from './ui/index';

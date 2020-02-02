@@ -3,7 +3,7 @@ import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col } from 'antd
 import { LeftOutlined, CaretDownOutlined, ExportOutlined } from '@ant-design/icons';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import React, { useState, useLayoutEffect, Fragment } from 'react';
-import { IUi } from 'umi-types';
+import * as IUi from '@umijs/ui-types';
 import { stringify, parse } from 'qs';
 import cls from 'classnames';
 import { NavLink, withRouter } from 'umi';

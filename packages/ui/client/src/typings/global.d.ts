@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 import { Context } from 'react';
 import { Debugger } from 'debug';
 
-import { IUi } from 'umi-types';
+import * as IUi from '@umijs/ui-types';
 import { Terminal } from 'xterm';
 import zhCN from '../locales/zh-CN';
 

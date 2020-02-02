@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { IUi } from 'umi-types';
+import * as IUi from '@umijs/ui-types';
 import { callRemote, listenRemote } from '@/socket';
 import { IProjectList } from '@/enums';
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Form, Input, Button } from 'antd';
 import { useDebounceFn } from '@umijs/hooks';
-import { IStepItemForm } from 'umi-types/ui';
+import { IStepItemForm } from '@umijs/ui-types';
 import { trimSlash, validateDirPath } from '@/components/DirectoryForm/pathUtils';
 import DirectoryForm from '@/components/DirectoryForm';
 import { checkDirValid } from '@/services/project';

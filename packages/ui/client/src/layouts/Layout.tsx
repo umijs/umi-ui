@@ -1,6 +1,6 @@
 import React from 'react';
 import { formatMessage, FormattedMessage, setLocale } from 'umi-plugin-react/locale';
-import { IUi } from 'umi-types';
+import * as IUi from '@umijs/ui-types';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import cls from 'classnames';
