@@ -133,7 +133,7 @@ $ yarn ui:build -w
 ```bash
 # 第三个终端
 $ yarn dev
-🚀 Starting Umi UI using umi@undefined...
+🚀 Starting Umi UI using umi...
 ⛽️ Ready on http://localhost:3000/
 ```
 
