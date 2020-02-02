@@ -133,7 +133,15 @@ $ yarn ui:build -w
 ```bash
 # 第三个终端
 $ yarn dev
+🚀 Starting Umi UI using umi@undefined...
+⛽️ Ready on http://localhost:3000/
 ```
+
+访问 [http://localhost:3000](http://localhost:3000) 就是 Umi UI。
+
+调试如图：
+
+![](https://raw.githubusercontent.com/ycjcl868/cdn/master/20200202091318.png?token=ADHXG5NO7FQGSB4U5HFYBH26GYRG6)
 
 ### 插件开发原理
 
