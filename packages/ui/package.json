@@ -14,7 +14,7 @@
     "@types/node-notifier": "^5.4.0",
     "@types/sockjs": "^0.3.31",
     "@umijs/ui-theme": "1.0.0",
-    "umi-types": "0.5.12",
+    "umi-types": "^0.5.12",
     "@umijs/ui-types": "1.0.0"
   },
   "repository": {
