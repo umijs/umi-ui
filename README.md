@@ -87,6 +87,7 @@ API 由 [Umi 插件基础 API](https://umijs.org/plugin/umi-ui.html#%E6%9C%8D%E5
 │   │   ├── dark.less
 │   │   ├── light.less
 │   │   └── package.json
+│   ├── types # Umi UI 类型，集成在 umi-types 中，建议社区插件从 umi-types 导入
 │   └── ui
 │       ├── client # Umi UI 主体
 │       │   └── src
