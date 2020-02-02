@@ -3,6 +3,7 @@ import assert from 'assert';
 import chalk from 'chalk';
 import emptyDir from 'empty-dir';
 import express from 'express';
+import http from 'http';
 import url from 'url';
 import compression from 'compression';
 import clearModule from 'clear-module';
@@ -36,25 +37,15 @@ process.env.UMI_UI = 'true';
 
 export default class UmiUI {
   cwd: string;
-
   servicesByKey: any;
-
   server: any;
-
   socketServer: any;
-
   logs: any;
-
   config: Config;
-
   send: any;
-
   developMode: boolean = false;
-
   npmClients: string[] = [];
-
   basicUIPath: string;
-
   basicConfigPath: string;
 
   constructor() {
@@ -837,7 +828,7 @@ export default class UmiUI {
     }
   }
 
-  async start() {
+  async start(): Promise<{ server: http.Server; port: string | number }> {
     return new Promise(async (resolve, reject) => {
       console.log(`🚀 Starting Umi UI using umi@${process.env.UMI_VERSION}...`);
 
@@ -1062,8 +1053,14 @@ export default class UmiUI {
         if (err) {
           reject(err);
         } else {
+          const [command] = process.argv.slice(2);
           const url = `http://localhost:${port}/`;
-          console.log(`⛽️ Ready on ${url}`);
+          console.log(
+            command === 'dev'
+              ? `🌈 Umi UI mini Ready on port 3000
+            `
+              : `⛽️ Ready on ${url}`,
+          );
           if (process.env.UMI_UI_BROWSER !== 'none') {
             openBrowser(url);
           }
