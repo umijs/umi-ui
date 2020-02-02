@@ -13,7 +13,7 @@
     "lint": "eslint --ext .js packages",
     "precommit": "lint-staged",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
-    "publish": "./scripts/publish.js",
+    "publish": "npm run changelog && node ./scripts/publish.js",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage",
     "ui:build": "node ./scripts/ui.js"
