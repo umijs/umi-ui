@@ -1,7 +1,7 @@
-import { IUiApi } from "umi-types";
-import { Block } from "../../src/data.d";
+import { IUiApi } from '@umijs/ui-types';
+import { Block } from '../../src/data.d';
 
-export const namespace = "org.umi.block";
+export const namespace = 'org.umi.block';
 
 let callRemote;
 
@@ -22,36 +22,34 @@ export default {
   // TODO fill state
   state: {
     blockData: {},
-    currentResourceId: null
+    currentResourceId: null,
   },
   effects: {
     // 获取数据
     *fetch({ payload }, { call, put, select }) {
-      const { blockData, currentResourceId } = yield select(
-        state => state[namespace]
-      );
+      const { blockData, currentResourceId } = yield select(state => state[namespace]);
       const { resourceId = currentResourceId, reload } = payload;
       if (blockData[resourceId] && !reload) {
         return blockData[resourceId];
       }
       const { data: list } = yield call(() => {
         return callRemote({
-          type: "org.umi.block.list",
+          type: 'org.umi.block.list',
           payload: {
             resourceId,
-            force: reload
-          }
+            force: reload,
+          },
         });
       });
       yield put({
-        type: "saveData",
+        type: 'saveData',
         payload: {
           resourceId,
-          list
-        }
+          list,
+        },
       });
       return [];
-    }
+    },
   },
   reducers: {
     saveData({ blockData }, { payload }) {
@@ -59,11 +57,11 @@ export default {
       const newState = {
         blockData: {
           ...blockData,
-          [resourceId]: list
+          [resourceId]: list,
         },
-        currentResourceId: resourceId
+        currentResourceId: resourceId,
       };
       return newState;
-    }
-  }
+    },
+  },
 };

@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { IUi } from 'umi-types';
+import * as IUi from '@umijs/ui-types';
 import { IProjectStatus } from '@/enums';
 
 export interface IProjectContext extends IUi.IContext {

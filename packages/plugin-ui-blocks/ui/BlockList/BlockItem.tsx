@@ -1,16 +1,16 @@
-import React, { useContext } from "react";
-import { Col, message, Spin, Typography, Button, Tooltip } from "antd";
-import { ButtonProps } from "antd/es/button";
-import { ExportOutlined } from "@ant-design/icons";
-import { IUiApi } from "umi-types";
+import React, { useContext } from 'react';
+import { Col, message, Spin, Typography, Button, Tooltip } from 'antd';
+import { ButtonProps } from 'antd/es/button';
+import { ExportOutlined } from '@ant-design/icons';
+import { IUiApi } from '@umijs/ui-types';
 
-import styles from "./index.module.less";
-import HighlightedText from "./HighlightedText";
-import getInsertPosition, { PositionData } from "./getInsertPosition";
-import Context from "../UIApiContext";
-import { Block, AddBlockParams, Resource } from "../../src/data.d";
-import ImageLoad from "./ImageLoad";
-import ImagePreview from "./ImagePreview";
+import styles from './index.module.less';
+import HighlightedText from './HighlightedText';
+import getInsertPosition, { PositionData } from './getInsertPosition';
+import Context from '../UIApiContext';
+import { Block, AddBlockParams, Resource } from '../../src/data.d';
+import ImageLoad from './ImageLoad';
+import ImagePreview from './ImagePreview';
 
 /**
  * 子区块 的 tag
@@ -33,7 +33,7 @@ export const Meats: React.FC<{
 );
 
 export interface BlockItemProps {
-  type: Resource["blockType"];
+  type: Resource['blockType'];
   addingBlock?: Block;
   item: Block;
   disabled?: boolean;
@@ -49,22 +49,19 @@ export interface BlockItemProps {
  * @param api
  * @param filenamePath
  */
-export const getPathFromFilename = async (
-  api: IUiApi,
-  filenamePath: string
-): Promise<string> => {
+export const getPathFromFilename = async (api: IUiApi, filenamePath: string): Promise<string> => {
   const { data } = (await api.callRemote({
-    type: "org.umi.block.getRelativePagesPath",
+    type: 'org.umi.block.getRelativePagesPath',
     payload: {
-      path: filenamePath
-    }
+      path: filenamePath,
+    },
   })) as {
     data: string;
   };
   // /Users/userName/code/test/umi-block-test/src/page(s)/xxx/index.ts
   // or /Users/userName/code/test/umi-pro/src/page(s)/xxx.js
   // -> /xxx
-  return data.replace(/(index)?((\.js?)|(\.tsx?)|(\.jsx?))$/, "");
+  return data.replace(/(index)?((\.js?)|(\.tsx?)|(\.jsx?))$/, '');
 };
 
 /**
@@ -75,18 +72,18 @@ export const getPathFromFilename = async (
 const onBeforeOpenModal = async (api, { item, type, onShowModal }) => {
   try {
     await api.callRemote({
-      type: "org.umi.block.checkIfCanAdd",
+      type: 'org.umi.block.checkIfCanAdd',
       payload: {
         item,
-        type
-      }
+        type,
+      },
     });
   } catch (e) {
     message.error(e.message);
     return;
   }
 
-  if (api.isMini() && type === "block") {
+  if (api.isMini() && type === 'block') {
     // umi ui 中区块有自己独有的打开方式
     const position = (await getInsertPosition(api).catch(e => {
       message.error(e.message);
@@ -95,7 +92,7 @@ const onBeforeOpenModal = async (api, { item, type, onShowModal }) => {
     const option = {
       path: targetPath,
       index: position.index,
-      blockTarget: targetPath
+      blockTarget: targetPath,
     };
     onShowModal(item, option);
     return;
@@ -117,24 +114,14 @@ const ToolTipAddButton: React.FC<ToolTipAddButtonProps> = ({
   if (disabled) {
     return (
       <Tooltip title={disabledTitle}>
-        <Button
-          className={styles.addBtn}
-          type="primary"
-          disabled={disabled}
-          {...reset}
-        >
+        <Button className={styles.addBtn} type="primary" disabled={disabled} {...reset}>
           {children}
         </Button>
       </Tooltip>
     );
   }
   return (
-    <Button
-      className={styles.addBtn}
-      type="primary"
-      disabled={disabled}
-      {...reset}
-    >
+    <Button className={styles.addBtn} type="primary" disabled={disabled} {...reset}>
       {children}
     </Button>
   );
@@ -147,7 +134,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
   disabled,
   onShowModal,
   keyword,
-  selectedTag
+  selectedTag,
 }) => {
   const { api } = useContext(Context);
   const { intl } = api;
@@ -171,38 +158,30 @@ const BlockItem: React.FC<BlockItemProps> = ({
                 type="primary"
                 disabled={disabled}
                 disabledTitle={intl({
-                  id: "org.umi.ui.blocks.adder.disabledTitle"
+                  id: 'org.umi.ui.blocks.adder.disabledTitle',
                 })}
                 onClick={() =>
                   onBeforeOpenModal(api, {
                     type,
                     item,
-                    onShowModal
+                    onShowModal,
                   })
                 }
               >
                 {loading
-                  ? intl({ id: "org.umi.ui.blocks.list.viewlog" })
-                  : intl({ id: "org.umi.ui.blocks.list.add" })}
+                  ? intl({ id: 'org.umi.ui.blocks.list.viewlog' })
+                  : intl({ id: 'org.umi.ui.blocks.list.add' })}
               </ToolTipAddButton>
 
-              <div
-                className={`${styles.btnGroup} ${
-                  item.previewUrl ? styles.hasPreview : ""
-                }`}
-              >
+              <div className={`${styles.btnGroup} ${item.previewUrl ? styles.hasPreview : ''}`}>
                 <ImagePreview img={item.img} cls={styles.previewBtn} />
                 <div className={styles.btnSep} />
                 {item.previewUrl && (
                   <Tooltip
-                    title={intl({ id: "org.umi.ui.blocks.list.preview.demo" })}
+                    title={intl({ id: 'org.umi.ui.blocks.list.preview.demo' })}
                     placement="bottom"
                   >
-                    <Button
-                      className={styles.previewBtn}
-                      target="_blank"
-                      href={item.previewUrl}
-                    >
+                    <Button className={styles.previewBtn} target="_blank" href={item.previewUrl}>
                       <ExportOutlined />
                     </Button>
                   </Tooltip>
@@ -226,9 +205,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
               <HighlightedText text={item.description} highlight={keyword} />
             </Typography.Paragraph>
           )}
-          {!isMini && selectedTag === "" && (
-            <Meats item={item} keyword={keyword} />
-          )}
+          {!isMini && selectedTag === '' && <Meats item={item} keyword={keyword} />}
         </div>
       </div>
     </Col>

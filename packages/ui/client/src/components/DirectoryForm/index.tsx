@@ -2,7 +2,7 @@ import * as React from 'react';
 import { LeftOutlined, EditOutlined, ReloadOutlined } from '@ant-design/icons';
 import slash2 from 'slash2';
 import { Button, Empty, Spin, Input, message, Tooltip } from 'antd';
-import { IUi } from 'umi-types';
+import * as IUi from '@umijs/ui-types';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { getCwd, listDirectory } from '@/services/project';
 import debug from '@/debug';

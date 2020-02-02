@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "dev": "cross-env DEBUG=umiui* ts-node-dev --respawn --no-notify --transpileOnly scripts/dev.ts",
+    "dev": "cross-env DEBUG=umiui* ts-node-dev --no-notify --transpileOnly scripts/dev.ts",
     "bootstrap": "lerna bootstrap",
     "build": "father-build",
     "changelog": "lerna-changelog",
@@ -13,7 +13,7 @@
     "lint": "eslint --ext .js packages",
     "precommit": "lint-staged",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
-    "publish": "./scripts/publish.js",
+    "publish": "npm run changelog && node ./scripts/publish.js",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage",
     "ui:build": "node ./scripts/ui.js"

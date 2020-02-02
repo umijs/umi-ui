@@ -20,6 +20,7 @@
         "specialLink": ["to"]
       }
     ],
+    "lines-between-class-members": [0],
     "generator-star-spacing": [0],
     "consistent-return": [0],
     "radix": [1],

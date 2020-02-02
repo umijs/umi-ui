@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useMemo, useLayoutEffect } from "react";
-import { Spin, Radio, Button, message, Tooltip } from "antd";
-import { ReloadOutlined, PlusOutlined } from "@ant-design/icons";
-import { IUiApi } from "umi-types";
-import { stringify, parse } from "qs";
+import React, { useState, useEffect, useMemo, useLayoutEffect } from 'react';
+import { Spin, Radio, Button, message, Tooltip } from 'antd';
+import { ReloadOutlined, PlusOutlined } from '@ant-design/icons';
+import { IUiApi } from '@umijs/ui-types';
+import { stringify, parse } from 'qs';
 
-import { Clear } from "./icon";
-import { Resource, Block, AddBlockParams } from "../src/data";
-import BlockList from "./BlockList";
-import GlobalSearch from "./GlobalSearch";
-import useCallData from "./hooks/useCallData";
-import styles from "./BlocksViewer.module.less";
-import Adder from "./Adder";
-import AssetsMenu from "./AssetsMenu";
-import { ModelState, namespace } from "./model";
-import Container from "./Container";
+import { Clear } from './icon';
+import { Resource, Block, AddBlockParams } from '../src/data';
+import BlockList from './BlockList';
+import GlobalSearch from './GlobalSearch';
+import useCallData from './hooks/useCallData';
+import styles from './BlocksViewer.module.less';
+import Adder from './Adder';
+import AssetsMenu from './AssetsMenu';
+import { ModelState, namespace } from './model';
+import Container from './Container';
 
 /**
  * get substr from url
@@ -28,25 +28,25 @@ const updateUrlQuery = (params: { type: string; resource?: string }) => {
   const defaultParas = getQueryConfig();
   window.history.pushState(
     {},
-    "",
+    '',
     `?${stringify({
       ...defaultParas,
-      ...params
-    })}`
+      ...params,
+    })}`,
   );
 };
 
 const clearCache = async (api: IUiApi) => {
   try {
-    const hide = message.loading("缓存清理中！");
+    const hide = message.loading('缓存清理中！');
     const { data } = (await api.callRemote({
-      type: "org.umi.block.clear"
+      type: 'org.umi.block.clear',
     })) as {
       data: string;
     };
 
     // 用户记忆的参数
-    localStorage.removeItem("umi-ui-block-removeLocale");
+    localStorage.removeItem('umi-ui-block-removeLocale');
     hide();
     // 等动画播放完
     setTimeout(() => {
@@ -58,7 +58,7 @@ const clearCache = async (api: IUiApi) => {
 };
 
 const openUmiBlocks = () => {
-  window.open("https://github.com/umijs/umi-blocks");
+  window.open('https://github.com/umijs/umi-blocks');
 };
 
 /**
@@ -88,8 +88,8 @@ interface Props {
 const renderActiveResourceTag = ({
   type,
   matchedResources = [],
-  current = { id: "" },
-  setActiveResource
+  current = { id: '' },
+  setActiveResource,
 }: {
   type: string;
   current: Resource;
@@ -119,7 +119,7 @@ const renderActiveResourceTag = ({
     return (
       <h3
         style={{
-          marginTop: 8
+          marginTop: 8,
         }}
       >
         {matchedResources[0].name}
@@ -131,13 +131,7 @@ const renderActiveResourceTag = ({
 
 const BlocksViewer: React.FC<Props> = props => {
   const { dispatch, block, loading: fetchDataLoading } = props;
-  const {
-    api,
-    type,
-    setType,
-    activeResource,
-    setActiveResource
-  } = Container.useContainer();
+  const { api, type, setType, activeResource, setActiveResource } = Container.useContainer();
   const { callRemote, intl } = api;
   /**
    * 是不是umi
@@ -151,8 +145,8 @@ const BlocksViewer: React.FC<Props> = props => {
   const [addingBlock, setAddBlock] = useState<Block>(null);
   const [addModalVisible, setAddModalVisible] = useState<boolean>(false);
   const [blockParams, setBlockParams] = useState<AddBlockParams>(null);
-  const [searchValue, setSearchValue] = useState<string>("");
-  const [selectedTag, setSelectedTag] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [selectedTag, setSelectedTag] = useState<string>('');
 
   /**
    * 获取 query 中的设置
@@ -168,24 +162,20 @@ const BlocksViewer: React.FC<Props> = props => {
   const { data: resources } = useCallData<Resource[]>(
     () =>
       callRemote({
-        type: "org.umi.block.resource"
+        type: 'org.umi.block.resource',
       }) as any,
     [],
     {
-      defaultData: []
-    }
+      defaultData: [],
+    },
   );
   // 当前的数据源列表
   const current = useMemo<Resource>(() => {
-    return (
-      activeResource || resources.filter(item => item.blockType === type)[0]
-    );
+    return activeResource || resources.filter(item => item.blockType === type)[0];
   }, [resources, activeResource, type]);
   // 计算选中的区块
   const blocks = useMemo<Block[]>(() => {
-    return current && block.blockData[current.id]
-      ? block.blockData[current.id]
-      : [];
+    return current && block.blockData[current.id] ? block.blockData[current.id] : [];
   }, [block, current]);
 
   // 初始化 block dva model data
@@ -194,8 +184,8 @@ const BlocksViewer: React.FC<Props> = props => {
       dispatch({
         type: `${namespace}/fetch`,
         payload: {
-          resourceId: current.id
-        }
+          resourceId: current.id,
+        },
       });
     }
   }, [current]);
@@ -206,7 +196,7 @@ const BlocksViewer: React.FC<Props> = props => {
      * 成功之后会被清除
      */
     callRemote({
-      type: "org.umi.block.get-adding-block-url"
+      type: 'org.umi.block.get-adding-block-url',
     }).then(({ data }: { data: string }) => {
       if (data) {
         setAddBlock({ url: data });
@@ -218,13 +208,13 @@ const BlocksViewer: React.FC<Props> = props => {
   useEffect(() => {
     if (willAddBlock) {
       // 我把每个 item 都加了一个 id，就是他的 url
-      scrollToById(willAddBlock.url, "block-list-view");
+      scrollToById(willAddBlock.url, 'block-list-view');
     }
   }, [fetchDataLoading]);
 
   // 区块右上角的区域 三个按钮
   useEffect(() => {
-    const buttonPadding = isMini ? "0 4px" : "0 8px";
+    const buttonPadding = isMini ? '0 4px' : '0 8px';
 
     const handleSearchChange = (v: string) => {
       setSearchValue(v.toLocaleLowerCase());
@@ -232,28 +222,22 @@ const BlocksViewer: React.FC<Props> = props => {
 
     if (api.setActionPanel) {
       api.setActionPanel(() => [
-        <GlobalSearch
-          key="global-search"
-          onChange={handleSearchChange}
-          api={api}
-        />,
+        <GlobalSearch key="global-search" onChange={handleSearchChange} api={api} />,
         <Tooltip
-          title={intl({ id: "org.umi.ui.blocks.actions.reload" })}
-          getPopupContainer={node =>
-            node ? (node.parentNode as HTMLElement) : document.body
-          }
+          title={intl({ id: 'org.umi.ui.blocks.actions.reload' })}
+          getPopupContainer={node => (node ? (node.parentNode as HTMLElement) : document.body)}
           placement="bottom"
         >
           <Button
-            size={isMini ? "small" : "default"}
+            size={isMini ? 'small' : 'default'}
             key="reload"
             style={{ padding: buttonPadding }}
             onClick={() => {
               dispatch({
                 type: `${namespace}/fetch`,
                 payload: {
-                  reload: true
-                }
+                  reload: true,
+                },
               });
             }}
           >
@@ -261,41 +245,37 @@ const BlocksViewer: React.FC<Props> = props => {
           </Button>
         </Tooltip>,
         <Tooltip
-          title={intl({ id: "org.umi.ui.blocks.actions.clear" })}
-          getPopupContainer={node =>
-            node ? (node.parentNode as HTMLElement) : document.body
-          }
+          title={intl({ id: 'org.umi.ui.blocks.actions.clear' })}
+          getPopupContainer={node => (node ? (node.parentNode as HTMLElement) : document.body)}
           placement="bottom"
         >
           <Button
-            size={isMini ? "small" : "default"}
+            size={isMini ? 'small' : 'default'}
             key="clear"
             onClick={() => clearCache(api)}
             style={{
-              padding: buttonPadding
+              padding: buttonPadding,
             }}
           >
             <Clear />
           </Button>
         </Tooltip>,
         <Tooltip
-          title={intl({ id: "org.umi.ui.blocks.actions.submit" })}
-          getPopupContainer={node =>
-            node ? (node.parentNode as HTMLElement) : document.body
-          }
+          title={intl({ id: 'org.umi.ui.blocks.actions.submit' })}
+          getPopupContainer={node => (node ? (node.parentNode as HTMLElement) : document.body)}
           placement="bottom"
         >
           <Button
-            size={isMini ? "small" : "default"}
+            size={isMini ? 'small' : 'default'}
             key="clear"
             onClick={() => openUmiBlocks()}
             style={{
-              padding: buttonPadding
+              padding: buttonPadding,
             }}
           >
             <PlusOutlined />
           </Button>
-        </Tooltip>
+        </Tooltip>,
       ]);
     }
   }, []);
@@ -318,10 +298,7 @@ const BlocksViewer: React.FC<Props> = props => {
           />
         </div>
         <div className={styles.main}>
-          <div
-            className={`${styles.container} ${isMini && styles.min}`}
-            id="block-list-view"
-          >
+          <div className={`${styles.container} ${isMini && styles.min}`} id="block-list-view">
             {current ? (
               <div className={styles.blockList}>
                 {matchedResources.length > 0 ? (

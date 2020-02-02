@@ -18,6 +18,7 @@
     "styled-components": "^4.4.0"
   },
   "devDependencies": {
+    "@umijs/ui-types": "1.0.0",
     "@ant-design/compatible": "^0.0.1-alpha.1",
     "@ant-design/icons": "^4.0.0-alpha.11",
     "@types/got": "9.6.0",
@@ -29,7 +30,7 @@
     "react-masonry-component": "^6.2.1",
     "serialize-javascript": "^1.7.0",
     "swr": "^0.1.8",
-    "umi-types": "0.5.12"
+    "umi-types": "^0.5.12"
   },
   "repository": {
     "type": "git",

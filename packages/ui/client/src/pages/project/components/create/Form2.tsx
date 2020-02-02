@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Form, Checkbox, Button, Select, Row, Col, Radio, Spin, Tooltip } from 'antd';
-import { IStepItemForm } from 'umi-types/ui';
+import { IStepItemForm } from '@umijs/ui-types';
 import useNpmClients from '@/components/hooks/useNpmClients';
 import CardForm, { IOption } from '@/components/CardForm';
 import { REACT_FEATURES, REACT_FEATURES_TIP } from '@/enums';

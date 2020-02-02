@@ -1,4 +1,4 @@
-import { IUi } from 'umi-types';
+import * as IUi from '@umijs/ui-types';
 
 export enum DIR_ERROR_CODE {
   // https://nodejs.org/api/errors.html#errors_common_system_errors

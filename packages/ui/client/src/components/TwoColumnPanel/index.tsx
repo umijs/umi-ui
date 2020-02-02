@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IUi } from 'umi-types';
+import * as IUi from '@umijs/ui-types';
 import { Icon } from '@ant-design/compatible';
 import cls from 'classnames';
 import { Row, Col } from 'antd';

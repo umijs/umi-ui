@@ -7,7 +7,7 @@ import * as intl from 'umi-plugin-react/locale';
 import * as hooks from '@umijs/hooks';
 import isPlainObject from 'lodash/isPlainObject';
 import { FC } from 'react';
-import { IUi } from 'umi-types';
+import * as IUi from '@umijs/ui-types';
 import moment from 'moment';
 import request from 'umi-request';
 import qs from 'qs';
