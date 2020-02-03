@@ -97,7 +97,7 @@ export default class UmiUI {
     return service;
   };
 
-  openProject(key: string, service?: any, opts?: any) {
+  async openProject(key: string, service?: any, opts?: any) {
     const { lang } = opts || {};
     const project = this.config.data.projectsByKey[key];
     assert(project, `project of key ${key} not exists`);
@@ -181,7 +181,7 @@ export default class UmiUI {
       try {
         const service = this.getService(cwd);
         debug(`Attach service for ${key} after new and before init()`);
-        service.init();
+        await service.init();
         debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
         this.servicesByKey[key] = service;
       } catch (e) {

@@ -5,13 +5,15 @@ import semver from 'semver';
 import crequire from 'crequire';
 import Mustache from 'mustache';
 import upperCamelCase from 'uppercamelcase';
+import { IApi } from '@umijs/types';
 import rimraf from 'rimraf';
-import { winPath } from 'umi-utils';
+import Generator from 'yeoman-generator';
+import { winPath, getFile } from '@umijs/utils';
 import replaceContent from './replaceContent';
 import { SINGULAR_SENSLTIVE } from './constants';
 import { routeExists } from './util';
 
-const debug = require('debug')('umi-build-dev:getBlockGenerator');
+const debug = require('debug')('umi:block:getBlockGenerator');
 
 /**
  * 判断一个路径是否为空
@@ -188,17 +190,36 @@ export function getSingularName(name) {
   return name;
 }
 
-export const getBlockGenerator = api => {
-  const { paths, Generator, config, applyPlugins, findJS } = api;
-  const blockConfig = config.block || {};
+export const getBlockGenerator = (api: IApi) => {
+  const { paths, config, applyPlugins } = api;
+  const blockConfig = config?.block || {};
 
   return class BlockGenerator extends Generator {
+    public isTypeScript;
+    public sourcePath;
+    public dryRun;
+    public path;
+    public routePath;
+    public blockName;
+    public isPageBlock;
+    public execution;
+    public needCreateNewRoute;
+    public blockFolderName;
+    public entryPath;
+    public blockFolderPath;
+    public routes;
+    public on;
+    public prompt;
+    public fs;
+
     constructor(args, opts) {
       super(args, opts);
 
+      this.isTypeScript = existsSync(join(opts.env.cwd, 'tsconfig.json'));
       this.sourcePath = opts.sourcePath;
       this.dryRun = opts.dryRun;
       this.path = opts.path;
+      console.log('this.path', this.path);
       this.routePath = opts.routePath || opts.path;
       this.blockName = opts.blockName;
       this.isPageBlock = opts.isPageBlock;
@@ -216,7 +237,9 @@ export const getBlockGenerator = api => {
     }
 
     async writing() {
+      console.log('this.path', this.path);
       let targetPath = winPath(join(paths.absPagesPath, this.path));
+      debug(`this.path`, this.path);
       debug(`get targetPath ${targetPath}`);
 
       // for old page block check for duplicate path
@@ -224,7 +247,8 @@ export const getBlockGenerator = api => {
       if (isEmptyFolder(targetPath)) {
         rimraf.sync(targetPath);
       }
-
+      console.log('this.isPageBlock', this.isPageBlock);
+      console.log('targetPath', targetPath);
       while (this.isPageBlock && existsSync(targetPath)) {
         if (this.execution === 'auto') {
           throw new Error(`path ${this.path} already exist, press input a new path for it`);
@@ -239,10 +263,12 @@ export const getBlockGenerator = api => {
             default: this.path,
           })
         ).path;
+        console.log('this.path2', this.path);
         // fix demo => /demo
         if (!/^\//.test(this.path)) {
           this.path = `/${this.path}`;
         }
+        console.log('this.path3', this.path);
         targetPath = join(paths.absPagesPath, this.path);
         debug(`targetPath exist get new targetPath ${targetPath}`);
       }
@@ -272,7 +298,9 @@ export const getBlockGenerator = api => {
       const blockPath = this.path;
       debug(`blockPath is ${blockPath}`);
 
-      applyPlugins('beforeBlockWriting', {
+      await applyPlugins({
+        key: 'beforeBlockWriting',
+        type: api.ApplyPluginsType.event,
         args: {
           sourcePath: this.sourcePath,
           blockPath,
@@ -304,7 +332,11 @@ export const getBlockGenerator = api => {
       }
 
       // create container
-      this.entryPath = findJS(targetPath, 'index') || findJS(targetPath);
+      this.entryPath = getFile({
+        base: targetPath,
+        type: 'javascript',
+        fileNameWithoutExt: 'index',
+      });
       if (!this.entryPath) {
         this.entryPath = join(targetPath, `index.${this.isTypeScript ? 'tsx' : 'js'}`);
       }
@@ -325,8 +357,10 @@ export const getBlockGenerator = api => {
         debug('start to generate the entry file for block(s) under the path...');
 
         this.needCreateNewRoute = true;
+        debug('blockConfig.entryTemplatePath', blockConfig.entryTemplatePath);
+        const defaultBlockEntryTplPath = join(__dirname, 'blockEntry.js.tpl');
         const blockEntryTpl = readFileSync(
-          blockConfig.entryTemplatePath || paths.defaultBlockEntryTplPath,
+          blockConfig.entryTemplatePath || defaultBlockEntryTplPath,
           'utf-8',
         );
         const tplContent = {
@@ -342,7 +376,7 @@ export const getBlockGenerator = api => {
       debug('start copy block file to your project...');
 
       // 替换 相对路径
-      ['src', '@'].forEach(folder => {
+      for (const folder of ['src', '@']) {
         if (!this.isPageBlock && folder === '@') {
           // @ folder not support anymore in new specVersion
           return;
@@ -355,7 +389,7 @@ export const getBlockGenerator = api => {
           targetFolder = join(dirname(this.entryPath), this.blockFolderName);
         }
         const options = {
-          process(content, itemTargetPath) {
+          async process(content, itemTargetPath) {
             content = String(content);
             if (config.singular) {
               content = parseContentToSingular(content);
@@ -363,7 +397,9 @@ export const getBlockGenerator = api => {
             content = replaceContent(content, {
               path: blockPath,
             });
-            return applyPlugins('_modifyBlockFile', {
+            return await applyPlugins({
+              key: '_modifyBlockFile',
+              type: api.ApplyPluginsType.modify,
               initialValue: content,
               args: {
                 blockPath,
@@ -373,7 +409,8 @@ export const getBlockGenerator = api => {
           },
         };
         if (existsSync(folderPath)) {
-          readdirSync(folderPath).forEach(name => {
+          const files = readdirSync(folderPath);
+          for (let name of files) {
             // ignore the dot files
             if (name.charAt(0) === '.') {
               return;
@@ -383,7 +420,9 @@ export const getBlockGenerator = api => {
               // @/components/ => @/src/component/ and ./components/ => ./component etc.
               name = getSingularName(name);
             }
-            const realTarget = applyPlugins('_modifyBlockTarget', {
+            const realTarget = await applyPlugins({
+              key: '_modifyBlockTarget',
+              type: api.ApplyPluginsType.modify,
               initialValue: join(targetFolder, name),
               args: {
                 source: thePath,
@@ -393,9 +432,9 @@ export const getBlockGenerator = api => {
             });
             debug(`copy ${thePath} to ${realTarget}`);
             this.fs.copy(thePath, realTarget, options);
-          });
+          }
         }
-      });
+      }
     }
   };
 };

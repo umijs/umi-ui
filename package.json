@@ -64,8 +64,9 @@
     "stringify-object": "3.3.0",
     "test-build-result": "^1.1.2",
     "ts-node-dev": "^1.0.0-pre.44",
-    "umi": "2.x",
+    "@umijs/types": "^3.0.0-beta.2",
+    "umi": "^3.0.0-beta.3",
     "umi-plugin-react": "^1.8.0",
-    "umi-test": "^1.9.3"
+    "@umijs/test": "^3.0.0-beta.2"
   }
 }

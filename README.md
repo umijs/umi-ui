@@ -53,6 +53,8 @@ API 由 [Umi 插件基础 API](https://umijs.org/plugin/umi-ui.html#%E6%9C%8D%E5
 
 ## 😊 如何贡献？
 
+`2.x-stable` 用于 `umi@2`，`master` 用于 `umi@3`。
+
 ### 目录结构
 
 ```bash

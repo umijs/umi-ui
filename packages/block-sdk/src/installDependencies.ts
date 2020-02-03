@@ -50,7 +50,9 @@ export async function installDependencies(
   const exec = selfExeca || execa;
 
   // read project package.json
-  const projectPkgPath = applyPlugins('_modifyBlockPackageJSONPath', {
+  const projectPkgPath = await applyPlugins({
+    key: '_modifyBlockPackageJSONPath',
+    type: 'modify',
     initialValue: join(paths.cwd, 'package.json'),
   });
 
@@ -78,7 +80,9 @@ export async function installDependencies(
     },
   );
   // get conflict dependencies and lack dependencies
-  const { conflicts, lacks, devConflicts, devLacks } = applyPlugins('_modifyBlockDependencies', {
+  const { conflicts, lacks, devConflicts, devLacks } = await applyPlugins({
+    key: '_modifyBlockDependencies',
+    type: 'modify',
     initialValue,
   });
   debug(

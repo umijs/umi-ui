@@ -1,5 +1,6 @@
 import rimraf from 'rimraf';
 import ora from 'ora';
+import { signale } from '@umijs/utils';
 import chalk from 'chalk';
 
 import { makeSureMaterialsTempPathExist } from './download';
@@ -9,7 +10,7 @@ import { makeSureMaterialsTempPathExist } from './download';
  * @param args
  * @param param1
  */
-export function clearGitCache(args: { dryRun?: boolean }, { log }: { log?: any }) {
+export function clearGitCache(args: { dryRun?: boolean }) {
   const spinner = ora();
   const blocksTempPath = makeSureMaterialsTempPathExist(args.dryRun);
 
@@ -20,7 +21,7 @@ export function clearGitCache(args: { dryRun?: boolean }, { log }: { log?: any }
     rimraf.sync(blocksTempPath);
     spinner.succeed();
   } catch (error) {
-    log.error(error);
+    signale.error(error);
     spinner.stop();
   }
 

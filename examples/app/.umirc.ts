@@ -1,4 +1,4 @@
-import { IConfig } from 'umi-types'; // ref: https://umijs.org/config/
+import { IConfig } from '@umijs/types'; // ref: https://umijs.org/config/
 
 const config: IConfig = {
   treeShaking: true,

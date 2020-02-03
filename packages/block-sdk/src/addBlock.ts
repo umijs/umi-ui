@@ -1,19 +1,21 @@
 import assert from 'assert';
 import chalk from 'chalk';
-import { IApi } from 'umi-types';
+import { IApi } from '@umijs/types';
 import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import ora from 'ora';
 import { merge } from 'lodash';
 import getNpmRegistry from 'getnpmregistry';
 import clipboardy from 'clipboardy';
-import { winPath } from 'umi-utils';
+import { winPath, createDebug, signale } from '@umijs/utils';
 import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import { writeNewRoute } from './writeNewRoute';
 import { getNameFromPkg } from './getBlockGenerator';
 import { appendBlockToContainer } from './appendBlockToContainer';
 import { gitClone, gitUpdate } from './util';
 import { installDependencies } from './installDependencies';
+
+const debug = createDebug('umi:block:addBlock');
 
 export interface CtxTypes {
   repo?: any;
@@ -80,10 +82,10 @@ export const addPrefix = path => {
 };
 
 export async function getCtx(url, args: AddBlockOption = {}, api: IApi): Promise<CtxTypes> {
-  const { debug, config } = api;
+  const { config } = api;
   debug(`get url ${url}`);
 
-  const ctx: CtxTypes = await getParsedData(url, { ...(config.block || {}), ...args });
+  const ctx: CtxTypes = await getParsedData(url, { ...(config?.block || {}), ...args });
 
   if (!ctx.isLocal) {
     const blocksTempPath = makeSureMaterialsTempPathExist(args.dryRun);
@@ -106,17 +108,11 @@ export async function getCtx(url, args: AddBlockOption = {}, api: IApi): Promise
   return ctx;
 }
 
-export async function addBlock(
-  args: AddBlockOption = {},
-  opts: AddBlockOption = {},
-  api: IApi & {
-    sendLog: (info: string) => void;
-  },
-) {
-  const { log, paths, debug, config, applyPlugins, sendLog } = api;
+export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption = {}, api: IApi) {
+  const { paths, config, applyPlugins } = api;
   const blockConfig: {
     npmClient?: string;
-  } = config.block || {};
+  } = config?.block || {};
   const addLogs = [];
 
   const getSpinner = () => {
@@ -125,9 +121,6 @@ export async function addBlock(
       ...spinner,
       succeed: (info?: string) => spinner.succeed(info),
       start: info => {
-        if (sendLog) {
-          sendLog(info);
-        }
         spinner.start(info);
         addLogs.push(info);
       },
@@ -189,7 +182,7 @@ export async function addBlock(
       opts.remoteLog('Update the git repo');
       await gitUpdate(ctx, spinner);
     } catch (error) {
-      log.info('发生错误，请尝试 `umi block clear`');
+      signale.info('发生错误，请尝试 `umi block clear`');
     }
   }
 
@@ -209,11 +202,11 @@ export async function addBlock(
   if (!path) {
     const blockName = getNameFromPkg(ctx.pkg);
     if (!blockName) {
-      log.error("not find name in block's package.json");
+      signale.error("not find name in block's package.json");
       return;
     }
     ctx.filePath = `/${blockName}`;
-    log.info(`Not find --path, use block name '${ctx.filePath}' as the target path.`);
+    signale.info(`Not find --path, use block name '${ctx.filePath}' as the target path.`);
   } else {
     ctx.filePath = winPath(path);
   }
@@ -241,13 +234,15 @@ export async function addBlock(
   opts.remoteLog('🔥  Generate files');
   spinner.start('🔥  Generate files');
   spinner.stopAndPersist();
-  const BlockGenerator = require('./getBlockGenerator').default(api);
+  const { getBlockGenerator } = require('./getBlockGenerator');
+  const BlockGenerator = getBlockGenerator(api);
   let isPageBlock = ctx.pkg.blockConfig && ctx.pkg.blockConfig.specVersion === '0.1';
   if (isPage !== undefined) {
     // when user use `umi block add --page`
     isPageBlock = isPage;
   }
   debug(`isPageBlock: ${isPageBlock}`);
+  debug(`ctx.filePath: ${ctx.filePath}`);
   const generator = new BlockGenerator(args._ ? args._.slice(2) : [], {
     sourcePath: ctx.sourcePath,
     path: ctx.filePath,
@@ -320,7 +315,9 @@ export async function addBlock(
     spinner.start(`⛱  Write route ${generator.routePath} to ${api.service.userConfig.file}`);
     // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
     // 未来可以做下自动写入注释配置，支持约定式路由
-    const newRouteConfig = applyPlugins('_modifyBlockNewRouteConfig', {
+    const newRouteConfig = applyPlugins({
+      key: '_modifyBlockNewRouteConfig',
+      type: api.ApplyPluginsType.modify,
       initialValue: {
         path: generator.routePath.toLowerCase(),
         component: `.${generator.path}`,
@@ -364,14 +361,14 @@ export async function addBlock(
 
   try {
     clipboardy.writeSync(viewUrl);
-    log.success(
+    signale.success(
       `✨  Probable url ${chalk.cyan(viewUrl)} ${chalk.dim(
         '(copied to clipboard)',
       )} for view the block.`,
     );
   } catch (e) {
-    log.success(`✨  Probable url ${chalk.cyan(viewUrl)} for view the block.`);
-    log.error('copy to clipboard failed');
+    signale.success(`✨  Probable url ${chalk.cyan(viewUrl)} for view the block.`);
+    signale.error('copy to clipboard failed');
   }
   // return ctx and generator for test
   return {

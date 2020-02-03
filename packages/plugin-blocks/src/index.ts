@@ -1,10 +1,22 @@
-import assert from 'assert';
 import chalk from 'chalk';
+import { IApi } from '@umijs/types';
+import { signale, createDebug } from '@umijs/utils';
 import { clearGitCache, addBlock, getDefaultBlockList } from '@umijs/block-sdk';
 
-export default (api: any) => {
-  const { log, debug, config, _ } = api;
-  const blockConfig = config.block || {};
+const debug = createDebug('plugin-blocks');
+
+export default (api: IApi) => {
+  const { config } = api;
+  const blockConfig = config?.block || {};
+
+  api.describe({
+    key: 'block',
+    config: {
+      schema(joi) {
+        return joi.number();
+      },
+    },
+  });
 
   debug(`blockConfig ${blockConfig}`);
 
@@ -12,7 +24,7 @@ export default (api: any) => {
     let retCtx;
     switch (args._[0]) {
       case 'clear':
-        await clearGitCache({ dryRun: args.dryRun }, api);
+        await clearGitCache({ dryRun: args.dryRun });
         break;
       case 'add':
         retCtx = await addBlock({ ...args, url: args._[1] }, opts, api);
@@ -59,7 +71,7 @@ Examples:
   umi block add ant-design-pro/Monitor
 
   ${chalk.gray(`# Add block with full url`)}
-  umi block add https://github.com/umijs/umi-blocks/tree/master/demo
+  umi block add https://github.com/umijs/umi-blocks/tree/master/blocks/demo
 
   ${chalk.gray(`# Add block with specified route path`)}
   umi block add demo --path /foo/bar
@@ -68,32 +80,28 @@ Examples:
   umi block list
   `.trim();
 
-  api.registerCommand(
-    'block',
-    {
-      description: 'block related commands, e.g. add, list',
-      usage: `umi block <command>`,
-      details,
-    },
-    (args, opts) => {
+  api.registerCommand({
+    name: 'block',
+    fn: async function({ args }) {
+      if (!args._[0]) {
+        // TODO: use plugin register args
+        console.log(
+          details
+            .split('\n')
+            .map(line => `  ${line}`)
+            .join('\n'),
+        );
+        return;
+      }
       // return only for test
-      return block(args, opts).catch(e => {
-        log.error(e);
-      });
+      try {
+        await block(args);
+      } catch (e) {
+        signale.error(e);
+      }
     },
-  );
-
-  api._registerConfig(() => {
-    return () => {
-      return {
-        name: 'block',
-        validate(val) {
-          assert(
-            _.isPlainObject(val),
-            `Configure item block should be Plain Object, but got ${val}.`,
-          );
-        },
-      };
-    };
+    // description: 'block related commands, e.g. add, list',
+    // usage: `umi block <command>`,
+    // details,
   });
 };
