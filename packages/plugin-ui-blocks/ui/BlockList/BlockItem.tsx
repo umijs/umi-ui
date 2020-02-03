@@ -2,13 +2,13 @@ import React, { useContext } from 'react';
 import { Col, message, Spin, Typography, Button, Tooltip } from 'antd';
 import { ButtonProps } from 'antd/es/button';
 import { ExportOutlined } from '@ant-design/icons';
+import { Block, AddBlockParams, Resource } from '@umijs/block-sdk/lib/data.d';
 import { IUiApi } from '@umijs/ui-types';
 
 import styles from './index.module.less';
 import HighlightedText from './HighlightedText';
 import getInsertPosition, { PositionData } from './getInsertPosition';
 import Context from '../UIApiContext';
-import { Block, AddBlockParams, Resource } from '../../src/data.d';
 import ImageLoad from './ImageLoad';
 import ImagePreview from './ImagePreview';
 

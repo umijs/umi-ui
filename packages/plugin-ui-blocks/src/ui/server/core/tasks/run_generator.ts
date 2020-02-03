@@ -23,9 +23,7 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
   }
   debug(`isPageBlock: ${isPageBlock}`);
 
-  // const latestPkgPath = winPath(
-  //   join(__dirname, "../../../../../../../../package.json")
-  // );
+  const latestPkgPath = winPath(join(__dirname, '../../../../../package.json'));
 
   const generator = new BlockGenerator(args._ ? args._.slice(2) : [], {
     sourcePath,
@@ -38,7 +36,7 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
     env: {
       cwd: api.cwd,
     },
-    // resolved: latestPkgPath
+    resolved: latestPkgPath,
   });
   try {
     await generator.run();
@@ -68,7 +66,7 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
               cwd: api.cwd,
             },
             routes: api.config.routes,
-            // resolved: latestPkgPath
+            resolved: latestPkgPath,
           }).run();
         }),
       );
