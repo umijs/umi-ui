@@ -9,11 +9,11 @@ import getNpmRegistry from 'getnpmregistry';
 import clipboardy from 'clipboardy';
 import { winPath } from 'umi-utils';
 import { getParsedData, makeSureMaterialsTempPathExist } from './download';
-import writeNewRoute from './writeNewRoute';
+import { writeNewRoute } from './writeNewRoute';
 import { getNameFromPkg } from './getBlockGenerator';
-import appendBlockToContainer from './appendBlockToContainer';
+import { appendBlockToContainer } from './appendBlockToContainer';
 import { gitClone, gitUpdate } from './util';
-import installDependencies from './installDependencies';
+import { installDependencies } from './installDependencies';
 
 export interface CtxTypes {
   repo?: any;
@@ -106,7 +106,7 @@ export async function getCtx(url, args: AddBlockOption = {}, api: IApi): Promise
   return ctx;
 }
 
-export default async function addBlock(
+export async function addBlock(
   args: AddBlockOption = {},
   opts: AddBlockOption = {},
   api: IApi & {

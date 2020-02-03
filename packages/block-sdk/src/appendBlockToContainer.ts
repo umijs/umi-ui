@@ -12,7 +12,7 @@ function findIndexFile(dir) {
   if (existsSync(join(dir, 'index.ts'))) return join(dir, 'index.ts');
 }
 
-export default ({ entryPath, blockFolderName, dryRun, index }) => {
+export const appendBlockToContainer = ({ entryPath, blockFolderName, dryRun, index }) => {
   debug('start to update the entry file for block(s) under the path...');
 
   const oldEntry = readFileSync(entryPath, 'utf-8');

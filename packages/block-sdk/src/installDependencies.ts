@@ -33,7 +33,7 @@ const depsArrayToObject = loc =>
  * @param {*} param0
  * @param {*} ctx
  */
-export default async function installDependencies(
+export async function installDependencies(
   {
     npmClient,
     registry,

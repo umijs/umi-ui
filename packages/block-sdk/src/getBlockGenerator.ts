@@ -188,7 +188,7 @@ export function getSingularName(name) {
   return name;
 }
 
-export default api => {
+export const getBlockGenerator = api => {
   const { paths, Generator, config, applyPlugins, findJS } = api;
   const blockConfig = config.block || {};
 

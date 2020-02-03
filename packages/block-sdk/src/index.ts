@@ -1,7 +1,9 @@
-import clearGitCache from './clearGitCache';
-import addBlock from './addBlock';
-import listBlock from './list';
-
 export * from './util';
-
-export { listBlock, addBlock, clearGitCache };
+export * from './list';
+export * from './addBlock';
+export * from './clearGitCache';
+export * from './getBlockGenerator';
+export * from './download';
+export * from './appendBlockToContainer';
+export * from './writeNewRoute';
+export * from './installDependencies';

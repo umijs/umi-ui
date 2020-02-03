@@ -1,6 +1,6 @@
 import assert from 'assert';
 import chalk from 'chalk';
-import { clearGitCache, addBlock, listBlock } from '@umijs/block-sdk';
+import { clearGitCache, addBlock, getDefaultBlockList } from '@umijs/block-sdk';
 
 export default (api: any) => {
   const { log, debug, config, _ } = api;
@@ -18,7 +18,7 @@ export default (api: any) => {
         retCtx = await addBlock({ ...args, url: args._[1] }, opts, api);
         break;
       case 'list':
-        retCtx = await listBlock(args, blockConfig, api);
+        retCtx = await getDefaultBlockList(args, blockConfig, api);
         break;
       default:
         throw new Error(

@@ -2,7 +2,7 @@ import inquirer from 'inquirer';
 import ora from 'ora';
 
 import { getBlockListFromGit, printBlocks, genBlockName } from './util';
-import addBlock from './addBlock';
+import { addBlock } from './addBlock';
 
 /**
  * 交互型区块选择
@@ -69,7 +69,7 @@ export async function selectInstallBlockArgs(blockArray) {
  * @param {*} _
  * @param {*} blockConfig
  */
-export default async function getDefaultBlockList(_, blockConfig: any = {}, api) {
+export async function getDefaultBlockList(_, blockConfig: any = {}, api) {
   const spinner = ora();
   const got = require('got');
   let blockArray = [];

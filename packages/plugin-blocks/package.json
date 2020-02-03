@@ -6,6 +6,9 @@
     "chalk": "2.4.2",
     "@umijs/block-sdk": "1.0.0"
   },
+  "peerDependencies": {
+    "umi": "3.x"
+  },
   "repository": {
     "type": "git",
     "url": "http://github.com/umijs/ui",

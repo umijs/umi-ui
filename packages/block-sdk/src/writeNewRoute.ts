@@ -15,7 +15,7 @@ const debug = require('debug')('umi-build-dev:writeNewRoute');
  * @param {*} configPath 配置路径
  * @param {*} absSrcPath 代码路径
  */
-export default function writeNewRoute(newRoute, configPath, absSrcPath) {
+export function writeNewRoute(newRoute, configPath, absSrcPath) {
   const { code, routesPath } = getNewRouteCode(configPath, newRoute, absSrcPath);
   writeFileSync(routesPath, code, 'utf-8');
 }
