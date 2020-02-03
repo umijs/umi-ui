@@ -4,6 +4,8 @@
     "moduleResolution": "node",
     "jsx": "preserve",
     "allowJs": true,
+    "resolveJsonModule": true,
+    "declaration": true,
     "esModuleInterop": true
   },
   "exclude": ["node_modules", "dist", "**/*.spec.ts", "lib", "fixtures", "examples"]
