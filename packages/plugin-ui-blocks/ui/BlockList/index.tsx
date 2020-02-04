@@ -1,13 +1,13 @@
-import React, { useMemo, useContext, useState, useEffect } from "react";
-import { Empty, Row, Spin, Pagination } from "antd";
+import React, { useMemo, useContext, useState, useEffect } from 'react';
+import { Empty, Row, Spin, Pagination } from 'antd';
+import { Block, AddBlockParams, Resource } from '@umijs/block-sdk/lib/data.d';
 
-import styles from "./index.module.less";
-import { Block, AddBlockParams, Resource } from "../../src/data.d";
-import Context from "../UIApiContext";
-import BlockItem from "./BlockItem";
+import styles from './index.module.less';
+import Context from '../UIApiContext';
+import BlockItem from './BlockItem';
 
 interface BlockItemProps {
-  type: Resource["blockType"];
+  type: Resource['blockType'];
   addingBlock?: Block;
   item: Block;
   disabled?: boolean;
@@ -15,7 +15,7 @@ interface BlockItemProps {
   onShowModal?: (Block: Block, option: AddBlockParams) => void;
   keyword?: string;
 }
-interface BlockListProps extends Omit<BlockItemProps, "item"> {
+interface BlockListProps extends Omit<BlockItemProps, 'item'> {
   name?: string;
   selectedTag?: any;
   setSelectedTag?: any;
@@ -23,14 +23,7 @@ interface BlockListProps extends Omit<BlockItemProps, "item"> {
 }
 
 const BlockList: React.FC<BlockListProps> = props => {
-  const {
-    list = [],
-    setSelectedTag,
-    selectedTag,
-    addingBlock,
-    keyword,
-    loading
-  } = props;
+  const { list = [], setSelectedTag, selectedTag, addingBlock, keyword, loading } = props;
   const { api } = useContext(Context);
   const { intl } = api;
   const isMini = api.isMini();
@@ -38,7 +31,7 @@ const BlockList: React.FC<BlockListProps> = props => {
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   useEffect(() => {
-    setSelectedTag("");
+    setSelectedTag('');
     setCurrentPage(1);
   }, [list]);
   useEffect(() => {
@@ -50,27 +43,17 @@ const BlockList: React.FC<BlockListProps> = props => {
    */
   const filteredList: Block[] = useMemo<Block[]>(
     () =>
-      list.filter(
-        ({
-          name = "",
-          url,
-          description = "",
-          category,
-          tags: listTags = []
-        }) => {
-          return (
-            (!selectedTag ||
-              (category
-                ? category === selectedTag
-                : listTags.join("").includes(selectedTag))) &&
-            (!keyword ||
-              name.toLocaleLowerCase().includes(keyword) ||
-              description.toLocaleLowerCase().includes(keyword) ||
-              url.toLocaleLowerCase().includes(keyword))
-          );
-        }
-      ),
-    [keyword, selectedTag, list.map(({ url }) => url).join("/")]
+      list.filter(({ name = '', url, description = '', category, tags: listTags = [] }) => {
+        return (
+          (!selectedTag ||
+            (category ? category === selectedTag : listTags.join('').includes(selectedTag))) &&
+          (!keyword ||
+            name.toLocaleLowerCase().includes(keyword) ||
+            description.toLocaleLowerCase().includes(keyword) ||
+            url.toLocaleLowerCase().includes(keyword))
+        );
+      }),
+    [keyword, selectedTag, list.map(({ url }) => url).join('/')],
   );
 
   /**
@@ -80,11 +63,9 @@ const BlockList: React.FC<BlockListProps> = props => {
     () =>
       filteredList.slice(
         (currentPage - 1) * pageSize,
-        currentPage * pageSize > filteredList.length
-          ? filteredList.length
-          : currentPage * pageSize
+        currentPage * pageSize > filteredList.length ? filteredList.length : currentPage * pageSize,
       ),
-    [filteredList, currentPage]
+    [filteredList, currentPage],
   );
 
   /**
@@ -107,13 +88,13 @@ const BlockList: React.FC<BlockListProps> = props => {
           imageStyle={{
             width: 64,
             height: 41,
-            margin: "8px auto"
+            margin: '8px auto',
           }}
           image="https://gw.alipayobjects.com/mdn/rms_4f0d74/afts/img/A*LinHSLLEHUAAAAAAAAAAAABkARQnAQ"
           description={
             keyword
-              ? intl({ id: "org.umi.ui.blocks.list.nofound" })
-              : intl({ id: "org.umi.ui.blocks.list.nodata" })
+              ? intl({ id: 'org.umi.ui.blocks.list.nofound' })
+              : intl({ id: 'org.umi.ui.blocks.list.nodata' })
           }
         />
       </div>
@@ -122,9 +103,9 @@ const BlockList: React.FC<BlockListProps> = props => {
     contents = (
       <div
         style={{
-          display: "flex",
-          height: "100%",
-          flexDirection: "column"
+          display: 'flex',
+          height: '100%',
+          flexDirection: 'column',
         }}
       >
         <Row gutter={[20, 20]} type="flex">
@@ -134,9 +115,7 @@ const BlockList: React.FC<BlockListProps> = props => {
               item={item}
               {...props}
               loading={addingBlock && item.url === addingBlock.url}
-              disabled={
-                addingBlock && addingBlock.url && item.url !== addingBlock.url
-              }
+              disabled={addingBlock && addingBlock.url && item.url !== addingBlock.url}
               selectedTag={selectedTag}
             />
           ))}
@@ -144,7 +123,7 @@ const BlockList: React.FC<BlockListProps> = props => {
         {filteredList.length > pageSize && (
           <Row className={styles.pagination} type="flex" justify="end">
             <Pagination
-              size={isMini ? "small" : undefined}
+              size={isMini ? 'small' : undefined}
               current={currentPage}
               onChange={setCurrentPage}
               total={filteredList.length}

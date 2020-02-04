@@ -2,10 +2,10 @@ import React, { useState, useEffect, useMemo, useLayoutEffect } from 'react';
 import { Spin, Radio, Button, message, Tooltip } from 'antd';
 import { ReloadOutlined, PlusOutlined } from '@ant-design/icons';
 import { IUiApi } from '@umijs/ui-types';
+import { Resource, Block, AddBlockParams } from '@umijs/block-sdk/lib/data.d';
 import { stringify, parse } from 'qs';
 
 import { Clear } from './icon';
-import { Resource, Block, AddBlockParams } from '../src/data';
 import BlockList from './BlockList';
 import GlobalSearch from './GlobalSearch';
 import useCallData from './hooks/useCallData';

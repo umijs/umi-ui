@@ -1,28 +1,21 @@
-import assert from "assert";
-import { IApi } from "umi-types";
-import chalk from "chalk";
-import { merge } from "lodash";
-import { join, dirname } from "path";
-import { existsSync } from "fs";
-import getNpmRegistry from "getnpmregistry";
+import assert from 'assert';
+import { IApi } from 'umi-types';
+import chalk from 'chalk';
+import { merge } from 'lodash';
+import { join, dirname } from 'path';
+import { existsSync } from 'fs';
+import getNpmRegistry from 'getnpmregistry';
+import { getParsedData, makeSureMaterialsTempPathExist } from '@umijs/block-sdk';
 
-import { IFlowContext, IAddBlockOption, ICtxTypes } from "../types";
-import {
-  getParsedData,
-  makeSureMaterialsTempPathExist
-} from "../../../../download";
+import { IFlowContext, IAddBlockOption, ICtxTypes } from '../types';
 
-async function getCtx(
-  url,
-  args: IAddBlockOption = {},
-  api: IApi
-): Promise<ICtxTypes> {
+async function getCtx(url, args: IAddBlockOption = {}, api: IApi): Promise<ICtxTypes> {
   const { debug, config } = api;
   debug(`get url ${url}`);
 
   const ctx: ICtxTypes = await getParsedData(url, {
     ...(config.block || {}),
-    ...args
+    ...args,
   });
 
   if (!ctx.isLocal) {
@@ -34,12 +27,12 @@ async function getCtx(
       branch: args.branch || ctx.branch,
       templateTmpDirPath,
       blocksTempPath,
-      repoExists: existsSync(templateTmpDirPath)
+      repoExists: existsSync(templateTmpDirPath),
     });
   } else {
     merge(ctx, {
       routePath: args.routePath,
-      templateTmpDirPath: dirname(url)
+      templateTmpDirPath: dirname(url),
     });
   }
   return ctx;
@@ -50,25 +43,22 @@ const parseUrl = async (ctx: IFlowContext, args: IAddBlockOption) => {
   ctx.logger.setId(url); // 设置这次 flow 的 log trace id
   ctx.result.blockUrl = url; // 记录当前的 url
 
-  assert(
-    url,
-    `run ${chalk.cyan.underline("umi help block")} to checkout the usage`
-  );
+  assert(url, `run ${chalk.cyan.underline('umi help block')} to checkout the usage`);
   const { paths, config } = ctx.api;
   const blockConfig: {
     npmClient?: string;
   } = config.block || {};
 
-  const useYarn = existsSync(join(paths.cwd, "yarn.lock"));
-  const defaultNpmClient = blockConfig.npmClient || (useYarn ? "yarn" : "npm");
+  const useYarn = existsSync(join(paths.cwd, 'yarn.lock'));
+  const defaultNpmClient = blockConfig.npmClient || (useYarn ? 'yarn' : 'npm');
   const registryUrl = await getNpmRegistry();
   const blockCtx = await getCtx(
     url,
     {
       ...args,
-      npmClient: args.npmClient || defaultNpmClient
+      npmClient: args.npmClient || defaultNpmClient,
     },
-    ctx.api
+    ctx.api,
   );
 
   ctx.stages.blockCtx = blockCtx;

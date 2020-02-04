@@ -1,6 +1,6 @@
-import { AddBlockParams } from "../../../data";
-import { join } from "path";
-import { existsSync } from "fs";
+import { AddBlockParams } from '@umijs/block-sdk/lib/data.d';
+import { join } from 'path';
+import { existsSync } from 'fs';
 
 export default function({ success, payload, api }) {
   const { path: blockPath } = payload as AddBlockParams;
@@ -8,6 +8,6 @@ export default function({ success, payload, api }) {
   const absPath = api.winPath(join(api.paths.absPagesPath, blockPath));
   success({
     exists: existsSync(absPath),
-    success: true
+    success: true,
   });
 }

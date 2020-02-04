@@ -1,5 +1,5 @@
-import { IFlowContext, IAddBlockOption } from "../types";
-import installDependencies from "../../../../installDependencies";
+import { IFlowContext, IAddBlockOption } from '../types';
+import { installDependencies } from '@umijs/block-sdk';
 
 const install = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { logger, execa, api } = ctx;
@@ -15,9 +15,9 @@ const install = async (ctx: IFlowContext, args: IAddBlockOption) => {
       dryRun: args.dryRun,
       spinner: logger,
       skipDependencies: args.skipDependencies,
-      execa
+      execa,
     },
-    ctx.stages.blockCtx
+    ctx.stages.blockCtx,
   );
 };
 

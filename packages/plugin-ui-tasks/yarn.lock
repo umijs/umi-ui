@@ -5444,7 +5444,7 @@ ua-parser-js@^0.7.18:
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.21.tgz#853cf9ce93f642f67174273cc34565ae6f308777"
   integrity sha512-+O8/qh/Qj8CgC6eYBVBykMrNtp5Gebn4dlGD/kKXVkJNDwyrAwSIqwz8CDf+tsAIWVycKcku6gIXJ0qwx/ZXaQ==
 
-umi-types@0.5.12:
+umi-types@^0.5.12:
   version "0.5.12"
   resolved "https://registry.yarnpkg.com/umi-types/-/umi-types-0.5.12.tgz#3f29214fe8c3f4ca82fe4fafcc236d1766daf288"
   integrity sha512-dcSTJ6DUoFOxi7VGhU4koOtj4qP3DMXEhkziOmpy7XCNkiLDPZELjdA51jCOZJtge9IYmeKBbO0jfRZ4mnH9vw==

@@ -1,7 +1,7 @@
 import { join } from 'path';
 import slash from 'slash2';
 import LessThemePlugin from 'webpack-less-theme-plugin';
-import { IConfig } from 'umi-types';
+import { IConfig } from '@umijs/types';
 import { dark } from '../node_modules/@umijs/ui-theme';
 import { version } from 'antd';
 

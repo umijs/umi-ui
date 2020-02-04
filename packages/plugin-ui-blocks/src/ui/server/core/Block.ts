@@ -1,16 +1,16 @@
-import { IApi } from "umi-types";
-import { Resource } from "../../../data.d";
-import Flow from "./Flow";
-import { FlowState } from "./enum";
-
-import { getFolderTreeData, getBlockList, getFilesTreeData } from "../util";
+import { IApi } from 'umi-types';
+import { Resource } from '@umijs/block-sdk/lib/data.d';
 import {
   routeExists,
   depthRouterConfig,
   genRouterToTreeData,
   reduceData,
-  genComponentToTreeData
-} from "../../../util";
+  genComponentToTreeData,
+} from '@umijs/block-sdk';
+import Flow from './Flow';
+import { FlowState } from './enum';
+
+import { getFolderTreeData, getBlockList, getFilesTreeData } from '../util';
 
 class Block {
   public api: IApi;
@@ -24,30 +24,30 @@ class Block {
 
   public async run(args) {
     this.flow = new Flow({
-      api: this.api
+      api: this.api,
     });
-    this.flow.on("log", ({ data }) => {
+    this.flow.on('log', ({ data }) => {
       this.send({
-        type: "org.umi.block.add-blocks-log",
+        type: 'org.umi.block.add-blocks-log',
         payload: {
           data,
           id: this.flow.logger.id,
-          success: true
-        }
+          success: true,
+        },
       });
     });
 
-    this.flow.on("state", ({ state, data }) => {
+    this.flow.on('state', ({ state, data }) => {
       this.send({
         type:
           state === FlowState.SUCCESS
-            ? "org.umi.block.add-blocks-success"
-            : "org.umi.block.add-blocks-fail",
+            ? 'org.umi.block.add-blocks-success'
+            : 'org.umi.block.add-blocks-fail',
         payload: {
           id: this.flow.logger.id,
           data,
-          success: true
-        }
+          success: true,
+        },
       });
     });
 
@@ -70,7 +70,7 @@ class Block {
 
   public getLog() {
     if (!this.flow) {
-      return "";
+      return '';
     }
     return this.flow.getLog();
   }
@@ -81,9 +81,9 @@ class Block {
   public getFolderTreeData() {
     const folderTreeData = getFolderTreeData(this.api.paths.absPagesPath);
     folderTreeData.unshift({
-      title: "/",
-      value: "/",
-      key: "/"
+      title: '/',
+      value: '/',
+      key: '/',
     });
     return folderTreeData;
   }
@@ -92,18 +92,14 @@ class Block {
    * 获取路由结构
    */
   public depthRouterConfig() {
-    return depthRouterConfig(
-      reduceData(genRouterToTreeData(this.api.getRoutes()))
-    );
+    return depthRouterConfig(reduceData(genRouterToTreeData(this.api.getRoutes())));
   }
 
   /**
    * 获取路由的结构，但是获取 component
    */
   public depthRouteComponentConfig() {
-    return depthRouterConfig(
-      reduceData(genComponentToTreeData(this.api.getRoutes()))
-    );
+    return depthRouterConfig(reduceData(genComponentToTreeData(this.api.getRoutes())));
   }
 
   /**
@@ -126,7 +122,7 @@ class Block {
     if (this.flow) {
       return this.flow.getBlockUrl();
     }
-    return "";
+    return '';
   }
 
   public hasRunningFlow(): boolean {

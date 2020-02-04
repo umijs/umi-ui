@@ -1,11 +1,4 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _default = function _default() {
+export default (function () {
   return React.createElement(
     React.Fragment,
     null,
@@ -19,6 +12,4 @@ var _default = function _default() {
       index: "1"
     })
   );
-};
-
-exports.default = _default;
+});
