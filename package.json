@@ -16,7 +16,7 @@
     "publish": "npm run changelog && node ./scripts/publish.js",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage",
-    "ui:build": "node ./scripts/ui.js"
+    "ui:build": "echo \"test\""
   },
   "lint-staged": {
     "**/*.{js,jsx,tsx,ts,less,json}": [
@@ -28,6 +28,8 @@
     "@babel/preset-typescript": "7.3.3",
     "@types/jest": "^24.0.5",
     "@types/signale": "^1.2.1",
+    "@umijs/test": "^3.0.0-beta.2",
+    "@umijs/types": "^3.0.0-beta.2",
     "antd": "^4.0.0-rc.1",
     "babel-eslint": "10.0.1",
     "cross-env": "^7.0.0",
@@ -64,9 +66,10 @@
     "stringify-object": "3.3.0",
     "test-build-result": "^1.1.2",
     "ts-node-dev": "^1.0.0-pre.44",
-    "@umijs/types": "^3.0.0-beta.2",
     "umi": "^3.0.0-beta.3",
-    "umi-plugin-react": "^1.8.0",
-    "@umijs/test": "^3.0.0-beta.2"
+    "umi-plugin-react": "^1.8.0"
+  },
+  "dependencies": {
+    "@umijs/babel-preset-umi": "^3.0.0-beta.1"
   }
 }
