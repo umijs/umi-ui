@@ -7,7 +7,7 @@ const debug = createDebug('plugin-blocks');
 
 export default (api: IApi) => {
   const { config } = api;
-  const blockConfig = config?.block || {};
+  const blockConfig = (config as any)?.block || {};
 
   api.describe({
     key: 'block',
