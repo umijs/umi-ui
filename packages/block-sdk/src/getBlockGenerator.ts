@@ -219,7 +219,7 @@ export const getBlockGenerator = (api: IApi) => {
       this.sourcePath = opts.sourcePath;
       this.dryRun = opts.dryRun;
       this.path = opts.path;
-      console.log('this.path', this.path);
+      debug('this.path', this.path);
       this.routePath = opts.routePath || opts.path;
       this.blockName = opts.blockName;
       this.isPageBlock = opts.isPageBlock;
@@ -237,7 +237,6 @@ export const getBlockGenerator = (api: IApi) => {
     }
 
     async writing() {
-      console.log('this.path', this.path);
       let targetPath = winPath(join(paths.absPagesPath, this.path));
       debug(`this.path`, this.path);
       debug(`get targetPath ${targetPath}`);
@@ -247,8 +246,6 @@ export const getBlockGenerator = (api: IApi) => {
       if (isEmptyFolder(targetPath)) {
         rimraf.sync(targetPath);
       }
-      console.log('this.isPageBlock', this.isPageBlock);
-      console.log('targetPath', targetPath);
       while (this.isPageBlock && existsSync(targetPath)) {
         if (this.execution === 'auto') {
           throw new Error(`path ${this.path} already exist, press input a new path for it`);
@@ -263,12 +260,10 @@ export const getBlockGenerator = (api: IApi) => {
             default: this.path,
           })
         ).path;
-        console.log('this.path2', this.path);
         // fix demo => /demo
         if (!/^\//.test(this.path)) {
           this.path = `/${this.path}`;
         }
-        console.log('this.path3', this.path);
         targetPath = join(paths.absPagesPath, this.path);
         debug(`targetPath exist get new targetPath ${targetPath}`);
       }
@@ -336,7 +331,9 @@ export const getBlockGenerator = (api: IApi) => {
         base: targetPath,
         type: 'javascript',
         fileNameWithoutExt: 'index',
-      });
+      })?.path;
+      debug('this.entryPath1', this.entryPath);
+      debug('targetPath', targetPath);
       if (!this.entryPath) {
         this.entryPath = join(targetPath, `index.${this.isTypeScript ? 'tsx' : 'js'}`);
       }
@@ -367,7 +364,9 @@ export const getBlockGenerator = (api: IApi) => {
           blockEntryName: `${this.path.slice(1)}Container`,
         };
         const entry = Mustache.render(blockEntryTpl, tplContent);
+        debug('targetPath', targetPath);
         mkdirp.sync(targetPath);
+        debug('this.entryPath2', this.entryPath);
         writeFileSync(this.entryPath, entry);
       }
 
@@ -389,7 +388,7 @@ export const getBlockGenerator = (api: IApi) => {
           targetFolder = join(dirname(this.entryPath), this.blockFolderName);
         }
         const options = {
-          async process(content, itemTargetPath) {
+          process(content, itemTargetPath) {
             content = String(content);
             if (config.singular) {
               content = parseContentToSingular(content);
@@ -397,15 +396,17 @@ export const getBlockGenerator = (api: IApi) => {
             content = replaceContent(content, {
               path: blockPath,
             });
-            return await applyPlugins({
-              key: '_modifyBlockFile',
-              type: api.ApplyPluginsType.modify,
-              initialValue: content,
-              args: {
-                blockPath,
-                targetPath: itemTargetPath,
-              },
-            });
+            // TODO: 异步 applyPlugins ，这里不支持，会有 BreakChange
+            // const blockFile = await applyPlugins({
+            //   key: '_modifyBlockFile',
+            //   type: api.ApplyPluginsType.modify,
+            //   initialValue: content,
+            //   args: {
+            //     blockPath,
+            //     targetPath: itemTargetPath,
+            //   },
+            // });
+            return content;
           },
         };
         if (existsSync(folderPath)) {
@@ -430,7 +431,7 @@ export const getBlockGenerator = (api: IApi) => {
                 sourceName: name,
               },
             });
-            debug(`copy ${thePath} to ${realTarget}`);
+            debug(`copy ${thePath} to ${realTarget}`, options);
             this.fs.copy(thePath, realTarget, options);
           }
         }

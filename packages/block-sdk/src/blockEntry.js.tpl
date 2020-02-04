@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-export default class {{blockEntryName}} extends Component {
-  render() {
-    return (
-      <React.Fragment>
-      </React.Fragment>
-  	)
-  }
+const {{blockEntryName}} = props => {
+  return (
+    <React.Fragment>
+    </React.Fragment>
+  )
 }
+
+export default {{blockEntryName}};
