@@ -22,7 +22,7 @@ const { NODE_ENV } = process.env;
 const config: IConfig = {
   history: 'browser',
   hash: NODE_ENV === 'production',
-  treeShaking: true,
+  // uglifyJSOptions,
   links: [
     {
       rel: 'stylesheet',
@@ -58,7 +58,6 @@ const config: IConfig = {
     xterm: 'window.Terminal',
     moment: 'moment',
   },
-  plugins: ['@umijs/plugin-dva', '@umijs/plugin-locale'],
   theme: dark,
   generateCssModulesTypings: true,
   routes: [
@@ -103,7 +102,7 @@ const config: IConfig = {
     antd: true,
   },
   dva: true,
-  cssLoader: {
+  cssLoaderOptions: {
     modules: true,
     getLocalIdent: (
       context: {
@@ -132,16 +131,16 @@ const config: IConfig = {
       return localName;
     },
   },
-  // chainWebpack(config, { webpack }) {
-  //   if (NODE_ENV === 'development') {
-  //     config.output.publicPath('http://localhost:8002/');
-  //   }
-  //   config.plugin('webpack-less-theme').use(
-  //     new LessThemePlugin({
-  //       theme: join(__dirname, './src/styles/parameters.less'),
-  //     }),
-  //   );
-  // },
+  chainWebpack(config, { webpack }) {
+    if (NODE_ENV === 'development') {
+      config.output.publicPath('http://localhost:8002/');
+    }
+    config.plugin('webpack-less-theme').use(
+      new LessThemePlugin({
+        theme: join(__dirname, './src/styles/parameters.less'),
+      }),
+    );
+  },
 };
 
 export default config;

@@ -102,5 +102,5 @@ export default (api: IApi) => {
         break;
     }
   });
-  api.addUIPlugin(require.resolve('../../../src/plugins/dashboard/dist/ui.umd'));
+  api.addUIPlugin(() => require.resolve('../../../src/plugins/dashboard/dist/ui.umd'));
 };

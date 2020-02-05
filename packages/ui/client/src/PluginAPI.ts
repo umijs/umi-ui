@@ -1,7 +1,7 @@
 import { notification, message } from 'antd';
 import { connect } from 'dva';
 import lodash from 'lodash';
-import history from '@tmp/history';
+import { history } from 'umi';
 // eslint-disable-next-line no-multi-assign
 import * as intl from 'umi-plugin-react/locale';
 import * as hooks from '@umijs/hooks';
@@ -11,16 +11,16 @@ import * as IUi from '@umijs/ui-types';
 import moment from 'moment';
 import request from 'umi-request';
 import qs from 'qs';
-import { send, callRemote, listenRemote } from './socket';
 import event, { MESSAGES } from '@/message';
 import { pluginDebug } from '@/debug';
 import Terminal from '@/components/Terminal';
 import StepForm from '@/components/StepForm';
 import DirectoryForm from '@/components/DirectoryForm';
-import ConfigForm from './components/ConfigForm';
-import TwoColumnPanel from './components/TwoColumnPanel';
 import { openInEditor, openConfigFile } from '@/services/project';
 import { isMiniUI, getDuplicateKeys } from '@/utils';
+import ConfigForm from './components/ConfigForm';
+import TwoColumnPanel from './components/TwoColumnPanel';
+import { send, callRemote, listenRemote } from './socket';
 import getAnalyze from './getAnalyze';
 import Field from './components/Field';
 
@@ -185,9 +185,8 @@ export default class PluginAPI {
   /**
    * get query params /?bar=&foo=&mini
    */
-  getSearchParams: IUi.IGetSearchParams = () => {
-    return qs.parse(window.location.search, { ignoreQueryPrefix: true });
-  };
+  getSearchParams: IUi.IGetSearchParams = () =>
+    qs.parse(window.location.search, { ignoreQueryPrefix: true });
 
   getSharedDataDir = async () => {
     const { tmpDir } = await callRemote({

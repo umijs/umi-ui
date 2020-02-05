@@ -7,7 +7,7 @@ export interface IApiBlock extends IApi {
 
 export default (api: IApiBlock) => {
   // 客户端
-  api.addUIPlugin(require.resolve('../../dist/index.umd'));
+  api.addUIPlugin(() => require.resolve('../../dist/index.umd'));
   // 服务端
   server(api);
 

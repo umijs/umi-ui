@@ -158,7 +158,7 @@ export default function(api: IApi) {
     }
   }
 
-  api.addUIPlugin(require.resolve('../../../src/plugins/configuration/dist/ui.umd'));
+  api.addUIPlugin(() => require.resolve('../../../src/plugins/configuration/dist/ui.umd'));
 
   api.onUISocket(async ({ action, failure, success }) => {
     const { type, payload, lang } = action;

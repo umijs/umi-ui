@@ -6,7 +6,11 @@ export default (api: IApi) => {
   // 1. ssr 时
   // 2. 非 dev 或 ui 时
   const [command] = process.argv.slice(2);
-  if (process.env.UMI_UI !== 'none' && !api.config.ssr && (command === 'dev' || command === 'ui')) {
+  if (
+    process.env.UMI_UI !== 'none' &&
+    !api.service.userConfig.ssr &&
+    (command === 'dev' || command === 'ui')
+  ) {
     require('./ui/index').default(api);
   }
 };

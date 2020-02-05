@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.less';
 import { IRoute } from 'umi-types';
-import history from '@tmp/history';
+import { history } from 'umi';
 import querystring from 'querystring';
 import { getLocale } from '@/utils';
-import { init as initSocket, callRemote } from './socket';
 import { setCurrentProject, clearCurrentProject } from '@/services/project';
 import debug from '@/debug';
+import { init as initSocket, callRemote } from './socket';
 import proxyConsole from './proxyConsole';
 import PluginAPI from './PluginAPI';
 
@@ -50,7 +50,7 @@ const initUIPlugin = async (initOpts = {}) => {
   try {
     geval(`;(function(window){;${script}\n})(window);`);
   } catch (e) {
-    console.error(`Error occurs while executing script from plugins`);
+    console.error('Error occurs while executing script from plugins');
     console.error(e);
   }
 

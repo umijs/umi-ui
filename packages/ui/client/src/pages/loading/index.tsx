@@ -8,7 +8,7 @@ import Layout from '@/layouts/Layout';
 import get from 'lodash/get';
 import { Terminal as XTerminal } from 'xterm';
 import { setCurrentProject } from '@/services/project';
-import history from '@tmp/history';
+import { history } from 'umi';
 import Terminal from '@/components/Terminal';
 import Context from '@/layouts/Context';
 import intl from '@/utils/intl';
