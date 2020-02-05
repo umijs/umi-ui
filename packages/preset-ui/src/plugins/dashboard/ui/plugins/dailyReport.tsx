@@ -42,15 +42,12 @@ const DailyReport: React.SFC<{}> = props => {
     }
   };
 
-  useEffect(
-    () => {
-      const id = _.get(list, '0.id');
-      if (id) {
-        setCurrentId(id);
-      }
-    },
-    [list],
-  );
+  useEffect(() => {
+    const id = _.get(list, '0.id');
+    if (id) {
+      setCurrentId(id);
+    }
+  }, [list]);
 
   useEffect(() => {
     event.on(MESSAGES.CHANGE_DAILY_ID, changeCurrentId);
@@ -75,12 +72,9 @@ const DailyReport: React.SFC<{}> = props => {
     },
   );
 
-  useEffect(
-    () => {
-      forceUpdate();
-    },
-    [data],
-  );
+  useEffect(() => {
+    forceUpdate();
+  }, [data]);
 
   const length = Array.isArray(data) ? data.length : 0;
 

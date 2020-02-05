@@ -14,6 +14,7 @@ import { existsSync, readFileSync, statSync } from 'fs';
 import { execSync } from 'child_process';
 import got from 'got';
 import { pick } from 'lodash';
+import { Service } from '@umijs/core';
 import rimraf from 'rimraf';
 import portfinder from 'portfinder';
 import resolveFrom from 'resolve-from';
@@ -29,7 +30,7 @@ import { isDepLost, isPluginLost, isUmiProject, isUsingBigfish, isUsingUmi } fro
 import getScripts from './scripts';
 import isDepFileExists from './utils/isDepFileExists';
 import initTerminal, { resizeTerminal } from './terminal';
-import detectLanguage from './detectLanguage';
+// import detectLanguage from './detectLanguage';
 import detectNpmClients from './detectNpmClients';
 import debug, { debugSocket } from './debug';
 
@@ -37,7 +38,9 @@ process.env.UMI_UI = 'true';
 
 export default class UmiUI {
   cwd: string;
-  servicesByKey: any;
+  servicesByKey: {
+    [key: string]: Service;
+  };
   server: any;
   socketServer: any;
   logs: any;
@@ -86,8 +89,8 @@ export default class UmiUI {
       ? '@alipay/bigfish/_Service.js'
       : 'umi/_Service.js';
     const servicePath = process.env.LOCAL_DEBUG
-      ? 'umi-build-dev/lib/Service'
-      : resolveFrom.silent(cwd, serviceModule) || 'umi-build-dev/lib/Service';
+      ? '@umijs/core/lib/Service/Service'
+      : resolveFrom.silent(cwd, serviceModule) || '@umijs/core/lib/Service/Service';
     debug(`Service path: ${servicePath}`);
     // eslint-disable-next-line import/no-dynamic-require
     const Service = require(servicePath).default;
@@ -288,16 +291,18 @@ export default class UmiUI {
     }
   }
 
-  getExtraAssets({ key }) {
+  async getExtraAssets({ key, success }) {
     const service = this.servicesByKey[key];
-    const uiPlugins = service.applyPlugins('addUIPlugin', {
+    const uiPlugins = await service.applyPlugins({
+      key: 'addUIPlugin',
+      type: service.ApplyPluginsType.add,
       initialValue: [],
     });
     debug('uiPlugins', uiPlugins);
     const script = getClientScript(uiPlugins);
-    return {
+    success({
       script,
-    };
+    });
   }
 
   getBasicAssets() {
@@ -551,7 +556,7 @@ export default class UmiUI {
     return this.npmClients;
   }
 
-  reloadProject(key: string) {}
+  // reloadProject(key: string) {}
 
   handleCoreData({ type, payload, lang, key }, { log, send, success, failure, progress }) {
     switch (type) {
@@ -559,11 +564,10 @@ export default class UmiUI {
         success(this.getBasicAssets());
         break;
       case '@@project/getExtraAssets':
-        success(
-          this.getExtraAssets({
-            key,
-          }),
-        );
+        this.getExtraAssets({
+          key,
+          success,
+        });
         break;
       case '@@project/list':
         this.config.checkValid();
@@ -702,12 +706,14 @@ export default class UmiUI {
       case '@@project/detectLanguage':
         try {
           assert(key && this.servicesByKey[key], `Detect language failed, key must be supplied.`);
-          const service = this.servicesByKey[key];
-          success({
-            language: detectLanguage(service.cwd, {
-              routeComponents: service.getRouteComponents(),
-            }),
-          });
+          // TODO
+          // const service = this.servicesByKey[key];
+          // success({
+          //   language: detectLanguage(service.cwd, {
+          //     routeComponents: service.getRouteComponents(),
+          //   }),
+          // });
+          success({ language: 'TypeScript' });
         } catch (e) {
           console.error(e);
           failure({
@@ -992,7 +998,7 @@ export default class UmiUI {
           debugSocket(`😿 ${chalk.red('Disconnected to')}: ${conn.id}`);
           delete conns[conn.id];
         });
-        conn.on('data', message => {
+        conn.on('data', async message => {
           try {
             const { type, payload, $lang: lang, $key: key } = JSON.parse(message);
             debugSocket(chalk.blue.bold('<<<<'), formatLogMessage(message));
@@ -1019,7 +1025,9 @@ export default class UmiUI {
             } else {
               assert(this.servicesByKey[key], `service of key ${key} not exists.`);
               const service = this.servicesByKey[key];
-              service.applyPlugins('onUISocket', {
+              await service.applyPlugins({
+                key: 'onUISocket',
+                type: service.ApplyPluginsType.event,
                 args: serviceArgs,
               });
             }

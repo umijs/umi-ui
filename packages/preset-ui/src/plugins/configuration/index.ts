@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { IApi } from 'umi-types';
+import { IApi } from '@umijs/types';
 
 const KEYS = [
   'group',
@@ -95,12 +95,14 @@ export function useConfigKey(config, key) {
 }
 
 export default function(api: IApi) {
-  function getConfig(lang) {
+  async function getConfig(lang) {
     const { userConfig } = (api as any).service;
     const config = userConfig.getConfig({ force: true });
     return formatConfigs(userConfig.plugins, {
       lang,
-      groupMap: api.applyPlugins('modifyUIConfigurationGroupMap', {
+      groupMap: await api.applyPlugins({
+        key: 'modifyUIConfigurationGroupMap',
+        type: api.ApplyPluginsType.modify,
         initialValue: DEFAULT_GROUP_MAP,
       }),
     }).map(p => {
@@ -158,12 +160,13 @@ export default function(api: IApi) {
 
   api.addUIPlugin(require.resolve('../../../src/plugins/configuration/dist/ui.umd'));
 
-  api.onUISocket(({ action, failure, success }) => {
+  api.onUISocket(async ({ action, failure, success }) => {
     const { type, payload, lang } = action;
     switch (type) {
       case 'org.umi.config.list':
+        const data = await getConfig(lang);
         success({
-          data: getConfig(lang),
+          data,
         });
         break;
       case 'org.umi.config.edit':
@@ -175,9 +178,10 @@ export default function(api: IApi) {
         }
         try {
           validateConfig(config);
-          (api as any).service.runCommand('config', {
-            _: ['set', config],
-          });
+          // TODO:
+          // api.service.runCommand('config', {
+          //   _: ['set', config],
+          // });
           success();
         } catch (e) {
           failure({

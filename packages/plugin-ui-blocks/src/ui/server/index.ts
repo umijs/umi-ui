@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { readdirSync } from 'fs';
-import { IApi } from 'umi-types';
+import { IApi } from '@umijs/types';
 import Block from './core/Block';
 import { Resource } from '@umijs/block-sdk/lib/data.d';
 import { DEFAULT_RESOURCES } from './util';
@@ -11,10 +11,14 @@ export default (api: IApi) => {
 
   api.onUISocket(async ({ action, failure, success, send }) => {
     if (!resources.length) {
-      resources = api.applyPlugins('addBlockUIResource', {
+      resources = await api.applyPlugins({
+        key: 'addBlockUIResource',
+        type: api.ApplyPluginsType.add,
         initialValue: DEFAULT_RESOURCES,
       });
-      resources = api.applyPlugins('modifyBlockUIResources', {
+      resources = await api.applyPlugins({
+        key: 'modifyBlockUIResources',
+        type: api.ApplyPluginsType.modify,
         initialValue: resources,
       });
     }

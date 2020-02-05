@@ -13,7 +13,9 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
     );
     // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
     // 未来可以做下自动写入注释配置，支持约定式路由
-    const newRouteConfig = api.applyPlugins('_modifyBlockNewRouteConfig', {
+    const newRouteConfig = await api.applyPlugins({
+      key: '_modifyBlockNewRouteConfig',
+      type: api.ApplyPluginsType.modify,
       initialValue: {
         name: args.name,
         path: generator.routePath.toLowerCase(),

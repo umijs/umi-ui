@@ -1,4 +1,6 @@
-export default api => {
+import { IApi } from '@umijs/types';
+
+export default (api: IApi) => {
   // 注册 区块的 ui
   // 以下场景不启动 ui 功能:
   // 1. ssr 时

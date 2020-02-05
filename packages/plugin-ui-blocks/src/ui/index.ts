@@ -1,5 +1,5 @@
-import { IApi } from "umi-types";
-import server from "./server";
+import { IApi } from '@umijs/types';
+import server from './server';
 
 export interface IApiBlock extends IApi {
   sendLog: (info: string) => void;
@@ -7,37 +7,38 @@ export interface IApiBlock extends IApi {
 
 export default (api: IApiBlock) => {
   // 客户端
-  api.addUIPlugin(require.resolve("../../dist/index.umd"));
+  api.addUIPlugin(require.resolve('../../dist/index.umd'));
   // 服务端
   server(api);
 
-  let routeComponents = null;
+  // let routeComponents = null;
 
-  api.onRouteChange(() => {
-    routeComponents = api.getRouteComponents();
-  });
+  // api.onRouteChange(() => {
+  //   routeComponents = api.getRouteComponents();
+  // });
 
-  api.modifyAFWebpackOpts(memo => {
-    routeComponents = api.getRouteComponents();
-    memo.extraBabelPlugins = [
-      ...(memo.extraBabelPlugins || []),
-      [
-        require.resolve("../sdk/flagBabelPlugin"),
-        {
-          doTransform(filename) {
-            return routeComponents.includes(api.winPath(filename));
-          }
-        }
-      ]
-    ];
-    return memo;
-  });
+  // api.modifyAFWebpackOpts(memo => {
+  //   routeComponents = api.getRouteComponents();
+  //   memo.extraBabelPlugins = [
+  //     ...(memo.extraBabelPlugins || []),
+  //     [
+  //       require.resolve("../sdk/flagBabelPlugin"),
+  //       {
+  //         doTransform(filename) {
+  //           return routeComponents.includes(api.winPath(filename));
+  //         }
+  //       }
+  //     ]
+  //   ];
+  //   return memo;
+  // });
 
-  api.addEntryCode(`
+  api.addEntryCode(
+    () => `
 (() => {
   // Runtime block add component
   window.GUmiUIFlag = require('${api.relativeToTmp(
-    require.resolve("../sdk/flagBabelPlugin/GUmiUIFlag")
+    require.resolve('../sdk/flagBabelPlugin/GUmiUIFlag'),
   )}').default;
 
   // Enable/Disable block add edit mode
@@ -66,5 +67,6 @@ export default (api: IApiBlock) => {
     }
   }, false);
 })();
-  `);
+  `,
+  );
 };

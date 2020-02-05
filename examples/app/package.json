@@ -21,7 +21,7 @@
     "node": ">=8.0.0"
   },
   "dependencies": {
-    "antd": "^3.26.8",
+    "antd": "^4.0.0-rc.1",
     "umi-request": "^1.2.18"
   }
 }

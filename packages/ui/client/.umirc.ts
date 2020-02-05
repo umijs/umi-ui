@@ -7,23 +7,50 @@ import { version } from 'antd';
 
 const { NODE_ENV } = process.env;
 
-const uglifyJSOptions =
-  NODE_ENV === 'production'
-    ? {
-        uglifyOptions: {
-          // remove console.* except console.error
-          compress: {
-            pure_funcs: ['console.log', 'console.info'],
-          },
-        },
-      }
-    : {};
+// const uglifyJSOptions =
+//   NODE_ENV === 'production'
+//     ? {
+//         uglifyOptions: {
+//           // remove console.* except console.error
+//           compress: {
+//             pure_funcs: ['console.log', 'console.info'],
+//           },
+//         },
+//       }
+//     : {};
 
 const config: IConfig = {
   history: 'browser',
   hash: NODE_ENV === 'production',
   treeShaking: true,
-  uglifyJSOptions,
+  links: [
+    {
+      rel: 'stylesheet',
+      href: '//gw.alipayobjects.com/os/lib/xterm/4.1.0/css/xterm.css',
+    },
+  ],
+  headScripts: [
+    // polyfill
+    {
+      src:
+        '//b.alicdn.com/s/polyfill.min.js?features=default,es2015,es2016,es2017,fetch,IntersectionObserver,NodeList.prototype.forEach,NodeList.prototype.@@iterator,EventSource,MutationObserver,ResizeObserver,HTMLCanvasElement.prototype.toBlob',
+    },
+    {
+      src: `//gw.alipayobjects.com/os/lib/??react/16.8.6/umd/react.${
+        NODE_ENV === 'development' ? 'development' : 'production.min'
+      }.js,react-dom/16.8.6/umd/react-dom.${
+        NODE_ENV === 'development' ? 'development' : 'production.min'
+      }.js`,
+    },
+    {
+      src: '//gw.alipayobjects.com/os/lib/moment/2.22.2/min/moment.min.js',
+    },
+    {
+      src: `//gw.alipayobjects.com/os/lib/antd/${version}/dist/antd.min.js`,
+    },
+    { src: '//gw.alipayobjects.com/os/lib/sockjs-client/1.3.0/dist/sockjs.min.js' },
+    { src: '//gw.alipayobjects.com/os/lib/xterm/4.1.0/lib/xterm.js' },
+  ],
   externals: {
     react: 'window.React',
     'react-dom': 'window.ReactDOM',
@@ -31,6 +58,7 @@ const config: IConfig = {
     xterm: 'window.Terminal',
     moment: 'moment',
   },
+  plugins: ['@umijs/plugin-dva', '@umijs/plugin-locale'],
   theme: dark,
   generateCssModulesTypings: true,
   routes: [
@@ -66,55 +94,16 @@ const config: IConfig = {
       component: '404',
     },
   ],
-  plugins: [
-    [
-      'umi-plugin-react',
-      {
-        dva: true,
-        antd: false,
-        title: {
-          defaultTitle: 'Umi UI',
-          useLocale: true,
-        },
-        locale: {
-          default: 'zh-CN',
-          antd: true,
-        },
-        routes: {
-          exclude: [/models\//, /component\//, /components\//],
-        },
-        links: [
-          {
-            rel: 'stylesheet',
-            href: '//gw.alipayobjects.com/os/lib/xterm/4.1.0/css/xterm.css',
-          },
-        ],
-        headScripts: [
-          // polyfill
-          {
-            src:
-              '//b.alicdn.com/s/polyfill.min.js?features=default,es2015,es2016,es2017,fetch,IntersectionObserver,NodeList.prototype.forEach,NodeList.prototype.@@iterator,EventSource,MutationObserver,ResizeObserver,HTMLCanvasElement.prototype.toBlob',
-          },
-          {
-            src: `//gw.alipayobjects.com/os/lib/??react/16.8.6/umd/react.${
-              NODE_ENV === 'development' ? 'development' : 'production.min'
-            }.js,react-dom/16.8.6/umd/react-dom.${
-              NODE_ENV === 'development' ? 'development' : 'production.min'
-            }.js`,
-          },
-          {
-            src: '//gw.alipayobjects.com/os/lib/moment/2.22.2/min/moment.min.js',
-          },
-          {
-            src: `//gw.alipayobjects.com/os/lib/antd/${version}/dist/antd.min.js`,
-          },
-          { src: '//gw.alipayobjects.com/os/lib/sockjs-client/1.3.0/dist/sockjs.min.js' },
-          { src: '//gw.alipayobjects.com/os/lib/xterm/4.1.0/lib/xterm.js' },
-        ],
-      },
-    ],
-  ],
-  cssLoaderOptions: {
+  title: {
+    defaultTitle: 'Umi UI',
+    useLocale: true,
+  },
+  locale: {
+    default: 'zh-CN',
+    antd: true,
+  },
+  dva: true,
+  cssLoader: {
     modules: true,
     getLocalIdent: (
       context: {
@@ -143,16 +132,16 @@ const config: IConfig = {
       return localName;
     },
   },
-  chainWebpack(config, { webpack }) {
-    if (NODE_ENV === 'development') {
-      config.output.publicPath('http://localhost:8002/');
-    }
-    config.plugin('webpack-less-theme').use(
-      new LessThemePlugin({
-        theme: join(__dirname, './src/styles/parameters.less'),
-      }),
-    );
-  },
+  // chainWebpack(config, { webpack }) {
+  //   if (NODE_ENV === 'development') {
+  //     config.output.publicPath('http://localhost:8002/');
+  //   }
+  //   config.plugin('webpack-less-theme').use(
+  //     new LessThemePlugin({
+  //       theme: join(__dirname, './src/styles/parameters.less'),
+  //     }),
+  //   );
+  // },
 };
 
 export default config;

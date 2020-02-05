@@ -315,7 +315,7 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
     spinner.start(`⛱  Write route ${generator.routePath} to ${api.service.userConfig.file}`);
     // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
     // 未来可以做下自动写入注释配置，支持约定式路由
-    const newRouteConfig = applyPlugins({
+    const newRouteConfig = await applyPlugins({
       key: '_modifyBlockNewRouteConfig',
       type: api.ApplyPluginsType.modify,
       initialValue: {
