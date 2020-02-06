@@ -7,22 +7,21 @@ import { version } from 'antd';
 
 const { NODE_ENV } = process.env;
 
-// const uglifyJSOptions =
-//   NODE_ENV === 'production'
-//     ? {
-//         uglifyOptions: {
-//           // remove console.* except console.error
-//           compress: {
-//             pure_funcs: ['console.log', 'console.info'],
-//           },
-//         },
-//       }
-//     : {};
+const terserOptions =
+  NODE_ENV === 'production'
+    ? {
+        // remove console.* except console.error
+        compress: {
+          pure_funcs: ['console.log', 'console.info'],
+        },
+      }
+    : {};
 
 const config: IConfig = {
   history: 'browser',
   hash: NODE_ENV === 'production',
   // uglifyJSOptions,
+  terserOptions,
   links: [
     {
       rel: 'stylesheet',
@@ -59,7 +58,7 @@ const config: IConfig = {
     moment: 'moment',
   },
   theme: dark,
-  generateCssModulesTypings: true,
+  // generateCssModulesTypings: true,
   routes: [
     {
       path: '/project',
@@ -101,37 +100,38 @@ const config: IConfig = {
     default: 'zh-CN',
     antd: true,
   },
-  dva: true,
-  cssLoaderOptions: {
-    modules: true,
-    getLocalIdent: (
-      context: {
-        resourcePath: string;
-      },
-      _: string,
-      localName: string,
-    ) => {
-      if (
-        context.resourcePath.includes('node_modules') ||
-        context.resourcePath.includes('global.less')
-      ) {
+  dva: {},
+  cssLoader: {
+    modules: {
+      getLocalIdent: (
+        context: {
+          resourcePath: string;
+        },
+        _: string,
+        localName: string,
+      ) => {
+        if (
+          context.resourcePath.includes('node_modules') ||
+          context.resourcePath.includes('global.less')
+        ) {
+          return localName;
+        }
+        const match = context.resourcePath.match(/src(.*)/);
+
+        if (match && match[1]) {
+          const umiUiPath = match[1].replace('.less', '');
+          const arr = slash(umiUiPath)
+            .split('/')
+            .map((a: string) => a.replace(/([A-Z])/g, '-$1'))
+            .map((a: string) => a.toLowerCase());
+          return `umi-ui${arr.join('-')}_${localName}`.replace(/--/g, '-');
+        }
+
         return localName;
-      }
-      const match = context.resourcePath.match(/src(.*)/);
-
-      if (match && match[1]) {
-        const umiUiPath = match[1].replace('.less', '');
-        const arr = slash(umiUiPath)
-          .split('/')
-          .map((a: string) => a.replace(/([A-Z])/g, '-$1'))
-          .map((a: string) => a.toLowerCase());
-        return `umi-ui${arr.join('-')}_${localName}`.replace(/--/g, '-');
-      }
-
-      return localName;
+      },
     },
   },
-  chainWebpack(config, { webpack }) {
+  chainWebpack(config) {
     if (NODE_ENV === 'development') {
       config.output.publicPath('http://localhost:8002/');
     }
@@ -140,6 +140,7 @@ const config: IConfig = {
         theme: join(__dirname, './src/styles/parameters.less'),
       }),
     );
+    return config;
   },
 };
 

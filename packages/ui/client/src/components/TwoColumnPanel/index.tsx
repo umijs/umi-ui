@@ -4,7 +4,7 @@ import { Icon } from '@ant-design/compatible';
 import cls from 'classnames';
 import { Row, Col } from 'antd';
 import { stringify, parse } from 'qs';
-import { FormattedMessage } from 'umi-plugin-react/locale';
+import { FormattedMessage } from 'umi';
 import { history } from 'umi';
 import { renderLocale } from '@/utils';
 import styles from './index.less';

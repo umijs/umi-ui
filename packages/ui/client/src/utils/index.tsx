@@ -2,11 +2,7 @@ import React from 'react';
 import { history } from 'umi';
 import * as IUi from '@umijs/ui-types';
 import querystring from 'querystring';
-import {
-  getLocale as umiGetLocale,
-  MessageDescriptor,
-  MessageValue,
-} from 'umi-plugin-react/locale';
+import { getLocale as umiGetLocale, MessageDescriptor, MessageValue } from 'umi';
 import { IProjectList, IProjectItem, LOCALES } from '@/enums';
 
 const localeMapping: any = {
@@ -114,7 +110,7 @@ export const sortProjectList = (list: IListItem[]): IListItem[] =>
 /**
  * 用于渲染动态国际化 key
  * Usage:
- * import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
+ * import { FormattedMessage, formatMessage } from 'umi';
  * 1. renderLocale(FormattedMessage)('use.id.key.string')
  *
  * 2. renderLocale(formatMessage)({

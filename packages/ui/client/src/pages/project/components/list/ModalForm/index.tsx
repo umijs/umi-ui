@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Modal, Input, InputNumber, Form } from 'antd';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { formatMessage } from 'umi';
 import flatten from 'lodash/flatten';
 import nanoid from 'nanoid';
 

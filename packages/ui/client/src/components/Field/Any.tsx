@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ExportOutlined } from '@ant-design/icons';
 import { message, Form } from 'antd';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { formatMessage } from 'umi';
 import Context from '@/layouts/Context';
 import debug from '@/debug';
 import { openConfigFile } from '@/services/project';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Icon } from '@ant-design/compatible';
-import { formatMessage, FormattedMessage, setLocale } from 'umi-plugin-react/locale';
+import { formatMessage, FormattedMessage, setLocale } from 'umi';
 import { Col, Row, Card } from 'antd';
 import cls from 'classnames';
 

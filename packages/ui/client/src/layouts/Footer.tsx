@@ -12,7 +12,7 @@ import {
   MessageOutlined,
   CodeOutlined,
 } from '@ant-design/icons';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { formatMessage } from 'umi';
 import cls from 'classnames';
 import { LOCALES, LOCALES_ICON } from '@/enums';
 import Context from '@/layouts/Context';

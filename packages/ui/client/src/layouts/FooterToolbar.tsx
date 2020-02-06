@@ -1,6 +1,6 @@
 import React from 'react';
 import { Popconfirm, Tooltip, Divider } from 'antd';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { formatMessage } from 'umi';
 import cls from 'classnames';
 import { CloseOutlined, VerticalAlignBottomOutlined, DeleteOutlined } from '@ant-design/icons';
 import styles from './FooterToolbar.less';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageHeader } from 'antd';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { formatMessage } from 'umi';
 import { PROJECT_STATUS, IProjectStatus } from '@/enums';
 import events, { MESSAGES } from '@/message';
 import Layout from './Layout';

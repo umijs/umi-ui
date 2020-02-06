@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import cls from 'classnames';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { formatMessage } from 'umi';
 import ObjectItemField, { IValue, ObjectItemFieldProps, IOption } from './ObjectItemField';
 import debug from '@/debug';
 import { objToArray, arrayToObj } from '../utils';

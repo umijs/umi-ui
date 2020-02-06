@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.less';
-import { IRoute } from 'umi-types';
+import { IRoute } from '@umijs/types';
 import { history } from 'umi';
 import querystring from 'querystring';
 import { getLocale } from '@/utils';
@@ -155,7 +155,7 @@ export async function render(oldRender) {
   oldRender();
 }
 
-export function patchRoutes(routes: IRoute[]) {
+export function patchRoutes({ routes }: { routes: IRoute[] }) {
   const dashboardIndex = routes.findIndex(route => route.key === 'dashboard');
   if (dashboardIndex > -1) {
     service.panels.forEach(panel => {

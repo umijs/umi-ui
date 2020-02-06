@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import lodash from 'lodash';
 import { history } from 'umi';
 // eslint-disable-next-line no-multi-assign
-import * as intl from 'umi-plugin-react/locale';
+import * as intl from 'umi';
 import * as hooks from '@umijs/hooks';
 import isPlainObject from 'lodash/isPlainObject';
 import { FC } from 'react';

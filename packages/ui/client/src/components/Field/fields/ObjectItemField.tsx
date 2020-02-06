@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Input, Select, InputNumber, Divider, Form } from 'antd';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { formatMessage } from 'umi';
 import { PlusOutlined } from '@ant-design/icons';
 import styles from './styles.module.less';
 

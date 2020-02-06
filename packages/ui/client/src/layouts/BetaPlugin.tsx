@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon } from '@ant-design/compatible';
 import { Menu, Dropdown } from 'antd';
 import { ExperimentFilled } from '@ant-design/icons';
-import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
+import { FormattedMessage, formatMessage } from 'umi';
 import { NavLink } from 'umi';
 import { renderLocale } from '@/utils';
 

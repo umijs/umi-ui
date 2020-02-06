@@ -26,7 +26,7 @@ declare global {
 
 type lang = keyof typeof zhCN;
 
-declare module 'umi-plugin-react/locale' {
+declare module 'umi' {
   export default interface MessageDescriptor {
     id: lang extends string ? lang : string;
   }

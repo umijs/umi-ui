@@ -1,6 +1,6 @@
 import React from 'react';
 import cls from 'classnames';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { formatMessage } from 'umi';
 import Context from '@/layouts/Context';
 import styles from './styles.module.less';
 
