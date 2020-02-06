@@ -1,9 +1,7 @@
 import { notification, message } from 'antd';
 import { connect } from 'dva';
 import lodash from 'lodash';
-import { history } from 'umi';
-// eslint-disable-next-line no-multi-assign
-import * as intl from '@@/plugin-locale/localeExports';
+import { history, getIntl, FormattedMessage } from 'umi';
 import { getApp } from '@@/plugin-dva/dva';
 import * as hooks from '@umijs/hooks';
 import isPlainObject from 'lodash/isPlainObject';
@@ -81,36 +79,12 @@ export default class PluginAPI {
       ...hooks,
     };
 
-    const proxyIntl = new Proxy(intl, {
-      get: (target, prop: any) => {
-        if (
-          [
-            'FormattedDate',
-            'FormattedTime',
-            'FormattedRelative',
-            'FormattedNumber',
-            'FormattedPlural',
-            'FormattedMessage',
-            'FormattedHTMLMessage',
-            'formatMessage',
-            'formatHTMLMessage',
-            'formatDate',
-            'formatTime',
-            'formatRelative',
-            'formatNumber',
-            'formatPlural',
-          ].includes(prop)
-        ) {
-          return intl[prop];
-        }
-        return undefined;
-      },
-    });
-
-    // mount react-intl API∂
-    Object.keys(proxyIntl).forEach(intlApi => {
+    const intl = getIntl();
+    this.intl = intl.formatMessage;
+    Object.keys(intl).forEach(intlApi => {
       this.intl[intlApi] = intl[intlApi];
     });
+    this.intl.FormattedMessage = FormattedMessage;
   }
 
   addConfigSection(section) {
@@ -218,7 +192,7 @@ export default class PluginAPI {
     return cwd;
   };
 
-  intl: IUi.IIntl = intl.formatMessage;
+  intl: IUi.IIntl;
 
   getLocale: IUi.IGetLocale = () => window.g_lang;
 

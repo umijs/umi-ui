@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Input, Select, InputNumber, Divider, Form } from 'antd';
-import { formatMessage } from 'umi';
+import { useIntl } from 'umi';
 import { PlusOutlined } from '@ant-design/icons';
 import styles from './styles.module.less';
 
@@ -49,6 +49,7 @@ const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
     disabled,
     size,
   } = props;
+  const { formatMessage } = useIntl();
   const [fieldValue, setFieldValue] = useState<IValue>(value);
   const [[k, v]] = Object.entries(fieldValue);
 

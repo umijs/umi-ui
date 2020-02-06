@@ -1,5 +1,5 @@
 import { getLocale } from '@/utils/index';
-import { formatMessage } from '@@/plugin-locale/localeExports';
+import { formatMessage } from 'umi';
 import zhCN from '@/locales/zh-CN';
 import enUS from '@/locales/en-US';
 

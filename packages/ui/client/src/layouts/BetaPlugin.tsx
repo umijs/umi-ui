@@ -2,13 +2,9 @@ import React from 'react';
 import { Icon } from '@ant-design/compatible';
 import { Menu, Dropdown } from 'antd';
 import { ExperimentFilled } from '@ant-design/icons';
-import { FormattedMessage, formatMessage } from 'umi';
-import { NavLink } from 'umi';
-import { renderLocale } from '@/utils';
+import { NavLink, FormattedMessage, useIntl } from 'umi';
 
 import styles from './Dashboard.less';
-
-const renderLocaleText = renderLocale(formatMessage);
 
 export interface BetaPluginProps {
   betaPanels: any[];
@@ -20,6 +16,7 @@ export interface BetaPluginProps {
 
 const BetaPlugin: React.SFC<BetaPluginProps> = props => {
   const { betaPanels = [], overlay, selectedKeys, isMini, search } = props;
+  const intl = useIntl();
 
   return (
     <>
@@ -53,7 +50,7 @@ const BetaPlugin: React.SFC<BetaPluginProps> = props => {
                       <NavLink exact to={`${panel.path}${search}`}>
                         <Icon className={styles.menuIcon} {...icon} />
                         <span style={{ marginLeft: 8 }} className={styles.menuItem}>
-                          {renderLocaleText(panel.title)}
+                          {intl.formatMessage(panel.title)}
                         </span>
                       </NavLink>
                     </Menu.Item>

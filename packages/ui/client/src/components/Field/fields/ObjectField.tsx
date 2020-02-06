@@ -2,9 +2,9 @@ import React from 'react';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import cls from 'classnames';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { formatMessage } from 'umi';
-import ObjectItemField, { IValue, ObjectItemFieldProps, IOption } from './ObjectItemField';
+import { useIntl } from 'umi';
 import debug from '@/debug';
+import ObjectItemField, { IValue, ObjectItemFieldProps, IOption } from './ObjectItemField';
 import { objToArray, arrayToObj } from '../utils';
 
 import styles from './styles.module.less';
@@ -13,6 +13,7 @@ const { useState } = React;
 
 const ObjectField: React.FC<ObjectItemFieldProps> = props => {
   const _log = debug.extend('Field:ObjectField');
+  const { formatMessage } = useIntl();
   const { value = {}, onChange, options: originOptions, defaultValue, size } = props;
   const [fieldsValue, setFieldsValue] = useState<IValue[]>(objToArray(value));
   const getOptionalOptions = () => {

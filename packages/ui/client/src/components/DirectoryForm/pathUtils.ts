@@ -1,9 +1,10 @@
-import { formatMessage } from 'umi';
+import { useIntl } from 'umi';
 import slash from 'slash2';
 import p from 'immer';
 import { listDirectory } from '@/services/project';
 
 export const handleErrorMsg = (e: Error, path = '') => {
+  const { formatMessage } = useIntl();
   const otherError = formatMessage({ id: 'org.umi.ui.global.readdir.code.other' });
   const systemError =
     e && e.code

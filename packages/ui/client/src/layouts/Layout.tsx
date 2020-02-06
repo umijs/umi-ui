@@ -1,15 +1,14 @@
 import React from 'react';
-import { formatMessage, FormattedMessage, setLocale } from 'umi';
-import * as IUi from '@umijs/ui-types';
+import { FormattedMessage, setLocale, useIntl } from 'umi';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import cls from 'classnames';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import Context from './Context';
 import event, { MESSAGES } from '@/message';
 import { isMiniUI, getLocale } from '@/utils/index';
+import Context from './Context';
 import Footer from './Footer';
-import { THEME, ILocale, LOCALES } from '../enums';
+import { ILocale, LOCALES } from '../enums';
 
 interface ILayoutProps {
   /** Layout 类型（项目列表、项目详情，loading 页） */
@@ -18,119 +17,96 @@ interface ILayoutProps {
   title?: string;
 }
 
-interface ILayoutState {
-  theme: IUi.ITheme;
-}
+const Layout: React.FC<ILayoutProps> = props => {
+  const isMini = isMiniUI();
+  const intl = useIntl();
+  const [theme, setTheme] = React.useState('dark');
 
-class Layout extends React.Component<ILayoutProps, ILayoutState> {
-  public isMini: boolean;
-  constructor(props: ILayoutProps) {
-    super(props);
-    this.isMini = isMiniUI();
-    this.state = {
-      theme: 'dark',
-    };
-  }
-
-  setMomentLocale = (locale: ILocale = getLocale()) => {
+  const setMomentLocale = (locale: ILocale = getLocale()) => {
     moment.locale(locale === 'zh-CN' ? 'zh-cn' : 'en');
   };
 
-  componentDidMount() {
-    this.setMomentLocale();
-  }
+  React.useEffect(() => {
+    setMomentLocale();
+    return () => {
+      event.removeAllListeners();
+    };
+  }, []);
 
-  componentWillUnmount() {
-    event.removeAllListeners();
-  }
-
-  setTheme = (theme: IUi.ITheme) => {
-    if (Object.keys(THEME).includes(theme)) {
-      this.setState({
-        theme,
-      });
-    }
-  };
-
-  showLogPanel = () => {
+  const showLogPanel = () => {
     if (event) {
       event.emit(MESSAGES.SHOW_LOG);
     }
   };
 
-  hideLogPanel = () => {
+  const hideLogPanel = () => {
     if (event) {
       event.emit(MESSAGES.HIDE_LOG);
     }
   };
 
-  setLocale = (locale: ILocale, reload = false) => {
+  const setGlobalLocale = (locale: ILocale, reload = false) => {
     if (Object.keys(LOCALES).indexOf(locale as string) > -1) {
       setLocale(locale, reload);
-      this.setMomentLocale(locale);
+      setMomentLocale(locale);
     }
   };
+  const locale = getLocale();
+  const { type, className, title } = props;
+  const currentProject = window.g_uiCurrentProject || {};
+  const layoutCls = cls(
+    locale,
+    'ui-layout',
+    {
+      isMini: !!isMini,
+    },
+    className,
+  );
+  window.g_uiContext = Context;
+  const { basicUI } = window.g_service;
+  const frameworkName = basicUI.name || 'Umi';
+  const framework = `${frameworkName} UI`;
+  const icon = basicUI.logo_remote || '//gw.alipayobjects.com/zos/antfincdn/KjbXlRsRBz/umi.png';
 
-  render() {
-    const locale = getLocale();
-    const { theme } = this.state;
-    const { type, className, title } = this.props;
-    const currentProject = window.g_uiCurrentProject || {};
-    const layoutCls = cls(
-      locale,
-      'ui-layout',
-      {
-        isMini: !!this.isMini,
-      },
-      className,
-    );
-    window.g_uiContext = Context;
-    const { basicUI } = window.g_service;
-    const frameworkName = basicUI.name || 'Umi';
-    const framework = `${frameworkName} UI`;
-    const icon = basicUI.logo_remote || '//gw.alipayobjects.com/zos/antfincdn/KjbXlRsRBz/umi.png';
-
-    const getTitle = () => {
-      if (title) {
-        // dashboard plugin title
-        if (currentProject.name && type !== 'list') {
-          return `${title} - ${currentProject.name}`;
-        }
-        return `${title} - ${framework}`;
+  const getTitle = () => {
+    if (title) {
+      // dashboard plugin title
+      if (currentProject.name && type !== 'list') {
+        return `${title} - ${currentProject.name}`;
       }
-      return framework;
-    };
+      return `${title} - ${framework}`;
+    }
+    return framework;
+  };
 
-    return (
-      <div className={layoutCls}>
-        <Context.Provider
-          value={{
-            locale,
-            theme,
-            isMini: this.isMini,
-            formatMessage,
-            currentProject,
-            showLogPanel: this.showLogPanel,
-            hideLogPanel: this.hideLogPanel,
-            setTheme: this.setTheme,
-            setLocale: this.setLocale,
-            FormattedMessage,
-            basicUI,
-          }}
-        >
-          <Helmet>
-            <html lang={locale === 'zh-CN' ? 'zh' : 'en'} />
-            <title>{getTitle()}</title>
-            <link rel="shortcut icon" href={icon} type="image/x-icon" />
-          </Helmet>
-          <ErrorBoundary>{this.props.children}</ErrorBoundary>
-          <ErrorBoundary>
-            <Footer type={type} />
-          </ErrorBoundary>
-        </Context.Provider>
-      </div>
-    );
-  }
-}
+  return (
+    <div className={layoutCls}>
+      <Context.Provider
+        value={{
+          locale,
+          theme,
+          isMini,
+          formatMessage: intl.formatMessage,
+          currentProject,
+          showLogPanel,
+          hideLogPanel,
+          setLocale: setGlobalLocale,
+          FormattedMessage,
+          basicUI,
+        }}
+      >
+        <Helmet>
+          <html lang={locale === 'zh-CN' ? 'zh' : 'en'} />
+          <title>{getTitle()}</title>
+          <link rel="shortcut icon" href={icon} type="image/x-icon" />
+        </Helmet>
+        <ErrorBoundary>{props.children}</ErrorBoundary>
+        <ErrorBoundary>
+          <Footer type={type} />
+        </ErrorBoundary>
+      </Context.Provider>
+    </div>
+  );
+};
 
 export default Layout;

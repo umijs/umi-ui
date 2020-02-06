@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.less';
 import { IRoute } from '@umijs/types';
-import { history } from 'umi';
+import { history, addLocale } from 'umi';
 import querystring from 'querystring';
 import { getLocale } from '@/utils';
 import { setCurrentProject, clearCurrentProject } from '@/services/project';
@@ -23,6 +23,24 @@ const service = (window.g_service = {
   basicUI: {},
   dashboard: [],
 });
+
+/**
+ * 注册 UI 插件国际化
+ */
+const setLocaleMessages = () => {
+  const messages = service.locales.reduce((curr, acc) => {
+    const localeGroup = Object.entries(acc);
+    localeGroup.forEach(group => {
+      const [lang, message] = group;
+      curr[lang] = { ...curr[lang], ...message };
+    });
+    return curr;
+  }, {});
+
+  Object.keys(messages).forEach((locale: string) => {
+    addLocale(locale, messages[locale]);
+  });
+};
 
 // Avoid scope problem
 const geval = eval; // eslint-disable-line
@@ -151,6 +169,8 @@ export async function render(oldRender) {
   } else {
     history.replace('/project/select');
   }
+  // regsiter locale messages
+  setLocaleMessages();
   // Do render
   oldRender();
 }
@@ -167,22 +187,6 @@ export function patchRoutes({ routes }: { routes: IRoute[] }) {
     });
   }
 }
-
-export const locale = {
-  messages: () => {
-    const messages = service.locales.reduce((curr, acc) => {
-      const localeGroup = Object.entries(acc);
-      localeGroup.forEach(group => {
-        const [lang, message] = group;
-        curr[lang] = { ...curr[lang], ...message };
-      });
-      return curr;
-    }, {});
-    _log('locale messages', messages);
-    return messages;
-  },
-  default: getLocale,
-};
 
 // for ga analyse
 export const onRouteChange = params => {

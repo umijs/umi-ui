@@ -1,9 +1,8 @@
 import React from 'react';
-import { history } from 'umi';
+import { history, getLocale as umiGetLocale } from 'umi';
 import * as IUi from '@umijs/ui-types';
 import querystring from 'querystring';
-import { getLocale as umiGetLocale } from '@@/plugin-locale/localeExports';
-import { IProjectList, IProjectItem, LOCALES } from '@/enums';
+import { IProjectList, IProjectItem } from '@/enums';
 
 const localeMapping: any = {
   en: 'en-US',
@@ -106,40 +105,6 @@ export const sortProjectList = (list: IListItem[]): IListItem[] =>
 
     return nextWeight - prevWeight;
   });
-
-/**
- * 用于渲染动态国际化 key
- * Usage:
- * import { FormattedMessage, formatMessage } from 'umi';
- * 1. renderLocale(FormattedMessage)('use.id.key.string')
- *
- * 2. renderLocale(formatMessage)({
- *      id: 'use.obj.key.id',
- *      defaultMessage: 'foo.bar'
- *    }, { values: '' })
- * 3. renderLocale(formatMessage)(() => formatMessage({ id: 'use.define.format' }))
- */
-export const renderLocale = (formatUtil: any) => (
-  descriptor: Function | string | MessageDescriptor,
-  values: { [key: string]: MessageValue | JSX.Element } = {},
-) => {
-  if (typeof descriptor === 'function') return descriptor();
-  const firstArg =
-    typeof descriptor === 'string' ? { id: descriptor, defaultMessage: descriptor } : descriptor;
-  // default is formatMessage because of umi-plugin-locale Proxy function utils
-  const isComponent = !!(formatUtil.prototype && formatUtil.prototype.isReactComponent);
-
-  if (isComponent) {
-    const FormatUtil = formatUtil;
-    const props = {
-      ...firstArg,
-      ...values,
-    };
-    return <FormatUtil {...props} />;
-  }
-  // function util
-  return formatUtil(firstArg, values);
-};
 
 /**
  *

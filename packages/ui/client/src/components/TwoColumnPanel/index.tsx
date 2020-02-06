@@ -4,9 +4,8 @@ import { Icon } from '@ant-design/compatible';
 import cls from 'classnames';
 import { Row, Col } from 'antd';
 import { stringify, parse } from 'qs';
-import { FormattedMessage } from 'umi';
-import { history } from 'umi';
-import { renderLocale } from '@/utils';
+import { FormattedMessage, history } from 'umi';
+
 import styles from './index.less';
 
 const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
@@ -43,7 +42,6 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
 
   const currentSection = sections.find(section => section.key === current) || sections[0];
   const children = currentSection?.component;
-  const renderMessage = renderLocale(FormattedMessage);
 
   return (
     <div className={panelCls}>
@@ -66,9 +64,15 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
                 {React.isValidElement(s.icon) && s.icon}
               </Col>
               <Col className={styles.title_desc}>
-                {s.title && <div className={styles.title}>{renderMessage(s.title)}</div>}
+                {s.title && (
+                  <div className={styles.title}>
+                    <FormattedMessage id={s.title} />
+                  </div>
+                )}
                 {s.description && (
-                  <div className={styles.description}>{renderMessage(s.description)}</div>
+                  <div className={styles.description}>
+                    <FormattedMessage id={s.description} />
+                  </div>
                 )}
               </Col>
             </Row>

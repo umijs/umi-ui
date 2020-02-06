@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { formatDate, formatMessage } from 'umi';
+import { useIntl } from 'umi';
 import { getLocale } from '@/utils/index';
 import zhCN from '@/locales/zh-CN';
 import enUS from '@/locales/en-US';
@@ -27,6 +27,7 @@ const TAG_MAP = {
 
 export const Log = logItem => {
   const { type, date, message } = logItem;
+  const intl = useIntl();
 
   // const formatDate = moment(date).isValid() ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '';
   const messageGroup = message?.split?.('\n') || [];
@@ -36,7 +37,7 @@ export const Log = logItem => {
         {typeof type === 'string' ? type.toLocaleUpperCase() : 'UNKNOW'}
       </Tag>
       <p className={styles['log-date']}>
-        {formatDate(date, {
+        {intl.formatDate(date, {
           year: 'numeric',
           month: 'numeric',
           day: 'numeric',
@@ -63,6 +64,7 @@ const Logs: React.SFC<LogProps> = props => {
   const { logs, style, className, type } = props;
   const logsCls = cls(styles.logs, className);
   const localeMessages = getLocale() === 'zh-CN' ? zhCN : enUS;
+  const intl = useIntl();
 
   return (
     <div className={logsCls} style={style}>
@@ -73,7 +75,7 @@ const Logs: React.SFC<LogProps> = props => {
           <li>
             {type === 'loading'
               ? localeMessages['org.umi.ui.global.log.empty']
-              : formatMessage({ id: 'org.umi.ui.global.log.empty' })}
+              : intl.formatMessage({ id: 'org.umi.ui.global.log.empty' })}
           </li>
         )}
       </ul>

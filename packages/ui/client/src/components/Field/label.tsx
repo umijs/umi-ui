@@ -1,6 +1,6 @@
 import React from 'react';
 import cls from 'classnames';
-import { formatMessage } from 'umi';
+import { useIntl } from 'umi';
 import Context from '@/layouts/Context';
 import styles from './styles.module.less';
 
@@ -12,6 +12,7 @@ interface ILabelProps {
 
 const FieldLabel: React.SFC<ILabelProps> = ({ description, link, title }) => {
   const { theme } = React.useContext(Context);
+  const { formatMessage } = useIntl();
   const wrapCls = cls(styles.label, styles[`label-${theme}`]);
 
   return title && description ? (
