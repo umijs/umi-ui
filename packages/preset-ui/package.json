@@ -8,6 +8,7 @@
     "src/plugins/*/dist"
   ],
   "dependencies": {
+    "@umijs/ui": "1.0.1",
     "@umijs/plugin-ui-blocks": "1.0.1",
     "@umijs/plugin-ui-tasks": "1.0.1",
     "got": "9.6.0",

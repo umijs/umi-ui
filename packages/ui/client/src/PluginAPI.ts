@@ -3,7 +3,8 @@ import { connect } from 'dva';
 import lodash from 'lodash';
 import { history } from 'umi';
 // eslint-disable-next-line no-multi-assign
-import * as intl from 'umi';
+import * as intl from '@@/plugin-locale/localeExports';
+import { getApp } from '@@/plugin-dva/dva';
 import * as hooks from '@umijs/hooks';
 import isPlainObject from 'lodash/isPlainObject';
 import { FC } from 'react';
@@ -117,7 +118,8 @@ export default class PluginAPI {
   }
 
   registerModel = model => {
-    window.g_app.model(model);
+    const app = getApp();
+    app.model(model);
   };
 
   launchEditor = async ({ type = 'project', lineNumber = 0, editor }) => {

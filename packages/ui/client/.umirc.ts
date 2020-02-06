@@ -18,6 +18,7 @@ const terserOptions =
     : {};
 
 const config: IConfig = {
+  publicPath: NODE_ENV === 'development' ? 'http://localhost:8002/' : '/',
   history: 'browser',
   hash: NODE_ENV === 'production',
   // uglifyJSOptions,
@@ -92,14 +93,8 @@ const config: IConfig = {
       component: '404',
     },
   ],
-  title: {
-    defaultTitle: 'Umi UI',
-    useLocale: true,
-  },
-  locale: {
-    default: 'zh-CN',
-    antd: true,
-  },
+  title: 'Umi UI',
+  locale: {},
   dva: {},
   cssLoader: {
     modules: {
@@ -132,9 +127,6 @@ const config: IConfig = {
     },
   },
   chainWebpack(config) {
-    if (NODE_ENV === 'development') {
-      config.output.publicPath('http://localhost:8002/');
-    }
     config.plugin('webpack-less-theme').use(
       new LessThemePlugin({
         theme: join(__dirname, './src/styles/parameters.less'),

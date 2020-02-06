@@ -89,11 +89,11 @@ export default class UmiUI {
       ? '@alipay/bigfish/_Service.js'
       : 'umi/_Service.js';
     const servicePath = process.env.LOCAL_DEBUG
-      ? '@umijs/core/lib/Service/Service'
-      : resolveFrom.silent(cwd, serviceModule) || '@umijs/core/lib/Service/Service';
+      ? 'umi/lib/cjs'
+      : resolveFrom.silent(cwd, serviceModule) || 'umi/lib/cjs';
     debug(`Service path: ${servicePath}`);
     // eslint-disable-next-line import/no-dynamic-require
-    const Service = require(servicePath).default;
+    const { Service } = require(servicePath);
     const service = new Service({
       cwd,
     });
@@ -184,6 +184,7 @@ export default class UmiUI {
       try {
         const service = this.getService(cwd);
         debug(`Attach service for ${key} after new and before init()`);
+        service;
         await service.init();
         debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
         this.servicesByKey[key] = service;

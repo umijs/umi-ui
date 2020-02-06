@@ -20,6 +20,9 @@ const uiApp = () => {
           APP_ROOT: './packages/ui/client',
           UMI_UI: 'none',
           UMI_UI_SERVER: 'none',
+          PORT: 8002,
+          BROWSER: 'none',
+          BABEL_POLYFILL: 'none',
         },
       });
       child.on('exit', code => {

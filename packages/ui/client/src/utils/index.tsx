@@ -2,7 +2,7 @@ import React from 'react';
 import { history } from 'umi';
 import * as IUi from '@umijs/ui-types';
 import querystring from 'querystring';
-import { getLocale as umiGetLocale, MessageDescriptor, MessageValue } from 'umi';
+import { getLocale as umiGetLocale } from '@@/plugin-locale/localeExports';
 import { IProjectList, IProjectItem, LOCALES } from '@/enums';
 
 const localeMapping: any = {
