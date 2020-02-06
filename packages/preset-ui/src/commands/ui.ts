@@ -6,7 +6,6 @@ export default (api: IApi) => {
   api.registerCommand({
     name: 'ui',
     fn: async ({ args }) => {
-      console.log('args', args);
       // TODO: start ui
       const umiUI = new UmiUI();
       const { server, port } = await umiUI.start();

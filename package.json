@@ -16,7 +16,7 @@
     "publish": "npm run changelog && node ./scripts/publish.js",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage",
-    "ui:build": "echo \"test\""
+    "ui:build": "node ./scripts/ui.js"
   },
   "lint-staged": {
     "**/*.{js,jsx,tsx,ts,less,json}": [
