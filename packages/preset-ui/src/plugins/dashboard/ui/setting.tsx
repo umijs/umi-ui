@@ -9,6 +9,8 @@ const { Paragraph } = Typography;
 
 const Setting: React.FC<{}> = (props, ref) => {
   const { api, dbPath, cards, setCardSettings } = React.useContext(Context);
+  const { useIntl } = api;
+  const { formatMessage } = useIntl();
   const { visible, closeDrawer, openDrawer, className, ...restConfig } = ref.current;
 
   const handleOnChange = async (key, checked) => {
@@ -31,7 +33,7 @@ const Setting: React.FC<{}> = (props, ref) => {
       className={drawerCls}
       visible={visible}
       onClose={closeDrawer}
-      title={api.intl({ id: 'org.umi.ui.dashboard.settings.title' })}
+      title={formatMessage({ id: 'org.umi.ui.dashboard.settings.title' })}
       {...restConfig}
     >
       <List

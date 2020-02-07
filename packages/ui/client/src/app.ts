@@ -166,11 +166,11 @@ export async function render(oldRender) {
     await initUIPlugin({
       currentProject,
     });
+    setLocaleMessages();
   } else {
     history.replace('/project/select');
   }
   // regsiter locale messages
-  setLocaleMessages();
   // Do render
   oldRender();
 }
@@ -179,7 +179,6 @@ export function patchRoutes({ routes }: { routes: IRoute[] }) {
   const dashboardIndex = routes.findIndex(route => route.key === 'dashboard');
   if (dashboardIndex > -1) {
     service.panels.forEach(panel => {
-      _log('panel', panel);
       routes[dashboardIndex]?.routes?.unshift({
         exact: true,
         ...panel,

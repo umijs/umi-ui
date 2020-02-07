@@ -1,4 +1,5 @@
 import { IApi } from '@umijs/types';
+import { winPath } from '@umijs/utils';
 import server from './server';
 
 export interface IApiBlock extends IApi {
@@ -17,18 +18,29 @@ export default (api: IApiBlock) => {
   //   routeComponents = api.getRouteComponents();
   // });
 
+  api.modifyBabelOpts(babelOpts => {
+    const routeComponents = api.getRouteComponents();
+    const { plugins } = babelOpts;
+    return {
+      ...babelOpts,
+      plugins: [
+        ...plugins,
+        [
+          require.resolve('../sdk/flagBabelPlugin'),
+          {
+            doTransform(filename) {
+              return routeComponents.includes(winPath(filename));
+            },
+          },
+        ],
+      ],
+    };
+  });
+
   // api.modifyAFWebpackOpts(memo => {
   //   routeComponents = api.getRouteComponents();
   //   memo.extraBabelPlugins = [
   //     ...(memo.extraBabelPlugins || []),
-  //     [
-  //       require.resolve("../sdk/flagBabelPlugin"),
-  //       {
-  //         doTransform(filename) {
-  //           return routeComponents.includes(api.winPath(filename));
-  //         }
-  //       }
-  //     ]
   //   ];
   //   return memo;
   // });
@@ -37,9 +49,7 @@ export default (api: IApiBlock) => {
     () => `
 (() => {
   // Runtime block add component
-  window.GUmiUIFlag = require('${api.relativeToTmp(
-    require.resolve('../sdk/flagBabelPlugin/GUmiUIFlag'),
-  )}').default;
+  window.GUmiUIFlag = require('${require.resolve('../sdk/flagBabelPlugin/GUmiUIFlag')}').default;
 
   // Enable/Disable block add edit mode
   window.addEventListener('message', (event) => {

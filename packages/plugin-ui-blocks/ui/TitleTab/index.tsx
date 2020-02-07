@@ -7,9 +7,10 @@ import Container from '../Container';
 
 const { TabPane } = Tabs;
 
-export default function() {
+export default function(props) {
   const { api, type, setType, setActiveResource } = Container.useContainer();
-  const { callRemote, intl } = api;
+  const { useIntl } = api;
+  const { formatMessage } = useIntl();
 
   const getQueryConfig = () => parse(window.location.search.substr(1));
   const updateUrlQuery = (params: { type: string; resource?: string }) => {
@@ -42,8 +43,8 @@ export default function() {
         });
       }}
     >
-      <TabPane tab={intl({ id: 'org.umi.ui.blocks.tabs.blocks' })} key="block" />
-      <TabPane tab={intl({ id: 'org.umi.ui.blocks.tabs.templates' })} key="template" />
+      <TabPane tab={formatMessage({ id: 'org.umi.ui.blocks.tabs.blocks' })} key="block" />
+      <TabPane tab={formatMessage({ id: 'org.umi.ui.blocks.tabs.templates' })} key="template" />
     </Tabs>
   );
 }

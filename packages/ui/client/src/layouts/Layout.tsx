@@ -26,7 +26,7 @@ const Layout: React.FC<ILayoutProps> = props => {
     moment.locale(locale === 'zh-CN' ? 'zh-cn' : 'en');
   };
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     setMomentLocale();
     return () => {
       event.removeAllListeners();

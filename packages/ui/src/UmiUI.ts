@@ -54,8 +54,7 @@ export default class UmiUI {
   constructor() {
     this.cwd = process.cwd();
     // 兼容旧版 Bigfish
-    const defaultBaseUI = process.env.BIGFISH_COMPAT ? join(__dirname, '../dist/index.umd.js') : '';
-    this.basicUIPath = process.env.BASIC_UI_PATH || defaultBaseUI;
+    this.basicUIPath = process.env.BASIC_UI_PATH || '';
     // export default { serices, ... }
     this.basicConfigPath = process.env.BASIC_CONFIG_PATH || '';
     this.servicesByKey = {};

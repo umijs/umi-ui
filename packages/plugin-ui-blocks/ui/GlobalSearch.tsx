@@ -12,7 +12,8 @@ interface IGlobalSearch {
 
 const GlobalSearch: React.SFC<IGlobalSearch> = props => {
   const { onChange, api } = props;
-  const { intl, hooks, _ } = api;
+  const { useIntl, hooks, _ } = api;
+  const { formatMessage } = useIntl();
   let debounceFn = _.debounce;
   // compatible with prev version umi ui
   if (hooks?.useDebounceFn) {
@@ -32,7 +33,7 @@ const GlobalSearch: React.SFC<IGlobalSearch> = props => {
       allowClear
       size={api.mini ? 'small' : 'middle'}
       onChange={e => handleChangeDebounce(e.target.value)}
-      placeholder={intl({ id: 'org.umi.ui.blocks.content.search_block' })}
+      placeholder={formatMessage({ id: 'org.umi.ui.blocks.content.search_block' })}
     />
   );
 };

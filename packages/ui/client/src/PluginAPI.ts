@@ -1,7 +1,7 @@
 import { notification, message } from 'antd';
 import { connect } from 'dva';
 import lodash from 'lodash';
-import { history, getIntl, FormattedMessage } from 'umi';
+import { history, useIntl, FormattedMessage, formatMessage } from 'umi';
 import { getApp } from '@@/plugin-dva/dva';
 import * as hooks from '@umijs/hooks';
 import isPlainObject from 'lodash/isPlainObject';
@@ -78,12 +78,9 @@ export default class PluginAPI {
     this.hooks = {
       ...hooks,
     };
-
-    const intl = getIntl();
-    this.intl = intl.formatMessage;
-    Object.keys(intl).forEach(intlApi => {
-      this.intl[intlApi] = intl[intlApi];
-    });
+    this.useIntl = useIntl;
+    // 不推荐
+    this.intl = formatMessage;
     this.intl.FormattedMessage = FormattedMessage;
   }
 

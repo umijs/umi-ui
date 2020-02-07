@@ -94,7 +94,6 @@ API 由 [Umi 插件基础 API](https://umijs.org/plugin/umi-ui.html#%E6%9C%8D%E5
 │       ├── client # Umi UI 主体
 │       │   └── src
 │       │       └── PluginAPI.ts # 提供插件客户端 API
-│       ├── compatUI
 │       ├── package.json
 │       └── src # Umi UI Server
 ├── scripts

@@ -8,7 +8,8 @@ interface IConfigManager {
 }
 
 function getSections(api: IUiApi) {
-  const { ConfigForm, getBasicUI = () => ({}) } = api;
+  const { ConfigForm, getBasicUI = () => ({}), useIntl } = api;
+  const { formatMessage } = useIntl;
   const basicUI = getBasicUI();
   const sections = [
     {
@@ -22,7 +23,7 @@ function getSections(api: IUiApi) {
         />
       ),
       description: () =>
-        api.intl(
+        formatMessage(
           {
             id: 'org.umi.ui.configuration.project.config.desc',
           },
