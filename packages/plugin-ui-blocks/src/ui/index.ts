@@ -1,5 +1,4 @@
-import { IApi } from '@umijs/types';
-import { winPath } from '@umijs/utils';
+import { IApi } from 'umi';
 import server from './server';
 
 export interface IApiBlock extends IApi {
@@ -7,6 +6,8 @@ export interface IApiBlock extends IApi {
 }
 
 export default (api: IApiBlock) => {
+  const { utils } = api;
+  const { winPath } = utils;
   // 客户端
   api.addUIPlugin(() => require.resolve('../../dist/index.umd'));
   // 服务端

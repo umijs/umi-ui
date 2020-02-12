@@ -14,8 +14,7 @@
     "@types/node-notifier": "^5.4.0",
     "@types/sockjs": "^0.3.31",
     "@umijs/ui-theme": "1.0.0",
-    "@umijs/ui-types": "1.0.1",
-    "@umijs/types": "^3.0.0-beta.2"
+    "@umijs/ui-types": "1.0.1"
   },
   "repository": {
     "type": "git",

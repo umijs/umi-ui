@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { IApi } from '@umijs/types';
+import { IApi } from 'umi';
 
 const KEYS = [
   'group',

@@ -192,7 +192,7 @@ export function getSingularName(name) {
 
 export const getBlockGenerator = (api: IApi) => {
   const { paths, config, applyPlugins } = api;
-  const blockConfig = (config as any)?.block || {};
+  const blockConfig = config?.block || {};
 
   return class BlockGenerator extends Generator {
     public isTypeScript;

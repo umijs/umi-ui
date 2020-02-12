@@ -85,7 +85,7 @@ export async function getCtx(url, args: AddBlockOption = {}, api: IApi): Promise
   const { config } = api;
   debug(`get url ${url}`);
 
-  const ctx: CtxTypes = await getParsedData(url, { ...((config as any)?.block || {}), ...args });
+  const ctx: CtxTypes = await getParsedData(url, { ...(config?.block || {}), ...args });
 
   if (!ctx.isLocal) {
     const blocksTempPath = makeSureMaterialsTempPathExist(args.dryRun);
@@ -112,7 +112,7 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
   const { paths, config, applyPlugins } = api;
   const blockConfig: {
     npmClient?: string;
-  } = (config as any)?.block || {};
+  } = config?.block || {};
   const addLogs = [];
 
   const getSpinner = () => {

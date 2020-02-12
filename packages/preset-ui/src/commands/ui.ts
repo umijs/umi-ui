@@ -1,6 +1,7 @@
-import { IApi } from '@umijs/types';
-import { signale } from '@umijs/utils';
+import { IApi, utils } from 'umi';
 import UmiUI from '@umijs/ui';
+
+const { signale } = utils;
 
 export default (api: IApi) => {
   api.registerCommand({

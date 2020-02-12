@@ -1,4 +1,4 @@
-import { IConfig } from '@umijs/types'; // ref: https://umijs.org/config/
+import { IConfig } from 'umi'; // ref: https://umijs.org/config/
 
 const config: IConfig = {
   routes: [

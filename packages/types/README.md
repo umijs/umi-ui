@@ -15,7 +15,7 @@ $ yarn add @umijs/types
 ## Usage
 
 ```tsx
-import { IApi } from '@umijs/types';
+import { IApi } from 'umi';
 
 export default function(api: IApi) {
   api.addPanel({

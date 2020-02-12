@@ -7,6 +7,9 @@
     "src/bubble",
     "src/plugins/*/dist"
   ],
+  "peerDependencies": {
+    "umi": "3.x"
+  },
   "dependencies": {
     "@umijs/ui": "1.0.1",
     "@umijs/plugin-ui-blocks": "1.0.1",
@@ -30,8 +33,7 @@
     "decamelize": "3.2.0",
     "react-masonry-component": "^6.2.1",
     "serialize-javascript": "^1.7.0",
-    "swr": "^0.1.8",
-    "@umijs/types": "^3.0.0-beta.2"
+    "swr": "^0.1.8"
   },
   "repository": {
     "type": "git",

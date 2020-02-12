@@ -1,4 +1,4 @@
-import { IApi } from '@umijs/types';
+import { IApi } from 'umi';
 
 export default (api: IApi) => {
   // 注册 区块的 ui

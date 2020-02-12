@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.less';
-import { IRoute } from '@umijs/types';
-import { history, addLocale } from 'umi';
+import { history, addLocale, IRoute } from 'umi';
 import querystring from 'querystring';
 import { getLocale } from '@/utils';
 import { setCurrentProject, clearCurrentProject } from '@/services/project';

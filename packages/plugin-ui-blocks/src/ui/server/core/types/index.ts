@@ -1,4 +1,4 @@
-import { IApi } from '@umijs/types';
+import { IApi } from 'umi';
 import Logger from '../Logger';
 import { StepState } from '../enum';
 

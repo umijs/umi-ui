@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { readdirSync } from 'fs';
-import { IApi } from '@umijs/types';
+import { IApi } from 'umi';
 import Block from './core/Block';
 import { Resource } from '@umijs/block-sdk/lib/data.d';
 import { DEFAULT_RESOURCES } from './util';

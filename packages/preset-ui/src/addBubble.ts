@@ -1,9 +1,9 @@
 import { join } from 'path';
-import { IApi } from '@umijs/types';
-import { winPath } from '@umijs/utils';
+import { IApi } from 'umi';
 
 export default (api: IApi) => {
-  const { relativeToTmp } = api as any;
+  const { relativeToTmp, utils } = api;
+  const { winPath } = utils;
   api.addEntryCode(
     () => `
     (() => {
@@ -27,9 +27,7 @@ export default (api: IApi) => {
   );
 
   // TODO: chainWebpack
-  // api.chainWebpackConfig(config => {
-  //   config
-  //     .plugin("umi-ui-compile-status")
-  //     .use(require("./CompileStatusWebpackPlugin").default);
-  // });
+  api.chainWebpack(config => {
+    config.plugin('umi-ui-compile-status').use(require('./CompileStatusWebpackPlugin').default);
+  });
 };
