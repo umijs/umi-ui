@@ -68,17 +68,6 @@ const Layout: React.FC<ILayoutProps> = props => {
   const framework = `${frameworkName} UI`;
   const icon = basicUI.logo_remote || '//gw.alipayobjects.com/zos/antfincdn/KjbXlRsRBz/umi.png';
 
-  const getTitle = () => {
-    if (title) {
-      // dashboard plugin title
-      if (currentProject.name && type !== 'list') {
-        return `${title} - ${currentProject.name}`;
-      }
-      return `${title} - ${framework}`;
-    }
-    return framework;
-  };
-
   return (
     <div className={layoutCls}>
       <Context.Provider
@@ -97,7 +86,7 @@ const Layout: React.FC<ILayoutProps> = props => {
       >
         <Helmet>
           <html lang={locale === 'zh-CN' ? 'zh' : 'en'} />
-          <title>{getTitle()}</title>
+          <title>Umi UI</title>
           <link rel="shortcut icon" href={icon} type="image/x-icon" />
         </Helmet>
         <ErrorBoundary>{props.children}</ErrorBoundary>

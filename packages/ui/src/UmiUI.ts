@@ -1,24 +1,18 @@
 import 'regenerator-runtime/runtime';
 import assert from 'assert';
-import chalk from 'chalk';
 import emptyDir from 'empty-dir';
 import express from 'express';
 import http from 'http';
 import url from 'url';
 import compression from 'compression';
 import clearModule from 'clear-module';
-import { join, resolve, dirname } from 'path';
+import { join, resolve, dirname, isAbsolute } from 'path';
 import launchEditor from '@umijs/launch-editor';
 import openBrowser from 'react-dev-utils/openBrowser';
 import { existsSync, readFileSync, statSync } from 'fs';
 import { execSync } from 'child_process';
-import got from 'got';
-import { pick } from 'lodash';
-import { Service } from '@umijs/core';
-import rimraf from 'rimraf';
-import portfinder from 'portfinder';
+import { utils, Service } from 'umi';
 import resolveFrom from 'resolve-from';
-import semver from 'semver';
 import Config from './Config';
 import getClientScript, { getBasicScriptContent } from './getClientScript';
 import listDirectory from './listDirectory';
@@ -30,9 +24,12 @@ import { isDepLost, isPluginLost, isUmiProject, isUsingBigfish, isUsingUmi } fro
 import getScripts from './scripts';
 import isDepFileExists from './utils/isDepFileExists';
 import initTerminal, { resizeTerminal } from './terminal';
-// import detectLanguage from './detectLanguage';
+import detectLanguage from './detectLanguage';
 import detectNpmClients from './detectNpmClients';
 import debug, { debugSocket } from './debug';
+
+const { winPath, lodash, got, semver, portfinder, rimraf, chalk } = utils;
+const { pick, uniq } = lodash;
 
 process.env.UMI_UI = 'true';
 
@@ -325,8 +322,8 @@ export default class UmiUI {
   }
 
   async createProject(opts = {}, { onSuccess, onFailure, onProgress, lang }) {
-    let key = opts.key;
-    let retryFrom = opts.retryFrom;
+    let { key } = opts;
+    let { retryFrom } = opts;
 
     let createOpts = opts;
     if (key) {
@@ -556,6 +553,46 @@ export default class UmiUI {
     return this.npmClients;
   }
 
+  async getRouteComponents({ service }) {
+    const routes = await service.getRoutes();
+
+    const getComponents = routes => {
+      return routes.reduce((memo, route) => {
+        if (route.component && !route.component.startsWith('()')) {
+          const component = isAbsolute(route.component)
+            ? route.component
+            : require.resolve(join(this.cwd, route.component));
+          memo.push(winPath(component));
+        }
+        if (route.routes) {
+          memo = memo.concat(getComponents(route.routes));
+        }
+        return memo;
+      }, []);
+    };
+
+    return uniq(getComponents(routes));
+  }
+
+  async detectLanguage({ success, failure, key }) {
+    const service = this.servicesByKey[key];
+    try {
+      const routeComponents = await this.getRouteComponents({
+        service,
+      });
+
+      const language = detectLanguage(service.cwd, {
+        routeComponents,
+      });
+
+      success({
+        language,
+      });
+    } catch (e) {
+      failure(e);
+    }
+  }
+
   // reloadProject(key: string) {}
 
   handleCoreData({ type, payload, lang, key }, { log, send, success, failure, progress }) {
@@ -706,14 +743,11 @@ export default class UmiUI {
       case '@@project/detectLanguage':
         try {
           assert(key && this.servicesByKey[key], `Detect language failed, key must be supplied.`);
-          // TODO
-          // const service = this.servicesByKey[key];
-          // success({
-          //   language: detectLanguage(service.cwd, {
-          //     routeComponents: service.getRouteComponents(),
-          //   }),
-          // });
-          success({ language: 'TypeScript' });
+          this.detectLanguage({
+            key,
+            success,
+            failure,
+          });
         } catch (e) {
           console.error(e);
           failure({
@@ -893,7 +927,8 @@ export default class UmiUI {
 
       app.use('/*', async (req, res) => {
         const scripts = await getScripts();
-        if (process.env.LOCAL_DEBUG) {
+        const localeDebug = !existsSync(join(__dirname, '../client/dist/index.html'));
+        if (localeDebug) {
           try {
             const { body } = await got(`http://localhost:8002${req.path}`);
             res.set('Content-Type', 'text/html');

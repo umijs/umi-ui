@@ -16,6 +16,9 @@
     "@umijs/ui-theme": "1.0.0",
     "@umijs/ui-types": "1.0.1"
   },
+  "peerDependencies": {
+    "umi": "3.x"
+  },
   "repository": {
     "type": "git",
     "url": "http://github.com/umijs/ui",
@@ -31,7 +34,6 @@
   "dependencies": {
     "@umijs/launch-editor": "^1.0.0",
     "binary-mirror-config": "1.20.3",
-    "chalk": "2.4.2",
     "clear-module": "4.0.0",
     "compression": "1.7.4",
     "cross-spawn": "6.0.5",
@@ -51,7 +53,6 @@
     "rimraf": "3.0.0",
     "semver": "6.3.0",
     "sockjs": "0.3.19",
-    "umi-build-dev": "^1.17.1",
     "user-home": "2.0.0"
   }
 }

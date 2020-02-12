@@ -7,11 +7,6 @@ const config: IConfig = {
       component: '../layouts/index',
       routes: [
         {
-          name: 'Blank',
-          path: '/blank',
-          component: './blank',
-        },
-        {
           path: '/',
           component: '../pages/index',
         },

@@ -10,17 +10,6 @@ export default function({ success, payload, api, lang, failure }) {
   };
 
   /**
-   * 获取config 中 react 的判断
-   * @param reactPlugin   reactPlugin<any>
-   */
-  function genReactPluginOpts(reactPlugin?: any) {
-    if (reactPlugin && typeof reactPlugin !== 'string') {
-      return reactPlugin[1];
-    }
-    return {};
-  }
-
-  /**
    * 是不是有这个 feature tag
    * @param feature
    */
@@ -42,10 +31,6 @@ export default function({ success, payload, api, lang, failure }) {
 
   const payloadType = (payload as { type: string }).type === 'block' ? '区块' : '模板';
   const isBigfish = !!process.env.BIGFISH_COMPAT;
-  const reactPlugin = (api.userConfig.plugins || []).find(p => {
-    return p === 'umi-plugin-react' || p[0] === 'umi-plugin-react';
-  });
-  const reactPluginOpts = genReactPluginOpts(reactPlugin);
 
   // 提前判断是否有 package.json，区块添加时如果没有会报错
   if (!existsSync(join(api.cwd, 'package.json'))) {
@@ -58,11 +43,9 @@ export default function({ success, payload, api, lang, failure }) {
     return;
   }
 
-  const bigfishLocaleEnable = api.userConfig.locale && api.userConfig.locale.enable !== false;
-
   const checkConfigRules = {
     dva: {
-      enable: isBigfish ? api.userConfig.dva !== false : reactPlugin && reactPluginOpts.dva,
+      enable: api.userConfig.dva !== false,
       message: {
         'zh-CN': isBigfish
           ? `${payloadType}依赖 dva，请开启 dva 配置。`
@@ -73,9 +56,7 @@ export default function({ success, payload, api, lang, failure }) {
       },
     },
     i18n: {
-      enable: isBigfish
-        ? !!bigfishLocaleEnable
-        : reactPlugin && reactPluginOpts.locale && reactPluginOpts.locale.enable !== false,
+      enable: api.userConfig.locale && api.userConfig.locale.enable !== false,
       message: {
         'zh-CN': isBigfish
           ? `${payloadType}依赖 locale，请开启 locale 配置。`

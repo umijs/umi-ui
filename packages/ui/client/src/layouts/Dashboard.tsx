@@ -1,7 +1,7 @@
 import { Icon } from '@ant-design/compatible';
 import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col } from 'antd';
 import { LeftOutlined, CaretDownOutlined, ExportOutlined } from '@ant-design/icons';
-import { FormattedMessage, NavLink, withRouter, useIntl } from 'umi';
+import { FormattedMessage, NavLink, withRouter } from 'umi';
 import React, { useState, useLayoutEffect, Fragment } from 'react';
 import * as IUi from '@umijs/ui-types';
 import { stringify, parse } from 'qs';
@@ -35,7 +35,6 @@ const DefaultProvider = props => <div {...props}>{props.children}</div>;
 export default withRouter(props => {
   const _log = debug.extend('Dashboard');
   const { pathname } = props.location;
-  const intl = useIntl();
   const activePanel = getActivePanel(pathname) ? getActivePanel(pathname) : {};
   const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
   const [actions, setActionPanel] = useState<IUi.IPanelAction>();
@@ -71,15 +70,15 @@ export default withRouter(props => {
     }
   };
 
-  const title = activePanel.title ? intl.formatMessage({ id: activePanel.title }) : '';
+  const title = activePanel.title || '';
   const { panels } = window.g_service;
   const normalPanels = panels.filter(panel => !panel.beta);
   const betaPanels = panels.filter(panel => panel.beta);
   const Provider = activePanel?.provider || DefaultProvider;
-  const { headerTitle = title, path = '/' } = activePanel;
+  const { headerTitle, path = '/' } = activePanel;
 
   return (
-    <UiLayout type="detail" title={title}>
+    <UiLayout type="detail" title={<FormattedMessage id={title} />}>
       <Context.Consumer>
         {({ currentProject, theme, isMini, locale, basicUI }) => {
           const openEditor = async () => {
@@ -97,9 +96,11 @@ export default withRouter(props => {
               <Menu.ItemGroup
                 key="projects"
                 title={
-                  projects.length > 1
-                    ? intl.formatMessage({ id: 'org.umi.ui.global.panel.recent.open' })
-                    : intl.formatMessage({ id: 'org.umi.ui.global.panel.recent.open.empty' })
+                  projects.length > 1 ? (
+                    <FormattedMessage id="org.umi.ui.global.panel.recent.open" />
+                  ) : (
+                    <FormattedMessage id="org.umi.ui.global.panel.recent.open.empty" />
+                  )
                 }
               >
                 {currentProject &&
@@ -138,8 +139,12 @@ export default withRouter(props => {
               return <Icon {...icon} />;
             };
 
-            const titleText = intl.formatMessage({ id: panel.title });
-            const titleNode = renderTitle ? renderTitle(titleText) : titleText;
+            const titleText = panel.title;
+            const titleNode = renderTitle ? (
+              renderTitle(titleText)
+            ) : (
+              <FormattedMessage id={titleText} />
+            );
 
             return (
               <Menu.Item
@@ -193,7 +198,7 @@ export default withRouter(props => {
                   <Col>
                     <p className={styles['mini-header-name']}>{currentProject?.name || ''}</p>
                     <Tooltip
-                      title={intl.formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}
+                      title={<FormattedMessage id="org.umi.ui.global.project.editor.open" />}
                     >
                       <ExportOutlined onClick={openEditor} />
                     </Tooltip>
@@ -303,7 +308,7 @@ export default withRouter(props => {
                               return (
                                 title && (
                                   <Button key={j.toString()} onClick={handleClick} {...btnProps}>
-                                    {intl.formatMessage({ id: title })}
+                                    <FormattedMessage id={title} />
                                   </Button>
                                 )
                               );

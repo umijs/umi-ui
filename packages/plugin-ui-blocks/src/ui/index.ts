@@ -1,4 +1,5 @@
 import { IApi } from 'umi';
+import { isAbsolute, join } from 'path';
 import server from './server';
 
 export interface IApiBlock extends IApi {
@@ -7,7 +8,7 @@ export interface IApiBlock extends IApi {
 
 export default (api: IApiBlock) => {
   const { utils } = api;
-  const { winPath } = utils;
+  const { winPath, lodash } = utils;
   // 客户端
   api.addUIPlugin(() => require.resolve('../../dist/index.umd'));
   // 服务端
@@ -19,9 +20,30 @@ export default (api: IApiBlock) => {
   //   routeComponents = api.getRouteComponents();
   // });
 
-  api.modifyBabelOpts(babelOpts => {
-    const routeComponents = api.getRouteComponents();
+  const getRouteComponents = routes => {
+    const getComponents = routes => {
+      return routes.reduce((memo, route) => {
+        if (route.component && !route.component.startsWith('()')) {
+          const component = isAbsolute(route.component)
+            ? route.component
+            : require.resolve(join(this.cwd, route.component));
+          memo.push(winPath(component));
+        }
+        if (route.routes) {
+          memo = memo.concat(getComponents(route.routes));
+        }
+        return memo;
+      }, []);
+    };
+
+    return lodash.uniq(getComponents(routes));
+  };
+
+  api.modifyBabelOpts(async babelOpts => {
+    const routes = await api.getRoutes();
+    const routeComponents = getRouteComponents(routes);
     const { plugins } = babelOpts;
+    console.log('routeComponents', routeComponents);
     return {
       ...babelOpts,
       plugins: [
@@ -30,6 +52,7 @@ export default (api: IApiBlock) => {
           require.resolve('../sdk/flagBabelPlugin'),
           {
             doTransform(filename) {
+              console.log('filename', filename);
               return routeComponents.includes(winPath(filename));
             },
           },
@@ -37,14 +60,6 @@ export default (api: IApiBlock) => {
       ],
     };
   });
-
-  // api.modifyAFWebpackOpts(memo => {
-  //   routeComponents = api.getRouteComponents();
-  //   memo.extraBabelPlugins = [
-  //     ...(memo.extraBabelPlugins || []),
-  //   ];
-  //   return memo;
-  // });
 
   api.addEntryCode(
     () => `
@@ -56,6 +71,7 @@ export default (api: IApiBlock) => {
   window.addEventListener('message', (event) => {
     try {
       const { action, data } = JSON.parse(event.data);
+      console.log('client block', { action, data });
       switch (action) {
         case 'umi.ui.checkValidEditSection':
           const haveValid = !!document.querySelectorAll('div.g_umiuiBlockAddEditMode').length;

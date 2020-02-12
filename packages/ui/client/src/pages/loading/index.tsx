@@ -11,7 +11,6 @@ import { setCurrentProject } from '@/services/project';
 import { history } from 'umi';
 import Terminal from '@/components/Terminal';
 import Context from '@/layouts/Context';
-import intl from '@/utils/intl';
 import { DINGTALK_MEMBERS } from '@/enums';
 import debug from '@/debug';
 import actions from './actions';
@@ -158,11 +157,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
             <ConfigProvider locale={antdLocaleMap[context.locale]}>
               <div className={styles.loading}>
                 <Fail
-                  title={
-                    actionLoading
-                      ? intl({ id: 'org.umi.ui.loading.onloading' })
-                      : intl({ id: 'org.umi.ui.loading.error' })
-                  }
+                  title={actionLoading ? '执行中' : '项目打开失败'}
                   loading={actionLoading}
                   subTitle={renderSubTitle(error)}
                   extra={actionsDeps}
@@ -176,7 +171,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
       <div className={styles.loading}>
         <div className={styles['loading-spin']}>
           <Spin size="large" />
-          <p>{intl({ id: 'org.umi.ui.loading.open' })}</p>
+          <p>正在打开项目</p>
         </div>
       </div>
     );

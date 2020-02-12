@@ -1,6 +1,7 @@
-export default function({ blockService, success }) {
+export default async function({ blockService, success }) {
+  const data = await blockService.depthRouteComponentConfig();
   success({
-    data: blockService.depthRouteComponentConfig(),
-    success: true
+    data,
+    success: true,
   });
 }

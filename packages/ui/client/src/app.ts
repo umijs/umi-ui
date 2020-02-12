@@ -52,7 +52,7 @@ const initBasicUI = async () => {
       // Init the baseUI
       window.g_uiBasicUI.forEach(basicUI => {
         // only readable
-        basicUI(Object.freeze(new PluginAPI(service)));
+        basicUI(new PluginAPI(service));
       });
     }
   } catch (e) {
@@ -112,10 +112,10 @@ export async function render(oldRender) {
   } catch (e) {
     console.error('Init socket failed', e);
   }
-  ReactDOM.render(
-    React.createElement(require('./pages/loading').default, {}),
-    document.getElementById('root'),
-  );
+  // ReactDOM.render(
+  //   React.createElement(require('./pages/loading').default, {}),
+  //   document.getElementById('root'),
+  // );
   await initBasicUI();
   const { data } = await callRemote({ type: '@@project/list' });
   const props = {
@@ -154,10 +154,10 @@ export async function render(oldRender) {
     }
     if (props.error) {
       history.replace(`/error?key=${key}`);
-      ReactDOM.render(
-        React.createElement(require('./pages/loading').default, props),
-        document.getElementById('root'),
-      );
+      // ReactDOM.render(
+      //   React.createElement(require('./pages/loading').default, props),
+      //   document.getElementById('root'),
+      // );
       await clearCurrentProject();
       return false;
     }

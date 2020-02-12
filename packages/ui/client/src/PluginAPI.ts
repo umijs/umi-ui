@@ -48,7 +48,7 @@ export default class PluginAPI {
   hooks: any;
   request: any;
 
-  constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
+  constructor(service: IUi.IService, currentProject?: IUi.ICurrentProject) {
     this.service = service;
     this.callRemote = callRemote;
     this.listenRemote = listenRemote;
