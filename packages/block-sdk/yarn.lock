@@ -1217,6 +1217,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/cross-spawn@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@types/cross-spawn/-/cross-spawn-6.0.1.tgz#60fa0c87046347c17d9735e5289e72b804ca9b63"
+  integrity sha512-MtN1pDYdI6D6QFDzy39Q+6c9rl2o/xN7aWGe6oZuzqq5N6+YuwFsWiEAv3dNzvzN9YzU+itpN8lBzFpphQKLAw==
+  dependencies:
+    "@types/node" "*"
+
 "@types/debug@4.1.5":
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.5.tgz#b14efa8852b7768d898906613c23f688713e02cd"
@@ -1326,10 +1333,10 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
-"@types/mkdirp@0.5.2":
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/@types/mkdirp/-/mkdirp-0.5.2.tgz#503aacfe5cc2703d5484326b1b27efa67a339c1f"
-  integrity sha512-U5icWpv7YnZYGsN4/cmh3WD2onMY0aJIiTE6+51TwJCttdHvtCYmkBNOobHlXwrJRL0nkH9jH4kD+1FAdMN4Tg==
+"@types/mkdirp@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/mkdirp/-/mkdirp-1.0.0.tgz#16ce0eabe4a9a3afe64557ad0ee6886ec3d32927"
+  integrity sha512-ONFY9//bCEr3DWKON3iDv/Q8LXnhaYYaNDeFSN0AtO5o4sLf9F0pstJKKKjQhXE0kJEeHs8eR6SAsROhhc2Csw==
   dependencies:
     "@types/node" "*"
 
@@ -1338,10 +1345,15 @@
   resolved "https://registry.yarnpkg.com/@types/mustache/-/mustache-4.0.0.tgz#8db01fdff5210646a9d8819ad2aca0ccb5fef12a"
   integrity sha512-AVBOcLJenbpCIJcHUvGWj+YMlaiwcFlGK1YEH2mePXkB5B/vQLrFkHG9IpBH71mXnkbibc4V8Nnn1wJSxcgCEA==
 
-"@types/node@*", "@types/node@13.7.0":
+"@types/node@*":
   version "13.7.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.7.0.tgz#b417deda18cf8400f278733499ad5547ed1abec4"
   integrity sha512-GnZbirvmqZUzMgkFn70c74OQpTTUcCzlhQliTzYjQMqg+hVKcDnxdL19Ne3UdYzdMA/+W3eb646FWn/ZaT1NfQ==
+
+"@types/node@13.7.1":
+  version "13.7.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.7.1.tgz#238eb34a66431b71d2aaddeaa7db166f25971a0d"
+  integrity sha512-Zq8gcQGmn4txQEJeiXo/KiLpon8TzAl0kmKH4zdWctPj05nWwp1ClMdAVEloqrQKfaC48PNLdgN/aVaLqUrluA==
 
 "@types/node@^12.6.2":
   version "12.12.26"
@@ -1565,17 +1577,17 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@umijs/babel-plugin-auto-css-modules@3.0.0-beta.10":
-  version "3.0.0-beta.10"
-  resolved "https://registry.yarnpkg.com/@umijs/babel-plugin-auto-css-modules/-/babel-plugin-auto-css-modules-3.0.0-beta.10.tgz#7d881988523accab1fbb86566ac92a67aab3a863"
-  integrity sha512-tpMl5BWqO/M9MBYav2GMUUQIhSglQ6MWijPKFqNp76rlfMX3BlgIjodZsbACFTgYzbWIywBIpdSVZsLkirBZbw==
+"@umijs/babel-plugin-auto-css-modules@3.0.0-beta.11":
+  version "3.0.0-beta.11"
+  resolved "https://registry.yarnpkg.com/@umijs/babel-plugin-auto-css-modules/-/babel-plugin-auto-css-modules-3.0.0-beta.11.tgz#23e3842468c550bed0422af81479ea0692353d10"
+  integrity sha512-gutRD23b204ArvrAHW+DH8GeAUwzUk3T/w53l+cl2EvUobpbbEGLIpSIVhhFV6CtFnH9WCcmgi7721coAW0XMA==
   dependencies:
-    "@umijs/utils" "3.0.0-beta.10"
+    "@umijs/utils" "3.0.0-beta.11"
 
-"@umijs/babel-preset-umi@3.0.0-beta.10":
-  version "3.0.0-beta.10"
-  resolved "https://registry.yarnpkg.com/@umijs/babel-preset-umi/-/babel-preset-umi-3.0.0-beta.10.tgz#f537625f8525a7b19033d6d8ba4d2ad71dd78b3b"
-  integrity sha512-a94NCX9xdDXJ9kIyy33vtcipzfHHGHL1sFy9ausFsX+uffx/F2Q+A0GVSNGL3KjoHUbvK7gf7ghmy8rh1H/06Q==
+"@umijs/babel-preset-umi@3.0.0-beta.11":
+  version "3.0.0-beta.11"
+  resolved "https://registry.yarnpkg.com/@umijs/babel-preset-umi/-/babel-preset-umi-3.0.0-beta.11.tgz#0a9ca4e8130aeaa4248d33499145390e2c342dc4"
+  integrity sha512-cATi0pUInWiRZpDFmBAab5I60o3092fYL/sU+QenJa3tLUeKgwOtggbf2zonGQz2REgUG6WUAyUTxGC1gZgVog==
   dependencies:
     "@babel/plugin-proposal-class-properties" "7.8.3"
     "@babel/plugin-proposal-decorators" "7.8.3"
@@ -1590,32 +1602,30 @@
     "@babel/preset-typescript" "7.8.3"
     "@babel/runtime" "7.8.4"
     "@svgr/webpack" "4.3.3"
-    "@umijs/babel-plugin-auto-css-modules" "3.0.0-beta.10"
+    "@umijs/babel-plugin-auto-css-modules" "3.0.0-beta.11"
     babel-plugin-dynamic-import-node "2.3.0"
     babel-plugin-import "^1.13.0"
     babel-plugin-named-asset-import "0.3.6"
     babel-plugin-react-require "3.1.3"
     babel-plugin-transform-react-remove-prop-types "0.4.24"
 
-"@umijs/core@3.0.0-beta.10":
-  version "3.0.0-beta.10"
-  resolved "https://registry.yarnpkg.com/@umijs/core/-/core-3.0.0-beta.10.tgz#41008387fec792d284ac56cd10c106d904869f83"
-  integrity sha512-mLfY+r7Oe1sN4EFglQmvSuKGCJUX/ojXyqAQlJ1Zh8ZLE7DZbPbi9nCpcomYJgcEkff5oUGVA+dzbX3F/97UAA==
+"@umijs/core@3.0.0-beta.11":
+  version "3.0.0-beta.11"
+  resolved "https://registry.yarnpkg.com/@umijs/core/-/core-3.0.0-beta.11.tgz#6987b1207511e35c8b0b7fd80cfcc7de3e470365"
+  integrity sha512-pNc5uLhC5qPbeBu9sKYvLtPNnmPp8II4pYdtIu1N3QVlSre0SDbdpK8RW9HfRt83aI2sFahLZzQiAKhG8yHTJg==
   dependencies:
     "@babel/core" "7.8.4"
     "@babel/register" "7.8.3"
     "@hapi/joi" "16.1.8"
-    "@types/cheerio" "0.22.16"
     "@types/ejs" "3.0.0"
     "@types/hapi__joi" "16.0.6"
     "@types/marked" "^0.7.2"
     "@types/marked-terminal" "^3.1.1"
     "@types/tapable" "1.0.5"
-    "@umijs/babel-preset-umi" "3.0.0-beta.10"
+    "@umijs/babel-preset-umi" "3.0.0-beta.11"
     "@umijs/error-code-map" "^1.0.1"
-    "@umijs/utils" "3.0.0-beta.10"
+    "@umijs/utils" "3.0.0-beta.11"
     camelcase "5.3.1"
-    cheerio "1.0.0-rc.3"
     dotenv "8.2.0"
     ejs "3.0.1"
     marked "0.8.0"
@@ -1662,53 +1672,55 @@
     stylelint-declaration-block-no-ignored-properties "^2.1.0"
     stylelint-order "^3.0.0"
 
-"@umijs/server@3.0.0-beta.10":
-  version "3.0.0-beta.10"
-  resolved "https://registry.yarnpkg.com/@umijs/server/-/server-3.0.0-beta.10.tgz#bd273b56ac5d45dd5857be15cf5a49d74b7ed32b"
-  integrity sha512-5S5NWHrbyaUyCvgbnolIEOJ60bSojTfWRZ6D6gLkCzRre87vMA37AL4O2sj9oPrQlv+i+9IBaNqpL3JF0OVReA==
+"@umijs/server@3.0.0-beta.11":
+  version "3.0.0-beta.11"
+  resolved "https://registry.yarnpkg.com/@umijs/server/-/server-3.0.0-beta.11.tgz#215be827e12d62d8484cc3b7ac0540afdb7b8273"
+  integrity sha512-shI9CTaVfX98wQeT303YgUZ03LTYfnvbSrN6OQU9BeWucv+Isj5XN+/b29FD7Bcwad+TP9FkJoV3mCVNz+d02Q==
   dependencies:
     "@types/compression" "1.0.1"
     "@types/express" "4.17.2"
     "@types/http-proxy-middleware" "0.19.3"
-    "@types/node" "13.7.0"
+    "@types/node" "13.7.1"
     "@types/sockjs" "0.3.31"
     "@types/spdy" "3.4.4"
-    "@umijs/utils" "3.0.0-beta.10"
+    "@umijs/utils" "3.0.0-beta.11"
     compression "1.7.4"
     express "4.17.1"
     http-proxy-middleware "0.20.0"
-    immer "5.3.4"
+    immer "5.3.5"
     portfinder "1.0.25"
     sockjs "0.3.19"
     spdy "4.0.1"
 
-"@umijs/types@^3.0.0-beta.10":
-  version "3.0.0-beta.10"
-  resolved "https://registry.yarnpkg.com/@umijs/types/-/types-3.0.0-beta.10.tgz#2ae4033962050edee061cdebc9b8683a91ee5439"
-  integrity sha512-gJDPFUtphEWk5OjSB40DT+TeqbVZ0ND4jdFSA/HWa/c5kn+dzAhXLFPtNlli6EZQqlmu18Fe35vZwv/jax4ThA==
+"@umijs/types@^3.0.0-beta.11":
+  version "3.0.0-beta.11"
+  resolved "https://registry.yarnpkg.com/@umijs/types/-/types-3.0.0-beta.11.tgz#79dc39c575599d93efa73444b08c252bc3bf3554"
+  integrity sha512-Q47d7x8r8dbrwARC0RO0WgdDjLcYKA1WO1e7LGoCeBw4bsdtKUo9bQ5RmOojL/iJyApQ/h+Hf18S9KiqFd1o3Q==
   dependencies:
     "@types/cheerio" "0.22.16"
     "@types/express" "4.17.2"
     "@types/webpack" "4.41.4"
-    "@umijs/babel-preset-umi" "3.0.0-beta.10"
-    "@umijs/core" "3.0.0-beta.10"
-    "@umijs/server" "3.0.0-beta.10"
-    "@umijs/utils" "3.0.0-beta.10"
+    "@umijs/babel-preset-umi" "3.0.0-beta.11"
+    "@umijs/core" "3.0.0-beta.11"
+    "@umijs/server" "3.0.0-beta.11"
+    "@umijs/utils" "3.0.0-beta.11"
 
-"@umijs/utils@3.0.0-beta.10", "@umijs/utils@^3.0.0-beta.10":
-  version "3.0.0-beta.10"
-  resolved "https://registry.yarnpkg.com/@umijs/utils/-/utils-3.0.0-beta.10.tgz#ab3e86eab771526d6fd54fc2b74292c0eca74b01"
-  integrity sha512-/83o9FUlqB/YB2bpuCYje9XejsvHei5AQDMmZVbq0SRqwyUliEdWHWOQWb+ksn033F2/zGkkikAcwQV1WdriYQ==
+"@umijs/utils@3.0.0-beta.11", "@umijs/utils@^3.0.0-beta.11":
+  version "3.0.0-beta.11"
+  resolved "https://registry.yarnpkg.com/@umijs/utils/-/utils-3.0.0-beta.11.tgz#f53fc9ff545d9deb69b16ebe6d0e5fa9b2b12eba"
+  integrity sha512-fPjRAVAEkKDQYjaFLFpKtn6EKrl0O1VOJYEe85yBqojEkjdMOyCw6DTSX1tOgrcTK1UUHkbinHwIEbqTbdJqAw==
   dependencies:
     "@babel/parser" "7.8.4"
     "@babel/traverse" "7.8.4"
     "@babel/types" "7.8.3"
+    "@types/cheerio" "0.22.16"
     "@types/color" "3.0.1"
+    "@types/cross-spawn" "6.0.1"
     "@types/debug" "4.1.5"
     "@types/glob" "7.1.1"
     "@types/got" "9.6.9"
     "@types/lodash" "4.14.149"
-    "@types/mkdirp" "0.5.2"
+    "@types/mkdirp" "1.0.0"
     "@types/mustache" "4.0.0"
     "@types/prettier" "1.19.0"
     "@types/resolve" "1.14.0"
@@ -1719,10 +1731,12 @@
     "@types/yargs-parser" "15.0.0"
     address "1.1.2"
     chalk "3.0.0"
+    cheerio "1.0.0-rc.3"
     chokidar "3.3.1"
     clipboardy "2.1.0"
     color "3.1.2"
     crequire "1.8.1"
+    cross-spawn "7.0.1"
     debug "4.1.1"
     deepmerge "4.2.2"
     execa "4.0.0"
@@ -1735,7 +1749,7 @@
     prettier "1.19.1"
     resolve "1.15.1"
     rimraf "3.0.2"
-    semver "7.1.2"
+    semver "7.1.3"
     signale "1.4.0"
     yargs "15.1.0"
     yargs-parser "17.0.0"
@@ -2648,6 +2662,15 @@ crequire@1.8.1:
   resolved "https://registry.yarnpkg.com/crequire/-/crequire-1.8.1.tgz#ac81f204786b5f201194eb1698cf441b10a4b57d"
   integrity sha1-rIHyBHhrXyARlOsWmM9EGxCktX0=
 
+cross-spawn@7.0.1, cross-spawn@^7.0.0:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.1.tgz#0ab56286e0f7c24e153d04cc2aa027e43a9a5d14"
+  integrity sha512-u7v4o84SwFpD32Z8IIcPZ6z1/ie24O6RU3RbtL5Y316l3KuHVPx9ItBgWQ6VlfAFnRnTtMUrsQ9MUUTuEZjogg==
+  dependencies:
+    path-key "^3.1.0"
+    shebang-command "^2.0.0"
+    which "^2.0.1"
+
 cross-spawn@^6.0.0, cross-spawn@^6.0.5:
   version "6.0.5"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-6.0.5.tgz#4a5ec7c64dfae22c3a14124dbacdee846d80cbc4"
@@ -2658,15 +2681,6 @@ cross-spawn@^6.0.0, cross-spawn@^6.0.5:
     semver "^5.5.0"
     shebang-command "^1.2.0"
     which "^1.2.9"
-
-cross-spawn@^7.0.0:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.1.tgz#0ab56286e0f7c24e153d04cc2aa027e43a9a5d14"
-  integrity sha512-u7v4o84SwFpD32Z8IIcPZ6z1/ie24O6RU3RbtL5Y316l3KuHVPx9ItBgWQ6VlfAFnRnTtMUrsQ9MUUTuEZjogg==
-  dependencies:
-    path-key "^3.1.0"
-    shebang-command "^2.0.0"
-    which "^2.0.1"
 
 css-select-base-adapter@^0.1.1:
   version "0.1.1"
@@ -4232,10 +4246,10 @@ ignore@^5.0.4, ignore@^5.0.5, ignore@^5.0.6, ignore@^5.1.1:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.1.4.tgz#84b7b3dbe64552b6ef0eca99f6743dbec6d97adf"
   integrity sha512-MzbUSahkTW1u7JpKKjY7LCARd1fU5W2rLdxlM4kdkayuCwZImjkpluF9CM1aLewYJguPDqewLam18Y6AU69A8A==
 
-immer@5.3.4:
-  version "5.3.4"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-5.3.4.tgz#84edcfc0033e0db076a986fa9cdf28d035e97a67"
-  integrity sha512-2SmrJY1MviStaIM+nGWGQVrSxICx5QnzrgtDQgIv0vAka9urVnOR4ZGNFFXo04cnZUqQ2T1W7MjHVTVJoYujFg==
+immer@5.3.5:
+  version "5.3.5"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-5.3.5.tgz#6af4e1b74957b7d7ff9de6e170f59fa8e93e7462"
+  integrity sha512-bX74RWLu00PmYdyUnxjqSaszr/qPgO72okXU+CSAD+LIZOe7sgeva/bUn4Rn4wVoSg9wbsBXmU+TPEOKeaXO9g==
 
 import-fresh@^2.0.0:
   version "2.0.0"
@@ -6657,10 +6671,10 @@ semver@7.0.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.0.0.tgz#5f3ca35761e47e05b206c6daff2cf814f0316b8e"
   integrity sha512-+GB6zVA9LWh6zovYQLALHwv5rb2PHGlJi3lfiqIHxR0uuwCgefcOJc59v9fv1w8GbStwxuuqqAjI9NMAOOgq1A==
 
-semver@7.1.2:
-  version "7.1.2"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-7.1.2.tgz#847bae5bce68c5d08889824f02667199b70e3d87"
-  integrity sha512-BJs9T/H8sEVHbeigqzIEo57Iu/3DG6c4QoqTfbQB3BPA4zgzAomh/Fk9E7QtjWQ8mx2dgA9YCfSF4y9k9bHNpQ==
+semver@7.1.3:
+  version "7.1.3"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.1.3.tgz#e4345ce73071c53f336445cfc19efb1c311df2a6"
+  integrity sha512-ekM0zfiA9SCBlsKa2X1hxyxiI4L3B6EbVJkkdgQXnSEEaHlGdvyodMruTiulSRWMMB4NeIuYNMC9rTKTz97GxA==
 
 semver@^6.0.0, semver@^6.2.0, semver@^6.3.0:
   version "6.3.0"
