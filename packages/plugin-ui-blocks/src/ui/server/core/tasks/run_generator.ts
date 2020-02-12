@@ -1,7 +1,9 @@
-import { winPath } from 'umi-utils';
+import { utils } from 'umi';
 import { join } from 'path';
 import { getBlockGenerator, getNameFromPkg } from '@umijs/block-sdk';
 import { IFlowContext, IAddBlockOption } from '../types';
+
+const { winPath } = utils;
 
 const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { logger, api } = ctx;

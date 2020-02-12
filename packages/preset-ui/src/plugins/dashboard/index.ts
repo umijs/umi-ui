@@ -1,15 +1,13 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import got from 'got';
 import p from 'immer';
-import mkdirp from 'mkdirp';
 import assert from 'assert';
-import { IApi } from 'umi-types';
+import { IApi, utils } from 'umi';
+
+const { got, mkdirp } = utils;
 
 export default (api: IApi) => {
-  const getDataPath = dbPath => {
-    return path.join(dbPath, 'dashboard.json');
-  };
+  const getDataPath = dbPath => path.join(dbPath, 'dashboard.json');
 
   const writeData = (dbPath, data = []) => {
     const dbDataPath = getDataPath(dbPath);

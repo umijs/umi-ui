@@ -1,6 +1,6 @@
-import assert from "assert";
-import { winPath } from "umi-utils";
-import * as t from "@babel/types";
+import assert from 'assert';
+import { utils } from 'umi';
+import * as t from '@babel/types';
 import {
   findExportDefaultDeclaration,
   getIdentifierDeclaration,
@@ -8,59 +8,48 @@ import {
   getReturnNode,
   isJSXElement,
   haveChildren,
-  isChildFunc
-} from "../util";
+  isChildFunc,
+} from '../util';
 import {
   BLOCK_LAYOUT_PREFIX,
   INSERT_BLOCK_PLACEHOLDER,
-  UMI_UI_FLAG_PLACEHOLDER
-} from "../constants";
+  UMI_UI_FLAG_PLACEHOLDER,
+} from '../constants';
+
+const { winPath } = utils;
 
 export default () => {
   function buildGUmiUIFlag(opts) {
     const { index, filename, jsx, inline, content } = opts;
     if (jsx) {
       const attrs = [
-        t.jsxAttribute(
-          t.jsxIdentifier("filename"),
-          t.stringLiteral(`${filename}`)
-        ),
-        t.jsxAttribute(t.jsxIdentifier("index"), t.stringLiteral(`${index}`))
+        t.jsxAttribute(t.jsxIdentifier('filename'), t.stringLiteral(`${filename}`)),
+        t.jsxAttribute(t.jsxIdentifier('index'), t.stringLiteral(`${index}`)),
       ];
       if (inline) {
-        attrs.push(
-          t.jsxAttribute(t.jsxIdentifier("inline"), t.stringLiteral("true"))
-        );
+        attrs.push(t.jsxAttribute(t.jsxIdentifier('inline'), t.stringLiteral('true')));
       }
       return t.jsxElement(
-        t.jsxOpeningElement(t.jsxIdentifier("GUmiUIFlag"), attrs),
-        t.jsxClosingElement(t.jsxIdentifier("GUmiUIFlag")),
+        t.jsxOpeningElement(t.jsxIdentifier('GUmiUIFlag'), attrs),
+        t.jsxClosingElement(t.jsxIdentifier('GUmiUIFlag')),
         content ? [t.jsxText(content)] : [],
-        false
+        false,
       );
     } else {
       const attrs = [
-        t.objectProperty(
-          t.identifier("filename"),
-          t.stringLiteral(`${filename}`)
-        ),
-        t.objectProperty(t.identifier("index"), t.stringLiteral(`${index}`))
+        t.objectProperty(t.identifier('filename'), t.stringLiteral(`${filename}`)),
+        t.objectProperty(t.identifier('index'), t.stringLiteral(`${index}`)),
       ];
       if (inline) {
-        attrs.push(
-          t.objectProperty(t.identifier("inline"), t.stringLiteral("true"))
-        );
+        attrs.push(t.objectProperty(t.identifier('inline'), t.stringLiteral('true')));
       }
       return t.callExpression(
-        t.memberExpression(
-          t.identifier("React"),
-          t.identifier("createElement")
-        ),
+        t.memberExpression(t.identifier('React'), t.identifier('createElement')),
         [
-          t.identifier("GUmiUIFlag"),
+          t.identifier('GUmiUIFlag'),
           t.objectExpression(attrs),
-          ...(content ? [t.stringLiteral(content)] : [])
-        ]
+          ...(content ? [t.stringLiteral(content)] : []),
+        ],
       );
     }
   }
@@ -84,7 +73,7 @@ export default () => {
               addFlagToIndex(node.children, i === 0 ? i : i + 1, {
                 index,
                 filename,
-                jsx: true
+                jsx: true,
               });
               index -= 1;
             }
@@ -100,7 +89,7 @@ export default () => {
               addFlagToIndex(args, i + 1, {
                 index,
                 filename,
-                jsx: false
+                jsx: false,
               });
               index -= 1;
             }
@@ -114,24 +103,18 @@ export default () => {
             ? t.jsxFragment(t.jsxOpeningFragment(), t.jsxClosingFragment(), [
                 buildGUmiUIFlag({ index: 0, filename, jsx: true }) as any,
                 node,
-                buildGUmiUIFlag({ index: 1, filename, jsx: true })
+                buildGUmiUIFlag({ index: 1, filename, jsx: true }),
               ])
             : t.callExpression(
-                t.memberExpression(
-                  t.identifier("React"),
-                  t.identifier("createElement")
-                ),
+                t.memberExpression(t.identifier('React'), t.identifier('createElement')),
                 [
-                  t.memberExpression(
-                    t.identifier("React"),
-                    t.identifier("Fragment")
-                  ),
+                  t.memberExpression(t.identifier('React'), t.identifier('Fragment')),
                   t.nullLiteral(),
                   buildGUmiUIFlag({ index: 0, filename, jsx: false }),
                   node,
-                  buildGUmiUIFlag({ index: 1, filename, jsx: false })
-                ]
-              )
+                  buildGUmiUIFlag({ index: 1, filename, jsx: false }),
+                ],
+              ),
         );
       }
     } else {
@@ -149,25 +132,24 @@ export default () => {
         // 只处理 import 的声明
         if (!t.isImportDeclaration(p.parentPath.node)) return;
 
-        if (source.value === "react-document-title") {
+        if (source.value === 'react-document-title') {
           return true;
         }
 
         // antd 和 @alipay/tech-ui 里除部分用于布局的组件之外，其他组件作为根组件不会插入编辑区
         if (
-          (source.value === "antd" ||
-            source.value === "@alipay/bigfish/antd") &&
+          (source.value === 'antd' || source.value === '@alipay/bigfish/antd') &&
           t.isImportSpecifier(p.node) &&
           t.isIdentifier(p.node.imported) &&
-          !["Card", "Grid", "Layout"].includes(p.node.imported.name)
+          !['Card', 'Grid', 'Layout'].includes(p.node.imported.name)
         ) {
           return true;
         }
         if (
-          source.value === "@alipay/tech-ui" &&
+          source.value === '@alipay/tech-ui' &&
           t.isImportSpecifier(p.node) &&
           t.isIdentifier(p.node.imported) &&
-          !["PageContainer"].includes(p.node.imported.name)
+          !['PageContainer'].includes(p.node.imported.name)
         ) {
           return true;
         }
@@ -185,7 +167,7 @@ export default () => {
           layoutIndexByFilename = {};
 
           const { filename, opts = {} } = state;
-          assert(opts.doTransform, "opts.doTransform must supplied");
+          assert(opts.doTransform, 'opts.doTransform must supplied');
 
           if (!opts.doTransform(filename)) return;
           const { node } = path;
@@ -212,11 +194,11 @@ export default () => {
             if (retNode && !isInBlackList(retNode, path)) {
               addUmiUIFlag(retNode, {
                 filename: winPath(filename),
-                replace
+                replace,
               });
             }
           }
-        }
+        },
       },
 
       CallExpression(path, state) {
@@ -236,7 +218,7 @@ export default () => {
           args[2].value.startsWith(INSERT_BLOCK_PLACEHOLDER) &&
           t.isMemberExpression(callee) &&
           t.isIdentifier(callee.property, {
-            name: "createElement"
+            name: 'createElement',
           })
         ) {
           if (!layoutIndexByFilename[filename]) {
@@ -246,14 +228,14 @@ export default () => {
           const index = layoutIndexByFilename[filename];
           let content = null;
           if (args[2].value.startsWith(`${INSERT_BLOCK_PLACEHOLDER}:`)) {
-            content = args[2].value.replace(`${INSERT_BLOCK_PLACEHOLDER}:`, "");
+            content = args[2].value.replace(`${INSERT_BLOCK_PLACEHOLDER}:`, '');
           }
           args[2] = buildGUmiUIFlag({
             index: `${BLOCK_LAYOUT_PREFIX}${index}`,
             filename: winPath(filename),
             jsx: false,
             inline: true,
-            content
+            content,
           });
 
           layoutIndexByFilename[filename] += 1;
@@ -262,7 +244,7 @@ export default () => {
         if (
           t.isMemberExpression(callee) &&
           t.isIdentifier(callee.property, {
-            name: "createElement"
+            name: 'createElement',
           }) &&
           t.isIdentifier(args[0]) &&
           args[0].name === UMI_UI_FLAG_PLACEHOLDER
@@ -280,8 +262,8 @@ export default () => {
             args[1].properties.some(
               property =>
                 t.isProperty(property) &&
-                property.key?.name === "inline" &&
-                property.value?.value === true
+                property.key?.name === 'inline' &&
+                property.value?.value === true,
             )
           ) {
             inline = true;
@@ -293,13 +275,13 @@ export default () => {
               filename: winPath(filename),
               jsx: false,
               inline,
-              content
-            })
+              content,
+            }),
           );
 
           layoutIndexByFilename[filename] += 1;
         }
-      }
-    }
+      },
+    },
   };
 };

@@ -1,10 +1,12 @@
 import fs from 'fs';
 import { join } from 'path';
-import { findJS } from 'umi-utils';
+import { utils } from 'umi';
 import haveRootBinding from '@umijs/block-sdk/lib/sdk/haveRootBinding';
 
 import checkIfCanAdd from './org.umi.block.checkIfCanAdd';
 import checkBindingInFile from './org.umi.block.checkBindingInFile';
+
+const { getFile } = utils;
 
 jest.mock('@umijs/block-sdk/lib/sdk/haveRootBinding');
 
@@ -412,7 +414,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           winPath: v => v,
-          findJS,
+          getFile,
           paths: {
             absPagesPath: join('/', 'tmp', 'src', 'pages'),
           },
@@ -450,7 +452,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           winPath: v => v,
-          findJS,
+          getFile,
           paths: {
             absPagesPath: '/tmp/src/pages',
           },

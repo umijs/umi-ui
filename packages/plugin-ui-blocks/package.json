@@ -16,13 +16,10 @@
     "@babel/traverse": "7.4.5",
     "@babel/types": "7.4.4",
     "chalk": "2.4.2",
-    "debug": "4.1.1",
     "execa": "1.0.0",
     "getnpmregistry": "^1.0.1",
     "got": "9.6.0",
-    "lodash": "4.17.13",
     "ora": "3.4.0",
-    "umi-utils": "^1.7.2",
     "@umijs/block-sdk": "1.0.0",
     "uppercamelcase": "3.0.0"
   },

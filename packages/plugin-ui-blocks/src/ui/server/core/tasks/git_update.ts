@@ -1,9 +1,11 @@
 import assert from 'assert';
-import { winPath } from 'umi-utils';
+import { utils } from 'umi';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { IFlowContext, ICtxTypes, IAddBlockOption } from '../types';
 import { getNameFromPkg } from '@umijs/block-sdk';
+
+const { winPath } = utils;
 
 const isSubmodule = templateTmpDirPath => existsSync(join(templateTmpDirPath, '.gitmodules'));
 

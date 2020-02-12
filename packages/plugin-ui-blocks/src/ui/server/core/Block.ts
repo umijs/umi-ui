@@ -1,4 +1,4 @@
-import { IApi } from 'umi-types';
+import { IApi } from 'umi';
 import { Resource } from '@umijs/block-sdk/lib/data.d';
 import {
   routeExists,

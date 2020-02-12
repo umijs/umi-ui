@@ -1,8 +1,9 @@
 import { join } from 'path';
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'fs';
-import { winPath, winEOL } from 'umi-utils';
+import { utils } from 'umi';
 import insertComponent from './index';
 
+const { winPath, winEOL } = utils;
 const fixtures = winPath(join(__dirname, 'fixtures'));
 
 function formatCode(code) {

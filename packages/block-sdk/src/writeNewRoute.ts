@@ -4,9 +4,10 @@ import * as parser from '@babel/parser';
 import traverse from '@babel/traverse';
 import generate from '@babel/generator';
 import * as t from '@babel/types';
-import { winPath } from 'umi-utils';
+import { utils } from 'umi';
 import prettier from 'prettier';
 
+const { winPath } = utils;
 const debug = require('debug')('umi-build-dev:writeNewRoute');
 
 /**

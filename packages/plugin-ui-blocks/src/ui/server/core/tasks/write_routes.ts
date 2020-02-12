@@ -8,9 +8,7 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { skipModifyRoutes, layout: isLayout, dryRun, index } = args;
 
   if (generator.needCreateNewRoute && api.config.routes && !skipModifyRoutes) {
-    logger.appendLog(
-      `🛠 Start write route from ${generator.routePath} to ${api.service.userConfig.file}`,
-    );
+    logger.appendLog(`🛠 Start write route from ${generator.routePath} to ${api.userConfig.file}`);
     // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
     // 未来可以做下自动写入注释配置，支持约定式路由
     const newRouteConfig = await api.applyPlugins({
@@ -25,7 +23,7 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
     });
     try {
       if (!dryRun) {
-        writeNewRoute(newRouteConfig, api.service.userConfig.file, api.paths.absSrcPath);
+        writeNewRoute(newRouteConfig, api.userConfig.file, api.paths.absSrcPath);
       }
     } catch (e) {
       logger.appendLog(`Failed to write route: ${e.message}\n`);

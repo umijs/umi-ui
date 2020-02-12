@@ -1,4 +1,4 @@
-import { IConfig } from 'umi-types';
+import { IConfig } from '@umijs/types';
 export default {
   treeShaking: true,
   plugins: [

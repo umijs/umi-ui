@@ -8,7 +8,7 @@ export default (api: IApi) => {
   const [command] = process.argv.slice(2);
   if (
     process.env.UMI_UI !== 'none' &&
-    !api.service.userConfig.ssr &&
+    !api.userConfig.ssr &&
     (command === 'dev' || command === 'ui')
   ) {
     require('./ui/index').default(api);
