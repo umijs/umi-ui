@@ -7,7 +7,7 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { api, logger } = ctx;
   const { skipModifyRoutes, layout: isLayout, dryRun, index } = args;
 
-  if (generator.needCreateNewRoute && api.config.routes && !skipModifyRoutes) {
+  if (generator.needCreateNewRoute && api.userConfig.routes && !skipModifyRoutes) {
     logger.appendLog(`🛠 Start write route from ${generator.routePath} to ${api.userConfig.file}`);
     // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
     // 未来可以做下自动写入注释配置，支持约定式路由
