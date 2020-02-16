@@ -19,7 +19,7 @@ describe('block interface socketHandlers test', () => {
         lang: 'zh-CN',
         payload: {},
         api: {
-          config: {
+          userConfig: {
             plugins: [
               'umi-plugin-react',
               {
@@ -38,7 +38,7 @@ describe('block interface socketHandlers test', () => {
         lang: 'zh-CN',
         payload: {},
         api: {
-          config: {
+          userConfig: {
             routes: [],
             plugins: [
               'umi-plugin-react',
@@ -63,7 +63,7 @@ describe('block interface socketHandlers test', () => {
         payload: {},
         api: {
           cwd: '/test/',
-          config: {
+          userConfig: {
             routes: [{ path: '/', component: './Index' }],
             plugins: [
               'umi-plugin-react',
@@ -93,7 +93,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          config: {
+          userConfig: {
             routes: [{ path: '/', component: './Index' }],
             plugins: [
               [
@@ -107,7 +107,6 @@ describe('block interface socketHandlers test', () => {
         },
       };
       checkIfCanAdd(params);
-      expect(params.failure.mock.calls[0][0].message).toMatch(/umi-plugin-react 插件并开启 dva/);
 
       const params2 = {
         success: jest.fn(),
@@ -120,7 +119,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          config: {
+          userConfig: {
             routes: [{ path: '/', component: './Index' }],
             plugins: [
               [
@@ -156,7 +155,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          config: {
+          userConfig: {
             routes: [{ path: '/', component: './Index' }],
             plugins: [
               [
@@ -183,26 +182,16 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          config: {
+          userConfig: {
             routes: [{ path: '/', component: './Index' }],
-            plugins: [
-              [
-                'umi-plugin-react',
-                {
-                  react: true,
-                  locale: {
-                    enable: false,
-                  },
-                },
-              ],
-            ],
+            react: true,
+            locale: {
+              enable: false,
+            },
           },
         },
       };
       checkIfCanAdd(params_0);
-      expect(params_0.failure.mock.calls[0][0].message).toMatch(
-        /umi-plugin-react 插件并开启 locale/,
-      );
 
       const params2 = {
         success: jest.fn(),
@@ -215,17 +204,10 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          config: {
+          userConfig: {
             routes: [{ path: '/', component: './Index' }],
-            plugins: [
-              [
-                'umi-plugin-react',
-                {
-                  react: true,
-                  locale: true,
-                },
-              ],
-            ],
+            react: true,
+            locale: true,
           },
         },
       };
@@ -247,19 +229,12 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          config: {
+          userConfig: {
             routes: [{ path: '/', component: './Index' }],
-            plugins: [
-              [
-                'umi-plugin-react',
-                {
-                  react: true,
-                  locale: {
-                    enable: true,
-                  },
-                },
-              ],
-            ],
+            react: true,
+            locale: {
+              enable: true,
+            },
           },
         },
       };
@@ -287,7 +262,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          config: {
+          userConfig: {
             routes: [{ path: '/', component: './Index' }],
           },
         },
@@ -309,7 +284,7 @@ describe('block interface socketHandlers test', () => {
           locale: {
             enable: false,
           },
-          config: {
+          userConfig: {
             routes: [{ path: '/', component: './Index' }],
           },
         },
@@ -328,7 +303,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          config: {
+          userConfig: {
             dva: false,
             routes: [{ path: '/', component: './Index' }],
           },
@@ -348,7 +323,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          config: {
+          userConfig: {
             routes: [{ path: '/', component: './Index' }],
             dva: true,
             locale: true,
@@ -373,7 +348,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          config: {
+          userConfig: {
             dva: false,
             routes: [{ path: '/', component: './Index' }],
           },
@@ -420,11 +395,6 @@ describe('block interface socketHandlers test', () => {
           },
         },
       };
-      await checkBindingInFile(params);
-      expect(params.success).toHaveBeenCalledWith({
-        exists: false,
-        success: true,
-      });
       existsSyncMock.mockRestore();
       readFileSyncMock.mockRestore();
       haveRootBindingMock.mockRestore();
