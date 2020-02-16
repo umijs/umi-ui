@@ -4,7 +4,7 @@ import styles from './dailyReport.module.less';
 
 const DailyReportTitle = () => {
   const { api } = React.useContext(Context);
-  const { formatMessage } = api.intl;
+  const intl = api.useIntl();
 
   return (
     <a
@@ -13,7 +13,7 @@ const DailyReportTitle = () => {
       rel="noopener noreferrer"
       href="https://github.com/sorrycc/zaobao/issues"
     >
-      {formatMessage({ id: 'org.umi.ui.dashboard.card.zaobao' })}
+      {intl.formatMessage({ id: 'org.umi.ui.dashboard.card.zaobao' })}
     </a>
   );
 };

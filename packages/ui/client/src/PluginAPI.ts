@@ -1,7 +1,7 @@
 import { notification, message } from 'antd';
 import { connect } from 'dva';
 import lodash from 'lodash';
-import { history, useIntl, FormattedMessage, formatMessage } from 'umi';
+import { history, FormattedMessage, formatMessage, getIntl, useIntl } from 'umi';
 import { getApp } from '@@/plugin-dva/dva';
 import * as hooks from '@umijs/hooks';
 import isPlainObject from 'lodash/isPlainObject';

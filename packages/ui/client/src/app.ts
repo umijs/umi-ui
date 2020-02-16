@@ -1,16 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'antd/dist/antd.less';
 import { history, addLocale, IRoute } from 'umi';
 import querystring from 'querystring';
-import { getLocale } from '@/utils';
 import { setCurrentProject, clearCurrentProject } from '@/services/project';
 import debug from '@/debug';
 import { init as initSocket, callRemote } from './socket';
 import proxyConsole from './proxyConsole';
 import PluginAPI from './PluginAPI';
 
-// TODO pluginAPI add debug('plugin:${key}') for developer
 const _log = debug.extend('init');
 
 // Service for Plugin API
@@ -22,24 +19,6 @@ const service = (window.g_service = {
   basicUI: {},
   dashboard: [],
 });
-
-/**
- * 注册 UI 插件国际化
- */
-const setLocaleMessages = () => {
-  const messages = service.locales.reduce((curr, acc) => {
-    const localeGroup = Object.entries(acc);
-    localeGroup.forEach(group => {
-      const [lang, message] = group;
-      curr[lang] = { ...curr[lang], ...message };
-    });
-    return curr;
-  }, {});
-
-  Object.keys(messages).forEach((locale: string) => {
-    addLocale(locale, messages[locale]);
-  });
-};
 
 // Avoid scope problem
 const geval = eval; // eslint-disable-line
@@ -87,7 +66,7 @@ export async function render(oldRender) {
   const isMini = 'mini' in qs;
 
   // proxy console.* in mini
-  proxyConsole(!!isMini);
+  // proxyConsole(!!isMini);
 
   // mini open not in project
   // redirect full version
@@ -112,10 +91,10 @@ export async function render(oldRender) {
   } catch (e) {
     console.error('Init socket failed', e);
   }
-  // ReactDOM.render(
-  //   React.createElement(require('./pages/loading').default, {}),
-  //   document.getElementById('root'),
-  // );
+  ReactDOM.render(
+    React.createElement(require('./pages/loading').default, {}),
+    document.getElementById('root'),
+  );
   await initBasicUI();
   const { data } = await callRemote({ type: '@@project/list' });
   const props = {
@@ -154,18 +133,18 @@ export async function render(oldRender) {
     }
     if (props.error) {
       history.replace(`/error?key=${key}`);
-      // ReactDOM.render(
-      //   React.createElement(require('./pages/loading').default, props),
-      //   document.getElementById('root'),
-      // );
+      ReactDOM.render(
+        React.createElement(require('./pages/loading').default, props),
+        document.getElementById('root'),
+      );
       await clearCurrentProject();
       return false;
     }
 
+    console.log('before service.locales', service.locales);
     await initUIPlugin({
       currentProject,
     });
-    setLocaleMessages();
   } else {
     history.replace('/project/select');
   }

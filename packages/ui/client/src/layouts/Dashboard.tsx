@@ -1,6 +1,6 @@
 import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col } from 'antd';
 import { LeftOutlined, CaretDownOutlined, ExportOutlined } from '@ant-design/icons';
-import { FormattedMessage, NavLink, withRouter } from 'umi';
+import { NavLink, withRouter, FormattedMessage, useIntl } from 'umi';
 import React, { useState, useLayoutEffect, Fragment } from 'react';
 import * as IUi from '@umijs/ui-types';
 import { stringify, parse } from 'qs';
@@ -33,6 +33,7 @@ const DefaultProvider = props => <div {...props}>{props.children}</div>;
 
 export default withRouter(props => {
   const _log = debug.extend('Dashboard');
+  const intl = useIntl();
   const { pathname } = props.location;
   const activePanel = getActivePanel(pathname) ? getActivePanel(pathname) : {};
   const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
@@ -126,11 +127,10 @@ export default withRouter(props => {
           const MenuItem = ({ panel, ...restProps }) => {
             const { renderTitle, icon } = panel;
             const titleText = panel.title;
-            const titleNode = renderTitle ? (
-              renderTitle(titleText)
-            ) : (
-              <FormattedMessage id={titleText} />
-            );
+            debugger;
+            const titleNode = renderTitle
+              ? renderTitle(titleText)
+              : intl.formatMessage({ id: titleText });
 
             return (
               <Menu.Item
