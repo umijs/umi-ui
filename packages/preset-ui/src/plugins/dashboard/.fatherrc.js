@@ -1,3 +1,5 @@
+const isProd = process.env.NODE_ENV === 'prod';
+
 export default {
   entry: 'ui.tsx',
   typescriptOpts: {
@@ -6,8 +8,8 @@ export default {
   extraExternals: ['antd', 'react', 'react-dom'],
   umd: {
     name: 'dashboard',
-    minFile: false,
-    sourcemap: 'inline',
+    minFile: isProd,
+    sourcemap: !isProd,
     globals: {
       antd: 'window.antd',
       react: 'window.React',

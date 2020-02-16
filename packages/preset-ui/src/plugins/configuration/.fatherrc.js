@@ -1,3 +1,5 @@
+const isProd = process.env.NODE_ENV === 'prod';
+
 export default {
   entry: 'ui.tsx',
   cssModules: true,
@@ -7,8 +9,8 @@ export default {
   extraExternals: ['antd', 'react', 'react-dom'],
   umd: {
     name: 'configuration',
-    sourcemap: 'inline',
-    minFile: false,
+    sourcemap: !isProd,
+    minFile: isProd,
     globals: {
       antd: 'window.antd',
       react: 'window.React',

@@ -1,3 +1,5 @@
+const isProd = process.env.NODE_ENV === 'prod';
+
 export default [
   {
     target: 'node',
@@ -8,8 +10,8 @@ export default [
     entry: 'ui/index.tsx',
     umd: {
       name: 'tasks',
-      minFile: false,
-      sourcemap: 'inline',
+      minFile: isProd,
+      sourcemap: !isProd,
     },
     extraExternals: ['antd', 'react', 'react-dom', 'xterm'],
     typescriptOpts: {

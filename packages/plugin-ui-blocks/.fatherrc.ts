@@ -1,3 +1,5 @@
+const isProd = process.env.NODE_ENV === 'prod';
+
 export default [
   {
     target: 'node',
@@ -12,8 +14,8 @@ export default [
     extraExternals: ['antd', 'react', 'react-dom'],
     umd: {
       name: 'blocks',
-      minFile: false,
-      sourcemap: 'inline',
+      minFile: isProd,
+      sourcemap: !isProd,
       globals: {
         antd: 'window.antd',
         react: 'window.React',

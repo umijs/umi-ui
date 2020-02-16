@@ -48,6 +48,9 @@ const buildPlugin = plugin => {
     try {
       const pluginProcess = fork(FATHER_BUILD_BIN, watch ? ['--watch'] : [], {
         cwd: join(__dirname, '..', plugin),
+        env: {
+          NODE_ENV: watch ? 'prod' : 'development',
+        },
       });
       pluginProcess.on('exit', code => {
         if (code === 1) {

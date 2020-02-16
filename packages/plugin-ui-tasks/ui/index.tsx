@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { IUiApi } from '@umijs/ui-types';
-import { SettingOutlined } from '@ant-design/icons';
+import { SettingOutlined, ProjectFilled } from '@ant-design/icons';
 import Dev from './components/Dev';
 import Build from './components/Build';
 import Lint from './components/Lint';
@@ -195,10 +195,7 @@ export default (api: IUiApi) => {
   api.addPanel({
     title: 'org.umi.ui.tasks.title',
     path: '/tasks',
-    icon: {
-      type: 'project',
-      theme: 'filled',
-    },
+    icon: <ProjectFilled />,
     component: api.connect(state => ({ taskManager: state[model.namespace] }))(TasksView),
   });
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import { IUiApi } from '@umijs/ui-types';
+import { DashboardFilled } from '@ant-design/icons';
 import Dashboard from './ui/index';
 import ConfigAction from './ui/action';
 import Layout from './ui/layout';
@@ -36,10 +37,7 @@ export default (api: IUiApi) => {
         <ConfigAction />
       </Layout>,
     ],
-    icon: {
-      type: 'dashboard',
-      theme: 'filled',
-    },
+    icon: <DashboardFilled />,
     component: () => (
       <Layout api={api}>
         <Dashboard />
