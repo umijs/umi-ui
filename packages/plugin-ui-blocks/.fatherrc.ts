@@ -1,23 +1,24 @@
 export default [
   {
-    target: "node",
-    cjs: { type: "babel", lazy: true },
-    disableTypeCheck: true
+    target: 'node',
+    cjs: { type: 'babel', lazy: true },
+    disableTypeCheck: true,
   },
   {
-    entry: "ui/index.tsx",
+    entry: 'ui/index.tsx',
     typescriptOpts: {
-      check: false
+      check: false,
     },
-    extraExternals: ["antd", "react", "react-dom"],
+    extraExternals: ['antd', 'react', 'react-dom'],
     umd: {
-      name: "blocks",
+      name: 'blocks',
       minFile: false,
+      sourcemap: 'inline',
       globals: {
-        antd: "window.antd",
-        react: "window.React",
-        "react-dom": "window.ReactDOM"
-      }
-    }
-  }
+        antd: 'window.antd',
+        react: 'window.React',
+        'react-dom': 'window.ReactDOM',
+      },
+    },
+  },
 ];

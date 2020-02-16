@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import * as IUi from '@umijs/ui-types';
-import { Icon } from '@ant-design/compatible';
 import cls from 'classnames';
 import { Row, Col } from 'antd';
 import { stringify, parse } from 'qs';
@@ -59,10 +58,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
               align="middle"
               onClick={() => toggleSectionHandler(s.key)}
             >
-              <Col className={styles.icon}>
-                {typeof s.icon === 'string' && <Icon type={s.icon} width={64} height={64} />}
-                {React.isValidElement(s.icon) && s.icon}
-              </Col>
+              <Col className={styles.icon}>{s.icon}</Col>
               <Col className={styles.title_desc}>
                 {s.title && (
                   <div className={styles.title}>

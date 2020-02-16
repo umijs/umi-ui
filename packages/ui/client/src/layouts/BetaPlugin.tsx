@@ -1,5 +1,4 @@
 import React from 'react';
-import { Icon } from '@ant-design/compatible';
 import { Menu, Dropdown } from 'antd';
 import { ExperimentFilled } from '@ant-design/icons';
 import { NavLink, FormattedMessage, useIntl } from 'umi';
@@ -43,19 +42,18 @@ const BetaPlugin: React.SFC<BetaPluginProps> = props => {
                   </span>
                 }
               >
-                {betaPanels.map((panel, i) => {
-                  const icon = typeof panel.icon === 'object' ? panel.icon : { type: panel.icon };
-                  return (
-                    <Menu.Item key={panel.path}>
-                      <NavLink exact to={`${panel.path}${search}`}>
-                        <Icon className={styles.menuIcon} {...icon} />
-                        <span style={{ marginLeft: 8 }} className={styles.menuItem}>
-                          {intl.formatMessage(panel.title)}
-                        </span>
-                      </NavLink>
-                    </Menu.Item>
-                  );
-                })}
+                {betaPanels.map((panel, i) => (
+                  <Menu.Item key={panel.path}>
+                    <NavLink exact to={`${panel.path}${search}`}>
+                      {React.cloneElement(panel.icon, {
+                        className: styles.menuIcon,
+                      })}
+                      <span style={{ marginLeft: 8 }} className={styles.menuItem}>
+                        {intl.formatMessage(panel.title)}
+                      </span>
+                    </NavLink>
+                  </Menu.Item>
+                ))}
               </Menu.SubMenu>
             </Menu>
           ) : (

@@ -7,6 +7,7 @@ export default {
   extraExternals: ['antd', 'react', 'react-dom'],
   umd: {
     name: 'configuration',
+    sourcemap: 'inline',
     minFile: false,
     globals: {
       antd: 'window.antd',

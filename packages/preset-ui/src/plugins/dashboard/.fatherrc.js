@@ -7,6 +7,7 @@ export default {
   umd: {
     name: 'dashboard',
     minFile: false,
+    sourcemap: 'inline',
     globals: {
       antd: 'window.antd',
       react: 'window.React',

@@ -24,7 +24,6 @@
     "uppercamelcase": "3.0.0"
   },
   "devDependencies": {
-    "@ant-design/compatible": "^0.0.1-alpha.1",
     "@ant-design/icons": "^4.0.0-alpha.11",
     "@umijs/fabric": "^1.1.9",
     "@umijs/ui-types": "1.0.1",

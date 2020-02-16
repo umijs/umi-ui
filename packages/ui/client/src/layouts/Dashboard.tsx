@@ -1,4 +1,3 @@
-import { Icon } from '@ant-design/compatible';
 import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col } from 'antd';
 import { LeftOutlined, CaretDownOutlined, ExportOutlined } from '@ant-design/icons';
 import { FormattedMessage, NavLink, withRouter } from 'umi';
@@ -125,20 +124,7 @@ export default withRouter(props => {
           );
 
           const MenuItem = ({ panel, ...restProps }) => {
-            const { renderTitle } = panel;
-            const renderIcon = () => {
-              const icon = typeof panel.icon === 'string' ? { type: panel.icon } : panel.icon;
-
-              if (typeof icon === 'function' && React.isValidElement(icon())) {
-                return icon();
-              }
-              if (React.isValidElement(icon)) {
-                return icon;
-              }
-
-              return <Icon {...icon} />;
-            };
-
+            const { renderTitle, icon } = panel;
             const titleText = panel.title;
             const titleNode = renderTitle ? (
               renderTitle(titleText)
@@ -155,7 +141,7 @@ export default withRouter(props => {
                 level={isMini && locale === 'zh-CN' ? 2 : 1}
               >
                 <NavLink exact to={`${panel.path}${search}`}>
-                  {renderIcon()}
+                  {icon}
                   {isMini ? (
                     <p className={styles.menuText}>{titleNode}</p>
                   ) : (

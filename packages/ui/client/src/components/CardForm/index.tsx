@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Icon } from '@ant-design/compatible';
 import { formatMessage, FormattedMessage, setLocale } from 'umi';
 import { Col, Row, Card } from 'antd';
 import cls from 'classnames';
@@ -42,27 +41,23 @@ const CardForm: React.SFC<CardFormProps> = props => {
     changeCardValue(value || defaultCardValue);
   }, []);
 
-  const Title = ({ icon, title }) => {
-    return (
-      <p>
-        {React.isValidElement(icon) ? icon : <Icon type={icon || 'appstore'} />}
-        <span style={{ marginLeft: 8 }}>{title}</span>
-      </p>
-    );
-  };
+  const Title = ({ icon, title }) => (
+    <p>
+      {icon}
+      <span style={{ marginLeft: 8 }}>{title}</span>
+    </p>
+  );
 
-  const Description = ({ description, link }) => {
-    return (
-      <p>
-        {description}&nbsp;
-        {link && (
-          <a href={link} target="_blank" rel="noopener noreferrer">
-            {formatMessage({ id: 'org.umi.ui.global.project.create.steps.info.template.detail' })}
-          </a>
-        )}
-      </p>
-    );
-  };
+  const Description = ({ description, link }) => (
+    <p>
+      {description}&nbsp;
+      {link && (
+        <a href={link} target="_blank" rel="noopener noreferrer">
+          {formatMessage({ id: 'org.umi.ui.global.project.create.steps.info.template.detail' })}
+        </a>
+      )}
+    </p>
+  );
 
   const handleClick = (val: IValue) => {
     setCardValue(val);
