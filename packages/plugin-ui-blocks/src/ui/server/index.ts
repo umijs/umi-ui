@@ -4,6 +4,18 @@ import { IApi } from 'umi';
 import Block from './core/Block';
 import { Resource } from '@umijs/block-sdk/lib/data.d';
 import { DEFAULT_RESOURCES } from './util';
+import { ILang } from '@umijs/ui-types';
+
+export interface IHandlerOpts {
+  success: (res: any) => void;
+  failure: (res: any) => void;
+  payload: object;
+  api: IApi;
+  blockService: Block;
+  lang: ILang;
+  send: (res: any) => void;
+  resources: Resource[];
+}
 
 export default (api: IApi) => {
   // 区块资源可扩展
@@ -35,7 +47,7 @@ export default (api: IApi) => {
     if (files.includes(type)) {
       try {
         const fn = require(join(dir, type)).default;
-        await fn({
+        const handlerOpts: IHandlerOpts = {
           api,
           success,
           failure,
@@ -44,7 +56,8 @@ export default (api: IApi) => {
           lang,
           blockService,
           resources,
-        });
+        };
+        await fn(handlerOpts);
       } catch (e) {
         console.error(e);
         failure({

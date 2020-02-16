@@ -1,5 +1,10 @@
+import { utils } from 'umi';
 import { IFlowContext, IAddBlockOption } from '../types';
 import { installDependencies } from '@umijs/block-sdk';
+
+const { createDebug } = utils;
+
+const debug = createDebug('umiui:UmiUI:block:tasks');
 
 const install = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { logger, execa, api } = ctx;
@@ -11,7 +16,7 @@ const install = async (ctx: IFlowContext, args: IAddBlockOption) => {
       registry,
       applyPlugins: api.applyPlugins,
       paths: api.paths,
-      debug: api.debug,
+      debug,
       dryRun: args.dryRun,
       spinner: logger,
       skipDependencies: args.skipDependencies,

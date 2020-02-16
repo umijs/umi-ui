@@ -3,11 +3,12 @@ import { join } from 'path';
 import { getBlockGenerator, getNameFromPkg } from '@umijs/block-sdk';
 import { IFlowContext, IAddBlockOption } from '../types';
 
-const { winPath } = utils;
+const { winPath, createDebug } = utils;
+
+const debug = createDebug('umiui:UmiUI:block:tasks');
 
 const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { logger, api } = ctx;
-  const { debug } = api;
 
   const { dryRun, page: isPage, js, execution = 'shell', uni18n } = args;
 

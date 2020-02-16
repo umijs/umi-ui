@@ -1,26 +1,26 @@
 import { join } from 'path';
-import { IApi } from 'umi';
 import { existsSync, readFileSync } from 'fs';
 import haveRootBinding from '@umijs/block-sdk/lib/sdk/haveRootBinding';
+import { utils } from 'umi';
+import { IHandlerOpts } from '../index';
 
-interface IOpts {
-  success: (payload: any) => void;
-  failure: (payload: any) => void;
-  payload: any;
-  api: IApi;
-}
+const { createDebug, winPath, getFile } = utils;
 
-export default async ({ success, payload, api, failure }: IOpts) => {
+const debug = createDebug('umiui:UmiUI:block:checkBindingInFile');
+
+export default async ({ success, payload, api, failure }: IHandlerOpts) => {
   const { path: targetPath, name } = payload as {
     path: string;
     name: string;
   };
-  const { utils } = api;
-  const { winPath, getFile } = utils;
+  const { paths } = api;
+  debug('absPagesPath', paths.absPagesPath);
+  debug('targetPath', targetPath);
   // 找到具体的 js
   const absTargetPath = winPath(
-    join(api.paths.absPagesPath, winPath(targetPath).replace(winPath(api.paths.absPagesPath), '')),
+    join(paths.absPagesPath, winPath(targetPath).replace(paths.absPagesPath, '')),
   );
+  debug('absTargetPath', absTargetPath);
   // 有些用户路由下载路径是不在的，这里拦住他们
   if (
     !existsSync(absTargetPath) &&
@@ -37,6 +37,9 @@ export default async ({ success, payload, api, failure }: IOpts) => {
   const entryPath =
     getFile({ base: absTargetPath, fileNameWithoutExt: 'index', type: 'javascript' })?.path ||
     getFile({ base: absTargetPath, fileNameWithoutExt: '', type: 'javascript' })?.path;
+
+  debug('entryPath', entryPath);
+
   if (!entryPath) {
     failure({
       message: `未在 ${absTargetPath} 目录下找到 index.(ts|tsx|js|jsx) !`,

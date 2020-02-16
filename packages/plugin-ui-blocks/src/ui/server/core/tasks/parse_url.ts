@@ -8,10 +8,12 @@ import { getParsedData, makeSureMaterialsTempPathExist } from '@umijs/block-sdk'
 
 import { IFlowContext, IAddBlockOption, ICtxTypes } from '../types';
 
-const { lodash } = utils;
+const { lodash, createDebug } = utils;
+
+const debug = createDebug('umiui:UmiUI:block:tasks');
 
 async function getCtx(url, args: IAddBlockOption = {}, api: IApi): Promise<ICtxTypes> {
-  const { debug, config } = api;
+  const { config } = api;
   debug(`get url ${url}`);
 
   const ctx: ICtxTypes = await getParsedData(url, {

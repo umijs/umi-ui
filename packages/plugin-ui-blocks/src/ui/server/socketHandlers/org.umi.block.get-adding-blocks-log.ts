@@ -1,6 +1,8 @@
-export default function({ blockService, success }) {
+import { IHandlerOpts } from '../index';
+
+export default function({ blockService, success }: IHandlerOpts) {
   success({
     data: blockService.getLog(),
-    success: true
+    success: true,
   });
 }

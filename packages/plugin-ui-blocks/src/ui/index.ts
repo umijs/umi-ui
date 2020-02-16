@@ -20,12 +20,12 @@ export default (api: IApiBlock) => {
   //   routeComponents = api.getRouteComponents();
   // });
 
-  const getRouteComponents = routes => {
+  const getRouteComponents = (routes): string[] => {
     const getComponents = routes => {
       return routes.reduce((memo, route) => {
         if (route.component && !route.component.startsWith('()')) {
           const component = isAbsolute(route.component)
-            ? route.component
+            ? require.resolve(route.component)
             : require.resolve(join(this.cwd, route.component));
           memo.push(winPath(component));
         }
@@ -43,7 +43,6 @@ export default (api: IApiBlock) => {
     const routes = await api.getRoutes();
     const routeComponents = getRouteComponents(routes);
     const { plugins } = babelOpts;
-    console.log('routeComponents', routeComponents);
     return {
       ...babelOpts,
       plugins: [
@@ -52,8 +51,9 @@ export default (api: IApiBlock) => {
           require.resolve('../sdk/flagBabelPlugin'),
           {
             doTransform(filename) {
-              console.log('filename', filename);
-              return routeComponents.includes(winPath(filename));
+              return routeComponents.some(
+                routeComponent => winPath(filename) === winPath(routeComponent),
+              );
             },
           },
         ],
@@ -61,7 +61,7 @@ export default (api: IApiBlock) => {
     };
   });
 
-  api.addEntryCode(
+  api.addEntryCodeAhead(
     () => `
 (() => {
   // Runtime block add component

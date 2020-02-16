@@ -1,7 +1,8 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
+import { IHandlerOpts } from '../index';
 
-export default function({ success, payload, api, lang, failure }) {
+export default function({ success, payload, api, lang, failure }: IHandlerOpts) {
   const { item } = payload as {
     item: {
       features: string[];

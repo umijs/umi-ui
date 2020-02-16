@@ -134,6 +134,7 @@ $ yarn ui:build -w
 
 ```bash
 # 第三个终端
+# 仓库调试带上了 BABEL_CACHE=none DEBUG=umiui*
 $ yarn dev
 🚀 Starting Umi UI using umi...
 ⛽️ Ready on http://localhost:3000/

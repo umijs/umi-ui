@@ -21,7 +21,6 @@ const { winPath } = utils;
 export default () => {
   function buildGUmiUIFlag(opts) {
     const { index, filename, jsx, inline, content } = opts;
-    console.log('buildGUmiUIFlag', opts);
     if (jsx) {
       const attrs = [
         t.jsxAttribute(t.jsxIdentifier('filename'), t.stringLiteral(`${filename}`)),
@@ -60,7 +59,6 @@ export default () => {
   }
 
   function addUmiUIFlag(node, { filename, replace }) {
-    console.log('addUmiUIFlag');
     if (isJSXElement(node)) {
       if (isChildFunc(node)) {
         return;
@@ -169,8 +167,8 @@ export default () => {
           layoutIndexByFilename = {};
 
           const { filename, opts = {} } = state;
-          assert(opts.doTransform, 'opts.doTransform must supplied');
 
+          assert(opts.doTransform, 'opts.doTransform must supplied');
           if (!opts.doTransform(filename)) return;
           const { node } = path;
 
@@ -194,7 +192,6 @@ export default () => {
           if (ret) {
             const { node: retNode, replace } = ret;
             if (retNode && !isInBlackList(retNode, path)) {
-              console.log('addUmiFlag');
               addUmiUIFlag(retNode, {
                 filename: winPath(filename),
                 replace,

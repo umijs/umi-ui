@@ -1,6 +1,5 @@
 import { IApi } from 'umi';
 import Logger from '../Logger';
-import { StepState } from '../enum';
 
 export interface IFlowContext {
   logger: Logger; // 输出日志

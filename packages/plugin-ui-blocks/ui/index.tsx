@@ -12,8 +12,6 @@ import Container from './Container';
 
 export default (api: IUiApi) => {
   initApiToGlobal(api);
-  const { FormattedMessage } = api.intl;
-
   api.addLocales({
     'zh-CN': zhCN,
     'en-US': enUS,

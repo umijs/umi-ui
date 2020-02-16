@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "start": "umi dev",
+    "start": "BABEL_CACHE=none DEBUG=umiui* umi dev",
     "build": "umi build",
     "test": "umi test",
     "lint": "eslint {src,mock,tests}/**/*.{ts,tsx} --fix",
@@ -21,7 +21,7 @@
     "node": ">=8.0.0"
   },
   "dependencies": {
-    "antd": "^4.0.0-rc.1",
+    "antd": "^3.26.9",
     "umi-request": "^1.2.18"
   }
 }
