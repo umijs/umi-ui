@@ -1,6 +1,10 @@
-import chalk from 'chalk';
+import { utils } from 'umi';
 import { appendBlockToContainer, writeNewRoute } from '@umijs/block-sdk';
 import { IFlowContext, IAddBlockOption } from '../types';
+
+const { chalk, createDebug } = utils;
+
+const debug = createDebug('umiui:UmiUI:block');
 
 const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { generator } = ctx.stages;
@@ -8,7 +12,10 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { skipModifyRoutes, layout: isLayout, dryRun, index } = args;
 
   if (generator.needCreateNewRoute && api.userConfig.routes && !skipModifyRoutes) {
-    logger.appendLog(`🛠 Start write route from ${generator.routePath} to ${api.userConfig.file}`);
+    logger.appendLog(
+      `🛠 Start write route from ${generator.routePath} to ${api.service.configInstance.configFile}`,
+    );
+    debug('api.service.configInstance.configFile', api.service.configInstance.configFile);
     // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
     // 未来可以做下自动写入注释配置，支持约定式路由
     const newRouteConfig = await api.applyPlugins({
@@ -23,7 +30,7 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
     });
     try {
       if (!dryRun) {
-        writeNewRoute(newRouteConfig, api.userConfig.file, api.paths.absSrcPath);
+        writeNewRoute(newRouteConfig, api.service.configInstance.configFile, api.paths.absSrcPath);
       }
     } catch (e) {
       logger.appendLog(`Failed to write route: ${e.message}\n`);

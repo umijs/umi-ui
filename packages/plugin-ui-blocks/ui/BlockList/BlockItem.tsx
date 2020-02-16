@@ -89,7 +89,6 @@ const onBeforeOpenModal = async (api, { item, type, onShowModal }) => {
       console.error('BlockItem error', e);
       message.error(e.message);
     })) as PositionData;
-    console.log('positionposition', position);
     const targetPath = await getPathFromFilename(api, position.filename);
     const option = {
       path: targetPath,
@@ -162,8 +161,8 @@ const BlockItem: React.FC<BlockItemProps> = ({
                 disabledTitle={intl({
                   id: 'org.umi.ui.blocks.adder.disabledTitle',
                 })}
-                onClick={() =>
-                  onBeforeOpenModal(api, {
+                onClick={async () =>
+                  await onBeforeOpenModal(api, {
                     type,
                     item,
                     onShowModal,

@@ -71,7 +71,6 @@ export default (api: IApiBlock) => {
   window.addEventListener('message', (event) => {
     try {
       const { action, data } = JSON.parse(event.data);
-      console.log('client block', { action, data });
       switch (action) {
         case 'umi.ui.checkValidEditSection':
           const haveValid = !!document.querySelectorAll('div.g_umiuiBlockAddEditMode').length;
