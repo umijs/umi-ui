@@ -59,6 +59,6 @@
     "stringify-object": "3.3.0",
     "test-build-result": "^1.1.2",
     "ts-node-dev": "^1.0.0-pre.44",
-    "umi": "next"
+    "umi": "^3.0.0-0"
   }
 }
