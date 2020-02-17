@@ -1,6 +1,6 @@
 {
   "name": "@umijs/ui",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.2",
   "main": "./lib/UmiUI.js",
   "files": [
     "lib",
@@ -14,7 +14,7 @@
     "@types/node-notifier": "^5.4.0",
     "@types/sockjs": "^0.3.31",
     "@umijs/ui-theme": "1.0.0",
-    "@umijs/ui-types": "2.0.0-beta.1"
+    "@umijs/ui-types": "2.0.0-beta.2"
   },
   "peerDependencies": {
     "umi": "3.x"
