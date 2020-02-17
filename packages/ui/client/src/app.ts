@@ -57,6 +57,21 @@ const initUIPlugin = async (initOpts = {}) => {
   });
 };
 
+const initLocales = () => {
+  const messages = window.g_service.locales.reduce((curr, acc) => {
+    const localeGroup = Object.entries(acc);
+    localeGroup.forEach(group => {
+      const [lang, message] = group;
+      curr[lang] = { ...curr[lang], ...message };
+    });
+    return curr;
+  }, {});
+
+  Object.keys(messages).forEach((locale: string) => {
+    addLocale(locale, messages[locale]);
+  });
+};
+
 export async function render(oldRender) {
   // mini 模式下允许通过加 key 的参数打开
   // 比如: ?mini&key=xxx
@@ -141,10 +156,10 @@ export async function render(oldRender) {
       return false;
     }
 
-    console.log('before service.locales', service.locales);
     await initUIPlugin({
       currentProject,
     });
+    initLocales();
   } else {
     history.replace('/project/select');
   }

@@ -19,28 +19,11 @@ interface ILayoutProps {
 
 const Layout: React.FC<ILayoutProps> = props => {
   const isMini = isMiniUI();
-  const [loaded, setLoaded] = React.useState(false);
   const [theme, setTheme] = React.useState('dark');
 
   const setMomentLocale = (locale: ILocale = getLocale()) => {
     moment.locale(locale === 'zh-CN' ? 'zh-cn' : 'en');
   };
-
-  React.useEffect(() => {
-    const messages = window.g_service.locales.reduce((curr, acc) => {
-      const localeGroup = Object.entries(acc);
-      localeGroup.forEach(group => {
-        const [lang, message] = group;
-        curr[lang] = { ...curr[lang], ...message };
-      });
-      return curr;
-    }, {});
-
-    Object.keys(messages).forEach((locale: string) => {
-      addLocale(locale, messages[locale]);
-    });
-    setLoaded(true);
-  }, []);
 
   React.useLayoutEffect(() => {
     setMomentLocale();
@@ -90,7 +73,6 @@ const Layout: React.FC<ILayoutProps> = props => {
         value={{
           locale,
           theme,
-          loaded,
           isMini,
           currentProject,
           showLogPanel,

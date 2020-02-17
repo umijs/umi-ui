@@ -1,10 +1,12 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { createHash } from 'crypto';
-import { get, pickBy, identity } from 'lodash';
+import { utils } from 'umi';
 import { basename, dirname, join } from 'path';
 import { homedir } from 'os';
 import mkdirp from 'mkdirp';
 import assert from 'assert';
+
+const { get, pickBy, identity } = utils.lodash;
 
 interface IOpts {
   dbPath?: string;

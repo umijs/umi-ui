@@ -24,8 +24,8 @@ export const MESSAGES = {
 const DailyReport: React.SFC<{}> = props => {
   const { forceUpdate } = props;
   const { api } = React.useContext(Context);
-  const { _, event } = api;
-  const { formatMessage } = api.intl;
+  const { _, event, useIntl } = api;
+  const intl = useIntl();
   const [size, setSize] = React.useState(PAGE_SIZE);
   const { data: list } = useSWR('zaobao.list', async () => {
     const { data } = await api.callRemote({
@@ -95,7 +95,7 @@ const DailyReport: React.SFC<{}> = props => {
       }}
     >
       <a className={styles.more} onClick={handleLoadAll}>
-        {formatMessage({ id: 'org.umi.ui.dashboard.card.zaobao.loadAll' })}
+        {intl.formatMessage({ id: 'org.umi.ui.dashboard.card.zaobao.loadAll' })}
       </a>
     </div>
   );

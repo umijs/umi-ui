@@ -406,6 +406,7 @@ declare namespace IUI {
     isMini(): boolean;
     /** intl, formatMessage */
     intl: IIntl;
+    useIntl: any;
     /** add plugin Panel */
     addPanel: IAddPanel;
     addDashboard: IAddDashboard;
