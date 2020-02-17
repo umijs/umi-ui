@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Row, Col, Button } from "antd";
-import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
-import styles from "../../ui.module.less";
-import { TaskState } from "../../../src/server/core/enums";
-import { getTerminalRefIns, setTerminalRefIns } from "../../util";
-import { TaskComponentProps } from "../index";
-import { useInit } from "../../hooks";
+import React, { useEffect, useState } from 'react';
+import { Row, Col, Button } from 'antd';
+import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
+import styles from '../../ui.module.less';
+import { TaskState } from '../../../src/server/core/enums';
+import { getTerminalRefIns, setTerminalRefIns } from '../../util';
+import { TaskComponentProps } from '../index';
+import { useInit } from '../../hooks';
 
 const LintComponent: React.FC<TaskComponentProps> = ({
   taskType,
@@ -14,10 +14,11 @@ const LintComponent: React.FC<TaskComponentProps> = ({
   detail = {},
   dispatch,
   iife,
-  Terminal
+  Terminal,
 }) => {
-  const { intl } = api;
-  const [log, setLog] = useState("");
+  const { useIntl } = api;
+  const { formatMessage: intl } = useIntl();
+  const [log, setLog] = useState('');
   const [init] = useInit(detail);
 
   useEffect(() => {
@@ -30,8 +31,8 @@ const LintComponent: React.FC<TaskComponentProps> = ({
         taskType,
         callback: ({ log }) => {
           setLog(log);
-        }
-      }
+        },
+      },
     });
     if (iife) {
       lint();
@@ -48,8 +49,8 @@ const LintComponent: React.FC<TaskComponentProps> = ({
     dispatch({
       type: `${namespace}/exec`,
       payload: {
-        taskType
-      }
+        taskType,
+      },
     });
   }
 
@@ -57,20 +58,20 @@ const LintComponent: React.FC<TaskComponentProps> = ({
     dispatch({
       type: `${namespace}/cancel`,
       payload: {
-        taskType
-      }
+        taskType,
+      },
     });
   }
 
   const isTaskRunning = detail && detail.state === TaskState.ING;
   return (
     <>
-      <h1 className={styles.title}>{intl({ id: "org.umi.ui.tasks.lint" })}</h1>
+      <h1 className={styles.title}>{intl({ id: 'org.umi.ui.tasks.lint' })}</h1>
       <>
         <Row>
           <Col span={24} className={styles.buttonGroup}>
             <Button
-              size={api.mini ? "small" : "default"}
+              size={api.mini ? 'small' : 'default'}
               type="primary"
               onClick={isTaskRunning ? cancelLint : lint}
             >
@@ -78,16 +79,16 @@ const LintComponent: React.FC<TaskComponentProps> = ({
                 <>
                   <PauseOutlined />
                   <span className={styles.runningText}>
-                    {" "}
-                    {intl({ id: "org.umi.ui.tasks.lint.cancel" })}
+                    {' '}
+                    {intl({ id: 'org.umi.ui.tasks.lint.cancel' })}
                   </span>
                 </>
               ) : (
                 <>
                   <CaretRightOutlined />
                   <span className={styles.runningText}>
-                    {" "}
-                    {intl({ id: "org.umi.ui.tasks.lint.start" })}
+                    {' '}
+                    {intl({ id: 'org.umi.ui.tasks.lint.start' })}
                   </span>
                 </>
               )}

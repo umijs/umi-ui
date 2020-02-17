@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Result, Typography } from 'antd';
 import cls from 'classnames';
 import { CloseCircleOutlined } from '@ant-design/icons';
-import { formatMessage } from 'umi';
+import { useIntl } from 'react-intl';
 import styles from './index.less';
 
 const { Paragraph } = Typography;
@@ -31,19 +31,22 @@ export interface IProps {
   ErrorComponent?: (error: IError) => React.ReactElement<any>;
 }
 
-const defaultFallbackComponent = ({ componentStack, error, className }) => (
-  <Result
-    className={cls(styles.result, className)}
-    status="error"
-    title={formatMessage({ id: 'org.umi.ui.global.error.title' })}
-    subTitle={error.toString()}
-  >
-    <Paragraph className={styles.stack}>
-      <CloseCircleOutlined /> {formatMessage({ id: 'org.umi.ui.global.error.stack' })}：
-      <pre>{componentStack}</pre>
-    </Paragraph>
-  </Result>
-);
+const defaultFallbackComponent = ({ componentStack, error, className }) => {
+  const { formatMessage } = useIntl();
+  return (
+    <Result
+      className={cls(styles.result, className)}
+      status="error"
+      title={formatMessage({ id: 'org.umi.ui.global.error.title' })}
+      subTitle={error.toString()}
+    >
+      <Paragraph className={styles.stack}>
+        <CloseCircleOutlined /> {formatMessage({ id: 'org.umi.ui.global.error.stack' })}：
+        <pre>{componentStack}</pre>
+      </Paragraph>
+    </Result>
+  );
+};
 
 class UmiErrorBoundary extends React.Component<IProps, IState> {
   static defaultProps = {

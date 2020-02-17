@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Row, Col, Button, Modal, Form, Switch, Radio } from "antd";
-import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
-import styles from "../../ui.module.less";
-import { TaskState } from "../../../src/server/core/enums";
-import { getTerminalRefIns, setTerminalRefIns } from "../../util";
-import { useInit } from "../../hooks";
-import { TaskComponentProps } from "..";
-import Analyze from "../Analyze";
+import React, { useState, useEffect } from 'react';
+import { Row, Col, Button, Modal, Form, Switch, Radio } from 'antd';
+import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
+import styles from '../../ui.module.less';
+import { TaskState } from '../../../src/server/core/enums';
+import { getTerminalRefIns, setTerminalRefIns } from '../../util';
+import { useInit } from '../../hooks';
+import { TaskComponentProps } from '..';
+import Analyze from '../Analyze';
 
 const BuildComponent: React.FC<TaskComponentProps> = ({
   taskType,
@@ -16,21 +16,22 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
   dispatch,
   dbPath,
   iife,
-  Terminal
+  Terminal,
 }) => {
-  const { intl } = api;
-  const isEnglish = api.getLocale() === "en-US";
+  const { useIntl } = api;
+  const { formatMessage: intl } = useIntl();
+  const isEnglish = api.getLocale() === 'en-US';
   const [form] = Form.useForm();
   const [modalVisible, setModalVisible] = useState(false);
-  const [log, setLog] = useState("");
-  const [view, setView] = useState("log");
+  const [log, setLog] = useState('');
+  const [view, setView] = useState('log');
   const [env, setEnv] = useState({
     BABEL_CACHE: true,
     BABEL_POLYFILL: true,
     COMPRESS: true,
     CSS_COMPRESS: true,
     HTML: true,
-    FORK_TS_CHECKER: false
+    FORK_TS_CHECKER: false,
   });
   const [init] = useInit(detail);
 
@@ -38,7 +39,7 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
     if (!init) {
       return () => {};
     }
-    if (view === "log") {
+    if (view === 'log') {
       dispatch({
         type: `${namespace}/getTaskDetail`,
         payload: {
@@ -47,8 +48,8 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
           dbPath,
           callback: ({ log }) => {
             setLog(log);
-          }
-        }
+          },
+        },
       });
     }
     if (iife) {
@@ -70,10 +71,10 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
         taskType,
         args: {
           analyze: true,
-          dbPath
+          dbPath,
         },
-        env
-      }
+        env,
+      },
     });
   }
 
@@ -81,8 +82,8 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
     dispatch({
       type: `${namespace}/cancel`,
       payload: {
-        taskType
-      }
+        taskType,
+      },
     });
   }
 
@@ -119,10 +120,10 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
         <span onClick={stopEventPop}>{intl({ id: props.desc })}</span>
         <a
           className={styles.modleLablelDescIcon}
-          href={isEnglish ? props.link.replace(/\/zh\//, "/") : props.link}
+          href={isEnglish ? props.link.replace(/\/zh\//, '/') : props.link}
           target="_blank"
         >
-          {intl({ id: "org.umi.ui.tasks.env.detail" })}
+          {intl({ id: 'org.umi.ui.tasks.env.detail' })}
         </a>
       </div>
     </div>
@@ -134,15 +135,15 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
   };
 
   const isTaskRunning = detail.state === TaskState.ING;
-  const detailHost = `https://umijs.org/${isEnglish ? "" : "zh"}`;
+  const detailHost = `https://umijs.org/${isEnglish ? '' : 'zh'}`;
   return (
     <>
-      <h1 className={styles.title}>{intl({ id: "org.umi.ui.tasks.build" })}</h1>
+      <h1 className={styles.title}>{intl({ id: 'org.umi.ui.tasks.build' })}</h1>
       <>
         <Row type="flex" justify="space-between">
           <Col className={styles.buttonGroup}>
             <Button
-              size={api.mini ? "small" : "default"}
+              size={api.mini ? 'small' : 'default'}
               type="primary"
               onClick={isTaskRunning ? cancelBuild : build}
             >
@@ -150,36 +151,31 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
                 <>
                   <PauseOutlined />
                   <span className={styles.runningText}>
-                    {" "}
-                    {intl({ id: "org.umi.ui.tasks.build.cancel" })}
+                    {' '}
+                    {intl({ id: 'org.umi.ui.tasks.build.cancel' })}
                   </span>
                 </>
               ) : (
                 <>
                   <CaretRightOutlined />
                   <span className={styles.runningText}>
-                    {" "}
-                    {intl({ id: "org.umi.ui.tasks.build.start" })}
+                    {' '}
+                    {intl({ id: 'org.umi.ui.tasks.build.start' })}
                   </span>
                 </>
               )}
             </Button>
-            <Button size={api.mini ? "small" : "default"} onClick={openModal}>
-              {intl({ id: "org.umi.ui.tasks.envs" })}
+            <Button size={api.mini ? 'small' : 'default'} onClick={openModal}>
+              {intl({ id: 'org.umi.ui.tasks.envs' })}
             </Button>
             <Modal
               visible={modalVisible}
-              title={intl({ id: "org.umi.ui.tasks.envs" })}
+              title={intl({ id: 'org.umi.ui.tasks.envs' })}
               onOk={handleOk}
               onCancel={handleCancel}
             >
               <div className={styles.modalContainer}>
-                <Form
-                  name="buildEnv"
-                  form={form}
-                  initialValues={env}
-                  layout="vertical"
-                >
+                <Form name="buildEnv" form={form} initialValues={env} layout="vertical">
                   <Form.Item
                     label={
                       <EnvLabel
@@ -264,23 +260,21 @@ const BuildComponent: React.FC<TaskComponentProps> = ({
           </Col>
           <Col className={styles.formatGroup}>
             <Radio.Group
-              size={api.mini ? "small" : "default"}
+              size={api.mini ? 'small' : 'default'}
               defaultValue="log"
               value={view}
               buttonStyle="solid"
               onChange={toggleView}
             >
-              <Radio.Button value="log">
-                {intl({ id: "org.umi.ui.tasks.log" })}
-              </Radio.Button>
+              <Radio.Button value="log">{intl({ id: 'org.umi.ui.tasks.log' })}</Radio.Button>
               <Radio.Button value="analyze">
-                {intl({ id: "org.umi.ui.tasks.analyze" })}
+                {intl({ id: 'org.umi.ui.tasks.analyze' })}
               </Radio.Button>
             </Radio.Group>
           </Col>
         </Row>
         <div className={styles.logContainer}>
-          {view === "log" ? (
+          {view === 'log' ? (
             <Terminal
               onInit={ins => {
                 setTerminalRefIns(taskType, api.currentProject.key, ins);

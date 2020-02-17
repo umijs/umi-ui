@@ -1,6 +1,6 @@
 import React from 'react';
 import cls from 'classnames';
-import { useIntl } from 'umi';
+import { useIntl } from 'react-intl';
 import Context from '@/layouts/Context';
 import styles from './styles.module.less';
 

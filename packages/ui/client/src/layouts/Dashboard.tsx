@@ -1,6 +1,7 @@
 import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col } from 'antd';
 import { LeftOutlined, CaretDownOutlined, ExportOutlined } from '@ant-design/icons';
-import { NavLink, withRouter, FormattedMessage, useIntl } from 'umi';
+import { NavLink, withRouter } from 'umi';
+import { FormattedMessage } from 'react-intl';
 import React, { useState, useLayoutEffect, Fragment } from 'react';
 import * as IUi from '@umijs/ui-types';
 import { stringify, parse } from 'qs';
@@ -33,7 +34,6 @@ const DefaultProvider = props => <div {...props}>{props.children}</div>;
 
 export default withRouter(props => {
   const _log = debug.extend('Dashboard');
-  const intl = useIntl();
   const { pathname } = props.location;
   const activePanel = getActivePanel(pathname) ? getActivePanel(pathname) : {};
   const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
@@ -80,7 +80,7 @@ export default withRouter(props => {
   return (
     <UiLayout type="detail" title={<FormattedMessage id={title} />}>
       <Context.Consumer>
-        {({ currentProject, theme, isMini, locale, basicUI }) => {
+        {({ currentProject, theme, isMini, formatMessage, locale, basicUI }) => {
           const openEditor = async () => {
             if (currentProject && currentProject.key) {
               await openInEditor({
@@ -127,10 +127,9 @@ export default withRouter(props => {
           const MenuItem = ({ panel, ...restProps }) => {
             const { renderTitle, icon } = panel;
             const titleText = panel.title;
-            debugger;
             const titleNode = renderTitle
               ? renderTitle(titleText)
-              : intl.formatMessage({ id: titleText });
+              : formatMessage({ id: titleText });
 
             return (
               <Menu.Item

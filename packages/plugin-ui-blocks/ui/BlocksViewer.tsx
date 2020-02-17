@@ -132,7 +132,8 @@ const renderActiveResourceTag = ({
 const BlocksViewer: React.FC<Props> = props => {
   const { dispatch, block, loading: fetchDataLoading } = props;
   const { api, type, setType, activeResource, setActiveResource } = Container.useContainer();
-  const { callRemote, intl } = api;
+  const { callRemote, useIntl } = api;
+  const { formatMessage: intl } = useIntl();
   /**
    * 是不是umi
    */

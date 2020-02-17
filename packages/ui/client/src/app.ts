@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { history, addLocale, IRoute } from 'umi';
+import { history, IRoute } from 'umi';
 import querystring from 'querystring';
 import { setCurrentProject, clearCurrentProject } from '@/services/project';
 import debug from '@/debug';
@@ -54,21 +54,6 @@ const initUIPlugin = async (initOpts = {}) => {
   window.g_uiPlugins.forEach(uiPlugin => {
     // only readable
     uiPlugin(Object.freeze(new PluginAPI(service, currentProject)));
-  });
-};
-
-const initLocales = () => {
-  const messages = window.g_service.locales.reduce((curr, acc) => {
-    const localeGroup = Object.entries(acc);
-    localeGroup.forEach(group => {
-      const [lang, message] = group;
-      curr[lang] = { ...curr[lang], ...message };
-    });
-    return curr;
-  }, {});
-
-  Object.keys(messages).forEach((locale: string) => {
-    addLocale(locale, messages[locale]);
   });
 };
 
@@ -159,7 +144,6 @@ export async function render(oldRender) {
     await initUIPlugin({
       currentProject,
     });
-    initLocales();
   } else {
     history.replace('/project/select');
   }

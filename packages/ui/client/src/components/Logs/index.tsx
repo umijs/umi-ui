@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useIntl } from 'umi';
+import { useIntl } from 'react-intl';
 import { getLocale } from '@/utils/index';
 import zhCN from '@/locales/zh-CN';
 import enUS from '@/locales/en-US';

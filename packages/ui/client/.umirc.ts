@@ -96,7 +96,6 @@ const config: IConfig = {
     },
   ],
   title: 'Umi UI',
-  locale: {},
   dva: {},
   cssLoader: {
     modules: {

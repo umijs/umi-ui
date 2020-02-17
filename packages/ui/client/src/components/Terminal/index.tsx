@@ -1,13 +1,13 @@
 import { Row, Col, Spin, Tooltip, Popconfirm } from 'antd';
 import { DeleteOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons';
 import { Terminal as XTerminal, ITerminalOptions } from 'xterm';
+import { useIntl } from 'react-intl';
 import cls from 'classnames';
 import debounce from 'lodash/debounce';
 import React, { useRef, useEffect, useState, forwardRef } from 'react';
 import * as IUi from '@umijs/ui-types';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import { FitAddon } from 'xterm-addon-fit';
-import intl from '@/utils/intl';
 import styles from './index.module.less';
 
 const { Terminal } = window;
@@ -30,6 +30,7 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
     toolbar = true,
   } = props;
   const [xterm, setXterm] = useState<XTerminal>(null);
+  const { formatMessage } = useIntl();
 
   useEffect(() => {
     const terminalOpts: ITerminalOptions = {
@@ -121,21 +122,21 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
           {toolbar && (
             <Row className={styles.titleWrapper}>
               <Col span={8} className={styles.formmatGroup}>
-                {title || intl({ id: 'org.umi.ui.global.log' })}
+                {title || formatMessage({ id: 'org.umi.ui.global.log' })}
               </Col>
               <Col span={4} offset={12} className={styles.actionGroup}>
                 <span className={styles.icon}>
                   <Popconfirm
-                    title={intl({ id: 'org.umi.ui.global.log.clear.confirm' })}
+                    title={formatMessage({ id: 'org.umi.ui.global.log.clear.confirm' })}
                     onConfirm={clear}
                   >
-                    <Tooltip title={intl({ id: 'org.umi.ui.global.log.clear.tooltip' })}>
+                    <Tooltip title={formatMessage({ id: 'org.umi.ui.global.log.clear.tooltip' })}>
                       <DeleteOutlined />
                     </Tooltip>
                   </Popconfirm>
                 </span>
                 <span className={styles.icon}>
-                  <Tooltip title={intl({ id: 'org.umi.ui.global.log.enter.tooltip' })}>
+                  <Tooltip title={formatMessage({ id: 'org.umi.ui.global.log.enter.tooltip' })}>
                     <VerticalAlignBottomOutlined onClick={toBottom} />
                   </Tooltip>
                 </span>

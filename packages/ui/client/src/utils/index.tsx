@@ -1,5 +1,5 @@
 import React from 'react';
-import { history, getLocale as umiGetLocale } from 'umi';
+import { history } from 'umi';
 import * as IUi from '@umijs/ui-types';
 import querystring from 'querystring';
 import { IProjectList, IProjectItem } from '@/enums';
@@ -12,7 +12,12 @@ const localeMapping: any = {
 };
 
 export const getLocale = () => {
-  const locale = umiGetLocale() || '';
+  const { g_lang } = window;
+  const lang = typeof localStorage !== 'undefined' ? window.localStorage.getItem('umi_locale') : '';
+  const isNavigatorLanguageValid =
+    typeof navigator !== 'undefined' && typeof navigator.language === 'string';
+  const browserLang = isNavigatorLanguageValid ? navigator.language : '';
+  const locale = lang || g_lang || browserLang;
   return localeMapping[locale.toLowerCase()] || 'zh-CN';
 };
 

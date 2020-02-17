@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageHeader } from 'antd';
-import { injectIntl } from 'umi';
+import { injectIntl } from 'react-intl';
 import { PROJECT_STATUS, IProjectStatus } from '@/enums';
 import events, { MESSAGES } from '@/message';
 import scrollTop from '@/utils/scrollTop';

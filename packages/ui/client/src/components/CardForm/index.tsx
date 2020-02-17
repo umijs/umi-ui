@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { formatMessage, FormattedMessage, setLocale } from 'umi';
+import { useIntl } from 'react-intl';
 import { Col, Row, Card } from 'antd';
 import cls from 'classnames';
 
@@ -27,6 +27,7 @@ interface CardFormProps {
 
 const CardForm: React.SFC<CardFormProps> = props => {
   const { value, options, gutter = 16, span = 12, onChange } = props;
+  const { formatMessage } = useIntl();
   const [{ value: defaultCardValue }] = options || [];
   const [cardValue, setCardValue] = useState<IValue>(value || defaultCardValue);
 

@@ -6,7 +6,7 @@ import * as IUi from '@umijs/ui-types';
 import { Button, Form, Input, Spin, message, Popconfirm } from 'antd';
 import { useDebounceFn, useToggle } from '@umijs/hooks';
 import isEmpty from 'lodash/isEmpty';
-import { useIntl } from 'umi';
+import { useIntl } from 'react-intl';
 import serialize from 'serialize-javascript';
 import Context from '@/layouts/Context';
 import { callRemote } from '@/socket';

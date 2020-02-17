@@ -7,12 +7,12 @@ import {
   notify,
   runTask,
   cancelTask,
-  getTaskDetail
-} from "../util";
+  getTaskDetail,
+} from '../util';
 
-export const namespace = "org.umi.taskManager";
-import { TaskType, TaskState } from "../../src/server/core/enums";
-import { Analyze } from "../util";
+export const namespace = 'org.umi.taskManager';
+import { TaskType, TaskState } from '../../src/server/core/enums';
+import { Analyze } from '../util';
 
 let init = false;
 
@@ -21,26 +21,26 @@ export default {
   state: {
     currentProject: {},
     tasks: {}, // [cwd]: { dev: DevTask, build: BuildTask, ... }
-    dbPath: {} // [cwd]: 'dbPath'
+    dbPath: {}, // [cwd]: 'dbPath'
   },
   effects: {
     // 初始化 taskManager
     *init({ payload, callback }, { call, put }) {
       const { currentProject, getSharedDataDir } = payload;
       const { states: taskStates } = yield callRemote({
-        type: "plugin/init",
+        type: 'plugin/init',
         payload: {
-          key: currentProject.key
-        }
+          key: currentProject.key,
+        },
       });
       const dir = yield getSharedDataDir();
       yield put({
-        type: "initCurrentProjectState",
+        type: 'initCurrentProjectState',
         payload: {
           currentProject,
           taskStates,
-          dbPath: dir
-        }
+          dbPath: dir,
+        },
       });
     },
     // 执行任务
@@ -60,8 +60,8 @@ export default {
       const result = yield call(getTaskDetail, taskType, log, dbPath);
       callback && callback(result);
       yield put({
-        type: "updateWebpackStats",
-        payload: result
+        type: 'updateWebpackStats',
+        payload: result,
       });
     },
 
@@ -77,8 +77,8 @@ export default {
       if (!ins) {
         return;
       }
-      ins.write(log.replace(/\n/g, "\r\n"));
-    }
+      ins.write(log.replace(/\n/g, '\r\n'));
+    },
   },
   reducers: {
     initCurrentProjectState(state, { payload }) {
@@ -88,12 +88,12 @@ export default {
         currentProject,
         tasks: {
           ...state.tasks,
-          [currentProject.path]: taskStates
+          [currentProject.path]: taskStates,
         },
         dbPath: {
           ...state.dbPath,
-          [currentProject.path]: dbPath
-        }
+          [currentProject.path]: dbPath,
+        },
       };
     },
     updateTaskDetail(state, { payload }) {
@@ -108,10 +108,10 @@ export default {
             [taskType]: {
               ...state.tasks[cwd][taskType],
               ...rest,
-              analyze: stats ? new Analyze(stats) : null
-            }
-          }
-        }
+              analyze: stats ? new Analyze(stats) : null,
+            },
+          },
+        },
       };
     },
     updateWebpackStats(state, { payload }) {
@@ -124,12 +124,12 @@ export default {
             ...state.tasks[currentCwd],
             [type]: {
               ...state.tasks[currentCwd][type],
-              analyze: stats ? new Analyze(stats) : null // 若有 stats, 初始化 analyze instance
-            }
-          }
-        }
+              analyze: stats ? new Analyze(stats) : null, // 若有 stats, 初始化 analyze instance
+            },
+          },
+        },
       };
-    }
+    },
   },
   subscriptions: {
     setup({ history, dispatch }) {
@@ -137,45 +137,42 @@ export default {
         if (init) {
           return;
         }
-        if (pathname === "/tasks") {
+        if (pathname === '/tasks') {
           init = true;
           // 接收状态通知
           listenRemote({
-            type: "org.umi.task.state",
+            type: 'org.umi.task.state',
             onMessage: ({ detail, taskType, cwd }) => {
               // 更新 state 数据
               dispatch({
-                type: "updateTaskDetail",
+                type: 'updateTaskDetail',
                 payload: {
                   detail,
                   taskType,
-                  cwd
-                }
+                  cwd,
+                },
               });
 
               // 成功或者失败的时候做通知
               if ([TaskState.INIT, TaskState.ING].indexOf(detail.state) > -1) {
                 return;
               }
-              const { title, message, ...rest } = getNoticeMessage(
-                taskType,
-                detail.state
-              );
+              const { title, message, ...rest } = getNoticeMessage(taskType, detail.state);
               // TODO: 这儿应该加上项目的名称
               notify({
-                title: intl({ id: title }),
-                message: intl({ id: message }),
-                ...rest
+                title: intl.formatMessage({ id: title }),
+                message: intl.formatMessage({ id: message }),
+                ...rest,
               });
-            }
+            },
           });
           // 日志更新
           listenRemote({
-            type: "org.umi.task.log",
+            type: 'org.umi.task.log',
             onMessage: ({
-              log = "",
+              log = '',
               taskType,
-              key
+              key,
             }: {
               log: string;
               taskType: TaskType;
@@ -185,17 +182,17 @@ export default {
                 return;
               }
               dispatch({
-                type: "writeLog",
+                type: 'writeLog',
                 payload: {
                   taskType,
                   log,
-                  key
-                }
+                  key,
+                },
               });
-            }
+            },
           });
         }
       });
-    }
-  }
+    },
+  },
 };

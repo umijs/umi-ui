@@ -11,7 +11,7 @@ import {
   MessageOutlined,
   CodeOutlined,
 } from '@ant-design/icons';
-import { useIntl } from 'umi';
+import { useIntl } from 'react-intl';
 import cls from 'classnames';
 import { LOCALES, LOCALES_ICON } from '@/enums';
 import Context from '@/layouts/Context';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Popconfirm, Tooltip, Divider } from 'antd';
-import { useIntl } from 'umi';
+import { useIntl } from 'react-intl';
 import cls from 'classnames';
 import { CloseOutlined, VerticalAlignBottomOutlined, DeleteOutlined } from '@ant-design/icons';
 import styles from './FooterToolbar.less';

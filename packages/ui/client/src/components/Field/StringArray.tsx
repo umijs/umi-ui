@@ -1,66 +1,65 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { formatMessage } from 'umi';
-import { FieldProps } from './index';
+import { useIntl } from 'react-intl';
 import debug from '@/debug';
+import { FieldProps } from './index';
 import { getFormItemShow } from './utils';
 
 const StringArrayComp: React.SFC<FieldProps> = props => {
+  const { formatMessage } = useIntl();
   const _log = debug.extend('Field:StringArrayComp');
   const { name, size, ...restFormItemProps } = props;
 
   const { parentConfig } = getFormItemShow(name);
 
-  const formControl = (fields, { add, remove }) => {
-    return (
-      <Form.Item {...restFormItemProps}>
-        {fields.map((field, index) => (
-          <Form.Item key={field.key} required={false} style={{ marginBottom: 8 }}>
-            <Form.Item
-              {...field}
-              validateTrigger={['onChange', 'onBlur']}
-              rules={[
-                {
-                  required: true,
-                  whitespace: true,
-                  message: '请填写配置',
-                },
-              ]}
-              noStyle
-            >
-              <Input
-                size={size}
-                autoComplete="off"
-                defaultValue=""
-                style={{ width: 320, marginRight: 8 }}
-              />
-            </Form.Item>
-            {fields.length > 0 ? (
-              <MinusCircleOutlined
-                onClick={() => {
-                  remove(field.name);
-                }}
-              />
-            ) : null}
-          </Form.Item>
-        ))}
-        <Form.Item>
-          <Button
-            type="dashed"
-            ghost
-            size={size}
-            onClick={() => {
-              add();
-            }}
-            style={{ width: 320 }}
+  const formControl = (fields, { add, remove }) => (
+    <Form.Item {...restFormItemProps}>
+      {fields.map((field, index) => (
+        <Form.Item key={field.key} required={false} style={{ marginBottom: 8 }}>
+          <Form.Item
+            {...field}
+            validateTrigger={['onChange', 'onBlur']}
+            rules={[
+              {
+                required: true,
+                whitespace: true,
+                message: '请填写配置',
+              },
+            ]}
+            noStyle
           >
-            <PlusOutlined /> {formatMessage({ id: 'org.umi.ui.configuration.add.column' })}
-          </Button>
+            <Input
+              size={size}
+              autoComplete="off"
+              defaultValue=""
+              style={{ width: 320, marginRight: 8 }}
+            />
+          </Form.Item>
+          {fields.length > 0 ? (
+            <MinusCircleOutlined
+              onClick={() => {
+                remove(field.name);
+              }}
+            />
+          ) : null}
         </Form.Item>
+      ))}
+      <Form.Item>
+        <Button
+          type="dashed"
+          ghost
+          size={size}
+          onClick={() => {
+            add();
+          }}
+          style={{ width: 320 }}
+        >
+          <PlusOutlined /> {formatMessage({ id: 'org.umi.ui.configuration.add.column' })}
+        </Button>
       </Form.Item>
-    );
-  };
+    </Form.Item>
+  );
 
   return parentConfig ? (
     <Form.Item shouldUpdate={(prev, curr) => prev[parentConfig] !== curr[parentConfig]} noStyle>

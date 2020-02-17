@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { formatMessage, FormattedMessage } from 'umi';
+import { useIntl, FormattedMessage } from 'react-intl';
 import cls from 'classnames';
 import {
   Button,
@@ -29,11 +29,11 @@ import editorSvg from '@/assets/code.svg';
 import { setCurrentProject, openInEditor, editProject, deleteProject } from '@/services/project';
 import ProjectContext from '@/layouts/ProjectContext';
 import Loading from '@/pages/loading';
-import ModalForm from './ModalForm';
 import { IProjectItem } from '@/enums';
 import { getProjectStatus, sortProjectList, handleBack } from '@/utils';
-import { IProjectProps } from '../index';
 import debug from '@/debug';
+import { IProjectProps } from '../index';
+import ModalForm from './ModalForm';
 
 import styles from './index.less';
 
@@ -49,6 +49,7 @@ interface IProjectListItem extends IProjectItem {
 
 const ProjectList: React.SFC<IProjectProps> = props => {
   const _log = debug.extend('projectList');
+  const { formatMessage } = useIntl();
   const { projectList } = props;
   const { currentProject, projectsByKey = {} } = projectList;
   const { setCurrent, basicUI } = useContext(ProjectContext);

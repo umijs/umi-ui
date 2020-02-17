@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import { handleBack } from '@/utils';
-import intl from '@/utils/intl';
+import { FormattedMessage } from 'react-intl';
 import DepsInstall from '@/components/DepsInstall';
 import OpenFile from './openFile';
 
@@ -14,14 +14,14 @@ export default {
   '@@actions/reInstallDependencies': props => (
     <DepsInstall
       installType="reinstall"
-      loadingChild={intl({ id: 'org.umi.ui.loading.deps.installing' })}
+      loadingChild={<FormattedMessage id="org.umi.ui.loading.deps.installing" />}
       {...props}
     />
   ),
   '@@actions/installDependencies': props => (
     <DepsInstall
       installType="install"
-      loadingChild={intl({ id: 'org.umi.ui.loading.deps.installing' })}
+      loadingChild={<FormattedMessage id="org.umi.ui.loading.deps.installing" />}
       {...props}
     />
   ),
