@@ -8,12 +8,12 @@ import upperCamelCase from 'uppercamelcase';
 import { IApi } from '@umijs/types';
 import rimraf from 'rimraf';
 import Generator from 'yeoman-generator';
-import { winPath, getFile } from '@umijs/utils';
+import { winPath } from '@umijs/utils';
 import replaceContent from './replaceContent';
 import { SINGULAR_SENSLTIVE } from './constants';
-import { routeExists } from './util';
+import { routeExists, findJS } from './util';
 
-const debug = require('debug')('umi:block:getBlockGenerator');
+const debug = require('debug')('umiui:UmiUI:block:getBlockGenerator');
 
 /**
  * 判断一个路径是否为空
@@ -327,16 +327,17 @@ export const getBlockGenerator = (api: IApi) => {
       }
 
       // create container
-      this.entryPath = getFile({
+      this.entryPath = findJS({
         base: targetPath,
-        type: 'javascript',
-        fileNameWithoutExt: 'index',
-      })?.path;
-      debug('this.entryPath1', this.entryPath);
+        fileNameWithoutExt: '',
+      });
+      debug('this.entryPath', this.entryPath);
       debug('targetPath', targetPath);
       if (!this.entryPath) {
+        // Bar/Bar.tsx
         this.entryPath = join(targetPath, `index.${this.isTypeScript ? 'tsx' : 'js'}`);
       }
+      // Bar.tsx
 
       if (!this.isPageBlock && !existsSync(this.entryPath)) {
         const confirmResult = (

@@ -1,10 +1,11 @@
 import { join } from 'path';
 import { existsSync, readFileSync } from 'fs';
 import haveRootBinding from '@umijs/block-sdk/lib/sdk/haveRootBinding';
+import { findJS } from '@umijs/block-sdk';
 import { utils } from 'umi';
 import { IHandlerOpts } from '../index';
 
-const { createDebug, winPath, getFile } = utils;
+const { createDebug, winPath } = utils;
 
 const debug = createDebug('umiui:UmiUI:block:checkBindingInFile');
 
@@ -17,15 +18,18 @@ export default async ({ success, payload, api, failure }: IHandlerOpts) => {
   debug('absPagesPath', paths.absPagesPath);
   debug('targetPath', targetPath);
   // 找到具体的 js
-  const absTargetPath = winPath(
-    join(paths.absPagesPath, winPath(targetPath).replace(paths.absPagesPath, '')),
+  const absTargetPath = join(
+    paths.absPagesPath,
+    winPath(targetPath).replace(paths.absPagesPath, ''),
   );
+
   debug('absTargetPath', absTargetPath);
+
   // 有些用户路由下载路径是不在的，这里拦住他们
   if (
     !existsSync(absTargetPath) &&
     // 当前路由为单文件
-    !getFile({ base: absTargetPath, fileNameWithoutExt: '', type: 'javascript' })?.path
+    !findJS({ base: absTargetPath, fileNameWithoutExt: '' })
   ) {
     failure({
       message: ` ${absTargetPath} 目录不存在!`,
@@ -35,8 +39,10 @@ export default async ({ success, payload, api, failure }: IHandlerOpts) => {
   }
 
   const entryPath =
-    getFile({ base: absTargetPath, fileNameWithoutExt: 'index', type: 'javascript' })?.path ||
-    getFile({ base: absTargetPath, fileNameWithoutExt: '', type: 'javascript' })?.path;
+    // Bar => Bar/index.(tsx|jsx|js|jsx)
+    findJS({ base: absTargetPath, fileNameWithoutExt: 'index' }) ||
+    // Bar => Bar.(tsx|jsx|js|jsx)
+    findJS({ base: absTargetPath, fileNameWithoutExt: '' });
 
   debug('entryPath', entryPath);
 
