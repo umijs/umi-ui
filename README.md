@@ -14,15 +14,6 @@
 $ yarn add @umijs/preset-ui -D
 ```
 
-通过 `presets` 加载 Umi UI：
-
-```js
-// .umirc.ts
-export default {
-  presets: ['@umijs/preset-ui']
-}
-```
-
 开始使用：
 
 ```bash
