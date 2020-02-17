@@ -1,4 +1,4 @@
-import { useIntl } from 'umi';
+import { useIntl } from 'react-intl';
 import slash from 'slash2';
 import p from 'immer';
 import { listDirectory } from '@/services/project';

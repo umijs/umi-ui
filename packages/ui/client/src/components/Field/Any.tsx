@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ExportOutlined } from '@ant-design/icons';
 import { message, Form } from 'antd';
-import { useIntl } from 'umi';
+import { useIntl } from 'react-intl';
 import Context from '@/layouts/Context';
 import debug from '@/debug';
 import { openConfigFile } from '@/services/project';

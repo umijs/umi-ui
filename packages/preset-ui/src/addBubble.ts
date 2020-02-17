@@ -2,7 +2,7 @@ import { join } from 'path';
 import { IApi } from 'umi';
 
 export default (api: IApi) => {
-  const { relativeToTmp, utils } = api;
+  const { utils } = api;
   const { winPath } = utils;
   api.addEntryCode(
     () => `

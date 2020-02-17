@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Row, Col, Button, Modal, Select, Form } from "antd";
-import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
-import styles from "../../ui.module.less";
-import { TaskState } from "../../../src/server/core/enums";
-import { getTerminalRefIns, setTerminalRefIns } from "../../util";
-import { TaskComponentProps } from "..";
-import { useInit } from "../../hooks";
+import React, { useState, useEffect } from 'react';
+import { Row, Col, Button, Modal, Select, Form } from 'antd';
+import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
+import styles from '../../ui.module.less';
+import { TaskState } from '../../../src/server/core/enums';
+import { getTerminalRefIns, setTerminalRefIns } from '../../util';
+import { TaskComponentProps } from '..';
+import { useInit } from '../../hooks';
 
 const { Option } = Select;
 
@@ -15,10 +15,11 @@ const InstallComponent: React.FC<TaskComponentProps> = ({
   api,
   dispatch,
   detail = {},
-  Terminal
+  Terminal,
 }) => {
-  const { intl } = api;
-  const [log, setLog] = useState("");
+  const { useIntl } = api;
+  const { formatMessage: intl } = useIntl();
+  const [log, setLog] = useState('');
   const [npmClients, setNpmClients] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [form] = Form.useForm();
@@ -34,16 +35,16 @@ const InstallComponent: React.FC<TaskComponentProps> = ({
         taskType,
         callback: ({ log }) => {
           setLog(log);
-        }
-      }
+        },
+      },
     });
     (async () => {
       const { data } = await api.callRemote({
-        type: "@@project/getNpmClients"
+        type: '@@project/getNpmClients',
       });
       setNpmClients(data);
       form.setFieldsValue({
-        npmClient: data[0]
+        npmClient: data[0],
       });
     })();
   }, [init]);
@@ -65,9 +66,9 @@ const InstallComponent: React.FC<TaskComponentProps> = ({
       payload: {
         taskType,
         env: {
-          NPM_CLIENT: npmClient
-        }
-      }
+          NPM_CLIENT: npmClient,
+        },
+      },
     });
   }
 
@@ -75,8 +76,8 @@ const InstallComponent: React.FC<TaskComponentProps> = ({
     dispatch({
       type: `${namespace}/cancel`,
       payload: {
-        taskType
-      }
+        taskType,
+      },
     });
   }
 
@@ -101,14 +102,12 @@ const InstallComponent: React.FC<TaskComponentProps> = ({
   const isTaskRunning = detail && detail.state === TaskState.ING;
   return (
     <>
-      <h1 className={styles.title}>
-        {intl({ id: "org.umi.ui.tasks.install" })}
-      </h1>
+      <h1 className={styles.title}>{intl({ id: 'org.umi.ui.tasks.install' })}</h1>
       <>
         <Row>
           <Col span={24} className={styles.buttonGroup}>
             <Button
-              size={api.mini ? "small" : "default"}
+              size={api.mini ? 'small' : 'default'}
               type="primary"
               onClick={isTaskRunning ? cancelInstall : openModal}
             >
@@ -116,33 +115,33 @@ const InstallComponent: React.FC<TaskComponentProps> = ({
                 <>
                   <PauseOutlined />
                   <span className={styles.runningText}>
-                    {" "}
-                    {intl({ id: "org.umi.ui.tasks.install.cancel" })}
+                    {' '}
+                    {intl({ id: 'org.umi.ui.tasks.install.cancel' })}
                   </span>
                 </>
               ) : (
                 <>
                   <CaretRightOutlined />
                   <span className={styles.runningText}>
-                    {" "}
-                    {intl({ id: "org.umi.ui.tasks.install.start" })}
+                    {' '}
+                    {intl({ id: 'org.umi.ui.tasks.install.start' })}
                   </span>
                 </>
               )}
             </Button>
             <Modal
               visible={modalVisible}
-              title={intl({ id: "org.umi.ui.tasks.install" })}
+              title={intl({ id: 'org.umi.ui.tasks.install' })}
               onOk={handleOk}
               onCancel={handleCancel}
             >
               <div className={styles.modalContainer}>
                 <div className={styles.confirmMessage}>
-                  {intl({ id: "org.umi.ui.tasks.install.tip" })}
+                  {intl({ id: 'org.umi.ui.tasks.install.tip' })}
                 </div>
                 <Form name="intasllEnv" form={form} layout="vertical">
                   <Form.Item
-                    label={intl({ id: "org.umi.ui.tasks.install.npmClient" })}
+                    label={intl({ id: 'org.umi.ui.tasks.install.npmClient' })}
                     name="npmClient"
                   >
                     <Select style={{ width: 120 }}>

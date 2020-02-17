@@ -8,6 +8,7 @@ export const MESSAGES = {
   HIDE_LOG: Symbol('HIDE_LOG'),
   CHANGE_GLOBAL_ACTION: Symbol('CHANGE_GLOBAL_ACTION'),
   CHANGE_PROJECT_CURRENT: Symbol('CHANGE_PROJECT_CURRENT'),
+  UPDATE_LOCALE: Symbol('UPDATE_LOCALE'),
 };
 
 export default event;

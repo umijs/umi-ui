@@ -138,7 +138,8 @@ const BlockItem: React.FC<BlockItemProps> = ({
   selectedTag,
 }) => {
   const { api } = useContext(Context);
-  const { intl } = api;
+  const { useIntl } = api;
+  const { formatMessage: intl } = useIntl();
   const isMini = api.isMini();
 
   return (

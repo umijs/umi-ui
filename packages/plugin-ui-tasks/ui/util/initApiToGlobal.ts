@@ -8,7 +8,7 @@ function initApiToGloal(api: IUiApi) {
   callRemote = api.callRemote; // eslint-disable-line
   listenRemote = api.listenRemote;
   notify = api.notify;
-  intl = api.intl;
+  intl = api.getIntl();
 }
 
 export { callRemote, listenRemote, notify, intl, initApiToGloal };

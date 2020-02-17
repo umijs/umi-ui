@@ -1,10 +1,10 @@
 import React from 'react';
 import { Form } from 'antd';
 import isPlainObject from 'lodash/isPlainObject';
-import { formatMessage } from 'umi';
+import { useIntl } from 'react-intl';
+import debug from '@/debug';
 import { FieldProps } from './index';
 import ObjectField from './fields/ObjectField';
-import debug from '@/debug';
 import { getFormItemShow } from './utils';
 
 const COMMON_BROWSER = ['chrome', 'safari', 'firefox'];
@@ -15,6 +15,7 @@ const COMMON_BROWSER = ['chrome', 'safari', 'firefox'];
  */
 const ObjectComp: React.FC<FieldProps> = props => {
   const _log = debug.extend('Field:ObjectComp');
+  const { formatMessage } = useIntl();
   const { name, options, defaultValue = {}, size, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {

@@ -3,7 +3,8 @@ import * as IUi from '@umijs/ui-types';
 import cls from 'classnames';
 import { Row, Col } from 'antd';
 import { stringify, parse } from 'qs';
-import { FormattedMessage, history } from 'umi';
+import { history } from 'umi';
+import { FormattedMessage } from 'react-intl';
 
 import styles from './index.less';
 

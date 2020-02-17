@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Modal, Input, InputNumber, Form } from 'antd';
-import { formatMessage } from 'umi';
+import { useIntl } from 'react-intl';
 import flatten from 'lodash/flatten';
 import nanoid from 'nanoid';
 
@@ -26,6 +26,7 @@ const ModalForm: React.FC<IModalFormProps> = ({
   restModelProps,
   restFormProps,
 }) => {
+  const { formatMessage } = useIntl();
   const [form] = Form.useForm();
   const formName = name || nanoid();
 

@@ -1,57 +1,56 @@
 /**
  * 添加模板的表单，选择路径和文件夹
  */
-import React, { useContext } from "react";
-import { Form } from "antd";
+import React, { useContext } from 'react';
+import { Form } from 'antd';
 
-import Context from "../UIApiContext";
-import RoutePathTree from "./RoutePathTree";
-import PageFoldersTreeData from "./PageFoldersTreeData";
-import InfoToolTip from "./InfoToolTip";
+import Context from '../UIApiContext';
+import RoutePathTree from './RoutePathTree';
+import PageFoldersTreeData from './PageFoldersTreeData';
+import InfoToolTip from './InfoToolTip';
 
 const AddBlockForm: React.FC<{
   blockType: string;
   visible: boolean;
 }> = ({ visible }) => {
   const { api } = useContext(Context);
-  const { intl } = api;
+  const { useIntl } = api;
+  const { formatMessage: intl } = useIntl();
   return (
     <>
       <Form.Item
         name="routePath"
         label={
           <InfoToolTip
-            title={intl({ id: "org.umi.ui.blocks.adder.routePath" })}
+            title={intl({ id: 'org.umi.ui.blocks.adder.routePath' })}
             placeholder={intl({
-              id: "org.umi.ui.blocks.adder.routePath.placeholder"
+              id: 'org.umi.ui.blocks.adder.routePath.placeholder',
             })}
           />
         }
         rules={[
           {
             required: true,
-            message: intl({ id: "org.umi.ui.blocks.adder.routePath.required" })
+            message: intl({ id: 'org.umi.ui.blocks.adder.routePath.required' }),
           },
           {
             validator: async (rule, value) => {
-              if (value === "/") {
+              if (value === '/') {
                 return;
               }
               const { exists } = (await api.callRemote({
-                type: "org.umi.block.checkExistRoute",
+                type: 'org.umi.block.checkExistRoute',
                 payload: {
-                  path: value.toLowerCase()
-                }
+                  path: value.toLowerCase(),
+                },
               })) as {
                 exists: boolean;
               };
               if (exists) {
-                throw new Error(
-                  intl({ id: "org.umi.ui.blocks.adder.routePath.exist" })
-                );
+                throw new Error(intl({ id: 'org.umi.ui.blocks.adder.routePath.exist' }));
               }
-            }
-          }
+            },
+          },
         ]}
       >
         <RoutePathTree visible={visible} />
@@ -60,9 +59,9 @@ const AddBlockForm: React.FC<{
         name="path"
         label={
           <InfoToolTip
-            title={intl({ id: "org.umi.ui.blocks.adder.templatePath" })}
+            title={intl({ id: 'org.umi.ui.blocks.adder.templatePath' })}
             placeholder={intl({
-              id: "org.umi.ui.blocks.adder.templatePath.tooltip"
+              id: 'org.umi.ui.blocks.adder.templatePath.tooltip',
             })}
           />
         }
@@ -70,31 +69,27 @@ const AddBlockForm: React.FC<{
           {
             required: true,
             message: intl({
-              id: "org.umi.ui.blocks.adder.templatePath.required"
-            })
+              id: 'org.umi.ui.blocks.adder.templatePath.required',
+            }),
           },
           {
             validator: async (rule, filePath) => {
-              if (filePath === "/") {
-                throw new Error(
-                  intl({ id: "org.umi.ui.blocks.adder.templatePath.root" })
-                );
+              if (filePath === '/') {
+                throw new Error(intl({ id: 'org.umi.ui.blocks.adder.templatePath.root' }));
               }
               const { exists } = (await api.callRemote({
-                type: "org.umi.block.checkExistFilePath",
+                type: 'org.umi.block.checkExistFilePath',
                 payload: {
-                  path: filePath
-                }
+                  path: filePath,
+                },
               })) as {
                 exists: boolean;
               };
               if (exists) {
-                throw new Error(
-                  intl({ id: "org.umi.ui.blocks.adder.templatePath.exist" })
-                );
+                throw new Error(intl({ id: 'org.umi.ui.blocks.adder.templatePath.exist' }));
               }
-            }
-          }
+            },
+          },
         ]}
       >
         <PageFoldersTreeData visible={visible} />

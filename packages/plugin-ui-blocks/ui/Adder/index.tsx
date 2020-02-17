@@ -61,7 +61,8 @@ const Adder: React.FC<AdderProps> = props => {
     blockType,
   } = props;
   const { api } = useContext(Context);
-  const { callRemote, intl, _analyze } = api;
+  const { callRemote, useIntl, _analyze } = api;
+  const { formatMessage: intl } = useIntl();
   const { gtag } = _analyze;
 
   const [taskLoading, setTaskLoading] = useState<boolean>(false);

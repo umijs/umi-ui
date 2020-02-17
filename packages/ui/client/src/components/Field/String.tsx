@@ -1,11 +1,12 @@
 import React from 'react';
 import { Form, Input } from 'antd';
-import { formatMessage } from 'umi';
-import { FieldProps } from './index';
+import { useIntl } from 'react-intl';
 import debug from '@/debug';
+import { FieldProps } from './index';
 import { getFormItemShow } from './utils';
 
 const StringComp: React.SFC<FieldProps> = props => {
+  const { formatMessage } = useIntl();
   const _log = debug.extend('Field:StringComp');
   const { name, form, size, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);

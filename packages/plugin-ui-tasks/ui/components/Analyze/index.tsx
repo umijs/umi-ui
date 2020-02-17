@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import Treemap from "./Treemap";
-import Tooltip from "./Tooltip";
-import filesize from "filesize";
-import styles from "./index.module.less";
-import { Analyze } from "../../util/analyze";
-import { ReloadOutlined } from "@ant-design/icons";
+import React, { Component } from 'react';
+import Treemap from './Treemap';
+import Tooltip from './Tooltip';
+import filesize from 'filesize';
+import styles from './index.module.less';
+import { Analyze } from '../../util/analyze';
+import { ReloadOutlined } from '@ant-design/icons';
 
 const SIZE_SWITCH_ITEMS = [
-  { label: "Stat", prop: "statSize" },
-  { label: "Parsed", prop: "parsedSize" },
-  { label: "Gzipped", prop: "gzipSize" }
+  { label: 'Stat', prop: 'statSize' },
+  { label: 'Parsed', prop: 'parsedSize' },
+  { label: 'Gzipped', prop: 'gzipSize' },
 ];
 
 interface IProps {
@@ -33,25 +33,24 @@ class AnalyzeComponent extends Component<IProps> {
 
   state = {
     showTooltip: false,
-    tooltipContent: "",
-    showReloadFlag: false
+    tooltipContent: '',
+    showReloadFlag: false,
   };
 
   handleMouseLeaveTreemap = () => {
     this.setState({
-      showTooltip: false
+      showTooltip: false,
     });
   };
 
   renderModuleSize(module, sizeType) {
     const sizeProp = `${sizeType}Size`;
     const size = module[sizeProp];
-    const sizeLabel = SIZE_SWITCH_ITEMS.find(item => item.prop === sizeProp)
-      .label;
+    const sizeLabel = SIZE_SWITCH_ITEMS.find(item => item.prop === sizeProp).label;
     const isActive = true;
 
-    return typeof size === "number" ? (
-      <div className={isActive ? styles.activeSize : ""}>
+    return typeof size === 'number' ? (
+      <div className={isActive ? styles.activeSize : ''}>
         {sizeLabel} size: <strong>{filesize(size)}</strong>
       </div>
     ) : null;
@@ -66,9 +65,9 @@ class AnalyzeComponent extends Component<IProps> {
           <strong>{module.label}</strong>
         </div>
         <br />
-        {this.renderModuleSize(module, "stat")}
-        {!module.inaccurateSizes && this.renderModuleSize(module, "parsed")}
-        {!module.inaccurateSizes && this.renderModuleSize(module, "gzip")}
+        {this.renderModuleSize(module, 'stat')}
+        {!module.inaccurateSizes && this.renderModuleSize(module, 'parsed')}
+        {!module.inaccurateSizes && this.renderModuleSize(module, 'gzip')}
         {module.path && (
           <div>
             Path: <strong>{module.path}</strong>
@@ -90,25 +89,25 @@ class AnalyzeComponent extends Component<IProps> {
     const { group } = event;
     if (!group) {
       this.setState({
-        showTooltip: false
+        showTooltip: false,
       });
       return;
     }
     this.setState({
       showTooltip: true,
-      tooltipContent: this.getTooltipContent(group)
+      tooltipContent: this.getTooltipContent(group),
     });
   };
 
   showReload = () => {
     this.setState({
-      showReloadFlag: true
+      showReloadFlag: true,
     });
   };
 
   hideReload = () => {
     this.setState({
-      showReloadFlag: false
+      showReloadFlag: false,
     });
   };
 
@@ -123,13 +122,16 @@ class AnalyzeComponent extends Component<IProps> {
     const { analyze, src, api } = this.props;
     const { showReloadFlag } = this.state;
     const { intl } = api;
+    const { FormattedMessage } = intl;
 
     if (!src && !analyze) {
       return (
         <div className={styles.empty}>
           <div>
             <div className="icon" />
-            <span>{intl({ id: "org.umi.ui.tasks.analyze.empty" })}</span>
+            <span>
+              <FormattedMessage id="org.umi.ui.tasks.analyze.empty" />
+            </span>
           </div>
         </div>
       );
@@ -160,9 +162,7 @@ class AnalyzeComponent extends Component<IProps> {
               onMouseLeave={this.handleMouseLeaveTreemap}
               onGroupHover={this.handleTreemapGroupHover}
             />
-            <Tooltip visible={this.state.showTooltip}>
-              {this.state.tooltipContent}
-            </Tooltip>
+            <Tooltip visible={this.state.showTooltip}>{this.state.tooltipContent}</Tooltip>
           </>
         )}
       </div>

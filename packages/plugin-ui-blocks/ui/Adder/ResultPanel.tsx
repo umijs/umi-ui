@@ -1,18 +1,12 @@
-import React, { useContext } from "react";
-import { Result, Button } from "antd";
-import Context from "../UIApiContext";
-import styles from "./ResultPanel.module.less";
+import React, { useContext } from 'react';
+import { Result, Button } from 'antd';
+import Context from '../UIApiContext';
+import styles from './ResultPanel.module.less';
 
-export default ({
-  name,
-  onFinish
-}: {
-  name: string;
-  url: string;
-  onFinish: () => void;
-}) => {
+export default ({ name, onFinish }: { name: string; url: string; onFinish: () => void }) => {
   const { api } = useContext(Context);
-  const { intl } = api;
+  const { useIntl } = api;
+  const { formatMessage: intl } = useIntl();
   // const [alive, setAlive] = useState<boolean>(false);
   // const isMini = api.isMini();
   // useEffect(() => {
@@ -30,12 +24,12 @@ export default ({
       <Result
         status="success"
         title={`${name} ${intl({
-          id: "org.umi.ui.blocks.adder.result.success"
+          id: 'org.umi.ui.blocks.adder.result.success',
         })}`}
-        subTitle={intl({ id: "org.umi.ui.blocks.adder.result.subTitle" })}
+        subTitle={intl({ id: 'org.umi.ui.blocks.adder.result.subTitle' })}
         extra={
           <Button type="primary" key="preview" onClick={() => onFinish()}>
-            {intl({ id: "org.umi.ui.blocks.adder.result.done" })}
+            {intl({ id: 'org.umi.ui.blocks.adder.result.done' })}
           </Button>
           // isMini || !alive
           //   ? [

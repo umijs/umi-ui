@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import cls from 'classnames';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { useIntl } from 'umi';
+import { useIntl } from 'react-intl';
 import debug from '@/debug';
 import ObjectItemField, { IValue, ObjectItemFieldProps, IOption } from './ObjectItemField';
 import { objToArray, arrayToObj } from '../utils';

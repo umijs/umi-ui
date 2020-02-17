@@ -40,7 +40,7 @@ const DashboardUI: React.FC<{}> = props => {
   // const isClosed = window.localStorage.getItem('umi_ui_dashboard_welcome') || false;
   // const [closed, setClosed] = useState<boolean>(!!isClosed);
   const { api, loading, dashboardCards, setCardSettings } = React.useContext(Context);
-  const { event, currentProject, intl, getBasicUI = () => ({}) } = api;
+  const { event, currentProject, getBasicUI = () => ({}) } = api;
   const [, updateState] = React.useState();
   const forceUpdate = useCallback(() => updateState({}), []);
   const actionCardCls = cls(styles.card, styles['card-action']);
@@ -89,31 +89,6 @@ const DashboardUI: React.FC<{}> = props => {
   return (
     <div className={styles.container}>
       <Masonry className={containerCls}>
-        {/* <div className={colCls}>
-          <Card className={welcomeCardCls} bordered={false} hoverable={false}>
-            <h2>Hi</h2>
-            <p>
-              {intl(
-                {
-                  id: 'org.umi.ui.dashboard.panel.welcome.title',
-                },
-                {
-                  name: currentProject.name,
-                },
-              )}
-            </p>
-            <div>
-              <a
-                href="https://umijs.org/guide/umi-ui.html"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {basicUI.name || 'Umi'} UI
-              </a>
-              {intl({ id: 'org.umi.ui.dashboard.panel.welcome.desc' })}
-            </div>
-          </Card>
-        </div> */}
         {enableCards.map(card => {
           const { title = '', description, key, content, right, colClassName } = card;
           const Title = (

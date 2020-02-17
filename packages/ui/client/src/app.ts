@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { history, addLocale, IRoute } from 'umi';
+import { history, IRoute } from 'umi';
 import querystring from 'querystring';
 import { setCurrentProject, clearCurrentProject } from '@/services/project';
 import debug from '@/debug';
@@ -141,7 +141,6 @@ export async function render(oldRender) {
       return false;
     }
 
-    console.log('before service.locales', service.locales);
     await initUIPlugin({
       currentProject,
     });

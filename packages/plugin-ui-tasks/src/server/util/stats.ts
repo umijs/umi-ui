@@ -1,4 +1,3 @@
-import { isPlainObject, isEmpty } from 'lodash';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { utils } from 'umi';
@@ -9,7 +8,8 @@ interface IGetAnalyzeEnvOpts {
   fileName: string;
 }
 
-const { mkdirp, portfinder } = utils;
+const { mkdirp, portfinder, lodash } = utils;
+const { isPlainObject, isEmpty } = lodash;
 
 const getAvailablePort = async () => {
   portfinder.basePort = 8888;

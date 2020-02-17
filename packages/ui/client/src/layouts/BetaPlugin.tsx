@@ -1,8 +1,8 @@
 import React from 'react';
 import { Menu, Dropdown } from 'antd';
 import { ExperimentFilled } from '@ant-design/icons';
-import { NavLink, FormattedMessage, useIntl } from 'umi';
-
+import { NavLink } from 'umi';
+import { useIntl, FormattedMessage } from 'react-intl';
 import styles from './Dashboard.less';
 
 export interface BetaPluginProps {

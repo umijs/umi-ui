@@ -19,7 +19,9 @@ const terserOptions =
 
 const config: IConfig = {
   publicPath: NODE_ENV === 'development' ? 'http://localhost:8002/' : '/',
-  history: 'browser',
+  history: {
+    type: 'browser',
+  },
   hash: NODE_ENV === 'production',
   // uglifyJSOptions,
   terserOptions,
@@ -94,7 +96,6 @@ const config: IConfig = {
     },
   ],
   title: 'Umi UI',
-  locale: {},
   dva: {},
   cssLoader: {
     modules: {

@@ -1,14 +1,22 @@
 import React from 'react';
-import { FormattedMessage, setLocale, useIntl, addLocale } from 'umi';
+import immer from 'immer';
+import { ConfigProvider } from 'antd';
+import { RawIntlProvider, createIntl, FormattedMessage } from 'react-intl';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import cls from 'classnames';
+import 'moment/locale/zh-cn';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import event, { MESSAGES } from '@/message';
-import { isMiniUI, getLocale } from '@/utils/index';
+import { isMiniUI, getLocale } from '@/utils';
 import Context from './Context';
 import Footer from './Footer';
+import { getLocaleInfo, setLocaleInfo } from '../PluginAPI';
 import { ILocale, LOCALES } from '../enums';
+
+moment.locale('en');
+
+const { useState, useEffect, useLayoutEffect, useMemo } = React;
 
 interface ILayoutProps {
   /** Layout 类型（项目列表、项目详情，loading 页） */
@@ -19,14 +27,14 @@ interface ILayoutProps {
 
 const Layout: React.FC<ILayoutProps> = props => {
   const isMini = isMiniUI();
-  const [loaded, setLoaded] = React.useState(false);
-  const [theme, setTheme] = React.useState('dark');
+  const localeInfo = getLocaleInfo();
+  const [locale, setLocale] = useState<'zh-CN', 'en-US'>(() => getLocale());
+  const [intl, setIntl] = useState(() => createIntl(localeInfo[locale]));
+  const [theme, setTheme] = useState('dark');
 
-  const setMomentLocale = (locale: ILocale = getLocale()) => {
-    moment.locale(locale === 'zh-CN' ? 'zh-cn' : 'en');
-  };
+  const currentLocaleInfo = localeInfo[locale];
 
-  React.useEffect(() => {
+  useLayoutEffect(() => {
     const messages = window.g_service.locales.reduce((curr, acc) => {
       const localeGroup = Object.entries(acc);
       localeGroup.forEach(group => {
@@ -35,15 +43,15 @@ const Layout: React.FC<ILayoutProps> = props => {
       });
       return curr;
     }, {});
-
-    Object.keys(messages).forEach((locale: string) => {
-      addLocale(locale, messages[locale]);
+    const newLocaleInfo = immer(localeInfo, draft => {
+      draft[locale].messages = {
+        ...draft[locale].messages,
+        ...messages[locale],
+      };
     });
-    setLoaded(true);
-  }, []);
-
-  React.useLayoutEffect(() => {
-    setMomentLocale();
+    setIntl(createIntl(newLocaleInfo[locale]));
+    setLocaleInfo(newLocaleInfo);
+    moment.locale(newLocaleInfo[locale]?.moment);
     return () => {
       event.removeAllListeners();
     };
@@ -61,13 +69,6 @@ const Layout: React.FC<ILayoutProps> = props => {
     }
   };
 
-  const setGlobalLocale = (locale: ILocale, reload = false) => {
-    if (Object.keys(LOCALES).indexOf(locale as string) > -1) {
-      setLocale(locale, reload);
-      setMomentLocale(locale);
-    }
-  };
-  const locale = getLocale();
   const { type, className, title } = props;
   const currentProject = window.g_uiCurrentProject || {};
   const layoutCls = cls(
@@ -83,34 +84,39 @@ const Layout: React.FC<ILayoutProps> = props => {
   const frameworkName = basicUI.name || 'Umi';
   const framework = `${frameworkName} UI`;
   const icon = basicUI.logo_remote || '//gw.alipayobjects.com/zos/antfincdn/KjbXlRsRBz/umi.png';
+  debugger;
 
   return (
-    <div className={layoutCls}>
-      <Context.Provider
-        value={{
-          locale,
-          theme,
-          loaded,
-          isMini,
-          currentProject,
-          showLogPanel,
-          hideLogPanel,
-          setLocale: setGlobalLocale,
-          FormattedMessage,
-          basicUI,
-        }}
-      >
-        <Helmet>
-          <html lang={locale === 'zh-CN' ? 'zh' : 'en'} />
-          <title>Umi UI</title>
-          <link rel="shortcut icon" href={icon} type="image/x-icon" />
-        </Helmet>
-        <ErrorBoundary>{props.children}</ErrorBoundary>
-        <ErrorBoundary>
-          <Footer type={type} />
-        </ErrorBoundary>
-      </Context.Provider>
-    </div>
+    <RawIntlProvider value={intl}>
+      <ConfigProvider locale={currentLocaleInfo?.antd}>
+        <div className={layoutCls}>
+          <Context.Provider
+            value={{
+              locale,
+              theme,
+              isMini,
+              currentProject,
+              showLogPanel,
+              hideLogPanel,
+              setLocale,
+              formatMessage: intl.formatMessage,
+              FormattedMessage,
+              basicUI,
+            }}
+          >
+            <Helmet>
+              <html lang={locale === 'zh-CN' ? 'zh' : 'en'} />
+              <title>Umi UI</title>
+              <link rel="shortcut icon" href={icon} type="image/x-icon" />
+            </Helmet>
+            <ErrorBoundary>{props.children}</ErrorBoundary>
+            <ErrorBoundary>
+              <Footer type={type} />
+            </ErrorBoundary>
+          </Context.Provider>
+        </div>
+      </ConfigProvider>
+    </RawIntlProvider>
   );
 };
 

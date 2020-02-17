@@ -25,7 +25,8 @@ interface BlockListProps extends Omit<BlockItemProps, 'item'> {
 const BlockList: React.FC<BlockListProps> = props => {
   const { list = [], setSelectedTag, selectedTag, addingBlock, keyword, loading } = props;
   const { api } = useContext(Context);
-  const { intl } = api;
+  const { useIntl } = api;
+  const { formatMessage: intl } = useIntl();
   const isMini = api.isMini();
   const pageSize = isMini ? 6 : 8;
 

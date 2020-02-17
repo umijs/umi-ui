@@ -1,11 +1,16 @@
 import { notification, message } from 'antd';
 import { connect } from 'dva';
 import lodash from 'lodash';
-import { history, FormattedMessage, formatMessage, getIntl, useIntl } from 'umi';
+import { history } from 'umi';
+import * as intl from 'react-intl';
 import { getApp } from '@@/plugin-dva/dva';
 import * as hooks from '@umijs/hooks';
 import isPlainObject from 'lodash/isPlainObject';
 import { FC } from 'react';
+import enUS from 'antd/es/locale/en_US';
+import zhCN from 'antd/es/locale/zh_CN';
+import enUSMessage from '@/locales/en-US';
+import zhCNMessage from '@/locales/zh-CN';
 import * as IUi from '@umijs/ui-types';
 import moment from 'moment';
 import request from 'umi-request';
@@ -16,12 +21,32 @@ import Terminal from '@/components/Terminal';
 import StepForm from '@/components/StepForm';
 import DirectoryForm from '@/components/DirectoryForm';
 import { openInEditor, openConfigFile } from '@/services/project';
-import { isMiniUI, getDuplicateKeys } from '@/utils';
+import { isMiniUI, getDuplicateKeys, getLocale } from '@/utils';
 import ConfigForm from './components/ConfigForm';
 import TwoColumnPanel from './components/TwoColumnPanel';
 import { send, callRemote, listenRemote } from './socket';
 import getAnalyze from './getAnalyze';
 import Field from './components/Field';
+
+let localeInfo = {
+  'zh-CN': {
+    locale: 'zh-CN',
+    messages: zhCNMessage,
+    moment: 'zh-cn',
+    antd: zhCN,
+  },
+  'en-US': {
+    locale: 'en-US',
+    messages: enUSMessage,
+    moment: 'en',
+    antd: enUS,
+  },
+};
+
+export const getLocaleInfo = () => localeInfo;
+export const setLocaleInfo = newLocaleInfo => {
+  localeInfo = newLocaleInfo;
+};
 
 // PluginAPI
 export default class PluginAPI {
@@ -69,6 +94,7 @@ export default class PluginAPI {
     this.bigfish = !!window.g_bigfish;
     this.connect = connect as IUi.IConnect;
     this.mini = isMiniUI();
+    this.getLocale = getLocale;
     this.event = event;
     this.moment = moment;
     this.history = history;
@@ -78,10 +104,9 @@ export default class PluginAPI {
     this.hooks = {
       ...hooks,
     };
-    this.useIntl = useIntl;
-    // 不推荐
-    this.intl = formatMessage;
-    this.intl.FormattedMessage = FormattedMessage;
+    this.intl = intl;
+    this.useIntl = intl.useIntl;
+    this.getIntl = () => intl.createIntl(localeInfo[getLocale()]);
   }
 
   addConfigSection(section) {
@@ -189,17 +214,14 @@ export default class PluginAPI {
     return cwd;
   };
 
-  intl: IUi.IIntl;
-
-  getLocale: IUi.IGetLocale = () => window.g_lang;
-
   notify: IUi.INotify = async payload => {
     const { title, message, subtitle, ...restPayload } = payload;
+    const intl = this.getIntl();
     // need intl text
     const intlParams = {
-      title: title ? this.intl({ id: title }) : '',
-      message: message ? this.intl({ id: message }) : '',
-      subtitle: subtitle ? this.intl({ id: subtitle }) : '',
+      title: title ? intl.formatMessage({ id: title }) : '',
+      message: message ? intl.formatMessage({ id: message }) : '',
+      subtitle: subtitle ? intl.formatMessage({ id: subtitle }) : '',
     };
 
     try {

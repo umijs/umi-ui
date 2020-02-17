@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Button, Modal, Form, Select, Spin } from 'antd';
+import { useIntl } from 'react-intl';
 import { getLocale } from '@/utils/index';
 import { ButtonProps } from 'antd/lib/button';
 import useNpmClients from '@/components/hooks/useNpmClients';
-import intl from '@/utils/intl';
 import { reInstallDependencies, installDependencies } from '@/services/project';
 
 const { useState, useEffect } = React;
@@ -33,6 +33,7 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
     onSuccess,
     ...restProps
   } = props;
+  const { formatMessage } = useIntl();
   const locale = getLocale();
   const { npmClient: needNpmClient } = payload;
   const { npmClient, error } = useNpmClients();
@@ -113,7 +114,7 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
       <Modal visible={modalVisible} onOk={onOk} maskClosable={false} onCancel={closeModal}>
         <Form form={form} layout="vertical" onFinish={handleFinish}>
           <Form.Item
-            label={intl({ id: 'org.umi.ui.global.project.create.steps.info.npmClient' })}
+            label={formatMessage({ id: 'org.umi.ui.global.project.create.steps.info.npmClient' })}
             name="npmClient"
             style={{
               marginBottom: 0,
@@ -121,14 +122,14 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
             rules={[
               {
                 required: true,
-                message: intl({
+                message: formatMessage({
                   id: 'org.umi.ui.global.project.create.steps.info.npmClient.required',
                 }),
               },
             ]}
           >
             <Select
-              placeholder={intl({
+              placeholder={formatMessage({
                 id: 'org.umi.ui.global.project.create.steps.info.npmClient.required',
               })}
               notFoundContent={
@@ -137,7 +138,9 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
                 ) : (
                   !npmClient.length && (
                     <p>
-                      {intl({ id: 'org.umi.ui.global.project.create.steps.info.npmClient.empty' })}
+                      {formatMessage({
+                        id: 'org.umi.ui.global.project.create.steps.info.npmClient.empty',
+                      })}
                     </p>
                   )
                 )
