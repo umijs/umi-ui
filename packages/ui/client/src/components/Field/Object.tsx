@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form } from 'antd';
 import isPlainObject from 'lodash/isPlainObject';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { formatMessage } from 'umi';
 import { FieldProps } from './index';
 import ObjectField from './fields/ObjectField';
 import debug from '@/debug';

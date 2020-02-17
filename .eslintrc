@@ -20,6 +20,7 @@
         "specialLink": ["to"]
       }
     ],
+    "no-empty": [0],
     "object-shorthand": [0],
     "lines-between-class-members": [0],
     "generator-star-spacing": [0],
@@ -34,6 +35,7 @@
     "react/prop-types": [0],
     "react/prefer-stateless-function": [0],
     "react/jsx-one-expression-per-line": [0],
+    "no-unused-vars": [1],
     "react/button-has-type": [0],
     "no-else-return": [0],
     "no-restricted-syntax": [0],

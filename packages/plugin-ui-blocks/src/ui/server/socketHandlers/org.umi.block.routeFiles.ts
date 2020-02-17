@@ -1,6 +1,9 @@
-export default function({ blockService, success }) {
+import { IHandlerOpts } from '../index';
+
+export default async function({ blockService, success }: IHandlerOpts) {
+  const data = await blockService.depthRouteComponentConfig();
   success({
-    data: blockService.depthRouteComponentConfig(),
-    success: true
+    data,
+    success: true,
   });
 }

@@ -1,12 +1,12 @@
 import React from 'react';
 import { PageHeader } from 'antd';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { injectIntl } from 'umi';
 import { PROJECT_STATUS, IProjectStatus } from '@/enums';
 import events, { MESSAGES } from '@/message';
+import scrollTop from '@/utils/scrollTop';
 import Layout from './Layout';
 import Context from './Context';
 import ProjectContext from './ProjectContext';
-import scrollTop from '@/utils/scrollTop';
 import styles from './Project.less';
 
 interface IProjectProps {}
@@ -54,8 +54,9 @@ class Project extends React.PureComponent<IProjectProps, IProjectState> {
   };
   render() {
     const { current, currentData } = this.state;
+    const { intl } = this.props;
     return (
-      <Layout type="list" title={formatMessage({ id: 'org.umi.ui.global.project.title' })}>
+      <Layout type="list" title={intl.formatMessage({ id: 'org.umi.ui.global.project.title' })}>
         <Context.Consumer>
           {context => (
             <ProjectContext.Provider
@@ -90,4 +91,4 @@ class Project extends React.PureComponent<IProjectProps, IProjectState> {
   }
 }
 
-export default Project;
+export default injectIntl(Project);

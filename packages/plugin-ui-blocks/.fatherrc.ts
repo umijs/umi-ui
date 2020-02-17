@@ -1,23 +1,26 @@
+const isProd = process.env.NODE_ENV === 'prod';
+
 export default [
   {
-    target: "node",
-    cjs: { type: "babel", lazy: true },
-    disableTypeCheck: true
+    target: 'node',
+    cjs: { type: 'babel', lazy: true },
+    disableTypeCheck: true,
   },
   {
-    entry: "ui/index.tsx",
+    entry: 'ui/index.tsx',
     typescriptOpts: {
-      check: false
+      check: false,
     },
-    extraExternals: ["antd", "react", "react-dom"],
+    extraExternals: ['antd', 'react', 'react-dom'],
     umd: {
-      name: "blocks",
-      minFile: false,
+      name: 'blocks',
+      minFile: isProd,
+      sourcemap: !isProd,
       globals: {
-        antd: "window.antd",
-        react: "window.React",
-        "react-dom": "window.ReactDOM"
-      }
-    }
-  }
+        antd: 'window.antd',
+        react: 'window.React',
+        'react-dom': 'window.ReactDOM',
+      },
+    },
+  },
 ];

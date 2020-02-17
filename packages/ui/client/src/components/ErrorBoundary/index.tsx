@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Result, Typography } from 'antd';
 import cls from 'classnames';
 import { CloseCircleOutlined } from '@ant-design/icons';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { formatMessage } from 'umi';
 import styles from './index.less';
 
 const { Paragraph } = Typography;

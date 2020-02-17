@@ -1,6 +1,5 @@
-import { IApi } from "umi-types";
-import Logger from "../Logger";
-import { StepState } from "../enum";
+import { IApi } from 'umi';
+import Logger from '../Logger';
 
 export interface IFlowContext {
   logger: Logger; // 输出日志
@@ -42,7 +41,7 @@ export interface IAddBlockOption {
   uni18n?: boolean;
   // 执行环境，默认是 shell ，如果是 auto，发生冲突直接报错
   // 在 ci 与 function 中执行可以设置为 auto
-  execution?: "shell" | "auto";
+  execution?: 'shell' | 'auto';
 
   // 区块的位置
   index?: number;

@@ -1,6 +1,8 @@
+import { IHandlerOpts } from '../index';
+
 const cache = {};
 
-export default async function({ blockService, success, payload, resources }) {
+export default async function({ blockService, success, payload, resources }: IHandlerOpts) {
   const { resourceId } = payload as { resourceId: string };
   let data = cache[resourceId];
   if (!data || (payload as { force: boolean }).force) {
@@ -9,6 +11,6 @@ export default async function({ blockService, success, payload, resources }) {
   }
   success({
     data,
-    success: true
+    success: true,
   });
 }

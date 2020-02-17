@@ -1,5 +1,6 @@
 import { join } from 'path';
 import { existsSync, readFileSync, lstatSync } from 'fs';
+import debug from './debug';
 
 function haveFile(cwd, file) {
   return existsSync(join(cwd, file));
@@ -38,7 +39,8 @@ export default function(cwd) {
 
   // 依赖是 link 文件
   const depDir = join(cwd, 'node_modules', deps[0]);
-  const isDepSymLink = lstatSync(depDir).isSymbolicLink();
+  debug('depDir', depDir, deps);
+  const isDepSymLink = lstatSync(depDir)?.isSymbolicLink?.();
   if (isDepSymLink) {
     if (process.env.BIGFISH_COMPAT) {
       return ['tnpm'];

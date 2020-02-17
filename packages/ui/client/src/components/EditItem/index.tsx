@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Icon } from '@ant-design/compatible';
+import { CheckOutlined, CloseOutlined, EditOutlined } from '@ant-design/icons';
 import { Tooltip, Input } from 'antd';
 import cls from 'classnames';
 
 import styles from './index.less';
 
-const { useState, useEffect } = React;
+const { useState } = React;
 
 interface EditItemProps {
   children: string;
@@ -47,14 +47,14 @@ const EditItem: React.SFC<EditItemProps> = props => {
       {isEdit ? (
         <>
           <Input defaultValue={children} onChange={handleChange} />
-          <Icon type="check" onClick={handleClick} />
-          <Icon type="close" onClick={handleClose} />
+          <CheckOutlined onClick={handleClick} />
+          <CloseOutlined onClick={handleClose} />
         </>
       ) : (
         <>
           {children}
           <Tooltip title={title}>
-            <Icon type="edit" onClick={() => setEdit(true)} />
+            <EditOutlined onClick={() => setEdit(true)} />
           </Tooltip>
         </>
       )}

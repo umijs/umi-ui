@@ -1,14 +1,15 @@
-import { isPlainObject, isEmpty } from "lodash";
-import { existsSync, readFileSync } from "fs";
-import { join } from "path";
-import portfinder from "portfinder";
-import mkdirp from "mkdirp";
+import { isPlainObject, isEmpty } from 'lodash';
+import { existsSync, readFileSync } from 'fs';
+import { join } from 'path';
+import { utils } from 'umi';
 
 interface IGetAnalyzeEnvOpts {
   analyze: boolean;
   dbPath: string;
   fileName: string;
 }
+
+const { mkdirp, portfinder } = utils;
 
 const getAvailablePort = async () => {
   portfinder.basePort = 8888;
@@ -21,22 +22,18 @@ export const getDevAnalyzeEnv = async () => {
   try {
     const port = await getAvailablePort();
     return {
-      ANALYZE: "1",
-      ANALYZE_MODE: "server",
-      ANALYZE_OPEN: "none",
-      ANALYZE_LOG_LEVEL: "silent",
-      ANALYZE_PORT: port
+      ANALYZE: '1',
+      ANALYZE_MODE: 'server',
+      ANALYZE_OPEN: 'none',
+      ANALYZE_LOG_LEVEL: 'silent',
+      ANALYZE_PORT: port,
     };
   } catch (_) {
     return {};
   }
 };
 
-export const getBuildAnalyzeEnv = async ({
-  analyze,
-  dbPath,
-  fileName
-}: IGetAnalyzeEnvOpts) => {
+export const getBuildAnalyzeEnv = async ({ analyze, dbPath, fileName }: IGetAnalyzeEnvOpts) => {
   if (!analyze) {
     return {};
   }
@@ -47,10 +44,10 @@ export const getBuildAnalyzeEnv = async ({
 
     const analyzeStatsPath = join(dbPath, fileName);
     return {
-      ANALYZE: "1",
-      ANALYZE_MODE: "disabled", // 不启动分析服务
+      ANALYZE: '1',
+      ANALYZE_MODE: 'disabled', // 不启动分析服务
       ANALYZE_DUMP: analyzeStatsPath, // 只将 stats 写入指定地址
-      ANALYZE_LOG_LEVEL: "silent"
+      ANALYZE_LOG_LEVEL: 'silent',
     };
   } catch (_) {
     console.log(_.stack);
@@ -63,7 +60,7 @@ export function parseChartData(stats) {
     return null;
   }
   let chartData;
-  const analyzer = require("umi-webpack-bundle-analyzer/lib/analyzer");
+  const analyzer = require('umi-webpack-bundle-analyzer/lib/analyzer');
 
   try {
     /**
@@ -72,7 +69,7 @@ export function parseChartData(stats) {
      *  2. dev: null
      */
     chartData = analyzer.getViewerData(stats, stats.outputPath, {
-      excludeAssets: null
+      excludeAssets: null,
     });
   } catch (err) {
     chartData = null;
@@ -97,8 +94,8 @@ export const getChartData = (statsPath: string) => {
   try {
     stats = JSON.parse(
       readFileSync(statsPath, {
-        encoding: "utf8"
-      })
+        encoding: 'utf8',
+      }),
     );
   } catch (_) {
     return null;

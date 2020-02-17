@@ -1,5 +1,5 @@
-import { formatMessage } from 'umi-plugin-react/locale';
 import { getLocale } from '@/utils/index';
+import { formatMessage } from 'umi';
 import zhCN from '@/locales/zh-CN';
 import enUS from '@/locales/en-US';
 

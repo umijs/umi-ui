@@ -1,4 +1,4 @@
-import { IApi } from 'umi-types';
+import { IApi } from 'umi';
 import { Resource } from '@umijs/block-sdk/lib/data.d';
 import {
   routeExists,
@@ -91,15 +91,17 @@ class Block {
   /**
    * 获取路由结构
    */
-  public depthRouterConfig() {
-    return depthRouterConfig(reduceData(genRouterToTreeData(this.api.getRoutes())));
+  public async depthRouterConfig() {
+    const routes = await this.api.getRoutes();
+    return depthRouterConfig(reduceData(genRouterToTreeData(routes)));
   }
 
   /**
    * 获取路由的结构，但是获取 component
    */
-  public depthRouteComponentConfig() {
-    return depthRouterConfig(reduceData(genComponentToTreeData(this.api.getRoutes())));
+  public async depthRouteComponentConfig() {
+    const routes = await this.api.getRoutes();
+    return depthRouterConfig(reduceData(genComponentToTreeData(routes)));
   }
 
   /**
@@ -114,8 +116,9 @@ class Block {
     return getBlockList(resourceId, list);
   }
 
-  public routeExists(path: string) {
-    return routeExists(path, this.api.getRoutes());
+  public async routeExists(path: string) {
+    const routes = await this.api.getRoutes();
+    return routeExists(path, routes);
   }
 
   public getBlockUrl() {

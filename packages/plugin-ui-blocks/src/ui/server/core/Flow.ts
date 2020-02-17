@@ -1,19 +1,12 @@
-import { IApi } from "umi-types";
-import { ChildProcess } from "child_process";
-import { EventEmitter } from "events";
-import { IFlowContext } from "./types";
-import { FlowState, StepState } from "./enum";
-import Logger from "./Logger";
-import execa from "../util/exec";
+import { IApi } from 'umi';
+import { ChildProcess } from 'child_process';
+import { EventEmitter } from 'events';
+import { IFlowContext } from './types';
+import { FlowState, StepState } from './enum';
+import Logger from './Logger';
+import execa from '../util/exec';
 
-import {
-  parseUrl,
-  gitClone,
-  gitUpdate,
-  runGenerator,
-  writeRoutes,
-  install
-} from "./tasks";
+import { parseUrl, gitClone, gitUpdate, runGenerator, writeRoutes, install } from './tasks';
 
 class Flow extends EventEmitter {
   public api: IApi;
@@ -28,8 +21,8 @@ class Flow extends EventEmitter {
     super();
     this.api = api;
     this.logger = new Logger();
-    this.logger.on("log", data => {
-      this.emit("log", data);
+    this.logger.on('log', data => {
+      this.emit('log', data);
     });
 
     this.ctx = {
@@ -37,7 +30,7 @@ class Flow extends EventEmitter {
       api: this.api,
       logger: this.logger,
       stages: {},
-      result: {}
+      result: {},
     };
     this.registryTasks();
   }
@@ -62,7 +55,7 @@ class Flow extends EventEmitter {
         await task(this.ctx, args);
         this.setStepState(name, StepState.SUCCESS);
       } catch (e) {
-        console.error("Execute task error", e);
+        console.error('Execute task error', e);
         hasBreak = true;
         /**
          * 抛错有两种情况
@@ -72,12 +65,12 @@ class Flow extends EventEmitter {
         if (!this.isCancel) {
           this.state = FlowState.FAIL;
           this.setStepState(name, StepState.FAIL);
-          this.emit("state", {
+          this.emit('state', {
             ...args,
-            state: FlowState.FAIL
+            state: FlowState.FAIL,
           });
-          this.emit("log", {
-            data: `\n🚧  Execute task error: ${e.message}\n`
+          this.emit('log', {
+            data: `\n🚧  Execute task error: ${e.message}\n`,
           });
         }
         break;
@@ -91,13 +84,12 @@ class Flow extends EventEmitter {
     // 完成之后触发一下完成事件，前端更新一下按钮状态
     this.state = FlowState.SUCCESS;
     const { generator } = this.ctx.stages;
-    this.emit("state", {
+    this.emit('state', {
       data: {
         ...args,
-        previewUrl: `http://localhost:${process.env.PORT ||
-          "8000"}${generator.path.toLowerCase()}`
+        previewUrl: `http://localhost:${process.env.PORT || '8000'}${generator.path.toLowerCase()}`,
       },
-      state: FlowState.SUCCESS
+      state: FlowState.SUCCESS,
     });
 
     // 清空日志
@@ -108,17 +100,17 @@ class Flow extends EventEmitter {
   public cancel() {
     if (this.state !== FlowState.ING) {
       const err = new Error(`Error state(${this.state}) to terminated`);
-      err.name = "FlowError";
+      err.name = 'FlowError';
       throw err;
     }
     this.isCancel = true;
     this.state = FlowState.CANCEL;
     if (this.proc) {
-      this.proc.kill("SIGTERM");
+      this.proc.kill('SIGTERM');
     }
     setTimeout(() => {
-      this.emit("log", {
-        data: "\n🛑  Stopped task success!\n"
+      this.emit('log', {
+        data: '\n🛑  Stopped task success!\n',
       });
     }, 2000);
   }
@@ -129,7 +121,7 @@ class Flow extends EventEmitter {
   public async retry(args) {
     if (this.state !== FlowState.FAIL) {
       const err = new Error(`Error state(${this.state}) to retry`);
-      err.name = "FlowError";
+      err.name = 'FlowError';
       throw err;
     }
     return this.run(args);
@@ -141,7 +133,7 @@ class Flow extends EventEmitter {
 
   public getBlockUrl() {
     if (this.state !== FlowState.ING) {
-      return "";
+      return '';
     }
     return this.ctx.result.blockUrl;
   }
@@ -156,17 +148,17 @@ class Flow extends EventEmitter {
 
   private registryTasks() {
     [
-      { name: "parseUrl", task: parseUrl },
-      { name: "gitClone", task: gitClone },
-      { name: "gitUpdate", task: gitUpdate },
-      { name: "install", task: install },
-      { name: "runGenerator", task: runGenerator },
-      { name: "writeRoutes", task: writeRoutes }
+      { name: 'parseUrl', task: parseUrl },
+      { name: 'gitClone', task: gitClone },
+      { name: 'gitUpdate', task: gitUpdate },
+      { name: 'install', task: install },
+      { name: 'runGenerator', task: runGenerator },
+      { name: 'writeRoutes', task: writeRoutes },
     ].forEach(({ name, task }) => {
       this.tasks.push({
         name,
         task,
-        state: StepState.INIT
+        state: StepState.INIT,
       });
     });
   }

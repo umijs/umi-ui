@@ -1,21 +1,14 @@
-import { IApi } from "umi-types";
-import {
-  BuildTask,
-  DevTask,
-  LintTask,
-  TestTask,
-  BaseTask,
-  InstallTask
-} from "./Tasks";
-import { TaskType, TaskState } from "./enums";
-import { ITasks, ICollectorData } from "./types";
+import { IApi } from 'umi';
+import { BuildTask, DevTask, LintTask, TestTask, BaseTask, InstallTask } from './Tasks';
+import { TaskType, TaskState } from './enums';
+import { ITasks, ICollectorData } from './types';
 
 /**
  * Tasks 管理，根据 cwd 做区分
  */
 class TaskManager {
   public api: IApi;
-  public currentCwd: string = "";
+  public currentCwd: string = '';
   private tasks: ITasks = {};
   private send: any; // 客户端消息触发器
 
@@ -28,14 +21,14 @@ class TaskManager {
     }
     const opts = {
       cwd,
-      key
+      key,
     };
     this.tasks[cwd] = {
       [TaskType.BUILD]: new BuildTask(opts),
       [TaskType.DEV]: new DevTask(opts),
       [TaskType.TEST]: new TestTask(opts),
       [TaskType.LINT]: new LintTask(opts),
-      [TaskType.INSTALL]: new InstallTask(opts)
+      [TaskType.INSTALL]: new InstallTask(opts),
     };
 
     const projectTasks = this.tasks[cwd];

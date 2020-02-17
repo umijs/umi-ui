@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input } from 'antd';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { formatMessage } from 'umi';
 import { FieldProps } from './index';
 import debug from '@/debug';
 import { getFormItemShow } from './utils';

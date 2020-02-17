@@ -1,7 +1,9 @@
-export default function({ blockService, success }) {
-  const routers = blockService.depthRouterConfig();
+import { IHandlerOpts } from '../index';
+
+export default async function({ blockService, success }: IHandlerOpts) {
+  const routers = await blockService.depthRouterConfig();
   success({
     data: routers,
-    success: true
+    success: true,
   });
 }

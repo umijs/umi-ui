@@ -1,13 +1,13 @@
 import chalk from 'chalk';
-import { IApi } from '@umijs/types';
-import { signale, createDebug } from '@umijs/utils';
+import { utils, IApi } from 'umi';
 import { clearGitCache, addBlock, getDefaultBlockList } from '@umijs/block-sdk';
 
+const { signale, createDebug } = utils;
 const debug = createDebug('plugin-blocks');
 
 export default (api: IApi) => {
   const { config } = api;
-  const blockConfig = (config as any)?.block || {};
+  const blockConfig = config?.block || {};
 
   api.describe({
     key: 'block',

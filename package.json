@@ -16,7 +16,7 @@
     "publish": "npm run changelog && node ./scripts/publish.js",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage",
-    "ui:build": "echo \"test\""
+    "ui:build": "node ./scripts/ui.js"
   },
   "lint-staged": {
     "**/*.{js,jsx,tsx,ts,less,json}": [
@@ -27,13 +27,10 @@
   "devDependencies": {
     "@babel/preset-typescript": "7.3.3",
     "@types/jest": "^24.0.5",
-    "@types/signale": "^1.2.1",
     "@umijs/test": "^3.0.0-beta.2",
-    "@umijs/types": "^3.0.0-beta.2",
     "antd": "^4.0.0-rc.1",
     "babel-eslint": "10.0.1",
     "cross-env": "^7.0.0",
-    "cross-spawn": "^6.0.5",
     "eslint": "5.10.0",
     "eslint-config-airbnb": "17.1.0",
     "eslint-config-prettier": "4.2.0",
@@ -44,12 +41,10 @@
     "express": "^4.17.1",
     "father-build": "^1.17.2",
     "form-data": "^2.3.3",
-    "got": "9.3.2",
     "husky": "1.2.0",
     "lerna": "3.6.0",
     "lerna-changelog": "0.8.2",
     "lint-staged": "8.1.0",
-    "mkdirp": "^0.5.1",
     "moment": "^2.24.0",
     "portfinder": "^1.0.24",
     "prettier": "^1.19.1",
@@ -57,19 +52,13 @@
     "react": "^16.8.6",
     "react-router-dom": "5.1.2",
     "react-test-renderer": "16.6.3",
-    "rimraf": "^3.0.0",
     "serve-handler": "5.0.8",
     "serve-static": "^1.13.2",
     "shelljs": "0.8.3",
-    "signale": "^1.4.0",
     "slash2": "2.0.0",
     "stringify-object": "3.3.0",
     "test-build-result": "^1.1.2",
     "ts-node-dev": "^1.0.0-pre.44",
-    "umi": "^3.0.0-beta.3",
-    "umi-plugin-react": "^1.8.0"
-  },
-  "dependencies": {
-    "@umijs/babel-preset-umi": "^3.0.0-beta.1"
+    "umi": "^3.0.0-0"
   }
 }

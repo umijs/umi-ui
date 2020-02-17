@@ -1,10 +1,10 @@
-import { formatMessage } from 'umi-plugin-react/locale';
+import { useIntl } from 'umi';
 import slash from 'slash2';
 import p from 'immer';
-import { DIR_ERROR_CODE } from '@/enums';
 import { listDirectory } from '@/services/project';
 
 export const handleErrorMsg = (e: Error, path = '') => {
+  const { formatMessage } = useIntl();
   const otherError = formatMessage({ id: 'org.umi.ui.global.readdir.code.other' });
   const systemError =
     e && e.code
@@ -40,7 +40,7 @@ export const validateDirPath = async (path: string): Promise<void> => {
 
 export const isWindows = (path: string[] | string) => {
   const arr = typeof path === 'string' ? path2Arr(path) : path;
-  const [root] = arr;
+  const [root] = arr || [];
   return root !== '/';
 };
 

@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Popover, Drawer, Dropdown, Menu, Divider, Popconfirm, message, Tooltip } from 'antd';
+import { Popover, Drawer, Dropdown, Menu, message, Tooltip } from 'antd';
 import copy from 'copy-to-clipboard';
-import get from 'lodash/get';
 import {
   FolderFilled,
   ProfileFilled,
@@ -12,12 +11,11 @@ import {
   MessageOutlined,
   CodeOutlined,
 } from '@ant-design/icons';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { useIntl } from 'umi';
 import cls from 'classnames';
 import { LOCALES, LOCALES_ICON } from '@/enums';
 import Context from '@/layouts/Context';
 import Logs from '@/components/Logs';
-import FooterToolbar from './FooterToolbar';
 import EditorIcon from '@/components/icons/Editor';
 import Shell from '@/components/Shell';
 import { states, reducers } from '@/customModels/footer';
@@ -26,6 +24,7 @@ import event, { MESSAGES } from '@/message';
 import { getHistory, listenMessage, clearLog } from '@/services/logs';
 import { openInEditor } from '@/services/project';
 import getAnalyze from '@/getAnalyze';
+import FooterToolbar from './FooterToolbar';
 
 import styles from './Footer.less';
 
@@ -39,6 +38,7 @@ export interface IFooterProps {
 
 const Footer: React.SFC<IFooterProps> = props => {
   const { type } = props;
+  const intl = useIntl();
   const { locale, setLocale, currentProject, isMini, basicUI } = useContext(Context);
   const drawerContainerRef = React.createRef();
   const { path, name, key } = currentProject || {};
@@ -87,9 +87,9 @@ const Footer: React.SFC<IFooterProps> = props => {
     if (p) {
       try {
         copy(p || '');
-        message.success(formatMessage({ id: 'org.umi.ui.global.copy.success' }));
+        message.success(intl.formatMessage({ id: 'org.umi.ui.global.copy.success' }));
       } catch (e) {
-        message.error(formatMessage({ id: 'org.umi.ui.global.copy.failure' }));
+        message.error(intl.formatMessage({ id: 'org.umi.ui.global.copy.failure' }));
       }
     }
   };
@@ -157,7 +157,7 @@ const Footer: React.SFC<IFooterProps> = props => {
     try {
       await clearLog();
     } catch (e) {
-      message.error(formatMessage({ id: 'org.umi.ui.global.log.clear.error' }));
+      message.error(intl.formatMessage({ id: 'org.umi.ui.global.log.clear.error' }));
     } finally {
       await getLogs();
     }
@@ -189,7 +189,7 @@ const Footer: React.SFC<IFooterProps> = props => {
           title={
             <FooterToolbar
               resizeAxis="y"
-              title={formatMessage({ id: 'org.umi.ui.global.log.upperCase' })}
+              title={intl.formatMessage({ id: 'org.umi.ui.global.log.upperCase' })}
               onResize={size => {
                 const newHeight = logHeight + size.deltaY;
                 dispatch({
@@ -217,7 +217,7 @@ const Footer: React.SFC<IFooterProps> = props => {
         <Drawer
           title={
             <FooterToolbar
-              title={formatMessage({ id: 'org.umi.ui.global.terminal.upperCase' })}
+              title={intl.formatMessage({ id: 'org.umi.ui.global.terminal.upperCase' })}
               resizeAxis="y"
               onResize={size => {
                 const newHeight = terminalHeight + size.deltaY;
@@ -273,7 +273,7 @@ const Footer: React.SFC<IFooterProps> = props => {
               }}
               className={actionCls}
             >
-              <Tooltip title={formatMessage({ id: 'org.umi.ui.global.home' })}>
+              <Tooltip title={intl.formatMessage({ id: 'org.umi.ui.global.home' })}>
                 <HomeFilled style={{ marginRight: 4 }} />
               </Tooltip>
             </div>
@@ -287,12 +287,12 @@ const Footer: React.SFC<IFooterProps> = props => {
           )}
           <div onClick={() => togglePanel('log')} className={logCls}>
             <ProfileFilled style={{ marginRight: 4 }} />{' '}
-            {formatMessage({ id: 'org.umi.ui.global.log' })}
+            {intl.formatMessage({ id: 'org.umi.ui.global.log' })}
           </div>
           {projectDashboard && (
             <div className={shellCls} onClick={() => togglePanel('terminal')}>
               <CodeOutlined style={{ marginRight: 4 }} />{' '}
-              {formatMessage({ id: 'org.umi.ui.global.terminal' })}
+              {intl.formatMessage({ id: 'org.umi.ui.global.terminal' })}
             </div>
           )}
         </div>
@@ -301,7 +301,7 @@ const Footer: React.SFC<IFooterProps> = props => {
           <div className={styles.section}>
             <a onClick={handleOpenEditor}>
               <EditorIcon style={{ marginRight: 4 }} />{' '}
-              {formatMessage({ id: 'org.umi.ui.global.open.editor' })}
+              {intl.formatMessage({ id: 'org.umi.ui.global.open.editor' })}
             </a>
           </div>
         )}
@@ -321,8 +321,8 @@ const Footer: React.SFC<IFooterProps> = props => {
             <a>
               <MessageOutlined style={{ marginRight: 4 }} />{' '}
               {type === 'loading'
-                ? formatMessage({ id: 'org.umi.ui.global.feedback' })
-                : formatMessage({ id: 'org.umi.ui.global.feedback' })}
+                ? intl.formatMessage({ id: 'org.umi.ui.global.feedback' })
+                : intl.formatMessage({ id: 'org.umi.ui.global.feedback' })}
             </a>
           </Popover>
         </div>
@@ -334,7 +334,7 @@ const Footer: React.SFC<IFooterProps> = props => {
             rel="noopener noreferrer"
           >
             <QuestionCircleOutlined style={{ marginRight: 4 }} />{' '}
-            {formatMessage({ id: 'org.umi.ui.global.help' })}
+            {intl.formatMessage({ id: 'org.umi.ui.global.help' })}
           </a>
         </div>
         <div data-test-id="locale_wrapper" className={styles.section} style={{ cursor: 'pointer' }}>

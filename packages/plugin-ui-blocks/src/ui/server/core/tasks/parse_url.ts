@@ -1,7 +1,6 @@
 import assert from 'assert';
-import { IApi } from 'umi-types';
+import { IApi, utils } from 'umi';
 import chalk from 'chalk';
-import { merge } from 'lodash';
 import { join, dirname } from 'path';
 import { existsSync } from 'fs';
 import getNpmRegistry from 'getnpmregistry';
@@ -9,8 +8,12 @@ import { getParsedData, makeSureMaterialsTempPathExist } from '@umijs/block-sdk'
 
 import { IFlowContext, IAddBlockOption, ICtxTypes } from '../types';
 
+const { lodash, createDebug } = utils;
+
+const debug = createDebug('umiui:UmiUI:block:tasks');
+
 async function getCtx(url, args: IAddBlockOption = {}, api: IApi): Promise<ICtxTypes> {
-  const { debug, config } = api;
+  const { config } = api;
   debug(`get url ${url}`);
 
   const ctx: ICtxTypes = await getParsedData(url, {
@@ -21,7 +24,7 @@ async function getCtx(url, args: IAddBlockOption = {}, api: IApi): Promise<ICtxT
   if (!ctx.isLocal) {
     const blocksTempPath = makeSureMaterialsTempPathExist(args.dryRun);
     const templateTmpDirPath = join(blocksTempPath, ctx.id);
-    merge(ctx, {
+    lodash.merge(ctx, {
       routePath: args.routePath,
       sourcePath: join(templateTmpDirPath, ctx.path),
       branch: args.branch || ctx.branch,
@@ -30,7 +33,7 @@ async function getCtx(url, args: IAddBlockOption = {}, api: IApi): Promise<ICtxT
       repoExists: existsSync(templateTmpDirPath),
     });
   } else {
-    merge(ctx, {
+    lodash.merge(ctx, {
       routePath: args.routePath,
       templateTmpDirPath: dirname(url),
     });

@@ -1,21 +1,20 @@
-import { Icon } from '@ant-design/compatible';
 import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col } from 'antd';
 import { LeftOutlined, CaretDownOutlined, ExportOutlined } from '@ant-design/icons';
-import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
+import { NavLink, withRouter, FormattedMessage, useIntl } from 'umi';
 import React, { useState, useLayoutEffect, Fragment } from 'react';
 import * as IUi from '@umijs/ui-types';
 import { stringify, parse } from 'qs';
 import cls from 'classnames';
-import { NavLink, withRouter } from 'umi';
+
 import { setCurrentProject, openInEditor } from '@/services/project';
 import { Redirect } from '@/components/icons';
 import { callRemote } from '@/socket';
-import { handleBack, getProjectStatus, renderLocale } from '@/utils';
+import { handleBack, getProjectStatus } from '@/utils';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import Context from './Context';
 import events, { MESSAGES } from '@/message';
-import UiLayout from './Layout';
 import debug from '@/debug';
+import Context from './Context';
+import UiLayout from './Layout';
 import styles from './Dashboard.less';
 import BetaPlugin from './BetaPlugin';
 
@@ -30,14 +29,11 @@ function getActivePanel(pathname) {
   return null;
 }
 
-const renderLocaleText = renderLocale(formatMessage);
-
-const DefaultProvider = props => {
-  return <div {...props}>{props.children}</div>;
-};
+const DefaultProvider = props => <div {...props}>{props.children}</div>;
 
 export default withRouter(props => {
   const _log = debug.extend('Dashboard');
+  const intl = useIntl();
   const { pathname } = props.location;
   const activePanel = getActivePanel(pathname) ? getActivePanel(pathname) : {};
   const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
@@ -74,15 +70,15 @@ export default withRouter(props => {
     }
   };
 
-  const title = activePanel.title ? renderLocaleText({ id: activePanel.title }) : '';
+  const title = activePanel.title || '';
   const { panels } = window.g_service;
   const normalPanels = panels.filter(panel => !panel.beta);
   const betaPanels = panels.filter(panel => panel.beta);
   const Provider = activePanel?.provider || DefaultProvider;
-  const { headerTitle = title, path = '/' } = activePanel;
+  const { headerTitle, path = '/' } = activePanel;
 
   return (
-    <UiLayout type="detail" title={title}>
+    <UiLayout type="detail" title={<FormattedMessage id={title} />}>
       <Context.Consumer>
         {({ currentProject, theme, isMini, locale, basicUI }) => {
           const openEditor = async () => {
@@ -100,9 +96,11 @@ export default withRouter(props => {
               <Menu.ItemGroup
                 key="projects"
                 title={
-                  projects.length > 1
-                    ? formatMessage({ id: 'org.umi.ui.global.panel.recent.open' })
-                    : formatMessage({ id: 'org.umi.ui.global.panel.recent.open.empty' })
+                  projects.length > 1 ? (
+                    <FormattedMessage id="org.umi.ui.global.panel.recent.open" />
+                  ) : (
+                    <FormattedMessage id="org.umi.ui.global.panel.recent.open.empty" />
+                  )
                 }
               >
                 {currentProject &&
@@ -127,22 +125,12 @@ export default withRouter(props => {
           );
 
           const MenuItem = ({ panel, ...restProps }) => {
-            const { renderTitle } = panel;
-            const renderIcon = () => {
-              const icon = typeof panel.icon === 'string' ? { type: panel.icon } : panel.icon;
-
-              if (typeof icon === 'function' && React.isValidElement(icon())) {
-                return icon();
-              }
-              if (React.isValidElement(icon)) {
-                return icon;
-              }
-
-              return <Icon {...icon} />;
-            };
-
-            const titleText = renderLocaleText(panel.title);
-            const titleNode = renderTitle ? renderTitle(titleText) : titleText;
+            const { renderTitle, icon } = panel;
+            const titleText = panel.title;
+            debugger;
+            const titleNode = renderTitle
+              ? renderTitle(titleText)
+              : intl.formatMessage({ id: titleText });
 
             return (
               <Menu.Item
@@ -153,7 +141,7 @@ export default withRouter(props => {
                 level={isMini && locale === 'zh-CN' ? 2 : 1}
               >
                 <NavLink exact to={`${panel.path}${search}`}>
-                  {renderIcon()}
+                  {icon}
                   {isMini ? (
                     <p className={styles.menuText}>{titleNode}</p>
                   ) : (
@@ -195,7 +183,9 @@ export default withRouter(props => {
                 >
                   <Col>
                     <p className={styles['mini-header-name']}>{currentProject?.name || ''}</p>
-                    <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}>
+                    <Tooltip
+                      title={<FormattedMessage id="org.umi.ui.global.project.editor.open" />}
+                    >
                       <ExportOutlined onClick={openEditor} />
                     </Tooltip>
                   </Col>
@@ -304,7 +294,7 @@ export default withRouter(props => {
                               return (
                                 title && (
                                   <Button key={j.toString()} onClick={handleClick} {...btnProps}>
-                                    {renderLocaleText({ id: title })}
+                                    <FormattedMessage id={title} />
                                   </Button>
                                 )
                               );

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ExportOutlined } from '@ant-design/icons';
 import { message, Form } from 'antd';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { useIntl } from 'umi';
 import Context from '@/layouts/Context';
 import debug from '@/debug';
 import { openConfigFile } from '@/services/project';
@@ -11,6 +11,7 @@ import styles from './styles.module.less';
 
 const AnyComp: React.SFC<FieldProps> = props => {
   const _log = debug.extend('Field:AnyComp');
+  const { formatMessage } = useIntl();
   const { name, ...restFormItemProps } = props;
   const { currentProject } = React.useContext(Context);
   const { parentConfig } = getFormItemShow(name);

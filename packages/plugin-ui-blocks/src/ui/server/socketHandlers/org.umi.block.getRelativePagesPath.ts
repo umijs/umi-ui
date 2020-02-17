@@ -4,19 +4,21 @@
  *   Welcome\index.tsx
  *  用与将路径变化为相对路径
  *  */
+import { utils } from 'umi';
+import { IHandlerOpts } from '../index';
 
-export default function({ payload, api, success }) {
+const { winPath } = utils;
+
+export default function({ payload, api, success }: IHandlerOpts) {
   const { path: targetPath } = payload as {
     path: string;
   };
 
   success({
-    data: api
-      .winPath(targetPath)
-      .replace(api.winPath(api.cwd), "")
-      .replace(api.winPath(api.paths.pagesPath), "")
-      .replace(/\//g, "/")
-      .replace(/\/\//g, "/"),
-    success: true
+    data: winPath(targetPath)
+      .replace(api.paths.absPagesPath, '')
+      .replace(/\//g, '/')
+      .replace(/\/\//g, '/'),
+    success: true,
   });
 }

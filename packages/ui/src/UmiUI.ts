@@ -1,23 +1,18 @@
 import 'regenerator-runtime/runtime';
 import assert from 'assert';
-import chalk from 'chalk';
 import emptyDir from 'empty-dir';
 import express from 'express';
 import http from 'http';
 import url from 'url';
 import compression from 'compression';
 import clearModule from 'clear-module';
-import { join, resolve, dirname } from 'path';
+import { join, resolve, dirname, isAbsolute } from 'path';
 import launchEditor from '@umijs/launch-editor';
 import openBrowser from 'react-dev-utils/openBrowser';
 import { existsSync, readFileSync, statSync } from 'fs';
 import { execSync } from 'child_process';
-import got from 'got';
-import { pick } from 'lodash';
-import rimraf from 'rimraf';
-import portfinder from 'portfinder';
+import { utils, Service } from 'umi';
 import resolveFrom from 'resolve-from';
-import semver from 'semver';
 import Config from './Config';
 import getClientScript, { getBasicScriptContent } from './getClientScript';
 import listDirectory from './listDirectory';
@@ -33,11 +28,16 @@ import detectLanguage from './detectLanguage';
 import detectNpmClients from './detectNpmClients';
 import debug, { debugSocket } from './debug';
 
+const { winPath, lodash, got, semver, portfinder, rimraf, chalk } = utils;
+const { pick, uniq } = lodash;
+
 process.env.UMI_UI = 'true';
 
 export default class UmiUI {
   cwd: string;
-  servicesByKey: any;
+  servicesByKey: {
+    [key: string]: Service;
+  };
   server: any;
   socketServer: any;
   logs: any;
@@ -51,8 +51,7 @@ export default class UmiUI {
   constructor() {
     this.cwd = process.cwd();
     // 兼容旧版 Bigfish
-    const defaultBaseUI = process.env.BIGFISH_COMPAT ? join(__dirname, '../dist/index.umd.js') : '';
-    this.basicUIPath = process.env.BASIC_UI_PATH || defaultBaseUI;
+    this.basicUIPath = process.env.BASIC_UI_PATH || '';
     // export default { serices, ... }
     this.basicConfigPath = process.env.BASIC_CONFIG_PATH || '';
     this.servicesByKey = {};
@@ -86,11 +85,11 @@ export default class UmiUI {
       ? '@alipay/bigfish/_Service.js'
       : 'umi/_Service.js';
     const servicePath = process.env.LOCAL_DEBUG
-      ? 'umi-build-dev/lib/Service'
-      : resolveFrom.silent(cwd, serviceModule) || 'umi-build-dev/lib/Service';
+      ? 'umi/lib/cjs'
+      : resolveFrom.silent(cwd, serviceModule) || 'umi/lib/cjs';
     debug(`Service path: ${servicePath}`);
     // eslint-disable-next-line import/no-dynamic-require
-    const Service = require(servicePath).default;
+    const { Service } = require(servicePath);
     const service = new Service({
       cwd,
     });
@@ -181,6 +180,7 @@ export default class UmiUI {
       try {
         const service = this.getService(cwd);
         debug(`Attach service for ${key} after new and before init()`);
+        service;
         await service.init();
         debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
         this.servicesByKey[key] = service;
@@ -288,16 +288,18 @@ export default class UmiUI {
     }
   }
 
-  getExtraAssets({ key }) {
+  async getExtraAssets({ key, success }) {
     const service = this.servicesByKey[key];
-    const uiPlugins = service.applyPlugins('addUIPlugin', {
+    const uiPlugins = await service.applyPlugins({
+      key: 'addUIPlugin',
+      type: service.ApplyPluginsType.add,
       initialValue: [],
     });
     debug('uiPlugins', uiPlugins);
     const script = getClientScript(uiPlugins);
-    return {
+    success({
       script,
-    };
+    });
   }
 
   getBasicAssets() {
@@ -320,8 +322,8 @@ export default class UmiUI {
   }
 
   async createProject(opts = {}, { onSuccess, onFailure, onProgress, lang }) {
-    let key = opts.key;
-    let retryFrom = opts.retryFrom;
+    let { key } = opts;
+    let { retryFrom } = opts;
 
     let createOpts = opts;
     if (key) {
@@ -551,7 +553,47 @@ export default class UmiUI {
     return this.npmClients;
   }
 
-  reloadProject(key: string) {}
+  async getRouteComponents({ service }) {
+    const routes = await service.getRoutes();
+
+    const getComponents = routes => {
+      return routes.reduce((memo, route) => {
+        if (route.component && !route.component.startsWith('()')) {
+          const component = isAbsolute(route.component)
+            ? route.component
+            : require.resolve(join(this.cwd, route.component));
+          memo.push(winPath(component));
+        }
+        if (route.routes) {
+          memo = memo.concat(getComponents(route.routes));
+        }
+        return memo;
+      }, []);
+    };
+
+    return uniq(getComponents(routes));
+  }
+
+  async detectLanguage({ success, failure, key }) {
+    const service = this.servicesByKey[key];
+    try {
+      const routeComponents = await this.getRouteComponents({
+        service,
+      });
+
+      const language = detectLanguage(service.cwd, {
+        routeComponents,
+      });
+
+      success({
+        language,
+      });
+    } catch (e) {
+      failure(e);
+    }
+  }
+
+  // reloadProject(key: string) {}
 
   handleCoreData({ type, payload, lang, key }, { log, send, success, failure, progress }) {
     switch (type) {
@@ -559,11 +601,10 @@ export default class UmiUI {
         success(this.getBasicAssets());
         break;
       case '@@project/getExtraAssets':
-        success(
-          this.getExtraAssets({
-            key,
-          }),
-        );
+        this.getExtraAssets({
+          key,
+          success,
+        });
         break;
       case '@@project/list':
         this.config.checkValid();
@@ -702,11 +743,10 @@ export default class UmiUI {
       case '@@project/detectLanguage':
         try {
           assert(key && this.servicesByKey[key], `Detect language failed, key must be supplied.`);
-          const service = this.servicesByKey[key];
-          success({
-            language: detectLanguage(service.cwd, {
-              routeComponents: service.getRouteComponents(),
-            }),
+          this.detectLanguage({
+            key,
+            success,
+            failure,
           });
         } catch (e) {
           console.error(e);
@@ -887,7 +927,8 @@ export default class UmiUI {
 
       app.use('/*', async (req, res) => {
         const scripts = await getScripts();
-        if (process.env.LOCAL_DEBUG) {
+        const localeDebug = !existsSync(join(__dirname, '../client/dist/index.html'));
+        if (localeDebug) {
           try {
             const { body } = await got(`http://localhost:8002${req.path}`);
             res.set('Content-Type', 'text/html');
@@ -992,7 +1033,7 @@ export default class UmiUI {
           debugSocket(`😿 ${chalk.red('Disconnected to')}: ${conn.id}`);
           delete conns[conn.id];
         });
-        conn.on('data', message => {
+        conn.on('data', async message => {
           try {
             const { type, payload, $lang: lang, $key: key } = JSON.parse(message);
             debugSocket(chalk.blue.bold('<<<<'), formatLogMessage(message));
@@ -1019,7 +1060,9 @@ export default class UmiUI {
             } else {
               assert(this.servicesByKey[key], `service of key ${key} not exists.`);
               const service = this.servicesByKey[key];
-              service.applyPlugins('onUISocket', {
+              await service.applyPlugins({
+                key: 'onUISocket',
+                type: service.ApplyPluginsType.event,
                 args: serviceArgs,
               });
             }

@@ -1,9 +1,11 @@
-import { join } from "path";
-import BinaryMirrorConfig from "binary-mirror-config";
-import { BaseTask, ITaskOptions } from "./Base";
-import { TaskType, TaskEventType, NpmClient, TaskState } from "../enums";
-import { runCommand, getNpmClient } from "../../util";
-import rimraf from "rimraf";
+import { join } from 'path';
+import { utils } from 'umi';
+import BinaryMirrorConfig from 'binary-mirror-config';
+import { BaseTask, ITaskOptions } from './Base';
+import { TaskType, TaskEventType, NpmClient, TaskState } from '../enums';
+import { runCommand, getNpmClient } from '../../util';
+
+const { rimraf } = utils;
 
 export class InstallTask extends BaseTask {
   private speedUpEnv;
@@ -22,12 +24,12 @@ export class InstallTask extends BaseTask {
     await super.run();
     // 执行删除的日志需要自己处理
     try {
-      this.emit(TaskEventType.STD_OUT_DATA, "Cleaning node_modules...\n");
+      this.emit(TaskEventType.STD_OUT_DATA, 'Cleaning node_modules...\n');
       await this.cleanNodeModules();
-      this.emit(TaskEventType.STD_OUT_DATA, "Cleaning node_modules success.\n");
+      this.emit(TaskEventType.STD_OUT_DATA, 'Cleaning node_modules success.\n');
     } catch (e) {
-      this.emit(TaskEventType.STD_OUT_DATA, "Cleaning node_modules error\n");
-      this.emit(TaskEventType.STD_OUT_DATA, e.message + "\n");
+      this.emit(TaskEventType.STD_OUT_DATA, 'Cleaning node_modules error\n');
+      this.emit(TaskEventType.STD_OUT_DATA, e.message + '\n');
     }
 
     const script = this.getScript(env);
@@ -36,8 +38,8 @@ export class InstallTask extends BaseTask {
       cwd: this.cwd,
       env: {
         ...process.env,
-        ...this.speedUpEnv
-      }
+        ...this.speedUpEnv,
+      },
     });
 
     this.handleChildProcess(this.proc);
@@ -56,12 +58,12 @@ export class InstallTask extends BaseTask {
 
     this.state = TaskState.INIT;
     // 杀掉子进程
-    proc.kill("SIGINT");
+    proc.kill('SIGINT');
   }
 
   public async cleanNodeModules() {
     return new Promise((resolve, reject) => {
-      const nodeModulePath = join(this.cwd, "node_modules");
+      const nodeModulePath = join(this.cwd, 'node_modules');
       rimraf(nodeModulePath, err => {
         if (err) {
           reject(err);
@@ -74,28 +76,28 @@ export class InstallTask extends BaseTask {
 
   private getScript({ NPM_CLIENT }: any = {}): string {
     const client = this.getNpmClient(NPM_CLIENT);
-    let script = "";
+    let script = '';
     switch (client) {
       case NpmClient.tnpm:
-        script = "tnpm install -d";
+        script = 'tnpm install -d';
         break;
       case NpmClient.cnpm:
-        script = "cnpm install -d";
+        script = 'cnpm install -d';
         break;
       case NpmClient.npm:
-        script = "npm install -d";
+        script = 'npm install -d';
         break;
       case NpmClient.ayarn:
-        script = "ayarn";
+        script = 'ayarn';
         break;
       case NpmClient.tyarn:
-        script = "tyarn";
+        script = 'tyarn';
         break;
       case NpmClient.yarn:
-        script = "yarn";
+        script = 'yarn';
         break;
       case NpmClient.pnpm:
-        script = "pnpm";
+        script = 'pnpm';
         break;
     }
     return script;

@@ -8,31 +8,29 @@
     "lib",
     "src"
   ],
+  "peerDependencies": {
+    "umi": "3.x"
+  },
   "dependencies": {
     "@babel/parser": "7.4.5",
     "@babel/traverse": "7.4.5",
     "@babel/types": "7.4.4",
     "chalk": "2.4.2",
-    "debug": "4.1.1",
     "execa": "1.0.0",
     "getnpmregistry": "^1.0.1",
     "got": "9.6.0",
-    "lodash": "4.17.13",
     "ora": "3.4.0",
-    "umi-utils": "^1.7.2",
     "@umijs/block-sdk": "1.0.0",
     "uppercamelcase": "3.0.0"
   },
   "devDependencies": {
-    "@ant-design/compatible": "^0.0.1-alpha.1",
     "@ant-design/icons": "^4.0.0-alpha.11",
     "@umijs/fabric": "^1.1.9",
     "@umijs/ui-types": "1.0.1",
     "antd": "^4.0.0-alpha.10",
     "classnames": "^2.2.6",
     "eslint": "^6.1.0",
-    "filesize": "^4.2.0",
-    "umi-types": "^0.5.12"
+    "filesize": "^4.2.0"
   },
   "repository": {
     "type": "git",

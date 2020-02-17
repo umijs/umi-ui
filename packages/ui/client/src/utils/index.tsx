@@ -1,14 +1,8 @@
-import get from 'lodash/get';
 import React from 'react';
-import history from '@tmp/history';
+import { history, getLocale as umiGetLocale } from 'umi';
 import * as IUi from '@umijs/ui-types';
 import querystring from 'querystring';
-import {
-  getLocale as umiGetLocale,
-  MessageDescriptor,
-  MessageValue,
-} from 'umi-plugin-react/locale';
-import { IProjectList, IProjectItem, LOCALES } from '@/enums';
+import { IProjectList, IProjectItem } from '@/enums';
 
 const localeMapping: any = {
   en: 'en-US',
@@ -27,12 +21,11 @@ export const isMiniUI = (): boolean => {
   return 'mini' in qs;
 };
 
-export const getBasename = (path: string): string => {
-  return path
+export const getBasename = (path: string): string =>
+  path
     .split('/')
     .filter(name => name)
     .slice(-1)[0];
-};
 
 export const findProjectPath = (data: IProjectList) => {
   const path = data?.projectsByKey?.[data?.currentProject]?.path;
@@ -45,15 +38,14 @@ export const findProjectPath = (data: IProjectList) => {
   return path;
 };
 
-export const handleBack = (reload = true, url = '/project/select') => {
-  return new Promise(resolve => {
+export const handleBack = (reload = true, url = '/project/select') =>
+  new Promise(resolve => {
     history.push(url);
     if (reload) {
       window.location.reload();
     }
     resolve();
   });
-};
 
 interface IProjectListItem extends IProjectItem {
   key: string;
@@ -86,8 +78,8 @@ interface IListItem extends IUi.ICurrentProject {
  * 2. 失败的排最后
  * 3. 最新创建的排前面
  */
-export const sortProjectList = (list: IListItem[]): IListItem[] => {
-  return list.sort((prev, next) => {
+export const sortProjectList = (list: IListItem[]): IListItem[] =>
+  list.sort((prev, next) => {
     let prevWeight = 0;
     let nextWeight = 0;
     if (prev.active) {
@@ -113,41 +105,6 @@ export const sortProjectList = (list: IListItem[]): IListItem[] => {
 
     return nextWeight - prevWeight;
   });
-};
-
-/**
- * 用于渲染动态国际化 key
- * Usage:
- * import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
- * 1. renderLocale(FormattedMessage)('use.id.key.string')
- *
- * 2. renderLocale(formatMessage)({
- *      id: 'use.obj.key.id',
- *      defaultMessage: 'foo.bar'
- *    }, { values: '' })
- * 3. renderLocale(formatMessage)(() => formatMessage({ id: 'use.define.format' }))
- */
-export const renderLocale = (formatUtil: any) => (
-  descriptor: Function | string | MessageDescriptor,
-  values: { [key: string]: MessageValue | JSX.Element } = {},
-) => {
-  if (typeof descriptor === 'function') return descriptor();
-  const firstArg =
-    typeof descriptor === 'string' ? { id: descriptor, defaultMessage: descriptor } : descriptor;
-  // default is formatMessage because of umi-plugin-locale Proxy function utils
-  const isComponent = !!(formatUtil.prototype && formatUtil.prototype.isReactComponent);
-
-  if (isComponent) {
-    const FormatUtil = formatUtil;
-    const props = {
-      ...firstArg,
-      ...values,
-    };
-    return <FormatUtil {...props} />;
-  }
-  // function util
-  return formatUtil(firstArg, values);
-};
 
 /**
  *
@@ -175,11 +132,8 @@ export const getDuplicateKeys = (locales: IUi.ILocale[]): string[] => {
   );
 };
 
-export const isValidFolderName = (name: string): boolean => {
-  return (
-    typeof name === 'string' &&
-    !name.match(/[/@\s+%:]|^[_.]/) &&
-    encodeURIComponent(name) === name &&
-    name.length <= 100
-  );
-};
+export const isValidFolderName = (name: string): boolean =>
+  typeof name === 'string' &&
+  !name.match(/[/@\s+%:]|^[_.]/) &&
+  encodeURIComponent(name) === name &&
+  name.length <= 100;

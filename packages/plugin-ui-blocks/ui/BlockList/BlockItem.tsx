@@ -86,6 +86,7 @@ const onBeforeOpenModal = async (api, { item, type, onShowModal }) => {
   if (api.isMini() && type === 'block') {
     // umi ui 中区块有自己独有的打开方式
     const position = (await getInsertPosition(api).catch(e => {
+      console.error('BlockItem error', e);
       message.error(e.message);
     })) as PositionData;
     const targetPath = await getPathFromFilename(api, position.filename);
@@ -160,8 +161,8 @@ const BlockItem: React.FC<BlockItemProps> = ({
                 disabledTitle={intl({
                   id: 'org.umi.ui.blocks.adder.disabledTitle',
                 })}
-                onClick={() =>
-                  onBeforeOpenModal(api, {
+                onClick={async () =>
+                  await onBeforeOpenModal(api, {
                     type,
                     item,
                     onShowModal,

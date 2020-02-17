@@ -1,22 +1,12 @@
-import React, { useState, useEffect } from "react";
-import {
-  Row,
-  Col,
-  Button,
-  Form,
-  Switch,
-  Input,
-  Modal,
-  Badge,
-  Radio
-} from "antd";
-import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
-import styles from "../../ui.module.less";
-import { TaskState } from "../../../src/server/core/enums";
-import { getTerminalRefIns, setTerminalRefIns } from "../../util";
-import { useInit } from "../../hooks";
-import { TaskComponentProps } from "..";
-import Analyze from "../Analyze";
+import React, { useState, useEffect } from 'react';
+import { Row, Col, Button, Form, Switch, Input, Modal, Badge, Radio } from 'antd';
+import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
+import styles from '../../ui.module.less';
+import { TaskState } from '../../../src/server/core/enums';
+import { getTerminalRefIns, setTerminalRefIns } from '../../util';
+import { useInit } from '../../hooks';
+import { TaskComponentProps } from '..';
+import Analyze from '../Analyze';
 
 const DevComponent: React.FC<TaskComponentProps> = ({
   taskType,
@@ -26,16 +16,17 @@ const DevComponent: React.FC<TaskComponentProps> = ({
   dispatch,
   dbPath,
   iife,
-  Terminal
+  Terminal,
 }) => {
-  const { intl } = api;
-  const isEnglish = api.getLocale() === "en-US";
+  const { useIntl } = api;
+  const { formatMessage } = useIntl();
+  const isEnglish = api.getLocale() === 'en-US';
   const [form] = Form.useForm();
   const [modalVisible, setModalVisible] = useState(false);
-  const [log, setLog] = useState("");
-  const [view, setView] = useState("log");
+  const [log, setLog] = useState('');
+  const [view, setView] = useState('log');
   const [env, setEnv] = useState({
-    UMI_UI_SERVER: "none",
+    UMI_UI_SERVER: 'none',
     UMI_UI_PORT: window.location.port,
     BABEL_POLYFILL: true,
     HMR: true,
@@ -45,7 +36,7 @@ const DevComponent: React.FC<TaskComponentProps> = ({
     CLEAR_CONSOLE: true,
     PORT: null,
     FORK_TS_CHECKER: false,
-    UMI_UI: null
+    UMI_UI: null,
   });
   const [init] = useInit(detail);
 
@@ -53,7 +44,7 @@ const DevComponent: React.FC<TaskComponentProps> = ({
     if (!init) {
       return () => {};
     }
-    if (view === "log") {
+    if (view === 'log') {
       dispatch({
         type: `${namespace}/getTaskDetail`,
         payload: {
@@ -62,8 +53,8 @@ const DevComponent: React.FC<TaskComponentProps> = ({
           dbPath,
           callback: ({ log }) => {
             setLog(log);
-          }
-        }
+          },
+        },
       });
     }
     if (iife) {
@@ -86,10 +77,10 @@ const DevComponent: React.FC<TaskComponentProps> = ({
         taskType,
         args: {
           analyze: true,
-          dbPath
+          dbPath,
         },
-        env
-      }
+        env,
+      },
     });
   }
 
@@ -97,8 +88,8 @@ const DevComponent: React.FC<TaskComponentProps> = ({
     dispatch({
       type: `${namespace}/cancel`,
       payload: {
-        taskType
-      }
+        taskType,
+      },
     });
   }
 
@@ -112,7 +103,7 @@ const DevComponent: React.FC<TaskComponentProps> = ({
       .then(values => {
         setEnv({
           ...env,
-          ...(values as any)
+          ...(values as any),
         });
         setModalVisible(false);
       })
@@ -135,59 +126,58 @@ const DevComponent: React.FC<TaskComponentProps> = ({
   const EnvLabel = props => (
     <div>
       <div onClick={stopEventPop} className={styles.modleLableTitle}>
-        {intl({ id: props.title })}
+        {formatMessage({ id: props.title })}
       </div>
       <div className={styles.modleLableDesc}>
-        <span onClick={stopEventPop}>{intl({ id: props.desc })}</span>
+        <span onClick={stopEventPop}>{formatMessage({ id: props.desc })}</span>
         <a
           className={styles.modleLablelDescIcon}
-          href={isEnglish ? props.link.replace(/\/zh\//, "/") : props.link}
+          href={isEnglish ? props.link.replace(/\/zh\//, '/') : props.link}
           target="_blank"
         >
-          {intl({ id: "org.umi.ui.tasks.env.detail" })}
+          {formatMessage({ id: 'org.umi.ui.tasks.env.detail' })}
         </a>
       </div>
     </div>
   );
 
-  const isTaskRunning =
-    detail && [TaskState.ING, TaskState.SUCCESS].indexOf(detail.state) > -1;
+  const isTaskRunning = detail && [TaskState.ING, TaskState.SUCCESS].indexOf(detail.state) > -1;
   const outputRunningInfo = ({ state, localUrl, hasError }) => {
     if (!state || state === TaskState.INIT) {
       return null;
     }
     const map = {
       [TaskState.ING]: {
-        status: "processing",
+        status: 'processing',
         text: (
           <span>
-            {intl({
+            {formatMessage({
               id: hasError
-                ? "org.umi.ui.tasks.dev.state.starting.error"
-                : "org.umi.ui.tasks.dev.state.starting"
+                ? 'org.umi.ui.tasks.dev.state.starting.error'
+                : 'org.umi.ui.tasks.dev.state.starting',
             })}
           </span>
-        )
+        ),
       },
       [TaskState.SUCCESS]: {
-        status: "success",
+        status: 'success',
         text: (
           <span>
             {localUrl ? (
               <>
-                {intl({ id: "org.umi.ui.tasks.dev.state.success" })}
+                {formatMessage({ id: 'org.umi.ui.tasks.dev.state.success' })}
                 <a href={localUrl} target="_blank">
                   {localUrl}
                 </a>
               </>
             ) : null}
           </span>
-        )
+        ),
       },
       [TaskState.FAIL]: {
-        status: "error",
-        text: <span>{intl({ id: "org.umi.ui.tasks.dev.state.fail" })}</span>
-      }
+        status: 'error',
+        text: <span>{formatMessage({ id: 'org.umi.ui.tasks.dev.state.fail' })}</span>,
+      },
     };
     return (
       <div className={styles.runningInfo}>
@@ -197,15 +187,15 @@ const DevComponent: React.FC<TaskComponentProps> = ({
     );
   };
 
-  const detailHost = `https://umijs.org/${isEnglish ? "" : "zh"}`;
+  const detailHost = `https://umijs.org/${isEnglish ? '' : 'zh'}`;
   return (
     <>
-      <h1 className={styles.title}>{intl({ id: "org.umi.ui.tasks.dev" })}</h1>
+      <h1 className={styles.title}>{formatMessage({ id: 'org.umi.ui.tasks.dev' })}</h1>
       <>
         <Row type="flex" justify="space-between">
           <Col className={styles.buttonGroup}>
             <Button
-              size={api.mini ? "small" : "default"}
+              size={api.mini ? 'small' : 'default'}
               type="primary"
               onClick={isTaskRunning ? cancelDev : dev}
             >
@@ -213,39 +203,34 @@ const DevComponent: React.FC<TaskComponentProps> = ({
                 <>
                   <PauseOutlined />
                   <span className={styles.runningText}>
-                    {" "}
-                    {intl({ id: "org.umi.ui.tasks.dev.cancel" })}
+                    {' '}
+                    {formatMessage({ id: 'org.umi.ui.tasks.dev.cancel' })}
                   </span>
                 </>
               ) : (
                 <>
                   <CaretRightOutlined />
                   <span className={styles.runningText}>
-                    {" "}
-                    {intl({ id: "org.umi.ui.tasks.dev.start" })}
+                    {' '}
+                    {formatMessage({ id: 'org.umi.ui.tasks.dev.start' })}
                   </span>
                 </>
               )}
             </Button>
-            <Button size={api.mini ? "small" : "default"} onClick={openModal}>
-              {intl({ id: "org.umi.ui.tasks.envs" })}
+            <Button size={api.mini ? 'small' : 'default'} onClick={openModal}>
+              {formatMessage({ id: 'org.umi.ui.tasks.envs' })}
             </Button>
             {outputRunningInfo(detail)}
             <Modal
               visible={modalVisible}
-              title={intl({ id: "org.umi.ui.tasks.envs" })}
+              title={formatMessage({ id: 'org.umi.ui.tasks.envs' })}
               onOk={handleOk}
               onCancel={handleCancel}
             >
               <div className={styles.modalContainer}>
-                <Form
-                  name="devEnv"
-                  form={form}
-                  initialValues={env}
-                  layout="vertical"
-                >
+                <Form name="devEnv" form={form} initialValues={env} layout="vertical">
                   <Form.Item
-                    label={intl({ id: "org.umi.ui.tasks.envs.port" })}
+                    label={formatMessage({ id: 'org.umi.ui.tasks.envs.port' })}
                     name="PORT"
                   >
                     <Input />
@@ -362,23 +347,23 @@ const DevComponent: React.FC<TaskComponentProps> = ({
           </Col>
           <Col className={styles.formatGroup}>
             <Radio.Group
-              size={api.mini ? "small" : "default"}
+              size={api.mini ? 'small' : 'default'}
               defaultValue="log"
               value={view}
               buttonStyle="solid"
               onChange={toggleView}
             >
               <Radio.Button value="log">
-                {intl({ id: "org.umi.ui.tasks.log" })}
+                {formatMessage({ id: 'org.umi.ui.tasks.log' })}
               </Radio.Button>
               <Radio.Button value="analyze">
-                {intl({ id: "org.umi.ui.tasks.analyze" })}
+                {formatMessage({ id: 'org.umi.ui.tasks.analyze' })}
               </Radio.Button>
             </Radio.Group>
           </Col>
         </Row>
         <div className={styles.logContainer}>
-          {view === "log" ? (
+          {view === 'log' ? (
             <Terminal
               onInit={ins => {
                 if (ins) {

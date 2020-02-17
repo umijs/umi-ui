@@ -1,9 +1,8 @@
 import { notification, message } from 'antd';
 import { connect } from 'dva';
 import lodash from 'lodash';
-import history from '@tmp/history';
-// eslint-disable-next-line no-multi-assign
-import * as intl from 'umi-plugin-react/locale';
+import { history, FormattedMessage, formatMessage, getIntl, useIntl } from 'umi';
+import { getApp } from '@@/plugin-dva/dva';
 import * as hooks from '@umijs/hooks';
 import isPlainObject from 'lodash/isPlainObject';
 import { FC } from 'react';
@@ -11,16 +10,16 @@ import * as IUi from '@umijs/ui-types';
 import moment from 'moment';
 import request from 'umi-request';
 import qs from 'qs';
-import { send, callRemote, listenRemote } from './socket';
 import event, { MESSAGES } from '@/message';
 import { pluginDebug } from '@/debug';
 import Terminal from '@/components/Terminal';
 import StepForm from '@/components/StepForm';
 import DirectoryForm from '@/components/DirectoryForm';
-import ConfigForm from './components/ConfigForm';
-import TwoColumnPanel from './components/TwoColumnPanel';
 import { openInEditor, openConfigFile } from '@/services/project';
 import { isMiniUI, getDuplicateKeys } from '@/utils';
+import ConfigForm from './components/ConfigForm';
+import TwoColumnPanel from './components/TwoColumnPanel';
+import { send, callRemote, listenRemote } from './socket';
 import getAnalyze from './getAnalyze';
 import Field from './components/Field';
 
@@ -49,7 +48,7 @@ export default class PluginAPI {
   hooks: any;
   request: any;
 
-  constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
+  constructor(service: IUi.IService, currentProject?: IUi.ICurrentProject) {
     this.service = service;
     this.callRemote = callRemote;
     this.listenRemote = listenRemote;
@@ -79,37 +78,10 @@ export default class PluginAPI {
     this.hooks = {
       ...hooks,
     };
-
-    const proxyIntl = new Proxy(intl, {
-      get: (target, prop: any) => {
-        if (
-          [
-            'FormattedDate',
-            'FormattedTime',
-            'FormattedRelative',
-            'FormattedNumber',
-            'FormattedPlural',
-            'FormattedMessage',
-            'FormattedHTMLMessage',
-            'formatMessage',
-            'formatHTMLMessage',
-            'formatDate',
-            'formatTime',
-            'formatRelative',
-            'formatNumber',
-            'formatPlural',
-          ].includes(prop)
-        ) {
-          return intl[prop];
-        }
-        return undefined;
-      },
-    });
-
-    // mount react-intl API∂
-    Object.keys(proxyIntl).forEach(intlApi => {
-      this.intl[intlApi] = intl[intlApi];
-    });
+    this.useIntl = useIntl;
+    // 不推荐
+    this.intl = formatMessage;
+    this.intl.FormattedMessage = FormattedMessage;
   }
 
   addConfigSection(section) {
@@ -117,7 +89,8 @@ export default class PluginAPI {
   }
 
   registerModel = model => {
-    window.g_app.model(model);
+    const app = getApp();
+    app.model(model);
   };
 
   launchEditor = async ({ type = 'project', lineNumber = 0, editor }) => {
@@ -185,9 +158,8 @@ export default class PluginAPI {
   /**
    * get query params /?bar=&foo=&mini
    */
-  getSearchParams: IUi.IGetSearchParams = () => {
-    return qs.parse(window.location.search, { ignoreQueryPrefix: true });
-  };
+  getSearchParams: IUi.IGetSearchParams = () =>
+    qs.parse(window.location.search, { ignoreQueryPrefix: true });
 
   getSharedDataDir = async () => {
     const { tmpDir } = await callRemote({
@@ -217,7 +189,7 @@ export default class PluginAPI {
     return cwd;
   };
 
-  intl: IUi.IIntl = intl.formatMessage;
+  intl: IUi.IIntl;
 
   getLocale: IUi.IGetLocale = () => window.g_lang;
 

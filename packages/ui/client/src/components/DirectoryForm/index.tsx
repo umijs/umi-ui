@@ -3,7 +3,7 @@ import { LeftOutlined, EditOutlined, ReloadOutlined } from '@ant-design/icons';
 import slash2 from 'slash2';
 import { Button, Empty, Spin, Input, message, Tooltip } from 'antd';
 import * as IUi from '@umijs/ui-types';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { useIntl } from 'umi';
 import { getCwd, listDirectory } from '@/services/project';
 import debug from '@/debug';
 import { path2Arr, arr2Path, trimSlash } from './pathUtils';
@@ -15,6 +15,7 @@ import styles from './index.less';
 const { useState, useEffect, useRef } = React;
 
 const DirectoryForm: React.FC<IUi.IDirectoryForm> = props => {
+  const { formatMessage } = useIntl();
   const _log = debug.extend('DirectoryForm');
   const { value: originValue, onChange } = props;
   const value = slash2(originValue || '');

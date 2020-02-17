@@ -1,6 +1,6 @@
 import React from 'react';
 import { Popconfirm, Tooltip, Divider } from 'antd';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { useIntl } from 'umi';
 import cls from 'classnames';
 import { CloseOutlined, VerticalAlignBottomOutlined, DeleteOutlined } from '@ant-design/icons';
 import styles from './FooterToolbar.less';
@@ -20,6 +20,7 @@ export interface IFooterToolbarProps {
 
 const FooterToolbar: React.FC<IFooterToolbarProps> = props => {
   const ref = React.createRef<HTMLDivElement>();
+  const { formatMessage } = useIntl();
   const {
     title,
     className,

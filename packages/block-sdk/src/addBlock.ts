@@ -82,10 +82,10 @@ export const addPrefix = path => {
 };
 
 export async function getCtx(url, args: AddBlockOption = {}, api: IApi): Promise<CtxTypes> {
-  const { config } = api;
+  const { userConfig } = api;
   debug(`get url ${url}`);
 
-  const ctx: CtxTypes = await getParsedData(url, { ...((config as any)?.block || {}), ...args });
+  const ctx: CtxTypes = await getParsedData(url, { ...(userConfig?.block || {}), ...args });
 
   if (!ctx.isLocal) {
     const blocksTempPath = makeSureMaterialsTempPathExist(args.dryRun);
@@ -109,10 +109,10 @@ export async function getCtx(url, args: AddBlockOption = {}, api: IApi): Promise
 }
 
 export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption = {}, api: IApi) {
-  const { paths, config, applyPlugins } = api;
+  const { paths, userConfig, applyPlugins } = api;
   const blockConfig: {
     npmClient?: string;
-  } = (config as any)?.block || {};
+  } = userConfig?.block || {};
   const addLogs = [];
 
   const getSpinner = () => {
@@ -309,13 +309,13 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
   }
 
   // 6. write routes
-  if (generator.needCreateNewRoute && api.config.routes && !skipModifyRoutes) {
+  if (generator.needCreateNewRoute && api.userConfig.routes && !skipModifyRoutes) {
     opts.remoteLog('⛱  Write route');
 
-    spinner.start(`⛱  Write route ${generator.routePath} to ${api.service.userConfig.file}`);
+    spinner.start(`⛱  Write route ${generator.routePath} to ${api.userConfig.file}`);
     // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
     // 未来可以做下自动写入注释配置，支持约定式路由
-    const newRouteConfig = applyPlugins({
+    const newRouteConfig = await applyPlugins({
       key: '_modifyBlockNewRouteConfig',
       type: api.ApplyPluginsType.modify,
       initialValue: {
@@ -326,7 +326,7 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
     });
     try {
       if (!dryRun) {
-        writeNewRoute(newRouteConfig, api.service.userConfig.file, paths.absSrcPath);
+        writeNewRoute(newRouteConfig, api.userConfig.file, paths.absSrcPath);
       }
     } catch (e) {
       spinner.fail();

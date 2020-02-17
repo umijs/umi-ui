@@ -89,12 +89,11 @@ API 由 [Umi 插件基础 API](https://umijs.org/plugin/umi-ui.html#%E6%9C%8D%E5
 │   │   ├── dark.less
 │   │   ├── light.less
 │   │   └── package.json
-│   ├── types # Umi UI 类型，集成在 umi-types 中，建议社区插件从 umi-types 导入
+│   ├── types # Umi UI 类型，集成在 @umijs/types 中，建议社区插件从 @umijs/types 导入
 │   └── ui
 │       ├── client # Umi UI 主体
 │       │   └── src
 │       │       └── PluginAPI.ts # 提供插件客户端 API
-│       ├── compatUI
 │       ├── package.json
 │       └── src # Umi UI Server
 ├── scripts
@@ -135,6 +134,7 @@ $ yarn ui:build -w
 
 ```bash
 # 第三个终端
+# 仓库调试带上了 BABEL_CACHE=none DEBUG=umiui*
 $ yarn dev
 🚀 Starting Umi UI using umi...
 ⛽️ Ready on http://localhost:3000/

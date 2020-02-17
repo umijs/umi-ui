@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Anchor } from 'antd';
 import cls from 'classnames';
-import history from '@tmp/history';
+import { history } from 'umi';
 import Context from '@/layouts/Context';
 // import { AnchorProps } from 'antd/lib/anchor';
 import styles from './Toc.less';
@@ -32,9 +32,7 @@ const UiToc: React.SFC<UiTocProps> = React.memo(props => {
     }
   }, [anchors, window.location.hash]);
 
-  const getAnchorHref = href => {
-    return `#${href.replace('#', '')}`;
-  };
+  const getAnchorHref = href => `#${href.replace('#', '')}`;
 
   const handleClick = (e, { href }) => {
     e.preventDefault();
