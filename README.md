@@ -4,23 +4,30 @@
 
 ![https://user-images.githubusercontent.com/13595509/73431180-c77ab400-437a-11ea-9baa-ebd00109b1d0.png](https://user-images.githubusercontent.com/13595509/73431180-c77ab400-437a-11ea-9baa-ebd00109b1d0.png)
 
+**用于 umi@3 项目**
+
 ## 🎬 快速开始
 
-umi@2 项目，有两种方式启动。
+第一步，先在项目中安装 `@umijs/preset-ui`
 
-第一种：使用全局 `umi ui`
-
-```bash
-# 先全局安装 umi，通过 npm i umi -g
-$ umi ui
+```sh
+$ yarn add @umijs/preset-ui -D
 ```
 
-第二种：通过 `UMI_UI=1` 在项目中使用 mini 版
+通过 `presets` 加载 Umi UI：
+
+```js
+// .umirc.ts
+export default {
+  presets: ['@umijs/preset-ui']
+}
+```
+
+开始使用：
 
 ```bash
 # in umi project root path
 - $ umi dev
-+ $ UMI_UI=1 umi dev
 ```
 
 ## ✨ 主要功能
@@ -53,7 +60,7 @@ API 由 [Umi 插件基础 API](https://umijs.org/plugin/umi-ui.html#%E6%9C%8D%E5
 
 ## 😊 如何贡献？
 
-`2.x-stable` 用于 `umi@2`，`master` 用于 `umi@3`。
+`master` 用于 `umi@3`。
 
 ### 目录结构
 
@@ -65,7 +72,7 @@ API 由 [Umi 插件基础 API](https://umijs.org/plugin/umi-ui.html#%E6%9C%8D%E5
 ├── lerna.json
 ├── package.json
 ├── packages
-│   ├── plugin-ui # ui 插件集，内置 4 个 ui 插件
+│   ├── preset-ui # ui 插件集，包含后面的插件
 │   │   ├── package.json
 │   │   └── src
 │   │       ├── bubble # mini 版小气泡
@@ -75,6 +82,11 @@ API 由 [Umi 插件基础 API](https://umijs.org/plugin/umi-ui.html#%E6%9C%8D%E5
 │   │           ├── dashboard # Dashboard 面板插件
 │   │           └── routes # TODO: 路由
 │   │  
+│   ├── block-sdk # 区块 SDK，用于 plugin-blocks 和 plugin-ui-blocks
+│   │   ├── package.json
+│   │   ├── .fatherrc.ts # father-build 构建 cjs
+│   │   └── src # sdk 主体
+│   │
 │   ├── plugin-ui-blocks # 资产 UI 插件
 │   │   ├── dist # ui 目录构建的 index.umd.js
 │   │   ├── package.json
@@ -90,7 +102,7 @@ API 由 [Umi 插件基础 API](https://umijs.org/plugin/umi-ui.html#%E6%9C%8D%E5
 │   │   ├── light.less
 │   │   └── package.json
 │   ├── types # Umi UI 类型，集成在 @umijs/types 中，建议社区插件从 @umijs/types 导入
-│   └── ui
+│   └── ui # Umi UI server
 │       ├── client # Umi UI 主体
 │       │   └── src
 │       │       └── PluginAPI.ts # 提供插件客户端 API
@@ -99,6 +111,7 @@ API 由 [Umi 插件基础 API](https://umijs.org/plugin/umi-ui.html#%E6%9C%8D%E5
 ├── scripts
 │   ├── dev.ts
 │   ├── publish.js
+│   ├── syncTNPM.js # 同步 tnpm
 │   ├── ui.js # ui 构建脚本，使用 umi 构建 Umi UI 主框架
 │   └── uiPlugins.js
 └── test # TODO: 更多场景测试用例
