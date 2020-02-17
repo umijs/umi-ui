@@ -868,7 +868,10 @@ export default class UmiUI {
     }
   }
 
-  async start(): Promise<{ server: http.Server; port: string | number }> {
+  async start(opts?: {
+    browser: boolean;
+  }): Promise<{ server: http.Server; port: string | number }> {
+    const { browser } = opts || {};
     return new Promise(async (resolve, reject) => {
       console.log(`🚀 Starting Umi UI using umi@${process.env.UMI_VERSION}...`);
 
@@ -1104,7 +1107,7 @@ export default class UmiUI {
             `
               : `⛽️ Ready on ${url}`,
           );
-          if (process.env.UMI_UI_BROWSER !== 'none') {
+          if (browser) {
             openBrowser(url);
           }
           resolve({

@@ -11,6 +11,27 @@ import terminalLink from 'terminal-link';
 import { BlockData } from './data.d';
 import arrayToTree from './arrayToTree';
 
+const JS_EXTNAMES = ['.js', '.jsx', '.ts', '.tsx'];
+export interface IFindJSOpts {
+  base: string;
+  fileNameWithoutExt?: string;
+}
+export const findJS = (opts): string => {
+  const { base, fileNameWithoutExt } = opts;
+  let i = 0;
+  while (i < JS_EXTNAMES.length) {
+    const extname = JS_EXTNAMES[i];
+    const absFilePath = fileNameWithoutExt
+      ? join(base, `${fileNameWithoutExt}${extname}`)
+      : `${base}${extname}`;
+    if (existsSync(absFilePath)) {
+      return absFilePath;
+    }
+    i += 1;
+  }
+  return null;
+};
+
 /**
  * 全局使用的 loading
  */

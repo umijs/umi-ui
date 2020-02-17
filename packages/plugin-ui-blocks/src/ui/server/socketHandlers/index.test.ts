@@ -1,8 +1,8 @@
 import fs from 'fs';
-import { join } from 'path';
 import { utils } from 'umi';
+import { join } from 'path';
 import haveRootBinding from '@umijs/block-sdk/lib/sdk/haveRootBinding';
-
+import { findJS } from '@umijs/block-sdk';
 import checkIfCanAdd from './org.umi.block.checkIfCanAdd';
 import checkBindingInFile from './org.umi.block.checkBindingInFile';
 
@@ -390,6 +390,7 @@ describe('block interface socketHandlers test', () => {
         api: {
           winPath: v => v,
           getFile,
+          findJS,
           paths: {
             absPagesPath: join('/', 'tmp', 'src', 'pages'),
           },
