@@ -1,9 +1,8 @@
 import chalk from 'chalk';
 import { join } from 'path';
 import { existsSync } from 'fs';
-import execa from 'execa';
+import { got, execa } from '@umijs/utils';
 import ora from 'ora';
-import fetch from 'node-fetch';
 
 import GitUrlParse from 'git-url-parse';
 import terminalLink from 'terminal-link';
@@ -51,7 +50,7 @@ export const getFastGithub = async () => {
     'gitee.com': 'https://gitee.com/ant-design/pro-blocks',
   };
   const promiseList = Object.keys(registryMap).map(async key => {
-    return fetch(registryMap[key])
+    return got(registryMap[key])
       .catch(() => null)
       .then(() => Promise.resolve(key));
   });
@@ -130,7 +129,6 @@ export const imgFilter = (list, { name, owner }, useGitee) => {
 };
 
 export const getBlockListFromGit = async (gitUrl, useBuiltJSON?) => {
-  const got = require('got');
   const ignoreFile = ['_scripts', 'tests'];
 
   const { name, owner, resource } = GitUrlParse(gitUrl);

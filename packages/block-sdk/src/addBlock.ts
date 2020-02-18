@@ -1,13 +1,11 @@
 import assert from 'assert';
-import chalk from 'chalk';
 import { IApi } from '@umijs/types';
 import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import ora from 'ora';
-import { merge } from 'lodash';
 import getNpmRegistry from 'getnpmregistry';
 import clipboardy from 'clipboardy';
-import { winPath, createDebug, signale } from '@umijs/utils';
+import { winPath, createDebug, signale, chalk, lodash } from '@umijs/utils';
 import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import { writeNewRoute } from './writeNewRoute';
 import { getNameFromPkg } from './getBlockGenerator';
@@ -15,6 +13,7 @@ import { appendBlockToContainer } from './appendBlockToContainer';
 import { gitClone, gitUpdate } from './util';
 import { installDependencies } from './installDependencies';
 
+const { merge } = lodash;
 const debug = createDebug('umi:block:addBlock');
 
 export interface CtxTypes {

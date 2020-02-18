@@ -1,7 +1,5 @@
-import rimraf from 'rimraf';
 import ora from 'ora';
-import { signale } from '@umijs/utils';
-import chalk from 'chalk';
+import { signale, rimraf, chalk } from '@umijs/utils';
 
 import { makeSureMaterialsTempPathExist } from './download';
 

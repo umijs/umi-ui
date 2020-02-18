@@ -1,12 +1,11 @@
 import { join, resolve } from 'path';
 import { existsSync } from 'fs';
-import spawn from 'cross-spawn';
-import mkdirp from 'mkdirp';
+import { spawn, mkdirp, createDebug } from '@umijs/utils';
 import { homedir } from 'os';
 import GitUrlParse from 'git-url-parse';
 import { getFastGithub } from './util';
 
-const debug = require('debug')('umi-build-dev:MaterialDownload');
+const debug = createDebug('umi-build-dev:MaterialDownload');
 const spawnSync = spawn.sync;
 
 export function makeSureMaterialsTempPathExist(dryRun) {

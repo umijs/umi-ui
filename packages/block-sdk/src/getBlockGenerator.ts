@@ -1,19 +1,15 @@
 import { existsSync, readdirSync, lstatSync, statSync, readFileSync, writeFileSync } from 'fs';
 import { join, dirname } from 'path';
-import mkdirp from 'mkdirp';
-import semver from 'semver';
 import crequire from 'crequire';
-import Mustache from 'mustache';
 import upperCamelCase from 'uppercamelcase';
 import { IApi } from '@umijs/types';
-import rimraf from 'rimraf';
 import Generator from 'yeoman-generator';
-import { winPath } from '@umijs/utils';
+import { winPath, mkdirp, semver, Mustache, rimraf, createDebug } from '@umijs/utils';
 import replaceContent from './replaceContent';
 import { SINGULAR_SENSLTIVE } from './constants';
 import { routeExists, findJS } from './util';
 
-const debug = require('debug')('umiui:UmiUI:block:getBlockGenerator');
+const debug = createDebug('umiui:UmiUI:block:getBlockGenerator');
 
 /**
  * 判断一个路径是否为空

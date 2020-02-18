@@ -1,9 +1,10 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { dirname, join } from 'path';
+import { createDebug } from '@umijs/utils';
 import insertComponent from './sdk/insertComponent';
 import { INSERT_BLOCK_PLACEHOLDER, UMI_UI_FLAG_PLACEHOLDER } from './sdk/constants';
 
-const debug = require('debug')('umi-build-dev:appendBlockToContainer');
+const debug = createDebug('umi-build-dev:appendBlockToContainer');
 
 function findIndexFile(dir) {
   if (existsSync(join(dir, 'index.js'))) return join(dir, 'index.js');
