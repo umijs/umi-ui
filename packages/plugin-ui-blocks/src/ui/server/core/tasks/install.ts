@@ -15,6 +15,7 @@ const install = async (ctx: IFlowContext, args: IAddBlockOption) => {
       npmClient: args.npmClient,
       registry,
       applyPlugins: api.applyPlugins,
+      ApplyPluginsType: api.ApplyPluginsType,
       paths: api.paths,
       debug,
       dryRun: args.dryRun,

@@ -38,6 +38,7 @@ export async function installDependencies(
     npmClient,
     registry,
     applyPlugins,
+    ApplyPluginsType,
     paths,
     debug,
     dryRun,
@@ -52,7 +53,7 @@ export async function installDependencies(
   // read project package.json
   const projectPkgPath = await applyPlugins({
     key: '_modifyBlockPackageJSONPath',
-    type: 'modify',
+    type: ApplyPluginsType.modify || 'modify',
     initialValue: join(paths.cwd, 'package.json'),
   });
 
@@ -82,7 +83,7 @@ export async function installDependencies(
   // get conflict dependencies and lack dependencies
   const { conflicts, lacks, devConflicts, devLacks } = await applyPlugins({
     key: '_modifyBlockDependencies',
-    type: 'modify',
+    type: ApplyPluginsType?.modify || 'modify',
     initialValue,
   });
   debug(
