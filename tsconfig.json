@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
+    "skipLibCheck": true,
     "moduleResolution": "node",
     "jsx": "preserve",
     "allowJs": true,

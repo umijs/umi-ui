@@ -1,13 +1,11 @@
 import assert from 'assert';
-import chalk from 'chalk';
 import { IApi } from '@umijs/types';
 import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import ora from 'ora';
-import { merge } from 'lodash';
 import getNpmRegistry from 'getnpmregistry';
 import clipboardy from 'clipboardy';
-import { winPath, createDebug, signale } from '@umijs/utils';
+import { winPath, createDebug, signale, chalk, lodash } from '@umijs/utils';
 import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import { writeNewRoute } from './writeNewRoute';
 import { getNameFromPkg } from './getBlockGenerator';
@@ -15,7 +13,8 @@ import { appendBlockToContainer } from './appendBlockToContainer';
 import { gitClone, gitUpdate } from './util';
 import { installDependencies } from './installDependencies';
 
-const debug = createDebug('umi:block:addBlock');
+const { merge } = lodash;
+const debug = createDebug('umi:block-sdk:addBlock');
 
 export interface CtxTypes {
   repo?: any;
@@ -261,18 +260,21 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
   }
   debug(`isPageBlock: ${isPageBlock}`);
   debug(`ctx.filePath: ${ctx.filePath}`);
-  const generator = new BlockGenerator(args._ ? args._.slice(2) : [], {
-    sourcePath: ctx.sourcePath,
-    path: ctx.filePath,
-    routePath: ctx.routePath,
-    blockName: name || getNameFromPkg(ctx.pkg),
-    isPageBlock,
-    dryRun,
-    execution,
-    env: {
-      cwd: api.cwd,
+  const generator = new BlockGenerator({
+    name: args._ ? args._.slice(2) : [],
+    args: {
+      sourcePath: ctx.sourcePath,
+      path: ctx.filePath,
+      routePath: ctx.routePath,
+      blockName: name || getNameFromPkg(ctx.pkg),
+      isPageBlock,
+      dryRun,
+      execution,
+      env: {
+        cwd: api.cwd,
+      },
+      resolved: winPath(__dirname),
     },
-    resolved: winPath(__dirname),
   });
   try {
     await generator.run();
@@ -289,18 +291,21 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
         subBlocks.map((block: string) => {
           const subBlockPath = join(ctx.templateTmpDirPath, block);
           debug(`subBlockPath: ${subBlockPath}`);
-          return new BlockGenerator(args._.slice(2), {
-            sourcePath: subBlockPath,
-            path: isPageBlock ? generator.path : join(generator.path, generator.blockFolderName),
-            // eslint-disable-next-line
-            blockName: getNameFromPkg(require(join(subBlockPath, 'package.json'))),
-            isPageBlock: false,
-            dryRun,
-            env: {
-              cwd: api.cwd,
+          return new BlockGenerator({
+            name: args._.slice(2),
+            args: {
+              sourcePath: subBlockPath,
+              path: isPageBlock ? generator.path : join(generator.path, generator.blockFolderName),
+              // eslint-disable-next-line
+              blockName: getNameFromPkg(require(join(subBlockPath, 'package.json'))),
+              isPageBlock: false,
+              dryRun,
+              env: {
+                cwd: api.cwd,
+              },
+              routes: api.config.routes,
+              resolved: winPath(__dirname),
             },
-            routes: api.config.routes,
-            resolved: winPath(__dirname),
           }).run();
         }),
       );

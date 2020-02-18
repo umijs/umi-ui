@@ -4,11 +4,10 @@ import * as parser from '@babel/parser';
 import traverse from '@babel/traverse';
 import generate from '@babel/generator';
 import * as t from '@babel/types';
-import { utils } from 'umi';
+import { winPath, createDebug } from '@umijs/utils';
 import prettier from 'prettier';
 
-const { winPath } = utils;
-const debug = require('debug')('umi-build-dev:writeNewRoute');
+const debug = createDebug('umi-build-dev:writeNewRoute');
 
 /**
  * 将路由写入路由文件

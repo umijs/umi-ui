@@ -1,5 +1,6 @@
 import inquirer from 'inquirer';
 import ora from 'ora';
+import { got } from '@umijs/utils';
 
 import { getBlockListFromGit, printBlocks, genBlockName } from './util';
 import { addBlock } from './addBlock';
@@ -71,7 +72,6 @@ export async function selectInstallBlockArgs(blockArray) {
  */
 export async function getDefaultBlockList(_, blockConfig: any = {}, api) {
   const spinner = ora();
-  const got = require('got');
   let blockArray = [];
   const { defaultGitUrl } = blockConfig;
 

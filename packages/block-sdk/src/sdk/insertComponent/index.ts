@@ -3,11 +3,10 @@ import generate from '@babel/generator';
 import * as t from '@babel/types';
 import assert from 'assert';
 import prettier from 'prettier';
-import { findLastIndex } from 'lodash';
+import { lodash, rimraf } from '@umijs/utils';
 import uppercamelcase from 'uppercamelcase';
 import { readFileSync, readdirSync } from 'fs';
 import { dirname } from 'path';
-import rimraf from 'rimraf';
 import {
   findExportDefaultDeclaration,
   findImportNodes,
@@ -25,6 +24,8 @@ import {
   INSERT_BLOCK_PLACEHOLDER,
   UMI_UI_FLAG_PLACEHOLDER,
 } from '../constants';
+
+const { findLastIndex } = lodash;
 
 export default (content, opts) => {
   const {

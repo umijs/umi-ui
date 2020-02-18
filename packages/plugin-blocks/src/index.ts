@@ -1,8 +1,7 @@
-import chalk from 'chalk';
 import { utils, IApi } from 'umi';
 import { clearGitCache, addBlock, getDefaultBlockList } from '@umijs/block-sdk';
 
-const { signale, createDebug } = utils;
+const { signale, createDebug, chalk } = utils;
 const debug = createDebug('plugin-blocks');
 
 export default (api: IApi) => {

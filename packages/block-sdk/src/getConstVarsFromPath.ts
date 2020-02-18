@@ -1,5 +1,7 @@
-import { toLower, camelCase } from 'lodash';
+import { lodash } from '@umijs/utils';
 import upperCamelCase from 'uppercamelcase';
+
+const { toLower, camelCase } = lodash;
 
 function stripFirstSlash(path) {
   if (path.charAt(0) === '/') {

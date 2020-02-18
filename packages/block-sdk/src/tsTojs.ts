@@ -1,5 +1,5 @@
 import sylvanas from 'sylvanas';
-import glob from 'glob';
+import { glob } from '@umijs/utils';
 
 function globList(patternList, options) {
   let fileList = [];

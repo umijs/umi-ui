@@ -1,19 +1,15 @@
 import { existsSync, readdirSync, lstatSync, statSync, readFileSync, writeFileSync } from 'fs';
 import { join, dirname } from 'path';
-import mkdirp from 'mkdirp';
-import semver from 'semver';
 import crequire from 'crequire';
-import Mustache from 'mustache';
 import upperCamelCase from 'uppercamelcase';
+import inquirer from 'inquirer';
 import { IApi } from '@umijs/types';
-import rimraf from 'rimraf';
-import Generator from 'yeoman-generator';
-import { winPath } from '@umijs/utils';
+import { winPath, mkdirp, semver, Mustache, rimraf, createDebug, Generator } from '@umijs/utils';
 import replaceContent from './replaceContent';
 import { SINGULAR_SENSLTIVE } from './constants';
 import { routeExists, findJS } from './util';
 
-const debug = require('debug')('umiui:UmiUI:block:getBlockGenerator');
+const debug = createDebug('umiui:UmiUI:block-sdk:getBlockGenerator');
 
 /**
  * 判断一个路径是否为空
@@ -224,28 +220,45 @@ export const getBlockGenerator = (api: IApi) => {
     public prompt;
     public fs;
 
-    constructor(args, opts) {
-      super(args, opts);
+    constructor({ args, name }) {
+      // @ts-ignore
+      super({ args });
 
-      this.isTypeScript = existsSync(join(opts.env.cwd, 'tsconfig.json'));
-      this.sourcePath = opts.sourcePath;
-      this.dryRun = opts.dryRun;
-      this.path = opts.path;
+      this.isTypeScript = existsSync(join(args.env.cwd, 'tsconfig.json'));
+      this.sourcePath = args.sourcePath;
+      this.dryRun = args.dryRun;
+      this.path = args.path;
       debug('this.path', this.path);
-      this.routePath = opts.routePath || opts.path;
-      this.blockName = opts.blockName;
-      this.isPageBlock = opts.isPageBlock;
-      this.execution = opts.execution;
+      this.routePath = args.routePath || args.path;
+      this.blockName = args.blockName;
+      this.isPageBlock = args.isPageBlock;
+      this.execution = args.execution;
       this.needCreateNewRoute = this.isPageBlock;
       this.blockFolderName = upperCamelCase(this.blockName);
       // 这个参数是区块的 index.tsx | js
       this.entryPath = null;
       // 这个参数是当前区块的目录
       this.blockFolderPath = join(paths.absPagesPath, this.path);
-      this.routes = opts.routes || [];
-      this.on('error', e => {
-        debug(e); // handle the error for aviod throw generator default error stack
-      });
+      this.routes = args.routes || [];
+    }
+
+    async copy(opts: { path: string; context?: object; target: string; process: any }) {
+      if (statSync(opts.path).isDirectory()) return;
+      if (opts.path.endsWith('.tpl')) {
+        this.copyTpl({
+          templatePath: opts.path,
+          target: join(opts.target, opts.path.replace(/\.tpl$/, '')),
+          context: opts.context,
+        });
+      } else {
+        // console.log(`${chalk.green('Copy: ')} ${file}`);
+        if (!existsSync(dirname(opts.target))) {
+          mkdirp.sync(dirname(opts.target));
+        }
+        debug('opts.target', opts.target);
+        const content = await opts.process(readFileSync(opts.path, 'utf-8'), opts.target);
+        writeFileSync(opts.target, content, 'utf-8');
+      }
     }
 
     async writing() {
@@ -264,13 +277,15 @@ export const getBlockGenerator = (api: IApi) => {
         }
         // eslint-disable-next-line no-await-in-loop
         this.path = (
-          await this.prompt({
-            type: 'input',
-            name: 'path',
-            message: `path ${this.path} already exist, press input a new path for it`,
-            required: true,
-            default: this.path,
-          })
+          await inquirer.prompt([
+            {
+              type: 'input',
+              name: 'path',
+              message: `path ${this.path} already exist, press input a new path for it`,
+              required: true,
+              default: this.path,
+            },
+          ])
         ).path;
         // fix demo => /demo
         const exp = /^\//;
@@ -290,13 +305,15 @@ export const getBlockGenerator = (api: IApi) => {
         }
         // eslint-disable-next-line no-await-in-loop
         this.routePath = (
-          await this.prompt({
-            type: 'input',
-            name: 'routePath',
-            message: `router path ${this.routePath} already exist, press input a new path for it`,
-            required: true,
-            default: this.routePath,
-          })
+          await inquirer.prompt([
+            {
+              type: 'input',
+              name: 'routePath',
+              message: `router path ${this.routePath} already exist, press input a new path for it`,
+              required: true,
+              default: this.routePath,
+            },
+          ])
         ).routePath;
         debug(`router path exist get new targetPath ${this.routePath}`);
       }
@@ -325,14 +342,17 @@ export const getBlockGenerator = (api: IApi) => {
       while (!this.isPageBlock && existsSync(join(targetPath, this.blockFolderName))) {
         // eslint-disable-next-line no-await-in-loop
         this.blockFolderName = (
-          await this.prompt({
-            type: 'input',
-            name: 'path',
-            message: `block with name ${this.blockFolderName} already exist, please input a new name for it`,
-            required: true,
-            default: this.blockFolderName,
-          })
+          await inquirer.prompt([
+            {
+              type: 'input',
+              name: 'path',
+              message: `block with name ${this.blockFolderName} already exist, please input a new name for it`,
+              required: true,
+              default: this.blockFolderName,
+            },
+          ])
         ).path;
+        debug('this.blockFolderName', this.blockFolderName);
         // if (!/^\//.test(blockFolderName)) {
         //   blockFolderName = `/${blockFolderName}`;
         // }
@@ -354,11 +374,13 @@ export const getBlockGenerator = (api: IApi) => {
 
       if (!this.isPageBlock && !existsSync(this.entryPath)) {
         const confirmResult = (
-          await this.prompt({
-            type: 'confirm',
-            name: 'needCreate',
-            message: `Not find a exist page file at ${this.path}. Do you want to create it and import this block.`,
-          })
+          await inquirer.prompt([
+            {
+              type: 'confirm',
+              name: 'needCreate',
+              message: `Not find a exist page file at ${this.path}. Do you want to create it and import this block.`,
+            },
+          ])
         ).needCreate;
 
         if (!confirmResult) {
@@ -401,28 +423,28 @@ export const getBlockGenerator = (api: IApi) => {
         } else {
           targetFolder = join(dirname(this.entryPath), this.blockFolderName);
         }
-        const options = {
-          process(content, itemTargetPath) {
-            content = String(content);
-            if (config.singular) {
-              content = parseContentToSingular(content);
-            }
-            content = replaceContent(content, {
-              path: blockPath,
-            });
-            // TODO: 异步 applyPlugins ，这里不支持，会有 BreakChange
-            // const blockFile = await applyPlugins({
-            //   key: '_modifyBlockFile',
-            //   type: api.ApplyPluginsType.modify,
-            //   initialValue: content,
-            //   args: {
-            //     blockPath,
-            //     targetPath: itemTargetPath,
-            //   },
-            // });
-            return content;
-          },
+        const process = async (content, itemTargetPath) => {
+          content = String(content);
+          if (config.singular) {
+            content = parseContentToSingular(content);
+          }
+          content = replaceContent(content, {
+            path: blockPath,
+          });
+          const blockFile = await applyPlugins({
+            key: '_modifyBlockFile',
+            type: api.ApplyPluginsType.modify,
+            initialValue: content,
+            args: {
+              blockPath,
+              targetPath: itemTargetPath,
+            },
+          });
+          debug('itemTargetPath', itemTargetPath);
+          return blockFile;
         };
+
+        debug('folderPath', folderPath);
         if (existsSync(folderPath)) {
           const files = readdirSync(folderPath);
           for (let name of files) {
@@ -445,8 +467,14 @@ export const getBlockGenerator = (api: IApi) => {
                 sourceName: name,
               },
             });
-            debug(`copy ${thePath} to ${realTarget}`, options);
-            this.fs.copy(thePath, realTarget, options);
+            debug(`copy ${thePath} to ${realTarget}`);
+            debug('thePath', thePath);
+            await this.copy({
+              path: thePath,
+              target: realTarget,
+              process,
+              context: {},
+            });
           }
         }
       }

@@ -84,7 +84,6 @@ const Layout: React.FC<ILayoutProps> = props => {
   const frameworkName = basicUI.name || 'Umi';
   const framework = `${frameworkName} UI`;
   const icon = basicUI.logo_remote || '//gw.alipayobjects.com/zos/antfincdn/KjbXlRsRBz/umi.png';
-  debugger;
 
   return (
     <RawIntlProvider value={intl}>
