@@ -1,9 +1,9 @@
 {
   "name": "@umijs/plugin-blocks",
-  "version": "2.0.0-beta.3",
+  "version": "2.0.0-beta.4",
   "main": "./lib/index.js",
   "dependencies": {
-    "@umijs/block-sdk": "2.0.0-beta.3"
+    "@umijs/block-sdk": "2.0.0-beta.4"
   },
   "peerDependencies": {
     "umi": "3.x"
