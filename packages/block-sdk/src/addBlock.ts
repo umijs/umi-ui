@@ -329,8 +329,9 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
   // 6. write routes
   if (generator.needCreateNewRoute && api.userConfig.routes && !skipModifyRoutes) {
     opts.remoteLog('⛱  Write route');
+    const configFile = api.service.configInstance?.configFile;
 
-    spinner.start(`⛱  Write route ${generator.routePath} to ${api.userConfig.file}`);
+    spinner.start(`⛱  Write route ${generator.routePath} to ${configFile}`);
     // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
     // 未来可以做下自动写入注释配置，支持约定式路由
     const newRouteConfig = await applyPlugins({
@@ -344,7 +345,7 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
     });
     try {
       if (!dryRun) {
-        writeNewRoute(newRouteConfig, api.userConfig.file, paths.absSrcPath);
+        writeNewRoute(newRouteConfig, configFile, paths.absSrcPath);
       }
     } catch (e) {
       spinner.fail();
