@@ -1,20 +1,6 @@
 import { IApi } from 'umi';
 
 export default (api: IApi) => {
-  [
-    '_modifyBlockNewRouteConfig',
-    '_modifyBlockDependencies',
-    '_modifyBlockPackageJSONPath',
-    '_modifyBlockFile',
-    'beforeBlockWriting',
-    '_modifyBlockTarget',
-  ].forEach(name => {
-    api.registerMethod({
-      name,
-      exitsError: false,
-    });
-  });
-
   // 注册 区块的 ui
   // 以下场景不启动 ui 功能:
   // 1. ssr 时
