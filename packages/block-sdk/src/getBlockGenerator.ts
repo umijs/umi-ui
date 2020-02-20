@@ -190,18 +190,6 @@ export const getBlockGenerator = (api: IApi) => {
   const { paths, config, applyPlugins } = api;
   const blockConfig = config?.block || {};
 
-  [
-    // TODO
-    '_modifyBlockFile',
-    'beforeBlockWriting',
-    '_modifyBlockTarget',
-  ].forEach(name => {
-    api.registerMethod({
-      name,
-      exitsError: false,
-    });
-  });
-
   return class BlockGenerator extends Generator {
     public isTypeScript;
     public sourcePath;
