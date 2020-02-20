@@ -9,6 +9,21 @@ export interface IApiBlock extends IApi {
 export default (api: IApiBlock) => {
   const { utils } = api;
   const { winPath, lodash } = utils;
+
+  [
+    '_modifyBlockNewRouteConfig',
+    '_modifyBlockDependencies',
+    '_modifyBlockPackageJSONPath',
+    '_modifyBlockFile',
+    'beforeBlockWriting',
+    '_modifyBlockTarget',
+  ].forEach(name => {
+    api.registerMethod({
+      name,
+      exitsError: false,
+    });
+  });
+
   // 客户端
   api.addUIPlugin(() => require.resolve('../../dist/index.umd'));
   // 服务端

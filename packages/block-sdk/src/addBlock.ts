@@ -109,14 +109,7 @@ export async function getCtx(url, args: AddBlockOption = {}, api: IApi): Promise
 
 export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption = {}, api: IApi) {
   const { paths, userConfig, applyPlugins } = api;
-  ['_modifyBlockNewRouteConfig', '_modifyBlockDependencies', '_modifyBlockPackageJSONPath'].forEach(
-    name => {
-      api.registerMethod({
-        name,
-        exitsError: false,
-      });
-    },
-  );
+
   const blockConfig: {
     npmClient?: string;
   } = userConfig?.block || {};

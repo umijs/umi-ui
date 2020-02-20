@@ -5,8 +5,22 @@ const { signale, createDebug, chalk } = utils;
 const debug = createDebug('plugin-blocks');
 
 export default (api: IApi) => {
-  const { config } = api;
-  const blockConfig = config?.block || {};
+  const { userConfig } = api;
+  const blockConfig = userConfig?.block || {};
+
+  [
+    '_modifyBlockNewRouteConfig',
+    '_modifyBlockDependencies',
+    '_modifyBlockPackageJSONPath',
+    '_modifyBlockFile',
+    'beforeBlockWriting',
+    '_modifyBlockTarget',
+  ].forEach(name => {
+    api.registerMethod({
+      name,
+      exitsError: false,
+    });
+  });
 
   api.describe({
     key: 'block',
