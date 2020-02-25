@@ -28,7 +28,7 @@
     "react-intl": "^3.12.0",
     "serialize-javascript": "^2.1.0",
     "slash2": "2.0.0",
-    "umi": "next",
+    "umi": "^3.0.0-beta.27",
     "umi-request": "^1.2.9",
     "xterm": "4.1.0",
     "xterm-addon-attach": "^0.3.0",

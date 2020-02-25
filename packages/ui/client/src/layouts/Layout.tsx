@@ -12,7 +12,6 @@ import { isMiniUI, getLocale } from '@/utils';
 import Context from './Context';
 import Footer from './Footer';
 import { getLocaleInfo, setLocaleInfo } from '../PluginAPI';
-import { ILocale, LOCALES } from '../enums';
 
 moment.locale('en');
 
@@ -86,8 +85,8 @@ const Layout: React.FC<ILayoutProps> = props => {
   const icon = basicUI.logo_remote || '//gw.alipayobjects.com/zos/antfincdn/KjbXlRsRBz/umi.png';
 
   return (
-    <RawIntlProvider value={intl}>
-      <ConfigProvider locale={currentLocaleInfo?.antd}>
+    <ConfigProvider locale={currentLocaleInfo?.antd}>
+      <RawIntlProvider value={intl}>
         <div className={layoutCls}>
           <Context.Provider
             value={{
@@ -114,8 +113,8 @@ const Layout: React.FC<ILayoutProps> = props => {
             </ErrorBoundary>
           </Context.Provider>
         </div>
-      </ConfigProvider>
-    </RawIntlProvider>
+      </RawIntlProvider>
+    </ConfigProvider>
   );
 };
 
