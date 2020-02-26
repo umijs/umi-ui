@@ -9,7 +9,7 @@ const uiDist = [
   'packages/plugin-ui-tasks/dist/index.umd.js',
   'packages/plugin-ui-blocks/dist/index.umd.js',
   // 'packages/lib/dist/index.umd.js',
-  'packages/ui/lib/web/dist/index.html',
+  'packages/ui/web/dist/index.html',
 ];
 
 exports.uiPlugins = uiPlugins;

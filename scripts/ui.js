@@ -20,7 +20,7 @@ const uiApp = () => {
     try {
       const child = fork(UMI_BIN, [watch ? 'dev' : 'build', ...(watch ? ['--watch'] : [])], {
         env: {
-          APP_ROOT: './packages/ui/src/web',
+          APP_ROOT: './packages/ui/web',
           UMI_UI: 'none',
           UMI_UI_SERVER: 'none',
           PORT: 8002,
