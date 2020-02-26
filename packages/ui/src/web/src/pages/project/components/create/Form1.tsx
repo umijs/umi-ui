@@ -25,9 +25,7 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
     return trimSlash(dir || '');
   };
 
-  const renderFullPath = () => {
-    return <p className={styles.fullPath}>{getFullPath()}</p>;
-  };
+  const renderFullPath = () => <p className={styles.fullPath}>{getFullPath()}</p>;
 
   const handlePressEnter = () => {
     form.submit();

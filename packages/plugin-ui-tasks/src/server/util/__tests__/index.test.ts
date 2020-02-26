@@ -1,75 +1,75 @@
-import { join } from "path";
-import { parseScripts } from "../index";
-import assert from "assert";
+import { join } from 'path';
+import assert from 'assert';
+import { parseScripts } from '../index';
 
-describe("packages/umi-ui-tasks/src/server/util/index.ts", () => {
-  describe("parseScripts", () => {
-    it("pkg not exit", () => {
+describe('packages/umi-ui-tasks/src/server/util/index.ts', () => {
+  describe('parseScripts', () => {
+    it('pkg not exit', () => {
       const res = parseScripts({
-        pkgPath: "not-exist",
-        key: "build"
+        pkgPath: 'not-exist',
+        key: 'build',
       });
       assert(!res.succes);
       assert(!res.exist);
     });
 
-    it("pkg empty", () => {
+    it('pkg empty', () => {
       const res = parseScripts({
-        pkgPath: join("./fixtures/empty.package.json"),
-        key: "build"
+        pkgPath: join('./fixtures/empty.package.json'),
+        key: 'build',
       });
       assert(!res.succes);
       assert(!res.exist);
     });
 
-    it("script error", () => {
+    it('script error', () => {
       const res = parseScripts({
-        pkgPath: join(__dirname, "./fixtures/error_script.package.json"),
-        key: "build"
+        pkgPath: join(__dirname, './fixtures/error_script.package.json'),
+        key: 'build',
       });
       assert(!res.succes);
       assert(res.exist);
       assert.deepEqual(res, {
         exist: true,
         succes: false,
-        errMsg: "Script contains && or || is not allowed",
+        errMsg: 'Script contains && or || is not allowed',
         envs: [],
-        bin: "",
-        args: []
+        bin: '',
+        args: [],
       });
     });
 
-    it("not umi", () => {
+    it('not umi', () => {
       const res = parseScripts({
-        pkgPath: join(__dirname, "./fixtures/not_umi.package.json"),
-        key: "build"
+        pkgPath: join(__dirname, './fixtures/not_umi.package.json'),
+        key: 'build',
       });
       assert(!res.succes);
       assert(res.exist);
       assert.deepEqual(res, {
         exist: true,
         succes: false,
-        errMsg: "Not umi",
+        errMsg: 'Not umi',
         envs: [],
-        bin: "",
-        args: []
+        bin: '',
+        args: [],
       });
     });
 
-    it("success", () => {
+    it('success', () => {
       const res = parseScripts({
-        pkgPath: join(__dirname, "./fixtures/success.package.json"),
-        key: "build"
+        pkgPath: join(__dirname, './fixtures/success.package.json'),
+        key: 'build',
       });
       assert.deepEqual(res, {
         exist: true,
         succes: true,
-        errMsg: "",
+        errMsg: '',
         envs: {
-          love: "love"
+          love: 'love',
         },
-        bin: "umi",
-        args: ["build"]
+        bin: 'umi',
+        args: ['build'],
       });
     });
   });

@@ -1,10 +1,10 @@
-import { ITaskDetail } from "../../src/server/core/types";
-import { TaskType } from "../../src/server/core/enums";
-import { callRemote } from "./index";
+import { ITaskDetail } from '../../src/server/core/types';
+import { TaskType } from '../../src/server/core/enums';
+import { callRemote } from './index';
 
 export enum TriggerState {
-  SUCCESS = "SUCCESS",
-  FAIL = "FAIL"
+  SUCCESS = 'SUCCESS',
+  FAIL = 'FAIL',
 }
 
 export interface IExecResult {
@@ -15,17 +15,17 @@ export interface IExecResult {
 
 const runTask = async (taskType: TaskType, args = {}, env?: any) => {
   let result = {};
-  let errMsg = "";
+  let errMsg = '';
   let triggerState = TriggerState.SUCCESS;
 
   try {
     result = await callRemote({
-      type: "tasks/run",
+      type: 'tasks/run',
       payload: {
         type: taskType,
         args,
-        env: env ? env : {}
-      }
+        env: env || {},
+      },
     });
   } catch (e) {
     errMsg = e.message;
@@ -35,21 +35,21 @@ const runTask = async (taskType: TaskType, args = {}, env?: any) => {
   return {
     triggerState,
     result,
-    errMsg
+    errMsg,
   };
 };
 
 const cancelTask = async (taskType: TaskType) => {
   let result = {};
-  let errMsg = "";
+  let errMsg = '';
   let triggerState = TriggerState.SUCCESS;
 
   try {
     result = await callRemote({
-      type: "tasks/cancel",
+      type: 'tasks/cancel',
       payload: {
-        type: taskType
-      }
+        type: taskType,
+      },
     });
   } catch (e) {
     errMsg = e.stack;
@@ -59,63 +59,57 @@ const cancelTask = async (taskType: TaskType) => {
   return {
     triggerState,
     result,
-    errMsg
+    errMsg,
   };
 };
 
-const getTaskDetail = async (taskType: TaskType, log = true, dbPath = "") => {
-  return await callRemote({
-    type: "tasks/detail",
+const getTaskDetail = async (taskType: TaskType, log = true, dbPath = '') =>
+  await callRemote({
+    type: 'tasks/detail',
     payload: {
       type: taskType,
       log,
-      dbPath
-    }
+      dbPath,
+    },
   });
-};
 
 const exec = async (taskType: TaskType, env?: any): Promise<IExecResult> => {
-  const { triggerState: runTaskTriggerState, errMsg } = await runTask(
-    taskType,
-    env
-  );
+  const { triggerState: runTaskTriggerState, errMsg } = await runTask(taskType, env);
   if (runTaskTriggerState === TriggerState.FAIL) {
     return {
       triggerState: TriggerState.FAIL,
       errMsg,
-      result: null
+      result: null,
     };
   }
 
   return {
     triggerState: TriggerState.SUCCESS,
-    errMsg: ""
+    errMsg: '',
   };
 };
 
 const cancel = async (taskType: TaskType): Promise<IExecResult> => {
-  const { triggerState: runTaskTriggerState, errMsg } = await cancelTask(
-    taskType
-  );
+  const { triggerState: runTaskTriggerState, errMsg } = await cancelTask(taskType);
   if (runTaskTriggerState === TriggerState.FAIL) {
     return {
       triggerState: TriggerState.FAIL,
       errMsg,
-      result: null
+      result: null,
     };
   }
   return {
     triggerState: TriggerState.SUCCESS,
-    errMsg: ""
+    errMsg: '',
   };
 };
 
 const clearLog = async (taskType: TaskType) => {
   await callRemote({
-    type: "tasks/clearLog",
+    type: 'tasks/clearLog',
     payload: {
-      type: taskType
-    }
+      type: taskType,
+    },
   });
 };
 
@@ -126,5 +120,5 @@ export {
   getTaskDetail,
   exec,
   cancel,
-  clearLog
+  clearLog,
 };

@@ -10,12 +10,9 @@ export default function(cwd, { routeComponents }) {
   if (!existsSync(join(cwd, 'tsconfig.json'))) return 'JavaScript';
 
   // 路由文件 ts 占半数以上 -> TypeScript
-  const tsFiles = routeComponents.filter(rc => {
-    return rc.endsWith('.ts') || rc.endsWith('.tsx');
-  });
+  const tsFiles = routeComponents.filter(rc => rc.endsWith('.ts') || rc.endsWith('.tsx'));
   if (tsFiles.length > routeComponents.length / 2) {
     return 'TypeScript';
-  } else {
-    return 'JavaScript';
   }
+  return 'JavaScript';
 }

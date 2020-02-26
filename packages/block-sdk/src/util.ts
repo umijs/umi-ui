@@ -49,11 +49,11 @@ export const getFastGithub = async () => {
     'github.com': 'https://github.com/ant-design/ant-design.git',
     'gitee.com': 'https://gitee.com/ant-design/pro-blocks',
   };
-  const promiseList = Object.keys(registryMap).map(async key => {
-    return got(registryMap[key])
+  const promiseList = Object.keys(registryMap).map(async key =>
+    got(registryMap[key])
       .catch(() => null)
-      .then(() => Promise.resolve(key));
-  });
+      .then(() => Promise.resolve(key)),
+  );
   try {
     const url = await Promise.race(promiseList);
     return url;

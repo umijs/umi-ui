@@ -1,6 +1,6 @@
 import { utils } from 'umi';
-import { IFlowContext, IAddBlockOption } from '../types';
 import { installDependencies } from '@umijs/block-sdk';
+import { IFlowContext, IAddBlockOption } from '../types';
 
 const { createDebug } = utils;
 

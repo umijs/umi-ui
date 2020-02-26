@@ -6,10 +6,10 @@ import { message } from 'antd';
 import cls from 'classnames';
 import { APP_LANGUAGE, APP_TYPE } from '@/enums';
 import debug from '@/debug';
+import { createProject } from '@/services/project';
 import { IProjectProps } from '../index';
 import Form1 from './Form1';
 import Form2 from './Form2';
-import { createProject } from '@/services/project';
 
 import common from '../common.less';
 

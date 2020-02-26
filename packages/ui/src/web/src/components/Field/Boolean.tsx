@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Form, Switch } from 'antd';
 import isPlainObject from 'lodash/isPlainObject';
-import { FieldProps } from './index';
 import debug from '@/debug';
+import { FieldProps } from './index';
 import { getFormItemShow } from './utils';
 
 const BooleanComp: React.SFC<FieldProps> = props => {

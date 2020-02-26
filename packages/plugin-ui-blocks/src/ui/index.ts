@@ -36,8 +36,8 @@ export default (api: IApiBlock) => {
   // });
 
   const getRouteComponents = (routes): string[] => {
-    const getComponents = routes => {
-      return routes.reduce((memo, route) => {
+    const getComponents = routes =>
+      routes.reduce((memo, route) => {
         if (route.component && !route.component.startsWith('()')) {
           const component = isAbsolute(route.component)
             ? require.resolve(route.component)
@@ -49,7 +49,6 @@ export default (api: IApiBlock) => {
         }
         return memo;
       }, []);
-    };
 
     return lodash.uniq(getComponents(routes));
   };

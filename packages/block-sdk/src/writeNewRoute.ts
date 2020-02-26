@@ -41,9 +41,9 @@ export function getNewRouteCode(configPath, newRoute, absSrcPath) {
       body.forEach(item => {
         if (t.isImportDeclaration(item)) {
           const { specifiers } = item;
-          const defaultEpecifier = specifiers.find(s => {
-            return t.isImportDefaultSpecifier(s) && t.isIdentifier(s.local);
-          });
+          const defaultEpecifier = specifiers.find(
+            s => t.isImportDefaultSpecifier(s) && t.isIdentifier(s.local),
+          );
           if (defaultEpecifier && t.isStringLiteral(item.source)) {
             importModules.push({
               identifierName: defaultEpecifier.local.name,
@@ -93,15 +93,12 @@ export function getNewRouteCode(configPath, newRoute, absSrcPath) {
   if (routesNode) {
     // routes 配置不在当前文件, 需要 load 对应的文件  export default { routes: pageRoutes } case 1
     if (!t.isArrayExpression(routesNode)) {
-      const source = importModules.find(m => {
-        return m.identifierName === routesNode.name;
-      });
+      const source = importModules.find(m => m.identifierName === routesNode.name);
       if (source) {
         const newConfigPath = getModulePath(configPath, source.modulePath, absSrcPath);
         return getNewRouteCode(newConfigPath, newRoute, absSrcPath);
-      } else {
-        throw new Error(`can not find import of ${routesNode.name}`);
       }
+      throw new Error(`can not find import of ${routesNode.name}`);
     } else {
       // 配置在当前文件 // export default { routes: [] } case 2
       writeRouteNode(routesNode, newRoute);
@@ -131,15 +128,11 @@ export function writeRouteNode(targetNode, newRoute, currentPath = '/') {
       return false;
     }
     const { properties } = ele;
-    const redirect = properties.find((p: any) => {
-      return p.key.name === 'redirect';
-    });
+    const redirect = properties.find((p: any) => p.key.name === 'redirect');
     if (redirect) {
       return false;
     }
-    const pathProp: any = properties.find((p: any) => {
-      return p.key.name === 'path';
-    });
+    const pathProp: any = properties.find((p: any) => p.key.name === 'path');
     if (!pathProp) {
       return currentPath;
     }
@@ -151,30 +144,25 @@ export function writeRouteNode(targetNode, newRoute, currentPath = '/') {
   });
   debug('paths', paths);
 
-  const matchedIndex = paths.findIndex(p => {
-    return p && newRoute.path.indexOf(winPath(p)) === 0;
-  });
+  const matchedIndex = paths.findIndex(p => p && newRoute.path.indexOf(winPath(p)) === 0);
 
   const newNode = getNewRouteNode(newRoute);
   if (matchedIndex === -1) {
     elements.push(newNode);
     // return container for test
     return targetNode;
-  } else {
-    // matched, insert to children routes
-    const matchedEle = elements[matchedIndex];
-    const routesProp = matchedEle.properties.find(p => {
-      return (
-        p.key.name === 'routes' || (process.env.BIGFISH_COMPAT && p.key.name === 'childRoutes')
-      );
-    });
-    if (!routesProp) {
-      // not find children routes, insert before the matched element
-      elements.splice(matchedIndex, 0, newNode);
-      return targetNode;
-    }
-    return writeRouteNode(routesProp.value, newRoute, paths[matchedIndex]);
   }
+  // matched, insert to children routes
+  const matchedEle = elements[matchedIndex];
+  const routesProp = matchedEle.properties.find(
+    p => p.key.name === 'routes' || (process.env.BIGFISH_COMPAT && p.key.name === 'childRoutes'),
+  );
+  if (!routesProp) {
+    // not find children routes, insert before the matched element
+    elements.splice(matchedIndex, 0, newNode);
+    return targetNode;
+  }
+  return writeRouteNode(routesProp.value, newRoute, paths[matchedIndex]);
 }
 
 /**

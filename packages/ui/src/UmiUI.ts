@@ -556,8 +556,8 @@ export default class UmiUI {
   async getRouteComponents({ service }) {
     const routes = await service.getRoutes();
 
-    const getComponents = routes => {
-      return routes.reduce((memo, route) => {
+    const getComponents = routes =>
+      routes.reduce((memo, route) => {
         if (route.component && !route.component.startsWith('()')) {
           const component = isAbsolute(route.component)
             ? route.component
@@ -569,7 +569,6 @@ export default class UmiUI {
         }
         return memo;
       }, []);
-    };
 
     return uniq(getComponents(routes));
   }
@@ -918,14 +917,13 @@ export default class UmiUI {
               query: req.query,
             }),
           );
-        } else {
-          return res.status(302).redirect(
-            url.format({
-              pathname: '/project/select',
-              query: req.query,
-            }),
-          );
         }
+        return res.status(302).redirect(
+          url.format({
+            pathname: '/project/select',
+            query: req.query,
+          }),
+        );
       });
 
       app.use('/*', async (req, res) => {

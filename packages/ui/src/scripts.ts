@@ -88,9 +88,8 @@ const deer = `
 <!-- deer End -->
 `;
 
-const render = (template: string, model: Object): string => {
-  return template.replace(/{{ (\w+) }}/g, (str, key) => model[key]);
-};
+const render = (template: string, model: Object): string =>
+  template.replace(/{{ (\w+) }}/g, (str, key) => model[key]);
 
 const getScripts = async () => {
   const macAddress = await getMacId();

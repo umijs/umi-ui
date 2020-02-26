@@ -95,7 +95,7 @@ Examples:
 
   api.registerCommand({
     name: 'block',
-    fn: async function({ args }) {
+    async fn({ args }) {
       if (!args._[0]) {
         // TODO: use plugin register args
         console.log(

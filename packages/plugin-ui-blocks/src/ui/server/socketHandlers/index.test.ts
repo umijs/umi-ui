@@ -375,9 +375,7 @@ describe('block interface socketHandlers test', () => {
       const readFileSyncMock = jest
         .spyOn(fs, 'readFileSync')
         .mockImplementation((path: string) => '');
-      const haveRootBindingMock = haveRootBinding.mockImplementation(res => {
-        return Promise.resolve(false);
-      });
+      const haveRootBindingMock = haveRootBinding.mockImplementation(res => Promise.resolve(false));
 
       const params = {
         success: jest.fn(),
@@ -409,9 +407,7 @@ describe('block interface socketHandlers test', () => {
       const readFileSyncMock = jest
         .spyOn(fs, 'readFileSync')
         .mockImplementation((path: string) => '');
-      const haveRootBindingMock = haveRootBinding.mockImplementation(res => {
-        return Promise.resolve(false);
-      });
+      const haveRootBindingMock = haveRootBinding.mockImplementation(res => Promise.resolve(false));
 
       const params = {
         success: jest.fn(),

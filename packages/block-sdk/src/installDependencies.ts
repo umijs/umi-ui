@@ -15,15 +15,14 @@ import {
  */
 const depsArrayToObject = loc =>
   loc
-    .map(dep => {
-      return { [dep[0]]: dep[1] };
-    })
-    .reduce((pre, next) => {
-      return {
+    .map(dep => ({ [dep[0]]: dep[1] }))
+    .reduce(
+      (pre, next) => ({
         ...pre,
         ...next,
-      };
-    }, {});
+      }),
+      {},
+    );
 
 /**
  * 安装依赖包
@@ -94,9 +93,7 @@ export async function installDependencies(
   // find conflict dependencies throw error
   const allConflicts = [...conflicts, ...devConflicts];
   const ErrorInfo = allConflicts
-    .map(info => {
-      return `* ${info[0]}: ${info[2]}(your project) not compatible with ${info[1]}(block)`;
-    })
+    .map(info => `* ${info[0]}: ${info[2]}(your project) not compatible with ${info[1]}(block)`)
     .join('\n');
   // 如果有冲突，抛出错误流程结束。
   if (allConflicts.length) {

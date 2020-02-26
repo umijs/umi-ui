@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input } from 'antd';
-import { FieldProps } from './index';
 import debug from '@/debug';
+import { FieldProps } from './index';
 import { getFormItemShow } from './utils';
 
 const { TextArea } = Input;

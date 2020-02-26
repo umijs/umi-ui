@@ -10,7 +10,8 @@
     "debug": "umi-test",
     "doc:deploy": "rm -rf ./website/yarn.lock && cd ./website && npm run deploy && cd -",
     "doc:dev": "cd ./website && npm run dev",
-    "lint": "eslint --ext .js packages",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx packages",
+    "lint:fix": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx --format=pretty packages",
     "precommit": "lint-staged",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "publish": "npm run changelog && node ./scripts/publish.js",
@@ -19,6 +20,8 @@
     "ui:build": "node ./scripts/ui.js"
   },
   "lint-staged": {
+    "**/*.less": "stylelint --syntax less",
+    "**/*.{js,jsx,ts,tsx}": "npm run lint",
     "**/*.{js,jsx,tsx,ts,less,json}": [
       "prettier --write",
       "git add"

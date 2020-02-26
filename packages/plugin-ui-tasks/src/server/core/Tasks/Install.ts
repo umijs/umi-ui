@@ -29,7 +29,7 @@ export class InstallTask extends BaseTask {
       this.emit(TaskEventType.STD_OUT_DATA, 'Cleaning node_modules success.\n');
     } catch (e) {
       this.emit(TaskEventType.STD_OUT_DATA, 'Cleaning node_modules error\n');
-      this.emit(TaskEventType.STD_OUT_DATA, e.message + '\n');
+      this.emit(TaskEventType.STD_OUT_DATA, `${e.message}\n`);
     }
 
     const script = this.getScript(env);

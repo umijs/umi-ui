@@ -109,9 +109,7 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
   const initialValues = arrayToObject(searchData);
   const [allValues, setAllValues] = useState();
 
-  const getChangedValue = vv => {
-    return getDiffItems(vv, arrayToObject(data, false), data);
-  };
+  const getChangedValue = vv => getDiffItems(vv, arrayToObject(data, false), data);
 
   const getResetChangedValue = React.useCallback(
     vv => {
@@ -246,49 +244,47 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
                       setAllValues(allValues);
                     }}
                   >
-                    {Object.keys(groupedData).map(group => {
-                      return (
-                        <div className={styles.group} key={group}>
-                          <h2 id={group}>{group}</h2>
-                          {groupedData[group].map(
-                            ({
-                              default: defaultValue,
-                              name,
+                    {Object.keys(groupedData).map(group => (
+                      <div className={styles.group} key={group}>
+                        <h2 id={group}>{group}</h2>
+                        {groupedData[group].map(
+                          ({
+                            default: defaultValue,
+                            name,
+                            title,
+                            choices = [],
+                            description,
+                            link,
+                            type,
+                            ...restItemProps
+                          }) => {
+                            const label = {
                               title,
-                              choices = [],
                               description,
                               link,
-                              type,
-                              ...restItemProps
-                            }) => {
-                              const label = {
-                                title,
-                                description,
-                                link,
-                              };
-                              const getSize = (fieldType: any) => {
-                                // Switch uses small whenever, mini env also uses `small`
-                                if (fieldType === 'boolean' || isMini) return 'small';
-                                return 'default';
-                              };
-                              return (
-                                <Field
-                                  key={name}
-                                  label={label}
-                                  options={choices}
-                                  type={type}
-                                  size={getSize(type)}
-                                  name={name}
-                                  defaultValue={defaultValue}
-                                  {...restItemProps}
-                                  form={form}
-                                />
-                              );
-                            },
-                          )}
-                        </div>
-                      );
-                    })}
+                            };
+                            const getSize = (fieldType: any) => {
+                              // Switch uses small whenever, mini env also uses `small`
+                              if (fieldType === 'boolean' || isMini) return 'small';
+                              return 'default';
+                            };
+                            return (
+                              <Field
+                                key={name}
+                                label={label}
+                                options={choices}
+                                type={type}
+                                size={getSize(type)}
+                                name={name}
+                                defaultValue={defaultValue}
+                                {...restItemProps}
+                                form={form}
+                              />
+                            );
+                          },
+                        )}
+                      </div>
+                    ))}
                   </Form>
                 </div>
               )

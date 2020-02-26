@@ -3,8 +3,8 @@ import isPlainObject from 'lodash/isPlainObject';
 import uniq from 'lodash/uniq';
 import omitBy from 'lodash/omitBy';
 import reduce from 'lodash/reduce';
-import { IToc } from './common/Toc';
 import { TYPES } from '@/components/Field';
+import { IToc } from './common/Toc';
 
 export const getInitialValue = ({ value, default: defaultValue }, merged = true) => {
   if (isPlainObject(value) && isPlainObject(defaultValue)) {
@@ -24,8 +24,8 @@ export const getInitialValue = ({ value, default: defaultValue }, merged = true)
 /**
  * useDefaultValue 为 true 时，会将 values 与 default 进行合并
  */
-export const arrayToObject = (arr, merged = true) => {
-  return (arr || []).reduce(
+export const arrayToObject = (arr, merged = true) =>
+  (arr || []).reduce(
     (prev, curr) => ({
       ...prev,
       [curr.name]: getInitialValue(
@@ -38,7 +38,6 @@ export const arrayToObject = (arr, merged = true) => {
     }),
     {},
   );
-};
 
 export const getChangedDiff = (prev: object, curr: object): object =>
   omitBy(curr, (v, k) => isEqual(prev[k], v));
@@ -49,8 +48,8 @@ export const getChangedDiff = (prev: object, curr: object): object =>
  * @param prev(initValue) { targets: { a: 1 }, outputPath: './dist' }
  * @returns { targets: { b: 2 }, outputPath: './public' }
  */
-export const getDiffItems = (curr, prev, data) => {
-  return reduce(
+export const getDiffItems = (curr, prev, data) =>
+  reduce(
     curr,
     (result, value, key) => {
       const { type } = data.find(item => item.name === key) || {};
@@ -66,7 +65,6 @@ export const getDiffItems = (curr, prev, data) => {
     },
     {},
   );
-};
 
 interface IGroup {
   [K: string]: any[];
@@ -80,8 +78,8 @@ export const getFormItemShow = (name: string) => {
   };
 };
 
-export const getToc = (group: IGroup, data: IGroup): IToc[] => {
-  return Object.keys(group).reduce((prev, curr) => {
+export const getToc = (group: IGroup, data: IGroup): IToc[] =>
+  Object.keys(group).reduce((prev, curr) => {
     if (group[curr].length > 0) {
       prev.push({
         href: curr,
@@ -104,4 +102,3 @@ export const getToc = (group: IGroup, data: IGroup): IToc[] => {
     }
     return prev;
   }, []);
-};

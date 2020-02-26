@@ -30,18 +30,14 @@ const reducers = {
       logs: [...state.logs, ...[payloadLogs]],
     };
   },
-  setHistory: (state, { payload }) => {
-    return {
-      ...state,
-      ...payload,
-    };
-  },
-  initTerminal: (state, { payload }) => {
-    return {
-      ...state,
-      ...payload,
-    };
-  },
+  setHistory: (state, { payload }) => ({
+    ...state,
+    ...payload,
+  }),
+  initTerminal: (state, { payload }) => ({
+    ...state,
+    ...payload,
+  }),
   togglePanel: (state, { payload }) => {
     const { panel } = payload as { panel: IPanel };
     return {

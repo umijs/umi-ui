@@ -20,8 +20,8 @@ const StepForm: React.SFC<IUi.IStepFormProps> = props => {
     }
   };
 
-  const getFormsValues = () => {
-    return forms
+  const getFormsValues = () =>
+    forms
       .map(form => form.getFieldsValue())
       .reduce(
         (curr, acc) => ({
@@ -30,7 +30,6 @@ const StepForm: React.SFC<IUi.IStepFormProps> = props => {
         }),
         {},
       );
-  };
 
   const saveFormRef = (i: number) => (ins: any) => {
     forms[i] = ins;

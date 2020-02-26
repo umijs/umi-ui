@@ -1,10 +1,10 @@
 import { join } from 'path';
 import { readdirSync } from 'fs';
 import { IApi } from 'umi';
-import Block from './core/Block';
 import { Resource } from '@umijs/block-sdk/lib/data.d';
-import { DEFAULT_RESOURCES } from './util';
 import { ILang } from '@umijs/ui-types';
+import Block from './core/Block';
+import { DEFAULT_RESOURCES } from './util';
 
 export interface IHandlerOpts {
   success: (res: any) => void;

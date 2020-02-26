@@ -8,16 +8,13 @@ export const getFormItemShow = (name: string) => {
   };
 };
 
-export const objToArray = (v: IValue): IValue[] => {
-  return Object.keys(v).map(k => ({ [k]: v[k] }));
-};
+export const objToArray = (v: IValue): IValue[] => Object.keys(v).map(k => ({ [k]: v[k] }));
 
-export const arrayToObj = (arr: IValue[]): IValue => {
-  return arr.reduce(
+export const arrayToObj = (arr: IValue[]): IValue =>
+  arr.reduce(
     (acc, curr) => ({
       ...acc,
       ...curr,
     }),
     {},
   );
-};

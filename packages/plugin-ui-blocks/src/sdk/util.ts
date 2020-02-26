@@ -1,6 +1,6 @@
-import * as t from "@babel/types";
-import * as parser from "@babel/parser";
-import { join, basename } from "path";
+import * as t from '@babel/types';
+import * as parser from '@babel/parser';
+import { join, basename } from 'path';
 
 export function findExportDefaultDeclaration(programNode) {
   for (const n of programNode.body) {
@@ -11,9 +11,7 @@ export function findExportDefaultDeclaration(programNode) {
 }
 
 export function findImportNodes(programNode) {
-  return programNode.body.filter(n => {
-    return t.isImportDeclaration(n);
-  });
+  return programNode.body.filter(n => t.isImportDeclaration(n));
 }
 
 function findImportWithSource(importNodes, source) {
@@ -26,11 +24,10 @@ function findImportWithSource(importNodes, source) {
 
 function findSpecifier(importNode, specifier) {
   for (const s of importNode.specifiers) {
-    if (t.isImportDefaultSpecifier(specifier) && t.isImportDefaultSpecifier(s))
-      return true;
+    if (t.isImportDefaultSpecifier(specifier) && t.isImportDefaultSpecifier(s)) return true;
     if (specifier.imported.name === s.imported.name) {
       if (specifier.local.name === s.local.name) return true;
-      throw new Error("specifier conflicts");
+      throw new Error('specifier conflicts');
     }
   }
   return false;
@@ -45,7 +42,7 @@ function combineSpecifiers(newImportNode, originImportNode) {
 }
 
 export function getValidStylesName(path) {
-  let name = "styles";
+  let name = 'styles';
   let count = 1;
   while (path.scope.hasBinding(name)) {
     name = `styles${count}`;
@@ -59,35 +56,26 @@ export function combineImportNodes(
   originImportNodes,
   newImportNodes,
   absolutePath,
-  stylesName
+  stylesName,
 ) {
   newImportNodes.forEach(newImportNode => {
     // replace stylesName
     // TODO: 自动生成新的 name，不仅仅是 styles
-    if (
-      stylesName !== "styles" &&
-      newImportNode.source.value.charAt(0) === "."
-    ) {
+    if (stylesName !== 'styles' && newImportNode.source.value.charAt(0) === '.') {
       newImportNode.specifiers.forEach(specifier => {
-        if (
-          t.isImportDefaultSpecifier(specifier) &&
-          specifier.local.name === "styles"
-        ) {
+        if (t.isImportDefaultSpecifier(specifier) && specifier.local.name === 'styles') {
           specifier.local.name = stylesName;
         }
       });
     }
 
     const importSource = newImportNode.source.value;
-    if (importSource.charAt(0) === ".") {
+    if (importSource.charAt(0) === '.') {
       // /a/b/c.js -> b
-      const dir = basename(join(absolutePath, ".."));
+      const dir = basename(join(absolutePath, '..'));
       newImportNode.source = t.stringLiteral(`./${join(dir, importSource)}`);
     }
-    const originImportNode = findImportWithSource(
-      originImportNodes,
-      newImportNode.source.value
-    );
+    const originImportNode = findImportWithSource(originImportNodes, newImportNode.source.value);
     if (!originImportNode) {
       programNode.body.unshift(newImportNode);
     } else {
@@ -111,23 +99,20 @@ export function isReactCreateElement(node) {
   return (
     t.isCallExpression(node) &&
     t.isMemberExpression(node.callee) &&
-    t.isIdentifier(node.callee.object, { name: "React" }) &&
-    t.isIdentifier(node.callee.property, { name: "createElement" })
+    t.isIdentifier(node.callee.object, { name: 'React' }) &&
+    t.isIdentifier(node.callee.property, { name: 'createElement' })
   );
 }
 
 export function isJSXElement(node) {
-  return (
-    t.isJSXElement(node) || t.isJSXFragment(node) || isReactCreateElement(node)
-  );
+  return t.isJSXElement(node) || t.isJSXFragment(node) || isReactCreateElement(node);
 }
 
 export function haveChildren(node) {
   if (t.isJSXElement(node) || t.isJSXFragment(node)) {
     return node.children && node.children.length;
-  } else {
-    return !!node.arguments[2];
   }
+  return !!node.arguments[2];
 }
 
 /**
@@ -142,10 +127,8 @@ export function haveChildren(node) {
  */
 export function isChildFunc(node) {
   return (
-    (t.isJSXElement(node) &&
-      node.children.some(child => t.isJSXExpressionContainer(child))) ||
-    (isReactCreateElement(node) &&
-      node.arguments.some(arg => t.isArrowFunctionExpression(arg)))
+    (t.isJSXElement(node) && node.children.some(child => t.isJSXExpressionContainer(child))) ||
+    (isReactCreateElement(node) && node.arguments.some(arg => t.isArrowFunctionExpression(arg)))
   );
 }
 
@@ -156,7 +139,8 @@ export function getReturnNode(node, path) {
     t.isFunctionExpression(node)
   ) {
     return findReturnNode(node, path);
-  } else if (t.isClassDeclaration(node) || t.isClassExpression(node)) {
+  }
+  if (t.isClassDeclaration(node) || t.isClassExpression(node)) {
     const renderStatement = findRenderStatement(node.body);
     if (renderStatement) {
       return findReturnNode(renderStatement, path);
@@ -170,7 +154,7 @@ function findReturnNode(node, path) {
       node: node.body,
       replace(newNode) {
         node.body = newNode;
-      }
+      },
     };
   }
   if (t.isBlockStatement(node.body)) {
@@ -180,7 +164,7 @@ function findReturnNode(node, path) {
           node: n.argument,
           replace(newNode) {
             n.argument = newNode;
-          }
+          },
         };
       }
     }
@@ -197,11 +181,7 @@ function findReturnNode(node, path) {
 
 function findRenderStatement(node) {
   for (const n of node.body) {
-    if (
-      t.isClassMethod(n) &&
-      t.isIdentifier(n.key) &&
-      n.key.name === "render"
-    ) {
+    if (t.isClassMethod(n) && t.isIdentifier(n.key) && n.key.name === 'render') {
       return n;
     }
   }
@@ -226,13 +206,7 @@ export function findIndex(arr, index, fn) {
 
 export function parseContent(code) {
   return parser.parse(code, {
-    sourceType: "module",
-    plugins: [
-      "jsx",
-      "decorators-legacy",
-      "typescript",
-      "classProperties",
-      "dynamicImport"
-    ]
+    sourceType: 'module',
+    plugins: ['jsx', 'decorators-legacy', 'typescript', 'classProperties', 'dynamicImport'],
   });
 }

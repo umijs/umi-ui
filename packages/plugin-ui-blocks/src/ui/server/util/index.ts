@@ -129,11 +129,8 @@ export const DEFAULT_RESOURCES: Resource[] = [
 ];
 
 // 日志带 block 前缀
-export const createBlockLog = log => {
-  return (logType: 'error' | 'info', info: string) => {
-    return log(logType, `${chalk.hex('#40a9ff')('block:')} ${info}`);
-  };
-};
+export const createBlockLog = log => (logType: 'error' | 'info', info: string) =>
+  log(logType, `${chalk.hex('#40a9ff')('block:')} ${info}`);
 
 /**
  * 从 resource 中获取数据源
