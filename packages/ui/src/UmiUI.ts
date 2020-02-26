@@ -884,7 +884,7 @@ export default class UmiUI {
       // Serve Static (Production Only)
       if (!process.env.LOCAL_DEBUG) {
         app.use(
-          express.static(join(__dirname, '../client/dist'), {
+          express.static(join(__dirname, 'web/dist'), {
             index: false,
           }),
         );

@@ -21,7 +21,7 @@
   },
   "lint-staged": {
     "**/*.less": "stylelint --syntax less",
-    "**/*.{js,jsx,ts,tsx}": "npm run lint",
+    "**/*.{js,jsx,ts,tsx}": "eslint --ext .js,.jsx,.ts,.tsx",
     "**/*.{js,jsx,tsx,ts,less,json}": [
       "prettier --write",
       "git add"
