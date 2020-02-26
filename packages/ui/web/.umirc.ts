@@ -35,8 +35,7 @@ const config: IConfig = {
   headScripts: [
     // polyfill
     {
-      src:
-        '//b.alicdn.com/s/polyfill.min.js?features=default,es2015,es2016,es2017,fetch,IntersectionObserver,NodeList.prototype.forEach,NodeList.prototype.@@iterator,EventSource,MutationObserver,ResizeObserver,HTMLCanvasElement.prototype.toBlob',
+      src: '//gw.alipayobjects.com/as/g/component/map-set-polyfill/1.0.0/polyfill.min.js',
     },
     {
       src: `//gw.alipayobjects.com/os/lib/??react/16.8.6/umd/react.${

@@ -54,9 +54,8 @@ class Project extends React.PureComponent<IProjectProps, IProjectState> {
   };
   render() {
     const { current, currentData } = this.state;
-    const { intl } = this.props;
     return (
-      <Layout type="list" title={intl.formatMessage({ id: 'org.umi.ui.global.project.title' })}>
+      <Layout type="list">
         <Context.Consumer>
           {context => (
             <ProjectContext.Provider
