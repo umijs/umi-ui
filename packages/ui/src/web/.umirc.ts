@@ -2,7 +2,7 @@ import { join } from 'path';
 import slash from 'slash2';
 import LessThemePlugin from 'webpack-less-theme-plugin';
 import { IConfig } from 'umi';
-import { dark } from '../node_modules/@umijs/ui-theme';
+import { dark } from '@umijs/ui-theme';
 import { version } from 'antd';
 
 const { NODE_ENV } = process.env;
@@ -18,6 +18,7 @@ const terserOptions =
     : {};
 
 const config: IConfig = {
+  plugins: ['@umijs/plugin-dva', '@umijs/plugin-antd'],
   publicPath: NODE_ENV === 'development' ? 'http://localhost:8002/' : '/',
   history: {
     type: 'browser',
