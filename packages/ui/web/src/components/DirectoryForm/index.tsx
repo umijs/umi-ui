@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { LeftOutlined, EditOutlined, ReloadOutlined } from '@ant-design/icons';
-import slash2 from 'slash2';
 import { Button, Empty, Spin, Input, message, Tooltip } from 'antd';
+import { utils } from 'umi';
 import * as IUi from '@umijs/ui-types';
 import { useIntl } from 'react-intl';
 import { getCwd, listDirectory } from '@/services/project';
@@ -13,12 +13,13 @@ import DirectoryItem, { DirectoryItemProps } from './item';
 import styles from './index.less';
 
 const { useState, useEffect, useRef } = React;
+const { winPath } = utils;
 
 const DirectoryForm: React.FC<IUi.IDirectoryForm> = props => {
   const { formatMessage } = useIntl();
   const _log = debug.extend('DirectoryForm');
   const { value: originValue, onChange } = props;
-  const value = slash2(originValue || '');
+  const value = winPath(originValue || '');
   const [dirPathEdit, setDirPathEdit] = useState<boolean>(false);
   const dirPathEditRef = useRef<HTMLInputElement>();
   const [clicked, setClicked] = useState<number>(-1);

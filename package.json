@@ -21,7 +21,7 @@
   },
   "lint-staged": {
     "**/*.less": "stylelint --syntax less",
-    "**/*.{js,jsx,ts,tsx}": "eslint --ext .js,.jsx,.ts,.tsx",
+    "**/*.{js,jsx,ts,tsx}": "eslint --fix --ext .js,.jsx,.ts,.tsx",
     "**/*.{js,jsx,tsx,ts,less,json}": [
       "prettier --write",
       "git add"
@@ -32,7 +32,7 @@
     "@types/jest": "^24.0.5",
     "@umijs/fabric": "^2.0.3",
     "@umijs/test": ">3.0.0-beta.1",
-    "antd": "^4.0.0-rc.1",
+    "antd": "^4.0.0",
     "cross-env": "^7.0.0",
     "express": "^4.17.1",
     "father-build": "^1.17.2",
@@ -51,10 +51,9 @@
     "serve-handler": "5.0.8",
     "serve-static": "^1.13.2",
     "shelljs": "0.8.3",
-    "slash2": "2.0.0",
     "stringify-object": "3.3.0",
     "test-build-result": "^1.1.2",
     "ts-node-dev": "^1.0.0-pre.44",
-    "umi": "^3.0.0-beta.27"
+    "umi": "^3.0.0"
   }
 }

@@ -24,7 +24,7 @@
     "@umijs/fabric": "^1.1.9",
     "@umijs/ui-theme": "1.0.0",
     "@umijs/ui-types": "2.0.0-beta.2",
-    "antd": "^4.0.0-alpha.10",
+    "antd": "^4.0.0",
     "classnames": "^2.2.6",
     "decamelize": "3.2.0",
     "react-masonry-component": "^6.2.1",

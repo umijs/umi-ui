@@ -1,11 +1,11 @@
 import { join } from 'path';
-import slash from 'slash2';
 import LessThemePlugin from 'webpack-less-theme-plugin';
-import { IConfig } from 'umi';
+import { IConfig, utils } from 'umi';
 import { dark } from '@umijs/ui-theme';
 import { version } from 'antd';
 
 const { NODE_ENV } = process.env;
+const { winPath } = utils;
 
 const terserOptions =
   NODE_ENV === 'production'
@@ -18,7 +18,7 @@ const terserOptions =
     : {};
 
 const config: IConfig = {
-  plugins: ['@umijs/plugin-dva', '@umijs/plugin-antd'],
+  presets: ['@umijs/preset-react'],
   publicPath: NODE_ENV === 'development' ? 'http://localhost:8002/' : '/',
   history: {
     type: 'browser',
@@ -116,7 +116,7 @@ const config: IConfig = {
 
         if (match && match[1]) {
           const umiUiPath = match[1].replace('.less', '');
-          const arr = slash(umiUiPath)
+          const arr = winPath(umiUiPath)
             .split('/')
             .map((a: string) => a.replace(/([A-Z])/g, '-$1'))
             .map((a: string) => a.toLowerCase());

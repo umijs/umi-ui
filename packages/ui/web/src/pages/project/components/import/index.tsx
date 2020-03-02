@@ -1,7 +1,5 @@
 import React from 'react';
-import { Button, Form, message, Input } from 'antd';
-import slash2 from 'slash2';
-import cls from 'classnames';
+import { Button, Form, message } from 'antd';
 import ProjectContext from '@/layouts/ProjectContext';
 import { importProject } from '@/services/project';
 import { trimSlash, validateDirPath, getBasename } from '@/components/DirectoryForm/pathUtils';
@@ -9,13 +7,12 @@ import DirectoryForm from '@/components/DirectoryForm';
 import debug from '@/debug';
 import { IProjectProps } from '../index';
 import common from '../common.less';
-import styles from './index.less';
 
-const { useState, useEffect, useContext } = React;
+const { useContext } = React;
 
 const ImportProject: React.SFC<IProjectProps> = props => {
   const _log = debug.extend('ImportProject');
-  const { cwd, files } = props;
+  const { cwd } = props;
   const { formatMessage } = useContext(ProjectContext);
   const [form] = Form.useForm();
   const { setCurrent } = useContext(ProjectContext);
