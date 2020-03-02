@@ -3,7 +3,6 @@ import { connect } from 'dva';
 import lodash from 'lodash';
 import { history } from 'umi';
 import * as intl from 'react-intl';
-import { getApp } from '@@/plugin-dva/dva';
 import * as hooks from '@umijs/hooks';
 import isPlainObject from 'lodash/isPlainObject';
 import { FC } from 'react';
@@ -114,8 +113,7 @@ export default class PluginAPI {
   }
 
   registerModel = model => {
-    const app = getApp();
-    app.model(model);
+    window.g_service.models.push(model);
   };
 
   launchEditor = async ({ type = 'project', lineNumber = 0, editor }) => {
@@ -215,13 +213,13 @@ export default class PluginAPI {
   };
 
   notify: IUi.INotify = async payload => {
-    const { title, message, subtitle, ...restPayload } = payload;
-    const intl = this.getIntl();
+    const { title, message: notifyMessage, subtitle, ...restPayload } = payload;
+    const intlIns = this.getIntl();
     // need intl text
     const intlParams = {
-      title: title ? intl.formatMessage({ id: title }) : '',
-      message: message ? intl.formatMessage({ id: message }) : '',
-      subtitle: subtitle ? intl.formatMessage({ id: subtitle }) : '',
+      title: title ? intlIns.formatMessage({ id: title }) : '',
+      message: notifyMessage ? intlIns.formatMessage({ id: notifyMessage }) : '',
+      subtitle: subtitle ? intlIns.formatMessage({ id: subtitle }) : '',
     };
 
     try {

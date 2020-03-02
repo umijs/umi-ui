@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { history, IRoute } from 'umi';
+import { getApp } from '@@/plugin-dva/dva';
 import querystring from 'querystring';
 import { setCurrentProject, clearCurrentProject } from '@/services/project';
 import debug from '@/debug';
@@ -18,7 +19,25 @@ const service = (window.g_service = {
   configSections: [],
   basicUI: {},
   dashboard: [],
+  models: [],
 });
+
+class Container extends React.Component {
+  constructor(props) {
+    super(props);
+    const app = getApp();
+    window.g_service.models.forEach(model => {
+      app.model(model);
+    });
+  }
+  render() {
+    return this.props.children;
+  }
+}
+
+export function rootContainer(container) {
+  return React.createElement(Container, null, container);
+}
 
 // Avoid scope problem
 const geval = eval; // eslint-disable-line
@@ -57,7 +76,7 @@ const initUIPlugin = async (initOpts = {}) => {
   });
 };
 
-export async function render(oldRender) {
+export async function render(oldRender): void {
   // mini 模式下允许通过加 key 的参数打开
   // 比如: ?mini&key=xxx
   const { search = '' } = window.location;

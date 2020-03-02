@@ -1,8 +1,6 @@
-import { utils } from 'umi';
 import immer from 'immer';
+import winPath from 'slash2';
 import { listDirectory } from '@/services/project';
-
-const { winPath } = utils;
 
 export const handleErrorMsg = (e: Error) => {
   const otherError = '读取失败';

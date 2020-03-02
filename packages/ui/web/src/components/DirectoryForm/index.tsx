@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { LeftOutlined, EditOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Button, Empty, Spin, Input, message, Tooltip } from 'antd';
-import { utils } from 'umi';
 import * as IUi from '@umijs/ui-types';
 import { useIntl } from 'react-intl';
+import winPath from 'slash2';
 import { getCwd, listDirectory } from '@/services/project';
 import debug from '@/debug';
 import { path2Arr, arr2Path, trimSlash } from './pathUtils';
@@ -13,7 +13,6 @@ import DirectoryItem, { DirectoryItemProps } from './item';
 import styles from './index.less';
 
 const { useState, useEffect, useRef } = React;
-const { winPath } = utils;
 
 const DirectoryForm: React.FC<IUi.IDirectoryForm> = props => {
   const { formatMessage } = useIntl();

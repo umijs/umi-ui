@@ -1,6 +1,6 @@
 import { join } from 'path';
 import LessThemePlugin from 'webpack-less-theme-plugin';
-import { IConfig, utils } from 'umi';
+import { defineConfig, utils } from 'umi';
 import { dark } from '@umijs/ui-theme';
 import { version } from 'antd';
 
@@ -17,7 +17,7 @@ const terserOptions =
       }
     : {};
 
-const config: IConfig = {
+export default defineConfig({
   presets: ['@umijs/preset-react'],
   publicPath: NODE_ENV === 'development' ? 'http://localhost:8002/' : '/',
   history: {
@@ -135,6 +135,4 @@ const config: IConfig = {
     );
     return config;
   },
-};
-
-export default config;
+});
