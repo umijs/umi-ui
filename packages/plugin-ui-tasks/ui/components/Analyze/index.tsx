@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import filesize from 'filesize';
+import { ReloadOutlined } from '@ant-design/icons';
 import Treemap from './Treemap';
 import Tooltip from './Tooltip';
-import filesize from 'filesize';
 import styles from './index.module.less';
 import { Analyze } from '../../util/analyze';
-import { ReloadOutlined } from '@ant-design/icons';
 
 const SIZE_SWITCH_ITEMS = [
   { label: 'Stat', prop: 'statSize' },

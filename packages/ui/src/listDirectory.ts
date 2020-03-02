@@ -15,9 +15,8 @@ export default function(dirPath, opts: IOpts = {}) {
     .filter(fileName => {
       if (showHidden) {
         return true;
-      } else {
-        return !fileName.startsWith('.');
       }
+      return !fileName.startsWith('.');
     })
     .map(fileName => {
       // 如果文件无权访问，返回一个空，筛掉他们
@@ -43,16 +42,11 @@ export default function(dirPath, opts: IOpts = {}) {
     }
   });
 
-  dirs = dirs.sort((a, b) => {
-    return a - b;
-  });
-  files = files.sort((a, b) => {
-    return a - b;
-  });
+  dirs = dirs.sort((a, b) => a - b);
+  files = files.sort((a, b) => a - b);
 
   if (directoryOnly) {
     return dirs;
-  } else {
-    return dirs.concat(files);
   }
+  return dirs.concat(files);
 }

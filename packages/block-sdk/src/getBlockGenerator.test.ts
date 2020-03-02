@@ -136,7 +136,7 @@ export default {
         dependencies: {},
       }),
     ).toEqual({
-      antd: '^3.8.0',
+      antd: '^4.0.0',
       'rc-select': '~2.1.0',
     });
 
@@ -161,7 +161,7 @@ export default {
       }),
     ).toEqual({
       moment: '2.3.2',
-      antd: '^3.8.0',
+      antd: '^4.0.0',
       'rc-select': '~2.1.0',
     });
 
@@ -172,7 +172,7 @@ export default {
         },
       }),
     ).toEqual({
-      antd: '^3.8.0',
+      antd: '^4.0.0',
       'rc-select': '~2.1.0',
     });
 
@@ -190,7 +190,7 @@ export default {
         antd: '^3.10.0',
       });
     } catch (error) {
-      expect(error.message).toContain('* antd: ^3.8.0 not compatible with 2.0.0');
+      expect(error.message).toContain('* antd: ^4.0.0 not compatible with 2.0.0');
     }
   });
 });

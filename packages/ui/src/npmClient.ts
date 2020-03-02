@@ -1,9 +1,7 @@
 import spawn from 'cross-spawn';
 import BinaryMirrorConfig from 'binary-mirror-config';
 
-const getSpeedUpEnv = () => {
-  return BinaryMirrorConfig.china.ENVS;
-};
+const getSpeedUpEnv = () => BinaryMirrorConfig.china.ENVS;
 
 interface IOpts {
   unsafePerm: false;

@@ -4,9 +4,9 @@ import { Modal, Switch, Select, Form, message } from 'antd';
 
 import upperCamelCase from 'uppercamelcase';
 
+import { AddBlockParams, Block, Resource } from '@umijs/block-sdk/lib/data.d';
 import Context from '../UIApiContext';
 import useCallData from '../hooks/useCallData';
-import { AddBlockParams, Block, Resource } from '@umijs/block-sdk/lib/data.d';
 import LogPanel from '../LogPanel';
 import ResultPanel from './ResultPanel';
 import AddTemplateForm from './AddTemplateForm';
@@ -44,11 +44,10 @@ const addBlock = async (api: IUiApi, params: AddBlockParams) => {
   return info.message;
 };
 
-const cancelAddBlockTask = (api: IUiApi) => {
-  return api.callRemote({
+const cancelAddBlockTask = (api: IUiApi) =>
+  api.callRemote({
     type: 'org.umi.block.cancel',
   });
-};
 
 const Adder: React.FC<AdderProps> = props => {
   const {

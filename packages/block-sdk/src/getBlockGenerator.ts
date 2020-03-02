@@ -99,9 +99,7 @@ export function getAllBlockDependencies(rootDir, pkg) {
       throw new Error(`
       find dependencies conflict between blocks:
       ${conflicts
-        .map(info => {
-          return `* ${info[0]}: ${info[2]} not compatible with ${info[1]}`;
-        })
+        .map(info => `* ${info[0]}: ${info[2]} not compatible with ${info[1]}`)
         .join('\n')}`);
     }
     lacks.forEach(lack => {
@@ -174,9 +172,9 @@ export function getMockDependencies(mockContent, blockPkg) {
 const singularReg = new RegExp(`['"](@/|[\\./]+)(${SINGULAR_SENSLTIVE.join('|')})/`, 'g');
 
 export function parseContentToSingular(content) {
-  return content.replace(singularReg, (all, prefix, match) => {
-    return all.replace(match, match.replace(/s$/, ''));
-  });
+  return content.replace(singularReg, (all, prefix, match) =>
+    all.replace(match, match.replace(/s$/, '')),
+  );
 }
 
 export function getSingularName(name) {

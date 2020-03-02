@@ -37,12 +37,12 @@ function getTextByLang(text, lang) {
   if (!text) return null;
   if (typeof text === 'string') {
     return text;
-  } else if (lang in text) {
-    return text[lang];
-  } else {
-    assert('en-US' in text, `Invalid text ${text}, should have en-US key`);
-    return text['en-US'];
   }
+  if (lang in text) {
+    return text[lang];
+  }
+  assert('en-US' in text, `Invalid text ${text}, should have en-US key`);
+  return text['en-US'];
 }
 
 interface IFormatConfigOpts {
@@ -125,14 +125,13 @@ export default function(api: IApi) {
   function parseString(str) {
     if (str.startsWith('{') || str.startsWith('[') || str === 'true' || str === 'false') {
       return JSON.parse(str);
-    } else {
-      return str;
     }
+    return str;
   }
 
   // TODO: 支持子项的 validate
   function validateConfig(config) {
-    let errors = [];
+    const errors = [];
     const { userConfig } = (api as any).service;
     userConfig.plugins.forEach(p => {
       if (p.name in config) {

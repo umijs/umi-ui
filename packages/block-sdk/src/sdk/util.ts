@@ -11,9 +11,7 @@ export function findExportDefaultDeclaration(programNode) {
 }
 
 export function findImportNodes(programNode) {
-  return programNode.body.filter(n => {
-    return t.isImportDeclaration(n);
-  });
+  return programNode.body.filter(n => t.isImportDeclaration(n));
 }
 
 function findImportWithSource(importNodes, source) {
@@ -113,9 +111,8 @@ export function isJSXElement(node) {
 export function haveChildren(node) {
   if (t.isJSXElement(node) || t.isJSXFragment(node)) {
     return node.children && node.children.length;
-  } else {
-    return !!node.arguments[2];
   }
+  return !!node.arguments[2];
 }
 
 /**
@@ -142,7 +139,8 @@ export function getReturnNode(node, path) {
     t.isFunctionExpression(node)
   ) {
     return findReturnNode(node, path);
-  } else if (t.isClassDeclaration(node) || t.isClassExpression(node)) {
+  }
+  if (t.isClassDeclaration(node) || t.isClassExpression(node)) {
     const renderStatement = findRenderStatement(node.body);
     if (renderStatement) {
       return findReturnNode(renderStatement, path);

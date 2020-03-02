@@ -35,23 +35,22 @@ export default () => {
         content ? [t.jsxText(content)] : [],
         false,
       );
-    } else {
-      const attrs = [
-        t.objectProperty(t.identifier('filename'), t.stringLiteral(`${filename}`)),
-        t.objectProperty(t.identifier('index'), t.stringLiteral(`${index}`)),
-      ];
-      if (inline) {
-        attrs.push(t.objectProperty(t.identifier('inline'), t.stringLiteral('true')));
-      }
-      return t.callExpression(
-        t.memberExpression(t.identifier('React'), t.identifier('createElement')),
-        [
-          t.identifier('GUmiUIFlag'),
-          t.objectExpression(attrs),
-          ...(content ? [t.stringLiteral(content)] : []),
-        ],
-      );
     }
+    const attrs = [
+      t.objectProperty(t.identifier('filename'), t.stringLiteral(`${filename}`)),
+      t.objectProperty(t.identifier('index'), t.stringLiteral(`${index}`)),
+    ];
+    if (inline) {
+      attrs.push(t.objectProperty(t.identifier('inline'), t.stringLiteral('true')));
+    }
+    return t.callExpression(
+      t.memberExpression(t.identifier('React'), t.identifier('createElement')),
+      [
+        t.identifier('GUmiUIFlag'),
+        t.objectExpression(attrs),
+        ...(content ? [t.stringLiteral(content)] : []),
+      ],
+    );
   }
 
   function addFlagToIndex(nodes, i, { index, filename, jsx }) {
@@ -124,7 +123,7 @@ export default () => {
 
   function isInBlackList(node, path) {
     if (t.isJSXElement(node)) {
-      const name = node.openingElement.name.name;
+      const { name } = node.openingElement.name;
       if (path.scope.hasBinding(name)) {
         const p = path.scope.getBinding(name).path;
         const { source } = p.parentPath.node;
@@ -255,7 +254,7 @@ export default () => {
 
           const index = layoutIndexByFilename[filename];
 
-          let content = null;
+          const content = null;
           let inline = false;
           if (
             t.isObjectExpression(args[1]) &&

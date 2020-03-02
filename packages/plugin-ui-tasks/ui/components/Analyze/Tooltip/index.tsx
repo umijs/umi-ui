@@ -1,6 +1,6 @@
-import React from "react";
-import styles from "./index.module.less";
-import cls from "classnames";
+import React from 'react';
+import cls from 'classnames';
+import styles from './index.module.less';
 
 interface IProps {
   visible: boolean;
@@ -13,18 +13,18 @@ export default class Tooltip extends React.Component<IProps> {
 
   mouseCoords = {
     x: 0,
-    y: 0
+    y: 0,
   };
 
   state = {
     left: 0,
-    top: 0
+    top: 0,
   };
 
   handleMouseMove = event => {
     Object.assign(this.mouseCoords, {
       x: event.pageX,
-      y: event.pageY
+      y: event.pageY,
     });
 
     if (this.props.visible) {
@@ -37,7 +37,7 @@ export default class Tooltip extends React.Component<IProps> {
   getStyle() {
     return {
       left: this.state.left,
-      top: this.state.top
+      top: this.state.top,
     };
   }
 
@@ -46,7 +46,7 @@ export default class Tooltip extends React.Component<IProps> {
 
     const pos = {
       left: this.mouseCoords.x + Tooltip.marginX,
-      top: this.mouseCoords.y + Tooltip.marginY
+      top: this.mouseCoords.y + Tooltip.marginY,
     };
 
     const boundingRect = this.node.getBoundingClientRect();
@@ -65,7 +65,7 @@ export default class Tooltip extends React.Component<IProps> {
   }
 
   componentDidMount() {
-    document.addEventListener("mousemove", this.handleMouseMove, true);
+    document.addEventListener('mousemove', this.handleMouseMove, true);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -73,14 +73,14 @@ export default class Tooltip extends React.Component<IProps> {
   }
 
   componentWillUnmount() {
-    document.removeEventListener("mousemove", this.handleMouseMove, true);
+    document.removeEventListener('mousemove', this.handleMouseMove, true);
   }
 
   render() {
     const { children, visible } = this.props;
     const className = cls({
       [styles.container]: true,
-      [styles.hidden]: !visible
+      [styles.hidden]: !visible,
     });
 
     return (

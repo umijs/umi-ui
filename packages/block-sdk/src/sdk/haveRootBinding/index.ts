@@ -1,8 +1,8 @@
 import traverse from '@babel/traverse';
 import { parseContent } from '../util';
 
-export default (content, name) => {
-  return new Promise(resolve => {
+export default (content, name) =>
+  new Promise(resolve => {
     const ast: any = parseContent(content);
     traverse(ast, {
       Program(path) {
@@ -10,4 +10,3 @@ export default (content, name) => {
       },
     });
   });
-};

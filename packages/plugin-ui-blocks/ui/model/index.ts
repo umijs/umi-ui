@@ -32,15 +32,15 @@ export default {
       if (blockData[resourceId] && !reload) {
         return blockData[resourceId];
       }
-      const { data: list } = yield call(() => {
-        return callRemote({
+      const { data: list } = yield call(() =>
+        callRemote({
           type: 'org.umi.block.list',
           payload: {
             resourceId,
             force: reload,
           },
-        });
-      });
+        }),
+      );
       yield put({
         type: 'saveData',
         payload: {

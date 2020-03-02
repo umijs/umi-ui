@@ -32,9 +32,8 @@ export default function(cwd) {
     );
     if (isAliRegistry) {
       return ['ayarn', 'yarn'];
-    } else {
-      return ['tyarn', 'yarn'];
     }
+    return ['tyarn', 'yarn'];
   }
 
   // 依赖是 link 文件
@@ -44,9 +43,8 @@ export default function(cwd) {
   if (isDepSymLink) {
     if (process.env.BIGFISH_COMPAT) {
       return ['tnpm'];
-    } else {
-      return ['tnpm', 'cnpm', 'pnpm'];
     }
+    return ['tnpm', 'cnpm', 'pnpm'];
   }
 
   // 检测不到。

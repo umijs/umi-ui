@@ -1,12 +1,7 @@
 import { readFileSync } from 'fs';
 
-export default scripts => {
-  return getFromScriptContent(
-    scripts.map(script => {
-      return readFileSync(script, 'utf-8');
-    }),
-  );
-};
+export default scripts =>
+  getFromScriptContent(scripts.map(script => readFileSync(script, 'utf-8')));
 
 export const getBasicScriptContent = script => {
   const content = readFileSync(script, 'utf-8');

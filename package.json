@@ -10,7 +10,8 @@
     "debug": "umi-test",
     "doc:deploy": "rm -rf ./website/yarn.lock && cd ./website && npm run deploy && cd -",
     "doc:dev": "cd ./website && npm run dev",
-    "lint": "eslint --ext .js packages",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx packages",
+    "lint:fix": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx --format=pretty packages",
     "precommit": "lint-staged",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "publish": "npm run changelog && node ./scripts/publish.js",
@@ -19,6 +20,8 @@
     "ui:build": "node ./scripts/ui.js"
   },
   "lint-staged": {
+    "**/*.less": "stylelint --syntax less",
+    "**/*.{js,jsx,ts,tsx}": "eslint --fix --ext .js,.jsx,.ts,.tsx",
     "**/*.{js,jsx,tsx,ts,less,json}": [
       "prettier --write",
       "git add"
@@ -27,17 +30,10 @@
   "devDependencies": {
     "@babel/preset-typescript": "7.3.3",
     "@types/jest": "^24.0.5",
+    "@umijs/fabric": "^2.0.3",
     "@umijs/test": ">3.0.0-beta.1",
-    "antd": "^4.0.0-rc.1",
-    "babel-eslint": "10.0.1",
+    "antd": "^4.0.0",
     "cross-env": "^7.0.0",
-    "eslint": "5.10.0",
-    "eslint-config-airbnb": "17.1.0",
-    "eslint-config-prettier": "4.2.0",
-    "eslint-plugin-import": "2.14.0",
-    "eslint-plugin-jsx-a11y": "6.1.2",
-    "eslint-plugin-prettier": "3.1.0",
-    "eslint-plugin-react": "7.11.1",
     "express": "^4.17.1",
     "father-build": "^1.17.2",
     "form-data": "^2.3.3",
@@ -48,17 +44,15 @@
     "moment": "^2.24.0",
     "portfinder": "^1.0.24",
     "prettier": "^1.19.1",
-    "puppeteer": "^2.1.0",
     "react": "^16.8.6",
     "react-router-dom": "5.1.2",
     "react-test-renderer": "16.6.3",
     "serve-handler": "5.0.8",
     "serve-static": "^1.13.2",
     "shelljs": "0.8.3",
-    "slash2": "2.0.0",
     "stringify-object": "3.3.0",
     "test-build-result": "^1.1.2",
     "ts-node-dev": "^1.0.0-pre.44",
-    "umi": ">3.0.0-beta.1"
+    "umi": "^3.0.0"
   }
 }

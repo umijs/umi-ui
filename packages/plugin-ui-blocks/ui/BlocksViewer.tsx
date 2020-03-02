@@ -171,13 +171,15 @@ const BlocksViewer: React.FC<Props> = props => {
     },
   );
   // 当前的数据源列表
-  const current = useMemo<Resource>(() => {
-    return activeResource || resources.filter(item => item.blockType === type)[0];
-  }, [resources, activeResource, type]);
+  const current = useMemo<Resource>(
+    () => activeResource || resources.filter(item => item.blockType === type)[0],
+    [resources, activeResource, type],
+  );
   // 计算选中的区块
-  const blocks = useMemo<Block[]>(() => {
-    return current && block.blockData[current.id] ? block.blockData[current.id] : [];
-  }, [block, current]);
+  const blocks = useMemo<Block[]>(
+    () => (current && block.blockData[current.id] ? block.blockData[current.id] : []),
+    [block, current],
+  );
 
   // 初始化 block dva model data
   useEffect(() => {

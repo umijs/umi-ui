@@ -3,11 +3,11 @@ import * as IUi from '@umijs/ui-types';
 function getLangStr(obj, lang) {
   if (typeof obj === 'string') {
     return obj;
-  } else if (typeof obj === 'object') {
-    return obj[lang] || obj['en-US'];
-  } else {
-    throw new Error(`Unsupport type ${typeof obj}`);
   }
+  if (typeof obj === 'object') {
+    return obj[lang] || obj['en-US'];
+  }
+  throw new Error(`Unsupport type ${typeof obj}`);
 }
 
 function normalizeAction(action, lang) {
@@ -48,9 +48,6 @@ export default class ActiveProjectError extends Error {
     if (exception) {
       this.exception = exception;
     }
-    if (actions)
-      this.actions = actions.map(action => {
-        return normalizeAction(action, lang);
-      });
+    if (actions) this.actions = actions.map(action => normalizeAction(action, lang));
   }
 }

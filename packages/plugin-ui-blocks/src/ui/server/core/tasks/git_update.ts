@@ -2,8 +2,8 @@ import assert from 'assert';
 import { utils } from 'umi';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
-import { IFlowContext, ICtxTypes, IAddBlockOption } from '../types';
 import { getNameFromPkg } from '@umijs/block-sdk';
+import { IFlowContext, ICtxTypes, IAddBlockOption } from '../types';
 
 const { winPath } = utils;
 

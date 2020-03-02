@@ -8,11 +8,11 @@ import {
   runTask,
   cancelTask,
   getTaskDetail,
+  Analyze,
 } from '../util';
+import { TaskType, TaskState } from '../../src/server/core/enums';
 
 export const namespace = 'org.umi.taskManager';
-import { TaskType, TaskState } from '../../src/server/core/enums';
-import { Analyze } from '../util';
 
 let init = false;
 

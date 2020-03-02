@@ -2,9 +2,7 @@ import { IUiApi } from '@umijs/ui-types';
 
 const defaultNameArray = ['Two', 'Three', 'Four', 'Five', 'Six', 'Seven'];
 
-const getNewName = (name: string, index: number = 0) => {
-  return `${name}${defaultNameArray[index]}`;
-};
+const getNewName = (name: string, index: number = 0) => `${name}${defaultNameArray[index]}`;
 
 /**
  * 获取一个未定义的变量名

@@ -50,15 +50,16 @@ const InstallComponent: React.FC<TaskComponentProps> = ({
   }, [init]);
 
   // UnMount: reset form
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       form.resetFields();
       const terminal = getTerminalRefIns(taskType, api.currentProject.key);
       if (terminal) {
         terminal.clear();
       }
-    };
-  }, []);
+    },
+    [],
+  );
 
   async function install(npmClient) {
     dispatch({

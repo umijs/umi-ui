@@ -30,8 +30,8 @@ export const runCommand = (script: string, options: SpawnOptions = {}, ipc = fal
 
     options.cwd = options.cwd || process.cwd();
 
-    let sh = 'sh';
-    let shFlag = '-c';
+    const sh = 'sh';
+    const shFlag = '-c';
 
     const proc = spawn(sh, [shFlag, script], options);
     return proc;

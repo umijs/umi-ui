@@ -44,16 +44,15 @@ const BlockList: React.FC<BlockListProps> = props => {
    */
   const filteredList: Block[] = useMemo<Block[]>(
     () =>
-      list.filter(({ name = '', url, description = '', category, tags: listTags = [] }) => {
-        return (
+      list.filter(
+        ({ name = '', url, description = '', category, tags: listTags = [] }) =>
           (!selectedTag ||
             (category ? category === selectedTag : listTags.join('').includes(selectedTag))) &&
           (!keyword ||
             name.toLocaleLowerCase().includes(keyword) ||
             description.toLocaleLowerCase().includes(keyword) ||
-            url.toLocaleLowerCase().includes(keyword))
-        );
-      }),
+            url.toLocaleLowerCase().includes(keyword)),
+      ),
     [keyword, selectedTag, list.map(({ url }) => url).join('/')],
   );
 
