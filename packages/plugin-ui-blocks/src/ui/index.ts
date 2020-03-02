@@ -11,6 +11,8 @@ export default (api: IApiBlock) => {
   const { winPath, lodash } = utils;
 
   [
+    'addBlockUIResource',
+    'modifyBlockUIResources',
     '_modifyBlockNewRouteConfig',
     '_modifyBlockDependencies',
     '_modifyBlockPackageJSONPath',
@@ -35,7 +37,7 @@ export default (api: IApiBlock) => {
   //   routeComponents = api.getRouteComponents();
   // });
 
-  const getRouteComponents = (routes): string[] => {
+  const getRouteComponents = (componentRoutes): string[] => {
     const getComponents = routes =>
       routes.reduce((memo, route) => {
         if (route.component && !route.component.startsWith('()')) {
@@ -50,7 +52,7 @@ export default (api: IApiBlock) => {
         return memo;
       }, []);
 
-    return lodash.uniq(getComponents(routes));
+    return lodash.uniq(getComponents(componentRoutes));
   };
 
   api.modifyBabelOpts(async babelOpts => {
