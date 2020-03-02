@@ -44,7 +44,6 @@
     "moment": "^2.24.0",
     "portfinder": "^1.0.24",
     "prettier": "^1.19.1",
-    "puppeteer": "^2.1.0",
     "react": "^16.8.6",
     "react-router-dom": "5.1.2",
     "react-test-renderer": "16.6.3",
