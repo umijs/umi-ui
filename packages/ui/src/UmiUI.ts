@@ -178,11 +178,11 @@ export default class UmiUI {
       }
 
       try {
-        const service = this.getService(cwd);
+        const currentService = this.getService(cwd);
         debug(`Attach service for ${key} after new and before init()`);
-        await service.init();
+        await currentService.init();
         debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
-        this.servicesByKey[key] = service;
+        this.servicesByKey[key] = currentService;
       } catch (e) {
         if (isDepLost(e) || isPluginLost(e)) {
           throw new ActiveProjectError({

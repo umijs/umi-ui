@@ -5,6 +5,7 @@ module.exports = {
     'jsx-a11y/alt-text': [0],
     'import/no-dynamic-require': [0],
     'iterators/generators': [0],
+    'no-console': [0],
     'no-empty': [0],
     'global-require': [0],
     'arrow-parens': [0],
