@@ -4,7 +4,6 @@
   "main": "./lib/UmiUI.js",
   "files": [
     "lib",
-    "src",
     "web/dist"
   ],
   "devDependencies": {

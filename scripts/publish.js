@@ -5,6 +5,7 @@ const { existsSync } = require('fs');
 const { join } = require('path');
 const { fork } = require('child_process');
 const getPackages = require('./getPackage');
+const syncTNPM = require('./syncTNPM');
 const { uiDist } = require('./uiPlugins');
 
 if (!shell.exec('npm config get registry').stdout.includes('https://registry.npmjs.org/')) {
@@ -68,6 +69,7 @@ cp.on('close', code => {
     process.exit(1);
   }
   publishToNpm();
+  syncTNPM();
 });
 
 function publishToNpm() {
