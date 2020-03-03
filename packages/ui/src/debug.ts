@@ -1,6 +1,10 @@
-const debug = require('debug')('umiui:UmiUI');
+import { utils } from 'umi';
 
-export const debugSocket = debug.extend('socket');
-export const debugTerminal = debug.extend('terminal');
+const { createDebug } = utils;
+
+const debug = createDebug('umiui:UmiUI');
+
+export const debugSocket = createDebug('socket');
+export const debugTerminal = createDebug('terminal');
 
 export default debug;

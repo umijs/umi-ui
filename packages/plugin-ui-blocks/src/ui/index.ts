@@ -7,7 +7,7 @@ export interface IApiBlock extends IApi {
 }
 
 export default (api: IApiBlock) => {
-  const { utils } = api;
+  const { utils, paths } = api;
   const { winPath, lodash } = utils;
 
   [
@@ -41,9 +41,12 @@ export default (api: IApiBlock) => {
     const getComponents = routes =>
       routes.reduce((memo, route) => {
         if (route.component && !route.component.startsWith('()')) {
-          const component = isAbsolute(route.component)
-            ? require.resolve(route.component)
-            : require.resolve(join(this.cwd, route.component));
+          const routeComponent = route.component
+            ?.replace('@@', paths.absTmpPath)
+            ?.replace('@', paths.absSrcPath);
+          const component = isAbsolute(routeComponent)
+            ? require.resolve(routeComponent)
+            : require.resolve(join(api.cwd, routeComponent));
           memo.push(winPath(component));
         }
         if (route.routes) {

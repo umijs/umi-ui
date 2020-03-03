@@ -1,6 +1,5 @@
 import EventEmitter from 'events';
 import { Context } from 'react';
-import { Debugger } from 'debug';
 
 import * as IUi from '@umijs/ui-types';
 import { Terminal } from 'xterm';

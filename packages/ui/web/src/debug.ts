@@ -1,4 +1,4 @@
-import debug from 'debug';
+import createDebug from 'debug';
 
 export enum DEBUG {
   UmiUI = 'umiui',
@@ -6,7 +6,7 @@ export enum DEBUG {
   UIPlugin = 'UIPlugin',
 }
 
-const uiDebug = debug(DEBUG.UmiUI);
+const uiDebug = createDebug(DEBUG.UmiUI);
 
 export const pluginDebug = uiDebug.extend(DEBUG.UIPlugin);
 
