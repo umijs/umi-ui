@@ -84,7 +84,9 @@ export default (api: IApiBlock) => {
     () => `
 (() => {
   // Runtime block add component
-  window.GUmiUIFlag = require('${require.resolve('../sdk/flagBabelPlugin/GUmiUIFlag')}').default;
+  window.GUmiUIFlag = require('${winPath(
+    require.resolve('../sdk/flagBabelPlugin/GUmiUIFlag'),
+  )}').default;
 
   // Enable/Disable block add edit mode
   window.addEventListener('message', (event) => {
