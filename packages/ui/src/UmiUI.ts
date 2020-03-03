@@ -89,8 +89,8 @@ export default class UmiUI {
       : resolveFrom.silent(cwd, serviceModule) || 'umi/lib/cjs';
     debug(`Service path: ${servicePath}`);
     // eslint-disable-next-line import/no-dynamic-require
-    const { Service } = require(servicePath);
-    const service = new Service({
+    const { Service: UmiService } = require(servicePath);
+    const service = new UmiService({
       cwd,
     });
     return service;
@@ -180,7 +180,6 @@ export default class UmiUI {
       try {
         const service = this.getService(cwd);
         debug(`Attach service for ${key} after new and before init()`);
-        service;
         await service.init();
         debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
         this.servicesByKey[key] = service;
@@ -928,7 +927,7 @@ export default class UmiUI {
 
       app.use('/*', async (req, res) => {
         const scripts = await getScripts();
-        const localeDebug = !existsSync(join(__dirname, '../client/dist/index.html'));
+        const localeDebug = !existsSync(join(__dirname, '../web/dist/index.html'));
         if (localeDebug) {
           try {
             const { body } = await got(`http://localhost:8002${req.path}`);
@@ -939,7 +938,7 @@ export default class UmiUI {
           }
         } else {
           if (!content) {
-            content = readFileSync(join(__dirname, '../client/dist/index.html'), 'utf-8');
+            content = readFileSync(join(__dirname, '../web/dist/index.html'), 'utf-8');
           }
           res.send(normalizeHtml(content, scripts));
         }
