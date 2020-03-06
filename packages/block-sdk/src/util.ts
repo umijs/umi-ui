@@ -437,10 +437,37 @@ export const fetchBlockList = async (repo: string): Promise<BlockData> => {
 
 export async function fetchUmiBlock(url) {
   try {
-    const got = require('got');
     const { body } = await got(url);
     return {
       data: JSON.parse(body).list,
+      success: true,
+    };
+  } catch (error) {
+    return {
+      message: error.message,
+      data: undefined,
+      success: false,
+    };
+  }
+}
+
+/**
+ * 通过 npm CDN url 获取区块数据
+ * @param pkg 包名
+ */
+export async function fetchCDNBlocks({
+  pkg,
+  summary = 'umi-block.json',
+  version = 'latest',
+  factor,
+}) {
+  const prefixCDN = `https://cdn.jsdelivr.net/npm/${pkg}@${version}`;
+  try {
+    const { body } = await got(`${prefixCDN}/${summary}`);
+    const data = JSON.parse(body);
+    const list = (data.list || data.blocks || data.template).map(factor || (item => item));
+    return {
+      data: list,
       success: true,
     };
   } catch (error) {

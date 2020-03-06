@@ -19,7 +19,6 @@
     "chalk": "2.4.2",
     "execa": "1.0.0",
     "getnpmregistry": "^1.0.1",
-    "got": "9.6.0",
     "ora": "3.4.0",
     "uppercamelcase": "3.0.0"
   },

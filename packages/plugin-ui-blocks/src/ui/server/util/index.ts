@@ -2,7 +2,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import { join } from 'path';
 import { utils } from 'umi';
-import { fetchBlockList, fetchUmiBlock } from '@umijs/block-sdk';
+import { fetchBlockList, fetchUmiBlock, fetchCDNBlocks } from '@umijs/block-sdk';
 import { Resource } from '@umijs/block-sdk/lib/data.d';
 
 const { winPath } = utils;
@@ -106,7 +106,12 @@ export const DEFAULT_RESOURCES: Resource[] = [
     description: '来自 antd 的 Demo 区块',
     blockType: 'block',
     icon: 'https://img.alicdn.com/tfs/TB1e8gomAL0gK0jSZFAXXcA9pXa-64-64.png',
-    getData: () => fetchBlockList('ant-design/ant-design-blocks'),
+    getData: () =>
+      fetchCDNBlocks({
+        pkg: 'ant-design-blocks',
+        summary: 'umi-block.json',
+        version: '^1.0.0',
+      }),
   },
   {
     id: 'umi-blocks',
