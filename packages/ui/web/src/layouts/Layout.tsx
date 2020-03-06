@@ -9,6 +9,7 @@ import 'moment/locale/zh-cn';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import event, { MESSAGES } from '@/message';
 import { isMiniUI, getLocale } from '@/utils';
+import 'antd/dist/antd.less';
 import Context from './Context';
 import Footer from './Footer';
 import { getLocaleInfo, setLocaleInfo } from '../PluginAPI';
@@ -54,7 +55,7 @@ const Layout: React.FC<ILayoutProps> = props => {
     return () => {
       event.removeAllListeners();
     };
-  }, []);
+  }, [locale]);
 
   const showLogPanel = () => {
     if (event) {
@@ -68,7 +69,7 @@ const Layout: React.FC<ILayoutProps> = props => {
     }
   };
 
-  const { type, className, title } = props;
+  const { type, className } = props;
   const currentProject = window.g_uiCurrentProject || {};
   const layoutCls = cls(
     locale,
@@ -80,8 +81,7 @@ const Layout: React.FC<ILayoutProps> = props => {
   );
   window.g_uiContext = Context;
   const { basicUI } = window.g_service;
-  const frameworkName = basicUI.name || 'Umi';
-  const framework = `${frameworkName} UI`;
+  // const frameworkName = basicUI.name || 'Umi';
   const icon = basicUI.logo_remote || '//gw.alipayobjects.com/zos/antfincdn/KjbXlRsRBz/umi.png';
 
   return (
@@ -100,6 +100,7 @@ const Layout: React.FC<ILayoutProps> = props => {
               formatMessage: intl.formatMessage,
               FormattedMessage,
               basicUI,
+              getLocale,
             }}
           >
             <Helmet>

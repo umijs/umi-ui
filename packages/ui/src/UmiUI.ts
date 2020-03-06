@@ -31,8 +31,6 @@ import debug, { debugSocket } from './debug';
 const { winPath, lodash, got, semver, portfinder, rimraf, chalk } = utils;
 const { pick, uniq } = lodash;
 
-process.env.UMI_UI = 'true';
-
 export default class UmiUI {
   cwd: string;
   servicesByKey: {

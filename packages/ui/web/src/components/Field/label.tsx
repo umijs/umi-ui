@@ -2,7 +2,7 @@ import React from 'react';
 import cls from 'classnames';
 import { useIntl } from 'react-intl';
 import Context from '@/layouts/Context';
-import styles from './styles.module.less';
+import styles from './styles.less';
 
 interface ILabelProps {
   title: string;

@@ -5,17 +5,13 @@ import { MESSAGES } from './dailyReport';
 import Context from '../context';
 import styles from './dailyReport.module.less';
 
-const { useState, useEffect } = React;
-
 const DailyReportHeader: React.SFC<{}> = props => {
   const { api } = React.useContext(Context);
   const { _, event, moment } = api;
-  const { data: list } = useSWR('zaobao.list', async () => {
-    const { data } = await api.callRemote({
-      type: 'org.umi.dashboard.zaobao.list',
-    });
-    return data;
-  });
+  const { data: list } = useSWR(
+    'zaobao.list',
+    api.request('https://cdn.jsdelivr.net/npm/umi-ui-rss/data/index.json'),
+  );
 
   const handleOnChange = value => {
     event.emit(MESSAGES.CHANGE_DAILY_ID, value);

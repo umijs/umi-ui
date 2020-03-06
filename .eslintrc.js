@@ -8,6 +8,7 @@ module.exports = {
     'no-console': [0],
     'no-empty': [0],
     'global-require': [0],
+    '@typescript-eslint/camelcase': [0],
     'arrow-parens': [0],
     'react/button-has-type': [0],
     'lines-between-class-members': [0],

@@ -39,7 +39,7 @@ export interface IFooterProps {
 const Footer: React.SFC<IFooterProps> = props => {
   const { type } = props;
   const intl = useIntl();
-  const { locale, setLocale, currentProject, isMini, basicUI } = useContext(Context);
+  const { locale, setLocale, currentProject, isMini, basicUI, getLocale } = useContext(Context);
   const drawerContainerRef = React.createRef();
   const { path, name, key } = currentProject || {};
   const { gtag } = getAnalyze();
@@ -141,8 +141,8 @@ const Footer: React.SFC<IFooterProps> = props => {
   const menu = (
     <Menu
       theme="dark"
-      onClick={({ key }) => {
-        setLocale(key, type === 'loading');
+      onClick={({ key: menuKey }) => {
+        setLocale(menuKey, type === 'loading');
       }}
     >
       {Object.keys(LOCALES).map((lang: any) => (
@@ -250,12 +250,12 @@ const Footer: React.SFC<IFooterProps> = props => {
             <Shell
               // style hide / show, not dom
               visible={!!visible.terminal}
-              ref={(ref, fitAddon) =>
+              ref={(ref, shellFitAddon) =>
                 dispatch({
                   type: 'initTerminal',
                   payload: {
                     terminal: ref,
-                    fitAddon,
+                    fitAddon: shellFitAddon,
                   },
                 })
               }
@@ -329,7 +329,7 @@ const Footer: React.SFC<IFooterProps> = props => {
 
         <div className={styles.section}>
           <a
-            href={typeof helpDoc === 'object' ? helpDoc[window.g_lang] : helpDoc}
+            href={typeof helpDoc === 'object' ? helpDoc[getLocale()] : helpDoc}
             target="_blank"
             rel="noopener noreferrer"
           >

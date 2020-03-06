@@ -7,7 +7,7 @@ import debug from '@/debug';
 import ObjectItemField, { IValue, ObjectItemFieldProps, IOption } from './ObjectItemField';
 import { objToArray, arrayToObj } from '../utils';
 
-import styles from './styles.module.less';
+import styles from './styles.less';
 
 const { useState } = React;
 

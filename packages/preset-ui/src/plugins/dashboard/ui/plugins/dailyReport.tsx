@@ -27,12 +27,10 @@ const DailyReport: React.SFC<{}> = props => {
   const { _, event, useIntl } = api;
   const intl = useIntl();
   const [size, setSize] = React.useState(PAGE_SIZE);
-  const { data: list } = useSWR('zaobao.list', async () => {
-    const { data } = await api.callRemote({
-      type: 'org.umi.dashboard.zaobao.list',
-    });
-    return data;
-  });
+  const { data: list } = useSWR(
+    'zaobao.list',
+    api.request('https://cdn.jsdelivr.net/npm/umi-ui-rss/data/index.json'),
+  );
   const [currentId, setCurrentId] = useState();
 
   const changeCurrentId = newId => {
@@ -61,13 +59,10 @@ const DailyReport: React.SFC<{}> = props => {
     async query => {
       const id = Number(query.replace('zaobao.list.detail.', ''));
       if (id) {
-        const { data } = await api.callRemote({
-          type: 'org.umi.dashboard.zaobao.list.detail',
-          payload: {
-            id,
-          },
-        });
-        return data;
+        const res = await api.request(
+          `https://cdn.jsdelivr.net/npm/umi-ui-rss/data/detail/${id}.json`,
+        );
+        return res;
       }
     },
   );
