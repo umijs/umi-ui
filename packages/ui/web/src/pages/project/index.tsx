@@ -3,7 +3,6 @@ import { Layout, message } from 'antd';
 import isPlainObject from 'lodash/isPlainObject';
 import ProjectContext from '@/layouts/ProjectContext';
 import { IProjectList } from '@/enums';
-import debug from '@/debug';
 import { fetchProject, getCwd, listDirectory } from '@/services/project';
 import * as projectMap from './components';
 import styles from './index.less';
@@ -11,26 +10,25 @@ import styles from './index.less';
 const { Content } = Layout;
 
 const Project: React.FC<{}> = () => {
-  const _log = debug.extend('Project');
   const [data, setData] = useState<IProjectList>({});
   const [cwd, setCwd] = useState();
   const [files, setFiles] = useState([]);
 
-  const { current, currentData, basicUI } = useContext(ProjectContext);
+  const { current, currentData, basicUI, locale } = useContext(ProjectContext);
 
   async function getProject() {
-    const { data } = await fetchProject({
+    const { data: projectData } = await fetchProject({
       onProgress: async res => {
-        // listen change
-        _log('listen projects', res);
         setData(res);
       },
     });
-    setData(data);
+    setData(projectData);
   }
 
   const getComponentProps = curr => {
-    let projectProps = {};
+    let projectProps = {
+      locale,
+    };
     switch (current) {
       case 'list':
         projectProps = {
@@ -69,13 +67,13 @@ const Project: React.FC<{}> = () => {
   useEffect(() => {
     (async () => {
       await getProject();
-      const { cwd } = await getCwd();
-      setCwd(cwd);
+      const { cwd: currentCwd } = await getCwd();
+      setCwd(currentCwd);
       try {
-        const { data: files } = await listDirectory({
-          dirPath: cwd,
+        const { data: directories } = await listDirectory({
+          dirPath: currentCwd,
         });
-        setFiles(files);
+        setFiles(directories);
       } catch (e) {
         message.error(e && e.message ? e.message : '目录选择错误');
       }
@@ -95,41 +93,6 @@ const Project: React.FC<{}> = () => {
       </Content>
     </Layout>
   );
-
-  // return (
-  //   <div className={styles.project}>
-
-  //     <h2>当前项目</h2>
-  //     <div>{currentProject || '无'}</div>
-  //     <h2>当前路径</h2>
-  //     <div>{cwd || '无'}</div>
-  //     <h2>目录列表</h2>
-  //     <ul>
-  //       {files.map(f => {
-  //         return (
-  //           <li key={f.fileName}>
-  //             [{f.type}] {f.fileName}
-  //           </li>
-  //         );
-  //       })}
-  //     </ul>
-  //     {/* <ul>
-  //       {projects.map(p => {
-  //         return (
-  //           <li key={p.key} className={styles.projectItem}>
-  //             {p.key === currentProject ? <span>[当前打开项目]</span> : null}
-  //             {p.creatingProgress ? <span>[创建中]</span> : null}
-  //             <span>{p.name}</span>
-  //             <Button onClick={openProjectInEditor.bind(null, p.key)}>在编辑器里打开</Button>
-  //             <Button onClick={openProject.bind(null, p.key)}>打开</Button>
-  //             <Button onClick={editProject.bind(null, p.key)}>重命名为 ABC</Button>
-  //             <Button onClick={deleteProject.bind(null, p.key)}>删除</Button>
-  //           </li>
-  //         );
-  //       })}
-  //     </ul> */}
-  //   </div>
-  // );
 };
 
 export default Project;

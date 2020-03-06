@@ -31,7 +31,6 @@ import ProjectContext from '@/layouts/ProjectContext';
 import Loading from '@/pages/loading';
 import { IProjectItem } from '@/enums';
 import { getProjectStatus, sortProjectList, handleBack } from '@/utils';
-import debug from '@/debug';
 import { IProjectProps } from '../index';
 import ModalForm from './ModalForm';
 
@@ -48,11 +47,9 @@ interface IProjectListItem extends IProjectItem {
 }
 
 const ProjectList: React.SFC<IProjectProps> = props => {
-  const _log = debug.extend('projectList');
-  const { formatMessage } = useIntl();
   const { projectList } = props;
   const { currentProject, projectsByKey = {} } = projectList;
-  const { setCurrent, basicUI } = useContext(ProjectContext);
+  const { setCurrent, basicUI, formatMessage, locale } = useContext(ProjectContext);
   const [initialValues, setInitiaValues] = useState({});
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
@@ -61,10 +58,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     return !!item.creatingProgress;
   };
 
-  _log('projectList', projectList);
-
   const loading = !projectList.projectsByKey;
-  _log('loading', loading);
 
   const projects = useMemo(() => {
     const projectListMap = Object.keys(projectsByKey).map(key => {

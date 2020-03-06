@@ -7,7 +7,7 @@ import debug from '@/debug';
 import { openConfigFile } from '@/services/project';
 import { getFormItemShow } from './utils';
 import { FieldProps } from './index';
-import styles from './styles.module.less';
+import styles from './styles.less';
 
 const AnyComp: React.SFC<FieldProps> = props => {
   const _log = debug.extend('Field:AnyComp');

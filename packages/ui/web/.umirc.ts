@@ -23,6 +23,7 @@ export default defineConfig({
   history: {
     type: 'browser',
   },
+  ignoreMomentLocale: true,
   hash: NODE_ENV === 'production',
   // uglifyJSOptions,
   terserOptions,
@@ -38,9 +39,9 @@ export default defineConfig({
       src: '//gw.alipayobjects.com/as/g/component/map-set-polyfill/1.0.0/polyfill.min.js',
     },
     {
-      src: `//gw.alipayobjects.com/os/lib/??react/16.8.6/umd/react.${
+      src: `//gw.alipayobjects.com/os/lib/??react/16.13.0/umd/react.${
         NODE_ENV === 'development' ? 'development' : 'production.min'
-      }.js,react-dom/16.8.6/umd/react-dom.${
+      }.js,react-dom/16.13.0/umd/react-dom.${
         NODE_ENV === 'development' ? 'development' : 'production.min'
       }.js`,
     },
@@ -50,9 +51,10 @@ export default defineConfig({
     {
       src: `//gw.alipayobjects.com/os/lib/antd/${version}/dist/antd.min.js`,
     },
-    { src: '//gw.alipayobjects.com/os/lib/sockjs-client/1.3.0/dist/sockjs.min.js' },
+    { src: '//gw.alipayobjects.com/os/lib/sockjs-client/1.4.0/dist/sockjs.min.js' },
     { src: '//gw.alipayobjects.com/os/lib/xterm/4.1.0/lib/xterm.js' },
   ],
+  antd: {},
   externals: {
     react: 'window.React',
     'react-dom': 'window.ReactDOM',
@@ -65,11 +67,11 @@ export default defineConfig({
   routes: [
     {
       path: '/project',
-      component: '../layouts/Project',
+      component: '@/layouts/Project',
       routes: [
         {
           path: '/project/select',
-          component: '../pages/project',
+          component: '@/pages/project',
         },
         {
           component: '404',
@@ -80,11 +82,11 @@ export default defineConfig({
       // for plugins to patch routes into dashboard identification
       key: 'dashboard',
       path: '/',
-      component: '../layouts/Dashboard',
+      component: '@/layouts/Dashboard',
       routes: [
         {
           path: '/',
-          component: '../pages/index',
+          component: '@/pages/index',
         },
         {
           component: '404',

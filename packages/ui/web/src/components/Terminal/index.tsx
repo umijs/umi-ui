@@ -8,7 +8,7 @@ import React, { useRef, useEffect, useState, forwardRef } from 'react';
 import * as IUi from '@umijs/ui-types';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import { FitAddon } from 'xterm-addon-fit';
-import styles from './index.module.less';
+import styles from './index.less';
 
 const { Terminal } = window;
 
@@ -16,7 +16,7 @@ export type TerminalType = XTerminal;
 
 const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, ref) => {
   const fitAddon = new FitAddon();
-  const domContainer = ref || useRef<HTMLDivElement>(null);
+  const domContainer = useRef<HTMLDivElement>(ref || null);
   const {
     title,
     className,

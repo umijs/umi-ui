@@ -2,7 +2,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import { join } from 'path';
 import { utils } from 'umi';
-import { fetchBlockList, fetchUmiBlock, fetchCDNBlocks } from '@umijs/block-sdk';
+import { fetchCDNBlocks } from '@umijs/block-sdk';
 import { Resource } from '@umijs/block-sdk/lib/data.d';
 
 const { winPath } = utils;
@@ -97,7 +97,12 @@ export const DEFAULT_RESOURCES: Resource[] = [
     description: '基于 antd 的中台模板。',
     blockType: 'template',
     icon: 'https://img.alicdn.com/tfs/TB1e8gomAL0gK0jSZFAXXcA9pXa-64-64.png',
-    getData: () => fetchBlockList('ant-design/pro-blocks'),
+    getData: () =>
+      fetchCDNBlocks({
+        pkg: 'pro-blocks',
+        summary: 'umi-block.json',
+        version: '^1.0.0',
+      }),
   },
   {
     id: 'ant-design-blocks',
@@ -120,7 +125,11 @@ export const DEFAULT_RESOURCES: Resource[] = [
     description: '来自 Umi 社区的区块',
     blockType: 'block',
     icon: 'https://img.alicdn.com/tfs/TB1HMEpmuH2gK0jSZFEXXcqMpXa-64-64.png',
-    getData: () => fetchUmiBlock('https://blocks.umijs.org/blocks.json'),
+    getData: () =>
+      fetchCDNBlocks({
+        pkg: 'umi-blocks',
+        summary: 'dist/blocks.json',
+      }),
   },
   {
     id: 'umi-blocks-template',
@@ -129,7 +138,11 @@ export const DEFAULT_RESOURCES: Resource[] = [
     description: '来自 Umi 社区的模板。',
     blockType: 'template',
     icon: 'https://img.alicdn.com/tfs/TB1HMEpmuH2gK0jSZFEXXcqMpXa-64-64.png',
-    getData: () => fetchUmiBlock('https://blocks.umijs.org/templates.json'),
+    getData: () =>
+      fetchCDNBlocks({
+        pkg: 'umi-blocks',
+        summary: 'dist/templates.json',
+      }),
   },
 ];
 

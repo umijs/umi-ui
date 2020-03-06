@@ -1,6 +1,5 @@
 import React from 'react';
 import { PageHeader } from 'antd';
-import { injectIntl } from 'react-intl';
 import { PROJECT_STATUS, IProjectStatus } from '@/enums';
 import events, { MESSAGES } from '@/message';
 import scrollTop from '@/utils/scrollTop';
@@ -11,83 +10,59 @@ import styles from './Project.less';
 
 interface IProjectProps {}
 
-interface IProjectState {
-  /** current step in project */
-  current: IProjectStatus;
-  /** step data */
-  currentData?: object;
-}
+const { useState, useEffect } = React;
 
-class Project extends React.PureComponent<IProjectProps, IProjectState> {
-  constructor(props: IProjectProps) {
-    super(props);
-    this.state = {
-      current: PROJECT_STATUS.list,
-    };
-  }
+const Project: React.FC<IProjectProps> = props => {
+  const [current, setCurrent] = useState(PROJECT_STATUS.list);
+  const [currentData, setCurrentData] = useState();
 
-  handleCurrentChange = (current: IProjectStatus, currentData?: object) => {
-    this.setCurrent(current, currentData);
-  };
-
-  componentDidMount() {
-    events.on(MESSAGES.CHANGE_PROJECT_CURRENT, this.handleCurrentChange);
-  }
-
-  componentWillUnmount() {
-    events.off(MESSAGES.CHANGE_PROJECT_CURRENT, this.handleCurrentChange);
-  }
-
-  setCurrent = (current: IProjectStatus, currentData?: object) => {
-    this.setState({
-      current,
-      currentData,
-    });
+  const changeCurrent = (currentProject: IProjectStatus, currentProjectData?: object) => {
+    setCurrent(currentProject);
+    setCurrentData(currentProjectData);
     // scrollTop
     scrollTop();
   };
-  handleBackClick = () => {
-    const { current } = this.state;
-    if (current !== 'list') {
-      this.setCurrent('list');
-    }
-  };
-  render() {
-    const { current, currentData } = this.state;
-    return (
-      <Layout type="list">
-        <Context.Consumer>
-          {context => (
-            <ProjectContext.Provider
-              value={{
-                ...context,
-                current,
-                currentData,
-                setCurrent: this.setCurrent,
-              }}
-            >
-              <div className={styles['project-l']}>
-                {current !== 'list' && (
-                  <PageHeader
-                    title={context.formatMessage({
-                      id: `org.umi.ui.global.project.${
-                        current === 'progress' ? 'create' : current
-                      }.title`,
-                    })}
-                    onBack={() => {
-                      this.setCurrent('list');
-                    }}
-                    className={styles['project-l-header']}
-                  />
-                )}
-                {this.props.children}
-              </div>
-            </ProjectContext.Provider>
-          )}
-        </Context.Consumer>
-      </Layout>
-    );
-  }
-}
 
-export default injectIntl(Project);
+  useEffect(() => {
+    events.on(MESSAGES.CHANGE_PROJECT_CURRENT, changeCurrent);
+    return () => {
+      events.off(MESSAGES.CHANGE_PROJECT_CURRENT, changeCurrent);
+    };
+  }, []);
+
+  return (
+    <Layout type="list">
+      <Context.Consumer>
+        {context => (
+          <ProjectContext.Provider
+            value={{
+              ...context,
+              current,
+              currentData,
+              setCurrent: changeCurrent,
+            }}
+          >
+            <div className={styles['project-l']}>
+              {current !== 'list' && (
+                <PageHeader
+                  title={context.formatMessage({
+                    id: `org.umi.ui.global.project.${
+                      current === 'progress' ? 'create' : current
+                    }.title`,
+                  })}
+                  onBack={() => {
+                    changeCurrent('list');
+                  }}
+                  className={styles['project-l-header']}
+                />
+              )}
+              {props.children}
+            </div>
+          </ProjectContext.Provider>
+        )}
+      </Context.Consumer>
+    </Layout>
+  );
+};
+
+export default Project;

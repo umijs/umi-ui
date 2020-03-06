@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Input, Select, InputNumber, Divider, Form } from 'antd';
 import { useIntl } from 'react-intl';
 import { PlusOutlined } from '@ant-design/icons';
-import styles from './styles.module.less';
+import styles from './styles.less';
 
 const { Group: InputGroup } = Input;
 const { Option } = Select;
@@ -93,8 +93,8 @@ const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
         rules={[
           {
             validateTrigger: 'onSubmit',
-            validator: async (rule, value) => {
-              if (value === 'undefined') {
+            validator: async (rule, itemValue) => {
+              if (itemValue === 'undefined') {
                 // { 'undefined':  }
                 throw new Error(
                   formatMessage({
@@ -128,7 +128,7 @@ const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
         {/* {typeof v === 'string' && (
           <Input autoComplete="off" onChange={e => handleInput(e.target.value)} defaultValue={v} />
         )} */}
-        <InputNumber size={size} onChange={v => handleInput(v)} defaultValue={v} />
+        <InputNumber size={size} onChange={vv => handleInput(vv)} defaultValue={v} />
       </div>
     </InputGroup>
   );
