@@ -23,6 +23,8 @@ export function isUmiProject(targetDir) {
   if (existFile('src') || existFile('pages') || existFile('page')) {
     return true;
   }
+
+  return false;
 }
 
 export function isUsingBigfish(targetDir) {

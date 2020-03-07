@@ -26,9 +26,7 @@ const Project: React.FC<{}> = () => {
   }
 
   const getComponentProps = curr => {
-    let projectProps = {
-      locale,
-    };
+    let projectProps = {};
     switch (current) {
       case 'list':
         projectProps = {
@@ -61,7 +59,10 @@ const Project: React.FC<{}> = () => {
         };
         break;
     }
-    return projectProps;
+    return {
+      ...projectProps,
+      locale,
+    };
   };
 
   useEffect(() => {

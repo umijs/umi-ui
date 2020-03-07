@@ -128,13 +128,11 @@ export async function render(oldRender): void {
       key,
       ...(data?.projectsByKey?.[key] || {}),
     };
-    _log('apps data', data);
     window.g_uiCurrentProject =
       {
         ...currentProject,
         key,
       } || {};
-    _log('window.g_uiCurrentProject', window.g_uiCurrentProject);
     // types 和 api 上先不透露
     window.g_uiProjects = data.projectsByKey || {};
     try {
@@ -148,6 +146,7 @@ export async function render(oldRender): void {
         });
       }
     } catch (e) {
+      console.error('eeeeee', e);
       props.error = e;
     }
     if (props.error) {

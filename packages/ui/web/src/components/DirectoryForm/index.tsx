@@ -180,7 +180,7 @@ const DirectoryForm: React.FC<IUi.IDirectoryForm> = props => {
         <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.directory.refresh' })}>
           <div className={styles.refresh}>
             <Button onClick={handleReload}>
-              <ReloadOutlined Outlined />
+              <ReloadOutlined />
             </Button>
           </div>
         </Tooltip>

@@ -10,7 +10,7 @@ import styles from './Project.less';
 
 interface IProjectProps {}
 
-const { useState, useEffect } = React;
+const { useState, useLayoutEffect } = React;
 
 const Project: React.FC<IProjectProps> = props => {
   const [current, setCurrent] = useState(PROJECT_STATUS.list);
@@ -23,7 +23,7 @@ const Project: React.FC<IProjectProps> = props => {
     scrollTop();
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     events.on(MESSAGES.CHANGE_PROJECT_CURRENT, changeCurrent);
     return () => {
       events.off(MESSAGES.CHANGE_PROJECT_CURRENT, changeCurrent);
