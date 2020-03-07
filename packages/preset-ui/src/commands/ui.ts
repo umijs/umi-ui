@@ -20,3 +20,5 @@ export default (api: IApi) => {
     }
   });
 };
+
+export { UmiUI };
