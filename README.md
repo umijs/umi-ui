@@ -39,6 +39,26 @@ $ yarn add @umijs/preset-ui -D
 
 ![https://user-images.githubusercontent.com/13595509/73427305-731f0680-4371-11ea-83de-1f19a99c32cd.png](https://user-images.githubusercontent.com/13595509/73427305-731f0680-4371-11ea-83de-1f19a99c32cd.png)
 
+### 从页面打开资产
+
+![gif](https://user-images.githubusercontent.com/13595509/76141271-8ffbd780-609d-11ea-8a28-e9ac6c77552d.gif)
+
+```js
+window.postMessage(
+  JSON.stringify({
+    action: 'umi.ui.block.addTemplate',
+    // 只需要 4 个参数
+    payload:  {
+      name: '分析页',
+      key: "DashboardAnalysis",
+      url: "https://github.com/ant-design/pro-blocks/tree/master/DashboardAnalysis",
+      path: "DashboardAnalysis",
+    }
+  }),
+  '*'
+)
+```
+
 ### 内置终端
 
 ![https://camo.githubusercontent.com/d627fa3b419e9231b32f8515db90e632d9dd2262/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323031392f6769662f38363032352f313537343134353634313431352d30366339626465372d303166392d343463652d383962392d3235616635613836643330392e676966](https://camo.githubusercontent.com/d627fa3b419e9231b32f8515db90e632d9dd2262/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323031392f6769662f38363032352f313537343134353634313431352d30366339626465372d303166392d343463652d383962392d3235616635613836643330392e676966)
