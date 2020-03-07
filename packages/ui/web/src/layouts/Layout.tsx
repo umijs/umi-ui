@@ -5,6 +5,7 @@ import { RawIntlProvider, createIntl, FormattedMessage } from 'react-intl';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import cls from 'classnames';
+import { useHistory } from 'umi';
 import 'moment/locale/zh-cn';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import event, { MESSAGES } from '@/message';
@@ -16,7 +17,7 @@ import { getLocaleInfo, setLocaleInfo } from '../PluginAPI';
 
 moment.locale('en');
 
-const { useState, useEffect, useLayoutEffect, useMemo } = React;
+const { useState, useLayoutEffect } = React;
 
 interface ILayoutProps {
   /** Layout 类型（项目列表、项目详情，loading 页） */
@@ -31,6 +32,7 @@ const Layout: React.FC<ILayoutProps> = props => {
   const [locale, setLocale] = useState<'zh-CN', 'en-US'>(() => getLocale());
   const [intl, setIntl] = useState(() => createIntl(localeInfo[locale]));
   const [theme, setTheme] = useState('dark');
+  const history = useHistory();
 
   const currentLocaleInfo = localeInfo[locale];
 
@@ -52,7 +54,31 @@ const Layout: React.FC<ILayoutProps> = props => {
     setIntl(createIntl(newLocaleInfo[locale]));
     setLocaleInfo(newLocaleInfo);
     moment.locale(newLocaleInfo[locale]?.moment);
+    const handleMessage = eventMsg => {
+      try {
+        const { action } = JSON.parse(eventMsg.data);
+        switch (action) {
+          case 'umi.ui.block.addTemplate': {
+            if (window.location.pathname !== '/blocks') {
+              // 跳转到 blocks
+              history.push({
+                pathname: '/blocks',
+                search: window.location.search,
+              });
+            }
+            break;
+          }
+          default:
+          // no thing
+        }
+      } catch (_) {
+        // no thing
+      }
+      return false;
+    };
+    window.addEventListener('message', handleMessage, false);
     return () => {
+      window.removeEventListener('message', handleMessage, false);
       event.removeAllListeners();
     };
   }, [locale]);

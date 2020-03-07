@@ -207,7 +207,7 @@ const BlocksViewer: React.FC<Props> = props => {
     });
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const handleMessage = event => {
       try {
         const { action, payload = {} } = JSON.parse(event.data);
