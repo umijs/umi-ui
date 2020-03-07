@@ -868,9 +868,12 @@ export default class UmiUI {
   }
 
   async start(opts?: {
+    /** 是否打开浏览器 */
     browser: boolean;
+    /** 完整版 */
+    full: boolean;
   }): Promise<{ server: http.Server; port: string | number }> {
-    const { browser } = opts || {};
+    const { browser, full = false } = opts || {};
     return new Promise(async (resolve, reject) => {
       console.log(`🚀 Starting Umi UI using umi@${process.env.UMI_VERSION}...`);
 
@@ -905,7 +908,16 @@ export default class UmiUI {
         } catch (_) {}
       });
 
+      // 访问域名打开
       app.get('/', async (req, res) => {
+        if (full) {
+          return res.status(302).redirect(
+            url.format({
+              pathname: '/project/select',
+              query: req.query,
+            }),
+          );
+        }
         const isMini = 'mini' in req.query;
         debug('isMini', isMini);
         const { data } = this.config;
