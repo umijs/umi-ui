@@ -246,7 +246,7 @@ const Adder: React.FC<AdderProps> = props => {
             display: 'flex',
           }}
         >
-          {intl({ id: `org.umi.ui.blocks.adder.title.${blockType}` })}
+          {intl({ id: `org.umi.ui.blocks.adder.title.${blockType}` }, { name: block.name })}
         </div>
       }
       closable

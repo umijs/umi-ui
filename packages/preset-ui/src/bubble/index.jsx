@@ -39,6 +39,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     const locale = getLocale();
+    this.messageMap = new Map();
     this.state = {
       open: undefined,
       connected: false,
@@ -83,6 +84,19 @@ class App extends React.Component {
     }`;
   };
 
+  addTemplate = () => {
+    const el = document.getElementById('umi-ui-bubble');
+    if (el && el.contentWindow) {
+      el.contentWindow.postMessage(
+        JSON.stringify({
+          action: 'umi.ui.block.addTemplate',
+          payload: this.messageMap.get('template'),
+        }),
+        '*',
+      );
+    }
+  };
+
   handleMessage = event => {
     try {
       const { action, payload = {} } = JSON.parse(event.data);
@@ -97,18 +111,12 @@ class App extends React.Component {
         }
         // 显示 mini
         case 'umi.ui.showMini': {
-          this.setState({
-            open: true,
-            edit: false,
-            editText: {},
-          });
+          this.toggleMiniOpen(true);
           break;
         }
         // 隐藏 mini
         case 'umi.ui.hideMini': {
-          this.setState({
-            open: false,
-          });
+          this.toggleMiniOpen(false);
           break;
         }
         // 切换loading
@@ -116,6 +124,18 @@ class App extends React.Component {
           this.setState(({ loading }) => ({
             loading: !loading,
           }));
+          break;
+        }
+        // 打开对应模板
+        case 'umi.ui.block.addTemplate': {
+          this.toggleMiniOpen(true);
+          this.messageMap.set('template', payload);
+          // 第一次应该不执行
+          this.addTemplate();
+          break;
+        }
+        case 'umi.ui.block.addTemplate.ready': {
+          this.addTemplate();
           break;
         }
         default:
@@ -205,19 +225,19 @@ class App extends React.Component {
   };
 
   toggleMiniOpen = async open => {
-    if (open) {
-      this.setState({
-        open,
-      });
-      return;
-    }
     // or use toggle
     if (typeof this.state.open === 'undefined') {
       await this.initUIService();
     }
-    this.setState(prevState => ({
-      open: !prevState.open,
-    }));
+    if (open) {
+      this.setState({
+        open,
+      });
+    } else {
+      this.setState(prevState => ({
+        open: !prevState.open,
+      }));
+    }
   };
 
   resetEdit = () => {

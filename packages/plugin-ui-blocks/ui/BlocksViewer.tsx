@@ -207,6 +207,41 @@ const BlocksViewer: React.FC<Props> = props => {
     });
   }, []);
 
+  useLayoutEffect(() => {
+    const handleMessage = event => {
+      try {
+        const { action, payload = {} } = JSON.parse(event.data);
+        switch (action) {
+          case 'umi.ui.block.addTemplate': {
+            setWillAddBlock(undefined);
+            setBlockParams(undefined);
+            if (payload) {
+              setType('template');
+              onShowModal(payload, {});
+            }
+            break;
+          }
+          default:
+          // no thing
+        }
+      } catch (_) {
+        // no thing
+      }
+      return false;
+    };
+    window.addEventListener('message', handleMessage, false);
+    // 告知父级页面，资产 准备就绪
+    window.parent.postMessage(
+      JSON.stringify({
+        action: 'umi.ui.block.addTemplate.ready',
+      }),
+      '*',
+    );
+    return () => {
+      window.removeEventListener('message', handleMessage, false);
+    };
+  }, []);
+
   // 如果区块不在屏幕范围内，滚动过去
   useEffect(() => {
     if (willAddBlock) {
@@ -283,7 +318,20 @@ const BlocksViewer: React.FC<Props> = props => {
     }
   }, []);
 
+  const onShowModal = (currentBlock, option) => {
+    setAddModalVisible(true);
+    setWillAddBlock(currentBlock);
+    setBlockParams(option);
+  };
+
+  const onHideModal = () => {
+    setAddModalVisible(false);
+    setWillAddBlock(undefined);
+    setBlockParams(undefined);
+  };
+
   const matchedResources = resources.filter(r => r.blockType === type);
+
   return (
     <>
       <div className={styles.wrapper}>
@@ -312,11 +360,7 @@ const BlocksViewer: React.FC<Props> = props => {
                     list={blocks}
                     setSelectedTag={setSelectedTag}
                     selectedTag={selectedTag}
-                    onShowModal={(currentBlock, option) => {
-                      setAddModalVisible(true);
-                      setWillAddBlock(currentBlock);
-                      setBlockParams(option);
-                    }}
+                    onShowModal={onShowModal}
                     loading={fetchDataLoading}
                   />
                 ) : (
@@ -337,11 +381,7 @@ const BlocksViewer: React.FC<Props> = props => {
         {...blockParams}
         visible={addModalVisible}
         onAddBlockChange={addBlock => setAddBlock(addBlock)}
-        onHideModal={() => {
-          setAddModalVisible(false);
-          setWillAddBlock(undefined);
-          setBlockParams(undefined);
-        }}
+        onHideModal={onHideModal}
       />
     </>
   );
