@@ -15,7 +15,7 @@ export default {
   'org.umi.ui.blocks.tag.collapse': '收起',
   'org.umi.ui.blocks.tag.expand': '展开',
   'org.umi.ui.blocks.adder.failed': '添加失败，请重试！',
-  'org.umi.ui.blocks.adder.title.template': '添加模板',
+  'org.umi.ui.blocks.adder.title.template': '添加 {name} 模板',
   'org.umi.ui.blocks.adder.title.block': '添加区块',
   'org.umi.ui.blocks.adder.stop': '停止',
   'org.umi.ui.blocks.adder.ok': '确认',
