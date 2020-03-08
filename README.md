@@ -135,7 +135,6 @@ clone 下仓库后，先执行相应包的安装、link 工作。
 
 ```bash
 $ yarn
-$ yarn bootstrap
 ```
 
 ### 开发调试
