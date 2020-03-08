@@ -2,9 +2,10 @@
 
 const shell = require('shelljs');
 const { existsSync } = require('fs');
-const { signale } = require('@umijs/utils');
+const { signale, execa, yParser } = require('@umijs/utils');
 const { join } = require('path');
 const { fork } = require('child_process');
+const lernaCli = require.resolve('lerna/cli');
 const getPackages = require('./getPackage');
 const syncTNPM = require('./syncTNPM');
 const { uiDist } = require('./uiPlugins');
@@ -13,6 +14,7 @@ if (!shell.exec('npm config get registry').stdout.includes('https://registry.npm
   console.error('Failed: set npm registry to https://registry.npmjs.org/ first');
   process.exit(1);
 }
+const args = yParser(process.argv.slice(2)) || {};
 
 // exit by Ctrl/Cmd + C
 process.on('SIGINT', () => {
@@ -21,7 +23,7 @@ process.on('SIGINT', () => {
 });
 
 const cwd = process.cwd();
-const ret = shell.exec('./node_modules/.bin/lerna updated').stdout;
+const ret = execa.sync(lernaCli, ['changed']).stdout;
 const updatedRepos = ret
   .split('\n')
   .map(line => line.replace('- ', ''))
@@ -32,16 +34,19 @@ if (updatedRepos.length === 0) {
   process.exit(0);
 }
 
-const { code: buildCode } = shell.exec('npm run build');
-if (buildCode === 1) {
-  console.error('Failed: npm run build');
-  process.exit(1);
-}
+// Build
+if (!args.skipBuild) {
+  const { code: buildCode } = shell.exec('npm run build');
+  if (buildCode === 1) {
+    console.error('Failed: npm run build');
+    process.exit(1);
+  }
 
-const { code: UIBuildCode } = shell.exec('npm run ui:build');
-if (UIBuildCode === 1) {
-  console.error('Failed: npm run ui:build');
-  process.exit(1);
+  const { code: UIBuildCode } = shell.exec('npm run ui:build');
+  if (UIBuildCode === 1) {
+    console.error('Failed: npm run ui:build');
+    process.exit(1);
+  }
 }
 
 // check dist existed
@@ -56,11 +61,11 @@ function checkUiDist() {
 }
 
 // check ui dist umd, or publish will be forbidden
-checkUiDist();
+// checkUiDist();
 
 const cp = fork(
   join(process.cwd(), 'node_modules/.bin/lerna'),
-  ['version'].concat(process.argv.slice(2)),
+  ['version', '--exact', '--no-commit-hooks', '--no-git-tag-version', '--no-push'],
   {
     stdio: 'inherit',
     cwd: process.cwd(),

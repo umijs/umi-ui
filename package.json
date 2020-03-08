@@ -14,7 +14,7 @@
     "lint:fix": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx --format=pretty packages",
     "precommit": "lint-staged",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
-    "publish": "lerna-changelog && node ./scripts/publish.js",
+    "release": "lerna-changelog && node ./scripts/release.js",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage",
     "ui:build": "node ./scripts/ui.js"
