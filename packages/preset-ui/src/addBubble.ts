@@ -13,7 +13,7 @@ export default (api: IApi) => {
         if (isIE) return;
 
         // Umi UI Bubble
-        require('${join(__dirname, './bubble')}').default({
+        require('${winPath(join(__dirname, './bubble'))}').default({
           port: ${process.env.UMI_UI_PORT},
           path: '${winPath(api.cwd)}',
           currentProject: '${process.env.UMI_UI_CURRENT_PROJECT || ''}',
