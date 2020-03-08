@@ -1,5 +1,6 @@
 {
   "private": true,
+  "workspaces": ["packages/*", "packages/ui/client"],
   "scripts": {
     "dev": "cross-env DEBUG=umiui* ts-node-dev --no-notify --transpileOnly scripts/dev.ts",
     "bootstrap": "lerna bootstrap",
