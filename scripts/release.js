@@ -5,6 +5,7 @@ const { existsSync } = require('fs');
 const { signale, execa, yParser } = require('@umijs/utils');
 const { join } = require('path');
 const { fork } = require('child_process');
+
 const lernaCli = require.resolve('lerna/cli');
 const getPackages = require('./getPackage');
 const syncTNPM = require('./syncTNPM');
