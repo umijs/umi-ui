@@ -1,4 +1,5 @@
 {
+  "version": "2.0.1",
   "changelog": {
     "labels": {
       "enhancement": ":rocket: Enhancement",
@@ -11,15 +12,7 @@
     "repo": "umijs/ui",
     "cacheDir": ".changelog"
   },
-  "packages": ["packages/*", "packages/ui/client"],
-  "command": {
-    "version": {
-      "exact": true
-    },
-    "bootstrap": {
-      "npmClientArgs": ["--no-package-lock", "--no-ci", "--ignore-engines"]
-    }
-  },
+  "ignoreChanges": ["**/*.md", "**/*.test.ts", "**/*.e2e.ts", "**/fixtures/**", "**/test/**"],
   "npmClient": "yarn",
-  "version": "independent"
+  "useWorkspaces": true
 }

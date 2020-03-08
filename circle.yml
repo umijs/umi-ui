@@ -17,7 +17,6 @@ jobs:
     steps:
       - checkout
       - run: yarn install
-      - run: yarn bootstrap
       - run: yarn build
       - run: yarn ui:build
       - run:
