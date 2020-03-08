@@ -1,6 +1,6 @@
 {
   "private": true,
-  "workspaces": ["packages/*", "packages/ui/client"],
+  "workspaces": ["packages/*"],
   "scripts": {
     "dev": "cross-env DEBUG=umiui* ts-node-dev --no-notify --transpileOnly scripts/dev.ts",
     "build": "father-build",

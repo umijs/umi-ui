@@ -2,6 +2,7 @@
 
 const shell = require('shelljs');
 const { existsSync } = require('fs');
+const { signale } = require('@umijs/utils');
 const { join } = require('path');
 const { fork } = require('child_process');
 const getPackages = require('./getPackage');
@@ -12,6 +13,12 @@ if (!shell.exec('npm config get registry').stdout.includes('https://registry.npm
   console.error('Failed: set npm registry to https://registry.npmjs.org/ first');
   process.exit(1);
 }
+
+// exit by Ctrl/Cmd + C
+process.on('SIGINT', () => {
+  signale.info('exit build by user');
+  process.exit(1);
+});
 
 const cwd = process.cwd();
 const ret = shell.exec('./node_modules/.bin/lerna updated').stdout;

@@ -11,7 +11,7 @@ module.exports = {
   collectCoverageFrom: [
     `packages/${collectCoveragePrefix}/src/**/*.{js,jsx,ts,tsx}`,
     '!**/ui.umd.js',
-    '!packages/ui/client',
+    '!packages/ui/web',
     '!packages/plugin-ui/src/bubble',
     '!**/fixtures/**',
     '!**/__snapshots__/**',
