@@ -39,6 +39,7 @@ class Flow extends EventEmitter {
     this.state = FlowState.ING;
     let hasBreak = false;
 
+    // eslint-disable-next-line no-restricted-syntax
     for (const { name, task, state } of this.tasks) {
       // 用户取消任务
       if (this.isCancel) {
@@ -48,10 +49,12 @@ class Flow extends EventEmitter {
       }
 
       if (state === StepState.SUCCESS) {
+        // eslint-disable-next-line no-continue
         continue;
       }
 
       try {
+        // eslint-disable-next-line no-await-in-loop
         await task(this.ctx, args);
         this.setStepState(name, StepState.SUCCESS);
       } catch (e) {
@@ -72,6 +75,7 @@ class Flow extends EventEmitter {
           this.emit('log', {
             data: `\n🚧  Execute task error: ${e.message}\n`,
           });
+          console.error('[Asset Error]', e);
         }
         break;
       }
