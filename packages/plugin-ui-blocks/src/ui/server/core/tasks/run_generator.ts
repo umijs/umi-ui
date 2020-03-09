@@ -59,20 +59,23 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
         subBlocks.map((block: string) => {
           const subBlockPath = join(templateTmpDirPath, block);
           debug(`subBlockPath: ${subBlockPath}`);
-          return new BlockGenerator(args._ ? args._.slice(2) : [], {
-            sourcePath: subBlockPath,
-            path: isPageBlock ? generator.path : join(generator.path, generator.blockFolderName),
-            blockName: getNameFromPkg(
-              // eslint-disable-next-line
-              require(join(subBlockPath, 'package.json')),
-            ),
-            isPageBlock: false,
-            dryRun,
-            env: {
-              cwd: api.cwd,
+          return new BlockGenerator({
+            name: args._ ? args._.slice(2) : [],
+            args: {
+              sourcePath: subBlockPath,
+              path: isPageBlock ? generator.path : join(generator.path, generator.blockFolderName),
+              blockName: getNameFromPkg(
+                // eslint-disable-next-line
+                require(join(subBlockPath, 'package.json')),
+              ),
+              isPageBlock: false,
+              dryRun,
+              env: {
+                cwd: api.cwd,
+              },
+              routes: api.config.routes,
+              resolved: latestPkgPath,
             },
-            routes: api.config.routes,
-            resolved: latestPkgPath,
           }).run();
         }),
       );

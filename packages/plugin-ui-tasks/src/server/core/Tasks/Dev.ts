@@ -1,15 +1,15 @@
-import { ChildProcess } from "child_process";
-import { BaseTask, ITaskOptions } from "./Base";
-import { TaskState, TaskEventType, TaskType } from "../enums";
-import { runCommand, parseScripts, getDevAnalyzeEnv } from "../../util";
+import { ChildProcess } from 'child_process';
+import { BaseTask, ITaskOptions } from './Base';
+import { TaskState, TaskEventType, TaskType } from '../enums';
+import { runCommand, parseScripts, getDevAnalyzeEnv } from '../../util';
 
 export class DevTask extends BaseTask {
   // 是否已经启动
   private started: boolean = false;
   // local url
-  private localUrl: string = "";
+  private localUrl: string = '';
   // lan url
-  private lanUrl: string = "";
+  private lanUrl: string = '';
   // 启动中也会有 hasError 的情况
   private hasError: boolean = false;
   // analyze port
@@ -33,10 +33,10 @@ export class DevTask extends BaseTask {
         env: {
           ...env, // 前端 env
           ...analyzeEnv, // analyze env
-          ...scriptEnvs // script 解析到的
-        }
+          ...scriptEnvs, // script 解析到的
+        },
       },
-      true
+      true,
     );
 
     this.handleChildProcess(this.proc);
@@ -56,7 +56,7 @@ export class DevTask extends BaseTask {
     }
 
     this.state = TaskState.INIT;
-    proc.kill("SIGTERM");
+    proc.kill('SIGTERM');
   }
 
   public async getDetail() {
@@ -67,34 +67,34 @@ export class DevTask extends BaseTask {
       lanUrl: this.lanUrl,
       progress: this.progress,
       hasError: this.hasError,
-      analyzePort: this.state === TaskState.SUCCESS ? this.analyzePort : null
+      analyzePort: this.state === TaskState.SUCCESS ? this.analyzePort : null,
     };
   }
 
   protected handleChildProcess(proc: ChildProcess) {
-    proc.on("message", msg => {
+    proc.on('message', msg => {
       this.updateState(msg);
     });
 
-    proc.stdout.setEncoding("utf8");
-    proc.stdout.on("data", log => {
+    proc.stdout.setEncoding('utf8');
+    proc.stdout.on('data', log => {
       this.emit(TaskEventType.STD_OUT_DATA, log);
     });
 
-    proc.stderr.setEncoding("utf8");
-    proc.stderr.on("data", log => {
+    proc.stderr.setEncoding('utf8');
+    proc.stderr.on('data', log => {
       this.emit(TaskEventType.STD_ERR_DATA, log);
     });
 
-    proc.on("exit", (code, signal) => {
+    proc.on('exit', (code, signal) => {
       this.state = code === 1 ? TaskState.FAIL : TaskState.INIT;
       (async () => {
         this.emit(TaskEventType.STATE_EVENT, await this.getDetail());
       })();
     });
 
-    process.on("exit", () => {
-      proc.kill("SIGTERM");
+    process.on('exit', () => {
+      proc.kill('SIGTERM');
     });
   }
 
@@ -108,12 +108,12 @@ export class DevTask extends BaseTask {
   private getScript(): { script: string; envs: object } {
     let res = parseScripts({
       pkgPath: this.pkgPath,
-      key: "start"
+      key: 'start',
     });
     if (!res.exist) {
       res = parseScripts({
         pkgPath: this.pkgPath,
-        key: "dev"
+        key: 'dev',
       });
     }
 
@@ -122,8 +122,8 @@ export class DevTask extends BaseTask {
     // No specified dev or start script
     if (!exist) {
       return {
-        script: this.isBigfishProject ? "bigfish dev" : "umi dev",
-        envs: []
+        script: this.isBigfishProject ? 'bigfish dev' : 'umi dev',
+        envs: [],
       };
     }
     // Parse script error
@@ -132,8 +132,8 @@ export class DevTask extends BaseTask {
     }
 
     return {
-      script: `${bin} ${args.join(" ")}`,
-      envs
+      script: `${bin} ${args.join(' ')}`,
+      envs,
     };
   }
 
@@ -144,13 +144,13 @@ export class DevTask extends BaseTask {
 
     const { type } = msg;
     switch (type) {
-      case "DONE":
+      case 'DONE':
         this.success(msg);
         break;
-      case "STARTING":
+      case 'STARTING':
         this.updateProgress(msg);
         break;
-      case "ERROR":
+      case 'ERROR':
         this.updateError();
         break;
       default:
@@ -165,7 +165,7 @@ export class DevTask extends BaseTask {
   }
 
   private success(msg) {
-    const { urls } = msg;
+    const { urls = {} } = msg;
     this.hasError = false;
     this.started = true;
     this.localUrl = urls.rawLocal;
@@ -178,8 +178,8 @@ export class DevTask extends BaseTask {
 
   private reset() {
     this.started = false;
-    this.localUrl = "";
-    this.lanUrl = "";
+    this.localUrl = '';
+    this.lanUrl = '';
     this.hasError = false;
     this.analyzePort = null;
     this.progress = 0;
