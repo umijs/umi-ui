@@ -64,14 +64,10 @@ function checkUiDist() {
 // check ui dist umd, or publish will be forbidden
 // checkUiDist();
 
-const cp = fork(
-  join(process.cwd(), 'node_modules/.bin/lerna'),
-  ['version', '--exact', '--no-commit-hooks', '--no-git-tag-version', '--no-push'],
-  {
-    stdio: 'inherit',
-    cwd: process.cwd(),
-  },
-);
+const cp = fork(join(process.cwd(), 'node_modules/.bin/lerna'), ['version'], {
+  stdio: 'inherit',
+  cwd: process.cwd(),
+});
 cp.on('error', err => {
   console.log(err);
 });
