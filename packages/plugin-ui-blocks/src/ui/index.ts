@@ -24,7 +24,11 @@ export default (api: IApiBlock) => {
   const getRouteComponents = (componentRoutes): string[] => {
     const getComponents = routes =>
       routes.reduce((memo, route) => {
-        if (route.component && !route.component.startsWith('()')) {
+        if (
+          route.component &&
+          !route.component.startsWith('()') &&
+          !route.component?.includes('node_modules')
+        ) {
           const routeComponent = route.component
             ?.replace('@@', paths.absTmpPath)
             ?.replace('@', paths.absSrcPath);
