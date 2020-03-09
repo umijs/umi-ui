@@ -4,6 +4,8 @@ import crequire from 'crequire';
 import upperCamelCase from 'uppercamelcase';
 import inquirer from 'inquirer';
 import { IApi } from '@umijs/types';
+import memFs from 'mem-fs';
+import editor from 'mem-fs-editor-async';
 import { winPath, mkdirp, semver, Mustache, rimraf, createDebug, Generator } from '@umijs/utils';
 import replaceContent from './replaceContent';
 import { SINGULAR_SENSLTIVE } from './constants';
@@ -185,8 +187,8 @@ export function getSingularName(name) {
 }
 
 export const getBlockGenerator = (api: IApi) => {
-  const { paths, config, applyPlugins } = api;
-  const blockConfig = config?.block || {};
+  const { paths, userConfig, applyPlugins } = api;
+  const blockConfig = userConfig?.block || {};
 
   return class BlockGenerator extends Generator {
     public isTypeScript;
@@ -205,10 +207,14 @@ export const getBlockGenerator = (api: IApi) => {
     public on;
     public prompt;
     public fs;
+    public store;
 
     constructor({ args, name }) {
       // @ts-ignore
       super({ args });
+
+      this.store = memFs.create();
+      this.fs = editor.create(this.store);
 
       this.isTypeScript = existsSync(join(args.env.cwd, 'tsconfig.json'));
       this.sourcePath = args.sourcePath;
@@ -226,25 +232,6 @@ export const getBlockGenerator = (api: IApi) => {
       // 这个参数是当前区块的目录
       this.blockFolderPath = join(paths.absPagesPath, this.path);
       this.routes = args.routes || [];
-    }
-
-    async copy(opts: { path: string; context?: object; target: string; process: any }) {
-      if (statSync(opts.path).isDirectory()) return;
-      if (opts.path.endsWith('.tpl')) {
-        this.copyTpl({
-          templatePath: opts.path,
-          target: join(opts.target, opts.path.replace(/\.tpl$/, '')),
-          context: opts.context,
-        });
-      } else {
-        // console.log(`${chalk.green('Copy: ')} ${file}`);
-        if (!existsSync(dirname(opts.target))) {
-          mkdirp.sync(dirname(opts.target));
-        }
-        debug('opts.target', opts.target);
-        const content = await opts.process(readFileSync(opts.path, 'utf-8'), opts.target);
-        writeFileSync(opts.target, content, 'utf-8');
-      }
     }
 
     async writing() {
@@ -409,7 +396,7 @@ export const getBlockGenerator = (api: IApi) => {
         }
         const process = async (content, itemTargetPath) => {
           content = String(content);
-          if (config.singular) {
+          if (userConfig.singular) {
             content = parseContentToSingular(content);
           }
           content = replaceContent(content, {
@@ -430,15 +417,14 @@ export const getBlockGenerator = (api: IApi) => {
 
         debug('folderPath', folderPath);
         if (existsSync(folderPath)) {
-          const files = readdirSync(folderPath);
           // eslint-disable-next-line no-restricted-syntax
-          for (let name of files) {
+          for (let name of readdirSync(folderPath)) {
             // ignore the dot files
             if (name.charAt(0) === '.') {
               return;
             }
             const thePath = join(folderPath, name);
-            if (statSync(thePath).isDirectory() && config.singular) {
+            if (statSync(thePath).isDirectory() && userConfig.singular) {
               // @/components/ => @/src/component/ and ./components/ => ./component etc.
               name = getSingularName(name);
             }
@@ -454,15 +440,10 @@ export const getBlockGenerator = (api: IApi) => {
               },
             });
             debug(`copy ${thePath} to ${realTarget}`);
-            debug('thePath', thePath);
             // eslint-disable-next-line no-await-in-loop
-            await this.copy({
-              path: thePath,
-              target: realTarget,
-              process,
-              context: {},
-            });
+            await this.fs.copy(thePath, realTarget, { process });
           }
+          this.fs.commit(() => {});
         }
       }
     }

@@ -73,7 +73,7 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
               env: {
                 cwd: api.cwd,
               },
-              routes: api.config.routes,
+              routes: api.userConfig.routes,
               resolved: latestPkgPath,
             },
           }).run();

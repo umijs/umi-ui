@@ -50,21 +50,21 @@ export default function({ success, payload, api, lang, failure }: IHandlerOpts) 
       message: {
         'zh-CN': isBigfish
           ? `${payloadType}依赖 dva，请开启 dva 配置。`
-          : `${payloadType}依赖 dva，请安装 umi-plugin-react 插件并开启 dva 。`,
+          : `${payloadType}依赖 dva，请安装 @umijs/plugin-locale 插件并开启 dva 。`,
         'en-US': isBigfish
           ? ''
-          : 'Block depends on dva, please install umi-plugin-react and enable dva.',
+          : 'Block depends on dva, please install @umijs/plugin-locale and enable dva.',
       },
     },
     i18n: {
-      enable: api.userConfig.locale && api.userConfig.locale.enable !== false,
+      enable: api.userConfig.locale,
       message: {
         'zh-CN': isBigfish
           ? `${payloadType}依赖 locale，请开启 locale 配置。`
-          : `${payloadType}依赖国际化（i18n），请安装 umi-plugin-react 插件并开启 locale 。`,
+          : `${payloadType}依赖国际化（i18n），请安装 @umijs/plugin-locale 插件并开启 locale 。`,
         'en-US': isBigfish
           ? ''
-          : 'Block depends on i18n, please install umi-plugin-react and enable locale.',
+          : 'Block depends on i18n, please install @umijs/plugin-locale and enable locale.',
       },
     },
   };
