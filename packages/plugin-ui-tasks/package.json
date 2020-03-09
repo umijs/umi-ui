@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugin-ui-tasks",
-  "version": "2.0.0-beta.3",
+  "version": "2.0.0",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
