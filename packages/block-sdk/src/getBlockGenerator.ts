@@ -262,17 +262,16 @@ export const getBlockGenerator = (api: IApi) => {
           throw new Error(`path ${this.path} already exist, press input a new path for it`);
         }
         // eslint-disable-next-line no-await-in-loop
-        this.path = (
-          await inquirer.prompt([
-            {
-              type: 'input',
-              name: 'path',
-              message: `path ${this.path} already exist, press input a new path for it`,
-              required: true,
-              default: this.path,
-            },
-          ])
-        ).path;
+        const prompt = await inquirer.prompt([
+          {
+            type: 'input',
+            name: 'path',
+            message: `path ${this.path} already exist, press input a new path for it`,
+            required: true,
+            default: this.path,
+          },
+        ]);
+        this.path = prompt.path;
         // fix demo => /demo
         const exp = /^\//;
         if (!exp.test(this.path)) {
@@ -290,17 +289,16 @@ export const getBlockGenerator = (api: IApi) => {
           );
         }
         // eslint-disable-next-line no-await-in-loop
-        this.routePath = (
-          await inquirer.prompt([
-            {
-              type: 'input',
-              name: 'routePath',
-              message: `router path ${this.routePath} already exist, press input a new path for it`,
-              required: true,
-              default: this.routePath,
-            },
-          ])
-        ).routePath;
+        const routePrompt = await inquirer.prompt([
+          {
+            type: 'input',
+            name: 'routePath',
+            message: `router path ${this.routePath} already exist, press input a new path for it`,
+            required: true,
+            default: this.routePath,
+          },
+        ]);
+        this.routePath = routePrompt.routePath;
         debug(`router path exist get new targetPath ${this.routePath}`);
       }
 
@@ -327,17 +325,16 @@ export const getBlockGenerator = (api: IApi) => {
       // if there is, prompt for a new block name
       while (!this.isPageBlock && existsSync(join(targetPath, this.blockFolderName))) {
         // eslint-disable-next-line no-await-in-loop
-        this.blockFolderName = (
-          await inquirer.prompt([
-            {
-              type: 'input',
-              name: 'path',
-              message: `block with name ${this.blockFolderName} already exist, please input a new name for it`,
-              required: true,
-              default: this.blockFolderName,
-            },
-          ])
-        ).path;
+        const blockFolderNamePrompt = await inquirer.prompt([
+          {
+            type: 'input',
+            name: 'path',
+            message: `block with name ${this.blockFolderName} already exist, please input a new name for it`,
+            required: true,
+            default: this.blockFolderName,
+          },
+        ]);
+        this.blockFolderName = blockFolderNamePrompt.path;
         debug('this.blockFolderName', this.blockFolderName);
         // if (!/^\//.test(blockFolderName)) {
         //   blockFolderName = `/${blockFolderName}`;
@@ -397,6 +394,7 @@ export const getBlockGenerator = (api: IApi) => {
       debug('start copy block file to your project...');
 
       // 替换 相对路径
+      // eslint-disable-next-line
       for (const folder of ['src', '@']) {
         if (!this.isPageBlock && folder === '@') {
           // @ folder not support anymore in new specVersion
@@ -433,6 +431,7 @@ export const getBlockGenerator = (api: IApi) => {
         debug('folderPath', folderPath);
         if (existsSync(folderPath)) {
           const files = readdirSync(folderPath);
+          // eslint-disable-next-line no-restricted-syntax
           for (let name of files) {
             // ignore the dot files
             if (name.charAt(0) === '.') {
@@ -443,6 +442,7 @@ export const getBlockGenerator = (api: IApi) => {
               // @/components/ => @/src/component/ and ./components/ => ./component etc.
               name = getSingularName(name);
             }
+            // eslint-disable-next-line no-await-in-loop
             const realTarget = await applyPlugins({
               key: '_modifyBlockTarget',
               type: api.ApplyPluginsType.modify,
@@ -455,6 +455,7 @@ export const getBlockGenerator = (api: IApi) => {
             });
             debug(`copy ${thePath} to ${realTarget}`);
             debug('thePath', thePath);
+            // eslint-disable-next-line no-await-in-loop
             await this.copy({
               path: thePath,
               target: realTarget,

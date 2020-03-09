@@ -8,20 +8,6 @@ export default (api: IApi) => {
   const { userConfig } = api;
   const blockConfig = userConfig?.block || {};
 
-  [
-    '_modifyBlockNewRouteConfig',
-    '_modifyBlockDependencies',
-    '_modifyBlockPackageJSONPath',
-    '_modifyBlockFile',
-    'beforeBlockWriting',
-    '_modifyBlockTarget',
-  ].forEach(name => {
-    api.registerMethod({
-      name,
-      exitsError: false,
-    });
-  });
-
   api.describe({
     key: 'block',
     config: {

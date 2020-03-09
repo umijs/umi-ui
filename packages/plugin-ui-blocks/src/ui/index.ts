@@ -10,22 +10,6 @@ export default (api: IApiBlock) => {
   const { utils, paths } = api;
   const { winPath, lodash } = utils;
 
-  [
-    'addBlockUIResource',
-    'modifyBlockUIResources',
-    '_modifyBlockNewRouteConfig',
-    '_modifyBlockDependencies',
-    '_modifyBlockPackageJSONPath',
-    '_modifyBlockFile',
-    'beforeBlockWriting',
-    '_modifyBlockTarget',
-  ].forEach(name => {
-    api.registerMethod({
-      name,
-      exitsError: false,
-    });
-  });
-
   // 客户端
   api.addUIPlugin(() => require.resolve('../../dist/index.umd'));
   // 服务端
