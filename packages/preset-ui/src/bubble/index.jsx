@@ -87,13 +87,15 @@ class App extends React.Component {
   addTemplate = () => {
     const el = document.getElementById('umi-ui-bubble');
     if (el && el.contentWindow) {
-      el.contentWindow.postMessage(
-        JSON.stringify({
-          action: 'umi.ui.block.addTemplate',
-          payload: this.messageMap.get('template'),
-        }),
-        '*',
-      );
+      if (this.messageMap.get('template')) {
+        el.contentWindow.postMessage(
+          JSON.stringify({
+            action: 'umi.ui.block.addTemplate',
+            payload: this.messageMap.get('template'),
+          }),
+          '*',
+        );
+      }
     }
   };
 
