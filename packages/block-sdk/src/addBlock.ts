@@ -14,7 +14,7 @@ import { gitClone, gitUpdate } from './util';
 import { installDependencies } from './installDependencies';
 
 const { merge } = lodash;
-const debug = createDebug('umi:block-sdk:addBlock');
+const debug = createDebug('umiui:block-sdk:addBlock');
 
 export interface CtxTypes {
   repo?: any;
@@ -270,7 +270,9 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
     },
   });
   try {
+    debug('addBlock - generator start');
     await generator.run();
+    debug('addBlock - generator end');
   } catch (e) {
     spinner.fail();
     throw new Error(e);
@@ -279,6 +281,7 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
   // write dependencies
   if (ctx.pkg.blockConfig && ctx.pkg.blockConfig.dependencies) {
     const subBlocks = ctx.pkg.blockConfig.dependencies;
+    debug('addBlock - write Dependencies');
     try {
       await Promise.all(
         subBlocks.map((block: string) => {
@@ -343,6 +346,7 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
     });
     try {
       if (!dryRun) {
+        debug('addBlock - writeNewRoute');
         writeNewRoute(newRouteConfig, configFile, paths.absSrcPath);
       }
     } catch (e) {
@@ -357,6 +361,7 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
     spinner.start(
       `Write block component ${generator.blockFolderName} import to ${generator.entryPath}`,
     );
+    debug('addBlock - appendBlockToContainer');
     try {
       appendBlockToContainer({
         entryPath: generator.entryPath,

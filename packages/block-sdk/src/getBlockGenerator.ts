@@ -234,7 +234,23 @@ export const getBlockGenerator = (api: IApi) => {
       this.routes = args.routes || [];
     }
 
-    async writing() {
+    run(): Promise<any> {
+      return new Promise((resolve, reject) => {
+        debug('run writing');
+        this.writing()
+          .then(() => {
+            debug('run commit');
+            this.fs.commit(() => {
+              resolve();
+            });
+          })
+          .catch(e => {
+            reject(e);
+          });
+      });
+    }
+
+    async writing(): Promise<void> {
       let targetPath = winPath(join(paths.absPagesPath, this.path));
       debug(`this.path`, this.path);
       debug(`get targetPath ${targetPath}`);
@@ -443,7 +459,6 @@ export const getBlockGenerator = (api: IApi) => {
             // eslint-disable-next-line no-await-in-loop
             await this.fs.copy(thePath, realTarget, { process });
           }
-          this.fs.commit(() => {});
         }
       }
     }

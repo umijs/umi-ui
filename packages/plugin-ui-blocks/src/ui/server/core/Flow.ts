@@ -1,4 +1,4 @@
-import { IApi } from 'umi';
+import { IApi, utils } from 'umi';
 import { ChildProcess } from 'child_process';
 import { EventEmitter } from 'events';
 import { IFlowContext } from './types';
@@ -7,6 +7,10 @@ import Logger from './Logger';
 import execa from '../util/exec';
 
 import { parseUrl, gitClone, gitUpdate, runGenerator, writeRoutes, install } from './tasks';
+
+const { createDebug } = utils;
+
+const debug = createDebug('umiui:plugin-ui-blocks:addBlock');
 
 class Flow extends EventEmitter {
   public api: IApi;
@@ -41,6 +45,7 @@ class Flow extends EventEmitter {
 
     // eslint-disable-next-line no-restricted-syntax
     for (const { name, task, state } of this.tasks) {
+      debug('Flow current task', name);
       // 用户取消任务
       if (this.isCancel) {
         hasBreak = true;
