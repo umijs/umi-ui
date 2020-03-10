@@ -20,12 +20,7 @@ describe('block interface socketHandlers test', () => {
         payload: {},
         api: {
           userConfig: {
-            plugins: [
-              'umi-plugin-react',
-              {
-                react: true,
-              },
-            ],
+            plugins: ['@umijs/preset-react'],
           },
         },
       };
@@ -40,12 +35,7 @@ describe('block interface socketHandlers test', () => {
         api: {
           userConfig: {
             routes: [],
-            plugins: [
-              'umi-plugin-react',
-              {
-                react: true,
-              },
-            ],
+            plugins: ['@umijs/preset-react'],
           },
         },
       };
@@ -65,12 +55,7 @@ describe('block interface socketHandlers test', () => {
           cwd: '/test/',
           userConfig: {
             routes: [{ path: '/', component: './Index' }],
-            plugins: [
-              'umi-plugin-react',
-              {
-                react: true,
-              },
-            ],
+            plugins: ['@umijs/preset-react'],
           },
         },
       };
@@ -95,14 +80,7 @@ describe('block interface socketHandlers test', () => {
           cwd: '/test/',
           userConfig: {
             routes: [{ path: '/', component: './Index' }],
-            plugins: [
-              [
-                'umi-plugin-react',
-                {
-                  react: true,
-                },
-              ],
-            ],
+            plugins: ['@umijs/preset-react'],
           },
         },
       };
@@ -121,15 +99,8 @@ describe('block interface socketHandlers test', () => {
           cwd: '/test/',
           userConfig: {
             routes: [{ path: '/', component: './Index' }],
-            plugins: [
-              [
-                'umi-plugin-react',
-                {
-                  react: true,
-                  dva: true,
-                },
-              ],
-            ],
+            dva: true,
+            plugins: ['@umijs/preset-react'],
           },
         },
       };
@@ -157,19 +128,14 @@ describe('block interface socketHandlers test', () => {
           cwd: '/test/',
           userConfig: {
             routes: [{ path: '/', component: './Index' }],
-            plugins: [
-              [
-                'umi-plugin-react',
-                {
-                  react: true,
-                },
-              ],
-            ],
+            plugins: ['@umijs/preset-react'],
           },
         },
       };
       checkIfCanAdd(params);
-      expect(params.failure.mock.calls[0][0].message).toMatch(/umi-plugin-react 插件并开启 locale/);
+      expect(params.failure.mock.calls[0][0].message).toMatch(
+        /@umijs\/preset-react 插件并开启 locale/,
+      );
 
       const params_0 = {
         success: jest.fn(),
@@ -232,9 +198,7 @@ describe('block interface socketHandlers test', () => {
           userConfig: {
             routes: [{ path: '/', component: './Index' }],
             react: true,
-            locale: {
-              enable: true,
-            },
+            locale: {},
           },
         },
       };
