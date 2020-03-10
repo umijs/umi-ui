@@ -73,7 +73,7 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
               env: {
                 cwd: api.cwd,
               },
-              routes: api.config.routes,
+              routes: api.userConfig.routes,
               resolved: latestPkgPath,
             },
           }).run();
@@ -85,6 +85,7 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
     }
   }
 
+  debug('Success generate files');
   logger.appendLog('🎉  Success generate files\n');
 
   // 调用 sylvanas 转化 ts
@@ -105,6 +106,7 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
   }
 
   ctx.stages.generator = generator;
+  debug('run_generator finish');
 };
 
 export default generatorFunc;

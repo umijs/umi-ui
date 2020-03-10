@@ -43,6 +43,7 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
     logger.appendLog(
       `🍽  Start write block component ${generator.blockFolderName} import to ${generator.entryPath}`,
     );
+    debug('writeRoutes appendBlockToContainer');
     try {
       appendBlockToContainer({
         entryPath: generator.entryPath,

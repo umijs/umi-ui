@@ -1,19 +1,7 @@
 import { IConfig } from '@umijs/types';
 export default {
-  treeShaking: true,
-  plugins: [
-    // ref: https://umijs.org/plugin/umi-plugin-react.html
-    [
-      'umi-plugin-react',
-      {
-        antd: false,
-        dva: false,
-        dynamicImport: false,
-        title: 'umi-ts',
-        dll: false,
-      }
-    ],
-  ],
+  title: 'umi-ts',
+  plugins: ['@umijs/preset-react'],
   routes: [
     {
       path: '/aa',
