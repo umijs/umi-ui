@@ -5,7 +5,7 @@ import { RawIntlProvider, createIntl, FormattedMessage } from 'react-intl';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import cls from 'classnames';
-import { useHistory } from 'umi';
+import { history } from 'umi';
 import 'moment/locale/zh-cn';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import event, { MESSAGES } from '@/message';
@@ -32,7 +32,6 @@ const Layout: React.FC<ILayoutProps> = props => {
   const [locale, setLocale] = useState<'zh-CN', 'en-US'>(() => getLocale());
   const [intl, setIntl] = useState(() => createIntl(localeInfo[locale]));
   const [theme, setTheme] = useState('dark');
-  const history = useHistory();
 
   const currentLocaleInfo = localeInfo[locale];
 
