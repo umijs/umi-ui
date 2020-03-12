@@ -80,26 +80,6 @@ export default (api: IApi) => {
         }
         break;
       }
-      case 'org.umi.dashboard.zaobao.list': {
-        try {
-          const { body = '{}' } = await got(
-            'https://cdn.jsdelivr.net/npm/umi-ui-rss/data/index.json',
-          );
-          success(JSON.parse(body));
-        } catch (e) {
-          console.error('zaobao.list error', e);
-          failure(e);
-        }
-        break;
-      }
-      case 'org.umi.dashboard.zaobao.list.detail': {
-        const { id } = payload;
-        const { body = '{}' } = await got(
-          `https://cdn.jsdelivr.net/npm/umi-ui-rss/data/detail/${id}.json`,
-        );
-        success(JSON.parse(body));
-        break;
-      }
       default:
         break;
     }

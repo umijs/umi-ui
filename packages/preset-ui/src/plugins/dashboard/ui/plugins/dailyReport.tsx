@@ -1,5 +1,4 @@
 import * as React from 'react';
-import useSWR from 'swr';
 import cls from 'classnames';
 import { List, Tag, Typography } from 'antd';
 import Context from '../context';
@@ -24,13 +23,11 @@ export const MESSAGES = {
 const DailyReport: React.SFC<{}> = props => {
   const { forceUpdate } = props;
   const { api } = React.useContext(Context);
-  const { _, event, useIntl } = api;
+  const { _, event, useIntl, hooks } = api;
+  const { useRequest } = hooks;
   const intl = useIntl();
   const [size, setSize] = React.useState(PAGE_SIZE);
-  const { data: list } = useSWR(
-    'zaobao.list',
-    api.request('https://cdn.jsdelivr.net/npm/umi-ui-rss/data/index.json'),
-  );
+  const { data } = useRequest('https://cdn.jsdelivr.net/npm/umi-ui-rss/data/index.json');
   const [currentId, setCurrentId] = useState();
 
   const changeCurrentId = newId => {
@@ -41,11 +38,11 @@ const DailyReport: React.SFC<{}> = props => {
   };
 
   useEffect(() => {
-    const id = _.get(list, '0.id');
+    const id = data?.data?.[0]?.id;
     if (id) {
       setCurrentId(id);
     }
-  }, [list]);
+  }, [data?.data]);
 
   useEffect(() => {
     event.on(MESSAGES.CHANGE_DAILY_ID, changeCurrentId);
@@ -54,24 +51,18 @@ const DailyReport: React.SFC<{}> = props => {
     };
   }, []);
 
-  const { data } = useSWR(
-    () => `zaobao.list.detail.${currentId}`,
-    async query => {
-      const id = Number(query.replace('zaobao.list.detail.', ''));
-      if (id) {
-        const res = await api.request(
-          `https://cdn.jsdelivr.net/npm/umi-ui-rss/data/detail/${id}.json`,
-        );
-        return res;
-      }
-    },
+  const { data: detail, loading, run } = useRequest(
+    () => `https://cdn.jsdelivr.net/npm/umi-ui-rss/data/detail/${currentId}.json`,
   );
 
   useEffect(() => {
-    forceUpdate();
-  }, [data]);
+    if (currentId) {
+      run();
+      forceUpdate();
+    }
+  }, [currentId]);
 
-  const length = Array.isArray(data) ? data.length : 0;
+  const length = Array.isArray(detail?.data) ? detail?.data?.length : 0;
 
   const handleLoadAll = () => {
     // load all
@@ -103,10 +94,10 @@ const DailyReport: React.SFC<{}> = props => {
   return (
     <List
       itemLayout="horizontal"
-      loading={!data}
+      loading={loading}
       className={styles.list}
       split={false}
-      dataSource={Array.isArray(data) ? data.slice(0, size) : data}
+      dataSource={Array.isArray(detail?.data) ? detail?.data?.slice(0, size) : detail?.data}
       loadMore={LoadMore}
       renderItem={item =>
         _.isPlainObject(item) && (
