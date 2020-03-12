@@ -1,6 +1,6 @@
 {
   "name": "@umijs/ui",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "main": "./lib/UmiUI.js",
   "files": [
     "lib",
