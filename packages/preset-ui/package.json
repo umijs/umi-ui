@@ -28,8 +28,7 @@
     "classnames": "^2.2.6",
     "decamelize": "3.2.0",
     "react-masonry-component": "^6.2.1",
-    "serialize-javascript": "^1.7.0",
-    "swr": "^0.1.8"
+    "serialize-javascript": "^1.7.0"
   },
   "repository": {
     "type": "git",
