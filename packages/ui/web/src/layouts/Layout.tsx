@@ -131,7 +131,7 @@ const Layout: React.FC<ILayoutProps> = props => {
           >
             <Helmet>
               <html lang={locale === 'zh-CN' ? 'zh' : 'en'} />
-              <title>Umi UI</title>
+              <title>{props.title ? intl.formatMessage({ id: props.title }) : 'Umi UI'}</title>
               <link rel="shortcut icon" href={icon} type="image/x-icon" />
             </Helmet>
             <ErrorBoundary>{props.children}</ErrorBoundary>

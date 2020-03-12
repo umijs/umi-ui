@@ -21,14 +21,7 @@ import BetaPlugin from './BetaPlugin';
 
 const { Content, Sider } = Layout;
 
-function getActivePanel(pathname) {
-  for (const panel of window.g_service.panels) {
-    if (panel.path === pathname) {
-      return panel;
-    }
-  }
-  return null;
-}
+const getActivePanel = pathname => window.g_service.panels.find(panel => panel.path === pathname);
 
 const DefaultProvider = props => <div {...props}>{props.children}</div>;
 
@@ -70,7 +63,7 @@ export default withRouter(props => {
     }
   };
 
-  const title = activePanel.title || '';
+  const panelTitle = activePanel.title || '';
   const { panels } = window.g_service;
   const normalPanels = panels.filter(panel => !panel.beta);
   const betaPanels = panels.filter(panel => panel.beta);
@@ -78,7 +71,7 @@ export default withRouter(props => {
   const { headerTitle, path = '/' } = activePanel;
 
   return (
-    <UiLayout type="detail" title={<FormattedMessage id={title} />}>
+    <UiLayout type="detail" title={panelTitle}>
       <Context.Consumer>
         {({ currentProject, theme, isMini, formatMessage, locale, basicUI }) => {
           const openEditor = async () => {

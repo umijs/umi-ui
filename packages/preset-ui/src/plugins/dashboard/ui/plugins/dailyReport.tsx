@@ -51,7 +51,6 @@ const DailyReport: React.SFC<{}> = props => {
     };
   }, []);
 
-  console.log('currentId', currentId);
   const { data: detail, loading, run } = useRequest(
     () => `https://cdn.jsdelivr.net/npm/umi-ui-rss/data/detail/${currentId}.json`,
   );
