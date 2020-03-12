@@ -447,8 +447,8 @@ export default class UmiUI {
         clearModule(creatorPath);
         await require(creatorPath).run({
           cwd: targetDir,
-          type: createOpts.type,
-          args: createOpts.args,
+          type: createOpts.type || {},
+          args: createOpts.args || {},
         });
         setProgress({
           stepStatus: 2,
