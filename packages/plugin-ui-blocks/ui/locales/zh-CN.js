@@ -24,6 +24,7 @@ export default {
   'org.umi.ui.blocks.adder.stop.okText': '确认',
   'org.umi.ui.blocks.adder.stop.cancelText': '取消',
   'org.umi.ui.blocks.adder.js': '编译为 JS',
+  'org.umi.ui.blocks.adder.branch': '选择依赖版本',
   'org.umi.ui.blocks.adder.uni18n': '移除国际化',
   'org.umi.ui.blocks.adder.npmClient': '包管理器',
   'org.umi.ui.blocks.adder.npmClient.required': '请选择包管理器',
