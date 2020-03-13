@@ -153,14 +153,14 @@ $ yarn build -w
 $ yarn ui:build -w
 ```
 
-启动 example 测试项目：
+进入 `cd example/app` 测试项目：
 
 ```bash
 # 第三个终端
 # 仓库调试带上了 BABEL_CACHE=none DEBUG=umiui*
-$ yarn dev
-🚀 Starting Umi UI using umi...
-⛽️ Ready on http://localhost:3000/
+$ yarn start
+🚀 Starting Umi UI using umi@3.0.1...
+🌈 Umi UI mini Ready on port 3000
 ```
 
 访问 [http://localhost:3000](http://localhost:3000) 就是 Umi UI。
