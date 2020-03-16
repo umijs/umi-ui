@@ -342,22 +342,6 @@ const Adder: React.FC<AdderProps> = props => {
         {blockType === 'block' && api.isMini() && (
           <AddBlockFormForUI form={form} blockTarget={blockTarget} />
         )}
-
-        {blockType === 'template' && (
-          <Form.Item
-            name="branch"
-            label={intl({ id: 'org.umi.ui.blocks.adder.branch' })}
-            valuePropName="checked"
-            style={{ display: 'none' }}
-          >
-            <Select>
-              <Select.Option value="master">latest</Select.Option>
-              <Select.Option value="umi@3">umi@3</Select.Option>
-              <Select.Option value="antd@3">antd@3</Select.Option>
-            </Select>
-          </Form.Item>
-        )}
-
         <Form.Item
           name="js"
           label={intl({ id: 'org.umi.ui.blocks.adder.js' })}
