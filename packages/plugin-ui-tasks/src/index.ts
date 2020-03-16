@@ -1,8 +1,10 @@
 import { join } from 'path';
-import { IApi } from 'umi';
+import { IApi, utils } from 'umi';
 import server from './server';
 
+const { winPath } = utils;
+
 export default (api: IApi) => {
-  api.addUIPlugin(() => join(__dirname, '../dist/index.umd.js'));
+  api.addUIPlugin(() => join(winPath(__dirname), '../dist/index.umd.js'));
   server(api);
 };
