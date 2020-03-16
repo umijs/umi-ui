@@ -377,7 +377,7 @@ export const getBlockGenerator = (api: IApi) => {
 
         this.needCreateNewRoute = true;
         debug('blockConfig.entryTemplatePath', blockConfig.entryTemplatePath);
-        const defaultBlockEntryTplPath = join(__dirname, 'blockEntry.js.tpl');
+        const defaultBlockEntryTplPath = join(winPath(__dirname), 'blockEntry.js.tpl');
         const blockEntryTpl = readFileSync(
           blockConfig.entryTemplatePath || defaultBlockEntryTplPath,
           'utf-8',
@@ -424,10 +424,10 @@ export const getBlockGenerator = (api: IApi) => {
             initialValue: content,
             args: {
               blockPath,
-              targetPath: itemTargetPath,
+              targetPath: winPath(itemTargetPath),
             },
           });
-          debug('itemTargetPath', itemTargetPath);
+          debug('itemTargetPath', winPath(itemTargetPath));
           return blockFile;
         };
 
@@ -457,7 +457,7 @@ export const getBlockGenerator = (api: IApi) => {
             });
             debug(`copy ${thePath} to ${realTarget}`);
             // eslint-disable-next-line no-await-in-loop
-            await this.fs.copy(thePath, realTarget, { process });
+            await this.fs.copy(winPath(thePath), winPath(realTarget), { process });
           }
         }
       }
