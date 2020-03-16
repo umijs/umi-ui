@@ -841,16 +841,16 @@ export default class UmiUI {
         try {
           const notifier = require('node-notifier');
           const buildInImages = {
-            error: resolve(__dirname, 'assets', 'error.png'),
-            info: resolve(__dirname, 'assets', 'info.png'),
-            success: resolve(__dirname, 'assets', 'success.png'),
-            warning: resolve(__dirname, 'assets', 'warning.png'),
+            error: winPath(resolve(__dirname, 'assets', 'error.png')),
+            info: winPath(resolve(__dirname, 'assets', 'info.png')),
+            success: winPath(resolve(__dirname, 'assets', 'success.png')),
+            warning: winPath(resolve(__dirname, 'assets', 'warning.png')),
           };
           const { type, ...restPayload } = payload;
           const noticeConfig = {
             ...restPayload,
             contentImage: buildInImages[type] || buildInImages.info,
-            icon: resolve(__dirname, 'assets', 'umi.png'),
+            icon: winPath(resolve(__dirname, 'assets', 'umi.png')),
             sound: true,
           };
           notifier.notify(noticeConfig);
