@@ -38,7 +38,6 @@ const clone = async (ctx: IFlowContext, args: IAddBlockOption) => {
     });
   } catch (e) {
     logger.appendLog(`Faild git checkout: ${e.message}\n`);
-    throw new Error(e);
   }
 
   logger.appendLog(`🎉  Success git checkout ${branch}\n`);
