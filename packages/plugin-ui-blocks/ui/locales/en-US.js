@@ -24,6 +24,7 @@ export default {
   'org.umi.ui.blocks.adder.stop.okText': 'Confirm',
   'org.umi.ui.blocks.adder.stop.cancelText': 'Cancle',
   'org.umi.ui.blocks.adder.js': 'Transform to JS',
+  'org.umi.ui.blocks.adder.branch': 'Choosing a technology',
   'org.umi.ui.blocks.adder.uni18n': 'Remove i18n',
   'org.umi.ui.blocks.adder.npmClient': 'Package Manage Client',
   'org.umi.ui.blocks.adder.npmClient.required': 'Please select a package manage client',

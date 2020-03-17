@@ -80,6 +80,35 @@ export const urlAddGit = url => {
   return `${url}.git`;
 };
 
+/**
+ * 默认返回 master
+ * master 是 umi@2 和 antd@4
+ * umi@3&antd@3 和 antd@3 和 umi@3
+ * umi@3 是 umi@3 和 antd@4
+ * @param ref
+ */
+const getAntdVersion = (ref: string) => {
+  try {
+    const { version } = require('antd');
+    // antd@3 和 umi@3 的分支
+    if (version.startsWith(3) && ref === 'umi@3') {
+      return 'antd@3&umi@3';
+    }
+    // antd@3 且 umi@2 的分支
+    if (version.startsWith(3) && ref === 'master') {
+      return 'antd@3';
+    }
+  } catch (error) {
+    // console.log(error)
+  }
+
+  if (process.env.BLOCK_REPO_BRANCH) {
+    return process.env.BLOCK_REPO_BRANCH;
+  }
+
+  return ref;
+};
+
 export async function parseGitUrl(url, closeFastGithub) {
   const args = GitUrlParse(url);
   const { ref, filepath, resource, full_name: fullName } = args;
@@ -94,7 +123,8 @@ export async function parseGitUrl(url, closeFastGithub) {
 
   return {
     repo: urlAddGit(repo),
-    branch: ref || 'master',
+    // 当 name = ant-design/pro-blocks 时，应该使用 umi@3 分支的区块
+    branch: getAntdVersion(fullName === 'ant-design/pro-blocks' ? 'umi@3' : ref) || 'master',
     path: `/${filepath}`,
     id: `${resource}/${fullName}`, // 唯一标识一个 git 仓库
   };

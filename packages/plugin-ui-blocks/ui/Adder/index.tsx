@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { IUiApi } from '@umijs/ui-types';
-import { Modal, Switch, Select, Form, message } from 'antd';
+import { Modal, Select, Switch, Form, message } from 'antd';
 
 import upperCamelCase from 'uppercamelcase';
 
@@ -342,7 +342,6 @@ const Adder: React.FC<AdderProps> = props => {
         {blockType === 'block' && api.isMini() && (
           <AddBlockFormForUI form={form} blockTarget={blockTarget} />
         )}
-
         <Form.Item
           name="js"
           label={intl({ id: 'org.umi.ui.blocks.adder.js' })}
@@ -351,6 +350,7 @@ const Adder: React.FC<AdderProps> = props => {
         >
           <Switch size="small" />
         </Form.Item>
+
         {blockType === 'template' && (
           <Form.Item
             name="uni18n"
