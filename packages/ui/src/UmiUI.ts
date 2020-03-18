@@ -3,9 +3,8 @@ import assert from 'assert';
 import emptyDir from 'empty-dir';
 import express from 'express';
 import http from 'http';
-import url from 'url';
 import compression from 'compression';
-import clearModule from 'clear-module';
+
 import sockjs from 'sockjs';
 import { join, resolve, dirname, isAbsolute } from 'path';
 import launchEditor from '@umijs/launch-editor';
@@ -14,6 +13,11 @@ import { existsSync, readFileSync, statSync } from 'fs';
 import { execSync } from 'child_process';
 import { utils, Service } from 'umi';
 import resolveFrom from 'resolve-from';
+
+import indexRoute from './routes/index';
+import commonRoute from './routes/common';
+import resizeRoute from './routes/resize';
+
 import Config from './Config';
 import getClientScript, { getBasicScriptContent } from './getClientScript';
 import listDirectory from './listDirectory';
@@ -22,21 +26,35 @@ import { installDeps } from './npmClient';
 import ActiveProjectError from './ActiveProjectError';
 import { BackToHomeAction, OpenProjectAction, ReInstallDependencyAction } from './Actions';
 import { isDepLost, isPluginLost, isUmiProject, isUsingBigfish, isUsingUmi } from './checkProject';
-import getScripts from './scripts';
 import isDepFileExists from './utils/isDepFileExists';
-import initTerminal, { resizeTerminal } from './terminal';
+import initTerminal from './terminal';
 import detectLanguage from './detectLanguage';
 import detectNpmClients from './detectNpmClients';
 import debug, { debugSocket } from './debug';
 
-const { winPath, lodash, got, semver, portfinder, rimraf, chalk } = utils;
+const { winPath, lodash, semver, portfinder, rimraf, chalk } = utils;
 const { pick, uniq } = lodash;
+
+export interface IContext {
+  /** 是否打开浏览器 */
+  browser: boolean;
+  /** 完整版 */
+  full: boolean;
+  cwd: string;
+  developMode: boolean;
+  npmClients: string[];
+  config: InstanceType<typeof Config>;
+  basicUIPath: string;
+  servicesByKey: any;
+  logs: string[];
+}
 
 export default class UmiUI {
   cwd: string;
   servicesByKey: {
     [key: string]: Service;
   };
+  ctx: Partial<IContext>;
   server: any;
   socketServer: any;
   logs: any;
@@ -66,7 +84,17 @@ export default class UmiUI {
         }
       },
     });
+    this.npmClients = [];
     this.logs = [];
+    this.ctx = {
+      cwd: process.cwd(),
+      developMode: !!process.env.DEVELOP_MODE,
+      config: this.config,
+      basicUIPath: this.basicUIPath,
+      servicesByKey: this.servicesByKey,
+      npmClients: this.npmClients,
+      logs: this.logs,
+    };
     this.developMode = !!process.env.DEVELOP_MODE;
 
     if (process.env.CURRENT_PROJECT) {
@@ -514,35 +542,14 @@ export default class UmiUI {
   }
 
   initNpmClients() {
-    const ret = [];
-    try {
-      execSync('tnpm --version', { stdio: 'ignore' });
-      ret.push('tnpm');
-    } catch (e) {}
-    try {
-      execSync('cnpm --version', { stdio: 'ignore' });
-      ret.push('cnpm');
-    } catch (e) {}
-    try {
-      execSync('npm --version', { stdio: 'ignore' });
-      ret.push('npm');
-    } catch (e) {}
-    try {
-      execSync('ayarn --version', { stdio: 'ignore' });
-      ret.push('ayarn');
-    } catch (e) {}
-    try {
-      execSync('tyarn --version', { stdio: 'ignore' });
-      ret.push('tyarn');
-    } catch (e) {}
-    try {
-      execSync('yarn --version', { stdio: 'ignore' });
-      ret.push('yarn');
-    } catch (e) {}
-    try {
-      execSync('pnpm --version', { stdio: 'ignore' });
-      ret.push('pnpm');
-    } catch (e) {}
+    const ret = ['tnpm', 'cnpm', 'npm', 'ayarn', 'tyarn', 'yarn'].filter(npmClient => {
+      try {
+        execSync(`${npmClient} --version`, { stdio: 'ignore' });
+        return true;
+      } catch (e) {}
+      return false;
+    });
+    debug('ret', ret);
 
     this.npmClients = ret;
   }
@@ -592,7 +599,7 @@ export default class UmiUI {
 
   // reloadProject(key: string) {}
 
-  handleCoreData({ type, payload, lang, key }, { log, send, success, failure, progress }) {
+  async handleCoreData({ type, payload, lang, key }, { log, send, success, failure, progress }) {
     switch (type) {
       case '@@project/getBasicAssets':
         success(this.getBasicAssets());
@@ -650,17 +657,15 @@ export default class UmiUI {
         break;
       case '@@project/open': {
         log('info', `Open project: ${this.getProjectName(payload.key)}`);
-        (async () => {
-          try {
-            await this.openProject(payload.key, null, {
-              lang,
-            });
-            success();
-          } catch (e) {
-            failure(pick(e, ['title', 'message', 'stack', 'actions', 'exception']));
-            console.error(chalk.red(`Error: Attach Project of key ${payload.key} FAILED`));
-          }
-        })();
+        try {
+          await this.openProject(payload.key, null, {
+            lang,
+          });
+          success();
+        } catch (e) {
+          failure(pick(e, ['title', 'message', 'stack', 'actions', 'exception']));
+          console.error(chalk.red(`Error: Attach Project of key ${payload.key} FAILED`));
+        }
         break;
       }
       case '@@project/openInEditor':
@@ -867,22 +872,18 @@ export default class UmiUI {
     }
   }
 
-  async start(opts?: {
-    /** 是否打开浏览器 */
-    browser: boolean;
-    /** 完整版 */
-    full: boolean;
-  }): Promise<{ server: http.Server; port: string | number }> {
+  async start(
+    opts?: Pick<IContext, 'browser' | 'full'>,
+  ): Promise<{ server: http.Server; port: string | number }> {
     const { browser, full = false } = opts || {};
+    this.ctx.full = full;
+    this.ctx.browser = browser;
+
     return new Promise(async (resolve, reject) => {
       console.log(`🚀 Starting Umi UI using umi@${process.env.UMI_VERSION}...`);
 
       const app = express();
       app.use(compression());
-
-      // Index Page
-      let content = null;
-
       // Serve Static (Production Only)
       if (!process.env.LOCAL_DEBUG) {
         app.use(
@@ -891,105 +892,13 @@ export default class UmiUI {
           }),
         );
       }
-
       /**
        * Terminal shell resize server
        */
-      app.get('/terminal/resize', async (req, res) => {
-        const rows = parseInt(req.query.rows || 30);
-        const cols = parseInt(req.query.cols || 180);
-        try {
-          resizeTerminal({ rows, cols });
-          res.send({
-            success: true,
-            rows,
-            cols,
-          });
-        } catch (_) {}
-      });
-
+      app.get('/terminal/resize', resizeRoute(this.ctx));
       // 访问域名打开
-      app.get('/', async (req, res) => {
-        if (full) {
-          return res.status(302).redirect(
-            url.format({
-              pathname: '/project/select',
-              query: req.query,
-            }),
-          );
-        }
-        const isMini = 'mini' in req.query;
-        debug('isMini', isMini);
-        const { data } = this.config;
-        if (isMini || data.currentProject) {
-          return res.status(302).redirect(
-            url.format({
-              pathname: isMini ? '/blocks' : '/dashboard',
-              query: req.query,
-            }),
-          );
-        }
-        return res.status(302).redirect(
-          url.format({
-            pathname: '/project/select',
-            query: req.query,
-          }),
-        );
-      });
-
-      app.use('/*', async (req, res) => {
-        const scripts = await getScripts();
-        const localeDebug = !existsSync(join(__dirname, '../web/dist/index.html'));
-        if (localeDebug) {
-          try {
-            const { body } = await got(`http://localhost:8002${req.path}`);
-            res.set('Content-Type', 'text/html');
-            res.send(normalizeHtml(body, scripts));
-          } catch (e) {
-            console.error(e);
-          }
-        } else {
-          if (!content) {
-            content = readFileSync(join(__dirname, '../web/dist/index.html'), 'utf-8');
-          }
-          res.send(normalizeHtml(content, scripts));
-        }
-      });
-
-      // 添加埋点脚本
-      function normalizeHtml(html, scripts) {
-        const { bigfishScripts, umiScripts } = scripts;
-        // basementMonitor
-        html = html.replace(
-          '<head>',
-          '<head><meta name="bm_app_id" content="5d68ffc1d46d8743e5445b68">',
-        );
-        html = html.replace(
-          '<body>',
-          `<body>\n<script>window.g_umi = { version: "${process.env.UMI_VERSION || ''}"};</script>`,
-        );
-        if (process.env.BIGFISH_COMPAT) {
-          html = html.replace(
-            '<body>',
-            `<body>\n<script>window.g_bigfish = { version: "${process.env.BIGFISH_VERSION ||
-              ''}" };</script>`,
-          );
-        }
-
-        // not local dev and not test env
-        if (!process.env.LOCAL_DEBUG && !process.env.UMI_UI_TEST) {
-          const headScript = process.env.BIGFISH_COMPAT
-            ? bigfishScripts.head.join('\n')
-            : umiScripts.head.join('\n');
-          html = html.replace('</head>', `${headScript}</head>`);
-
-          const footScript = process.env.BIGFISH_COMPAT
-            ? bigfishScripts.foot.join('\n')
-            : umiScripts.foot.join('\n');
-          html = html.replace('</body>', `${footScript}</body>`);
-        }
-        return html;
-      }
+      app.get('/', indexRoute(this.ctx));
+      app.use('/*', commonRoute(this.ctx));
 
       const ss = sockjs.createServer();
 
@@ -1072,7 +981,7 @@ export default class UmiUI {
             }
 
             if (type.startsWith('@@')) {
-              this.handleCoreData(
+              await this.handleCoreData(
                 { type, payload, lang, key },
                 {
                   log,
