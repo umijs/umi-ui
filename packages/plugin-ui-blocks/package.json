@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugin-ui-blocks",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "blocks ui",
   "main": "lib/index.js",
   "files": [
