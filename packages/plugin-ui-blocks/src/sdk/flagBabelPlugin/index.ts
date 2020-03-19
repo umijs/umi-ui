@@ -131,7 +131,7 @@ export default () => {
         // 只处理 import 的声明
         if (!t.isImportDeclaration(p.parentPath.node)) return;
 
-        if (source.value === 'react-document-title') {
+        if (['react-document-title', 'react-intl'].includes(source.value)) {
           return true;
         }
 
