@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "start": "BABEL_CACHE=none DEBUG=umiui* umi dev",
+    "start": "BABEL_CACHE=none DEBUG=*umiui* umi dev",
     "build": "umi build",
     "test": "umi test",
     "lint": "eslint {src,mock,tests}/**/*.{ts,tsx} --fix",

@@ -132,6 +132,39 @@ export const DEFAULT_RESOURCES: Resource[] = [
       }),
   },
   {
+    id: 'umi-test',
+    name: 'Umi Community',
+    resourceType: 'custom',
+    description: '来自 测试区块',
+    blockType: 'block',
+    icon: 'https://img.alicdn.com/tfs/TB1HMEpmuH2gK0jSZFEXXcqMpXa-64-64.png',
+    getData: async () => ({
+      type: 'BLOCK',
+      data: [
+        {
+          name: 'Demo',
+          description: 'Demo block of umi, with antd.',
+          files: {
+            'index.tsx':
+              "import React from 'react';\nimport { Button } from 'antd';\nimport styles from './index.less';\n\nexport default () => {\n  return <Button className={styles.container}>Hello UmiJS!</Button>;\n};",
+            'index.less': '.container {\n  color: blue;\n}',
+          },
+          dependencies: {
+            antd: '^3.10.9',
+          },
+          peerDependencies: {
+            umi: '^3.0.0',
+          },
+          tags: [],
+          img: 'https://github.com/umijs/umi-blocks/blob/master/blocks/demo/snapshot.png?raw=true',
+          previewUrl: '',
+          features: ['antd'],
+          category: '脚手架',
+        },
+      ],
+    }),
+  },
+  {
     id: 'umi-blocks-template',
     name: 'Umi Community',
     resourceType: 'custom',

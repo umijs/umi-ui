@@ -6,20 +6,28 @@ import { existsSync } from 'fs';
 import getNpmRegistry from 'getnpmregistry';
 import { getParsedData, makeSureMaterialsTempPathExist } from '@umijs/block-sdk';
 
-import { IFlowContext, IAddBlockOption, ICtxTypes } from '../types';
+import { IFlowContext, IAddBlockOption, ICtxTypes } from '../../types';
 
 const { lodash, createDebug } = utils;
 
 const debug = createDebug('umiui:UmiUI:block:tasks');
 
-async function getCtx(url, args: IAddBlockOption = {}, api: IApi): Promise<ICtxTypes> {
+async function getCtx({
+  args = {},
+  api,
+}: {
+  args: IAddBlockOption;
+  api: IApi;
+}): Promise<ICtxTypes> {
+  const { url } = args;
   const { config } = api;
-  debug(`get url ${url}`);
 
   const ctx: ICtxTypes = await getParsedData(url, {
     ...(config.block || {}),
     ...args,
   });
+
+  debug('getCtx', ctx);
 
   if (!ctx.isLocal) {
     const blocksTempPath = makeSureMaterialsTempPathExist(args.dryRun);
@@ -41,6 +49,11 @@ async function getCtx(url, args: IAddBlockOption = {}, api: IApi): Promise<ICtxT
   return ctx;
 }
 
+/**
+ * 解析 url，
+ * @param ctx
+ * @param args
+ */
 const parseUrl = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { url } = args;
   ctx.logger.setId(url); // 设置这次 flow 的 log trace id
@@ -55,14 +68,15 @@ const parseUrl = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const useYarn = existsSync(join(paths.cwd, 'yarn.lock'));
   const defaultNpmClient = blockConfig.npmClient || (useYarn ? 'yarn' : 'npm');
   const registryUrl = await getNpmRegistry();
-  const blockCtx = await getCtx(
-    url,
-    {
+  const blockCtx = await getCtx({
+    args: {
       ...args,
       npmClient: args.npmClient || defaultNpmClient,
     },
-    ctx.api,
-  );
+    api: ctx.api,
+  });
+
+  debug('blockCtx', blockCtx);
 
   ctx.stages.blockCtx = blockCtx;
   ctx.stages.registry = args.registry || registryUrl;

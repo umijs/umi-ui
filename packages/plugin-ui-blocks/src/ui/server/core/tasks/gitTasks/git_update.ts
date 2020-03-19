@@ -3,7 +3,7 @@ import { utils } from 'umi';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { getNameFromPkg } from '@umijs/block-sdk';
-import { IFlowContext, ICtxTypes, IAddBlockOption } from '../types';
+import { IFlowContext, ICtxTypes, IAddBlockOption } from '../../types';
 
 const { winPath } = utils;
 

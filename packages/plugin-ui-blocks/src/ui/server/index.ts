@@ -1,10 +1,12 @@
 import { join } from 'path';
 import { readdirSync } from 'fs';
-import { IApi } from 'umi';
+import { IApi, utils } from 'umi';
 import { Resource } from '@umijs/block-sdk/lib/data.d';
 import { ILang } from '@umijs/ui-types';
 import Block from './core/Block';
 import { DEFAULT_RESOURCES } from './util';
+
+const { winPath } = utils;
 
 export interface IHandlerOpts {
   success: (res: any) => void;
@@ -39,7 +41,7 @@ export default (api: IApi) => {
     blockService.init(send);
     const { type, payload = {}, lang } = action;
 
-    const dir = join(__dirname, 'socketHandlers');
+    const dir = winPath(join(__dirname, 'socketHandlers'));
     const files = readdirSync(dir)
       .filter(f => f.charAt(0) !== '.')
       .map(f => f.replace(/\.(js|ts)$/, ''));

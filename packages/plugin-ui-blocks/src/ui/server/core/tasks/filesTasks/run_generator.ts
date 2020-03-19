@@ -1,7 +1,7 @@
 import { utils } from 'umi';
 import { join } from 'path';
 import { getBlockGenerator, getNameFromPkg } from '@umijs/block-sdk';
-import { IFlowContext, IAddBlockOption } from '../types';
+import { IFlowContext, IAddBlockOption } from '../../types';
 
 const { winPath, createDebug } = utils;
 

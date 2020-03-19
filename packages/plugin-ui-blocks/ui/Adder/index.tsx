@@ -215,7 +215,7 @@ const Adder: React.FC<AdderProps> = props => {
     }
   }, [index]);
 
-  if (!block || !block.url) {
+  if (!block || (!block.url && !block.files)) {
     return null;
   }
 
@@ -302,6 +302,7 @@ const Adder: React.FC<AdderProps> = props => {
               const params: AddBlockParams = {
                 ...values,
                 url: block.url,
+                files: block.files,
                 path: await getPathFromFilename(api, values.path),
                 routePath: blockType === 'template' ? values.routePath : undefined,
                 page: blockType === 'template',
@@ -338,9 +339,10 @@ const Adder: React.FC<AdderProps> = props => {
         }}
       >
         {blockType === 'template' && <AddTemplateForm visible={visible} blockType={blockType} />}
-        {blockType === 'block' && !api.isMini() && <AddBlockForm form={form} visible={visible} />}
-        {blockType === 'block' && api.isMini() && (
+        {blockType === 'block' && api.isMini() ? (
           <AddBlockFormForUI form={form} blockTarget={blockTarget} />
+        ) : (
+          <AddBlockForm form={form} visible={visible} />
         )}
         <Form.Item
           name="js"

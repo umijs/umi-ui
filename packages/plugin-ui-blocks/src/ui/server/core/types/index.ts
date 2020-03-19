@@ -14,6 +14,9 @@ export interface IAddBlockOption {
   _?: string[];
   // 区块的名称和安装的地址
   url?: string;
+  files?: {
+    [key: string]: string;
+  };
   // 安装区块需要的分支
   branch?: string;
 
@@ -69,4 +72,11 @@ export interface ICtxTypes {
   pkg?: { blockConfig: { [key: string]: any } };
 
   blocksTempPath?: string;
+}
+
+export interface ICtxFilesTypes {
+  routePath?: string;
+  isLocal?: boolean;
+  filePath?: string;
+  npmClient?: string;
 }

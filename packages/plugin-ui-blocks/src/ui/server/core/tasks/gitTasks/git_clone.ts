@@ -1,4 +1,4 @@
-import { IFlowContext, ICtxTypes } from '../types';
+import { IFlowContext, ICtxTypes } from '../../types';
 
 const clone = async (ctx: IFlowContext) => {
   const { logger, execa } = ctx;

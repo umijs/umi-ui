@@ -5,12 +5,16 @@ import { homedir } from 'os';
 import GitUrlParse from 'git-url-parse';
 import { getFastGithub } from './util';
 
-const debug = createDebug('umi-build-dev:MaterialDownload');
+const debug = createDebug('umi:umiui:MaterialDownload');
 const spawnSync = spawn.sync;
 
+/**
+ * 确保资产的临时路径存在
+ * @param dryRun 确认存在
+ */
 export function makeSureMaterialsTempPathExist(dryRun) {
   const userHome = process.env.NODE_ENV === 'test' ? '/Users/test' : homedir();
-  const blocksTempPath = join(userHome, '.umi/blocks');
+  const blocksTempPath = join(userHome, '.umi3/blocks');
   if (dryRun) {
     return blocksTempPath;
   }
@@ -21,6 +25,14 @@ export function makeSureMaterialsTempPathExist(dryRun) {
   return blocksTempPath;
 }
 
+/**
+ * 从 url git 中下载到本地临时目录
+ * @param url
+ * @param id
+ * @param branch
+ * @param log
+ * @param args
+ */
 export function downloadFromGit(url, id, branch = 'master', log, args: any = {}) {
   const { dryRun } = args;
   const blocksTempPath = makeSureMaterialsTempPathExist(dryRun);
@@ -64,6 +76,7 @@ export function downloadFromGit(url, id, branch = 'master', log, args: any = {})
 // or http://gitlab.alitest-inc.com/bigfish/testblocks
 // or https://github.com/umijs/umi-blocks/tree/master/demo
 // or https://github.com/alibaba/ice/tree/master/react-blocks/blocks/AbilityIntroduction
+// eslint-disable-next-line no-useless-escape
 const gitSiteParser = /^(https\:\/\/|http\:\/\/|git\@)((github|gitlab)[\.\w\-]+|(?:(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))(\/|\:)([\w\-]+)\/([\w\-]+)(\/tree\/([\w\.\-]+)([\w\-\/]+))?(.git)?$/;
 export function isGitUrl(url) {
   return gitSiteParser.test(url);
@@ -130,6 +143,11 @@ export async function parseGitUrl(url, closeFastGithub) {
   };
 }
 
+/**
+ * 解析 url => 分支、repo
+ * @param url
+ * @param blockConfig
+ */
 export async function getParsedData(url, blockConfig) {
   debug(`url: ${url}`);
   let realUrl;
@@ -137,9 +155,11 @@ export async function getParsedData(url, blockConfig) {
   if (isGitUrl(url)) {
     realUrl = url;
     debug('is git url');
+    // eslint-disable-next-line no-useless-escape
   } else if (/^[\w]+[\w\-\/]*$/.test(url)) {
     realUrl = `${defaultGitUrl}/tree/master/${url}`;
     debug(`will use ${realUrl} as the block url`);
+    // eslint-disable-next-line no-useless-escape
   } else if (/^[\.\/]|^[c-zC-Z]:/.test(url)) {
     // ^[c-zC-Z]:  目的是为了支持window下的绝对路径，比如 `C:\\Project\\umi`
     // locale path for test
@@ -153,5 +173,6 @@ export async function getParsedData(url, blockConfig) {
     throw new Error(`${url} can't match any pattern`);
   }
   const args = await parseGitUrl(realUrl, blockConfig.closeFastGithub);
+  debug('getParsedData args', args);
   return args;
 }
