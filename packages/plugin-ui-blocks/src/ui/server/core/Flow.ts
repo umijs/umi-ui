@@ -6,11 +6,12 @@ import { FlowState, StepState } from './enum';
 import Logger from './Logger';
 import execa from '../util/exec';
 
-import { parseUrl, gitClone, gitUpdate, runGenerator, writeRoutes, install } from './tasks';
+import gitTasks from './tasks/gitTasks';
+import filesTasks from './tasks/filesTasks';
 
 const { createDebug } = utils;
 
-const debug = createDebug('umiui:plugin-ui-blocks:addBlock');
+const debug = createDebug('umi:umiui:plugin-ui-blocks:addBlock');
 
 class Flow extends EventEmitter {
   public api: IApi;
@@ -21,7 +22,7 @@ class Flow extends EventEmitter {
   public proc: ChildProcess;
   public state: FlowState = FlowState.INIT;
 
-  constructor({ api }: { api: IApi }) {
+  constructor({ api, args }: { api: IApi }) {
     super();
     this.api = api;
     this.logger = new Logger();
@@ -36,7 +37,8 @@ class Flow extends EventEmitter {
       stages: {},
       result: {},
     };
-    this.registryTasks();
+    // git 方式
+    this.registryTasks(args);
   }
 
   public async run(args) {
@@ -155,15 +157,8 @@ class Flow extends EventEmitter {
     curTask.state = state;
   }
 
-  private registryTasks() {
-    [
-      { name: 'parseUrl', task: parseUrl },
-      { name: 'gitClone', task: gitClone },
-      { name: 'gitUpdate', task: gitUpdate },
-      { name: 'install', task: install },
-      { name: 'runGenerator', task: runGenerator },
-      { name: 'writeRoutes', task: writeRoutes },
-    ].forEach(({ name, task }) => {
+  private registryTasks(args) {
+    (args.files ? filesTasks : gitTasks).forEach(({ name, task }) => {
       this.tasks.push({
         name,
         task,

@@ -127,8 +127,9 @@ export const DEFAULT_RESOURCES: Resource[] = [
     icon: 'https://img.alicdn.com/tfs/TB1HMEpmuH2gK0jSZFEXXcqMpXa-64-64.png',
     getData: () =>
       fetchCDNBlocks({
-        pkg: 'umi-blocks',
-        summary: 'dist/blocks.json',
+        pkg: '@umijs/assets-umi',
+        summary: 'blocks.json',
+        version: '^1.0.0',
       }),
   },
   {
@@ -140,8 +141,9 @@ export const DEFAULT_RESOURCES: Resource[] = [
     icon: 'https://img.alicdn.com/tfs/TB1HMEpmuH2gK0jSZFEXXcqMpXa-64-64.png',
     getData: () =>
       fetchCDNBlocks({
-        pkg: 'umi-blocks',
-        summary: 'dist/templates.json',
+        pkg: '@umijs/assets-umi',
+        summary: 'templates.json',
+        version: '^1.0.0',
       }),
   },
 ];

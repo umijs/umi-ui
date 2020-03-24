@@ -9,7 +9,7 @@
     "lint": "eslint --ext .ts,.tsx src"
   },
   "files": [
-    "dist",
+    "ui/dist",
     "lib",
     "src"
   ],

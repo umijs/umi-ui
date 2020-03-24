@@ -25,6 +25,7 @@ class Block {
   public async run(args) {
     this.flow = new Flow({
       api: this.api,
+      args,
     });
     this.flow.on('log', ({ data }) => {
       this.send({

@@ -171,12 +171,14 @@ const Adder: React.FC<AdderProps> = props => {
   }, []);
 
   useEffect(() => {
-    if (!block || !block.url) {
+    if (!block) {
       return;
     }
+    console.log('block', block);
     // 生成 defaultName
-    const defaultName = block.url.split('/').pop();
+    const defaultName = block?.url ? block?.url?.split('/')?.pop() : block?.key;
     const initPath = blockType !== 'template' ? '/' : `/${defaultName}`;
+    console.log('initPath', initPath);
     const resetInitialValues = async () => {
       // 自动生成一个不存在的变量名
       const noExitVar = await getNoExitVar({
@@ -207,7 +209,7 @@ const Adder: React.FC<AdderProps> = props => {
       form.setFieldsValue(initialValues);
     };
     resetInitialValues();
-  }, [block ? block.url : '', blockTarget || '']);
+  }, [block?.url || block?.files, blockTarget || '']);
 
   useEffect(() => {
     if (index !== null && index !== undefined) {
@@ -215,7 +217,7 @@ const Adder: React.FC<AdderProps> = props => {
     }
   }, [index]);
 
-  if (!block || !block.url) {
+  if (!block || (!block.url && !block.files)) {
     return null;
   }
 
@@ -301,10 +303,11 @@ const Adder: React.FC<AdderProps> = props => {
             try {
               const params: AddBlockParams = {
                 ...values,
-                url: block.url,
+                ...block,
                 path: await getPathFromFilename(api, values.path),
                 routePath: blockType === 'template' ? values.routePath : undefined,
                 page: blockType === 'template',
+                blockType,
                 // support: l-${index} or ${index}
                 index:
                   values.index && values.index.startsWith('l-')

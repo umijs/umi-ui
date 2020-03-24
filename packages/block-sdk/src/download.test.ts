@@ -117,7 +117,7 @@ describe('test block download utils', () => {
         closeFastGithub: true,
       }),
     ).toEqual({
-      branch: 'master',
+      branch: 'umi@3',
       id: 'github.com/ant-design/pro-blocks',
       path: '/demo-test',
       repo: 'https://github.com/ant-design/pro-blocks.git',

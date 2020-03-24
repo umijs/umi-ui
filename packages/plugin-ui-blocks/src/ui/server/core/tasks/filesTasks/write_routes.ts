@@ -1,6 +1,6 @@
 import { utils } from 'umi';
 import { appendBlockToContainer, writeNewRoute } from '@umijs/block-sdk';
-import { IFlowContext, IAddBlockOption } from '../types';
+import { IFlowContext, IAddBlockOption } from '../../types';
 
 const { chalk, createDebug } = utils;
 
@@ -44,17 +44,13 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
       `🍽  Start write block component ${generator.blockFolderName} import to ${generator.entryPath}`,
     );
     debug('writeRoutes appendBlockToContainer');
-    try {
-      appendBlockToContainer({
-        entryPath: generator.entryPath,
-        blockFolderName: generator.blockFolderName,
-        dryRun,
-        index,
-      });
-    } catch (e) {
-      logger.appendLog(`Failed write block component: ${e.message}\n`);
-      throw new Error(e);
-    }
+    appendBlockToContainer({
+      entryPath: generator.entryPath,
+      blockFolderName: generator.blockFolderName,
+      dryRun,
+      index,
+      logger,
+    });
     logger.appendLog('🎉  Success write block component \n');
   }
   const { PORT, BASE_PORT } = process.env;

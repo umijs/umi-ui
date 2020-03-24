@@ -227,6 +227,7 @@ describe('block interface socketHandlers test', () => {
         api: {
           cwd: '/test/',
           userConfig: {
+            dva: {},
             routes: [{ path: '/', component: './Index' }],
           },
         },
@@ -249,6 +250,7 @@ describe('block interface socketHandlers test', () => {
             enable: false,
           },
           userConfig: {
+            dva: {},
             routes: [{ path: '/', component: './Index' }],
           },
         },

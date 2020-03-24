@@ -1,6 +1,7 @@
 import { IConfig } from 'umi'; // ref: https://umijs.org/config/
 
 const config: IConfig = {
+  dva: {},
   routes: [
     {
       path: '/',
@@ -8,11 +9,11 @@ const config: IConfig = {
       routes: [
         {
           path: '/',
-          component: '../pages/index',
+          component: './index',
         },
       ],
     },
   ],
-  presets: ['../../packages/preset-ui/lib/index.js'],
+  presets: ['../../packages/preset-ui/lib/index.js', '@umijs/preset-react'],
 };
 export default config;
