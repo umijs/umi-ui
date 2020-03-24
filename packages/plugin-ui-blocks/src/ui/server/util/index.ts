@@ -125,13 +125,12 @@ export const DEFAULT_RESOURCES: Resource[] = [
     description: '来自 Umi 社区的区块',
     blockType: 'block',
     icon: 'https://img.alicdn.com/tfs/TB1HMEpmuH2gK0jSZFEXXcqMpXa-64-64.png',
-    getData: async () => {
-      const data = require('./blocks.json').list;
-      return {
-        type: 'BLOCK',
-        data,
-      };
-    },
+    getData: () =>
+      fetchCDNBlocks({
+        pkg: '@umijs/assets-umi',
+        summary: 'blocks.json',
+        version: '^1.0.0',
+      }),
   },
   {
     id: 'umi-blocks-template',
@@ -140,13 +139,12 @@ export const DEFAULT_RESOURCES: Resource[] = [
     description: '来自 Umi 社区的模板。',
     blockType: 'template',
     icon: 'https://img.alicdn.com/tfs/TB1HMEpmuH2gK0jSZFEXXcqMpXa-64-64.png',
-    getData: async () => {
-      const data = require('./templates.json').list;
-      return {
-        type: 'TEMPLATE',
-        data,
-      };
-    },
+    getData: () =>
+      fetchCDNBlocks({
+        pkg: '@umijs/assets-umi',
+        summary: 'templates.json',
+        version: '^1.0.0',
+      }),
   },
 ];
 
