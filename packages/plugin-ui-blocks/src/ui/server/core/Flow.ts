@@ -37,7 +37,6 @@ class Flow extends EventEmitter {
       stages: {},
       result: {},
     };
-    debug('Flow this.ctx', args.files);
     // git 方式
     this.registryTasks(args);
   }
