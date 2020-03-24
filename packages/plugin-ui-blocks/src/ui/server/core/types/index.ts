@@ -1,24 +1,24 @@
 import { IApi } from 'umi';
 import Logger from '../Logger';
 
+interface IPkg {
+  devDependencies?: object;
+  peerDependencies?: object;
+  dependencies?: object;
+}
+
 export interface IFlowContext {
   logger: Logger; // 输出日志
   api: IApi;
   execa: any;
   stages: any; // 存储各个节点的执行结果
   result: any; // 最终执行结果
+  pkg?: IPkg;
 }
 
-export interface IAddBlockOption {
+export interface IBlockCommon {
   // 从命令行传入会有这个
   _?: string[];
-  // 区块的名称和安装的地址
-  url?: string;
-  files?: {
-    [key: string]: string;
-  };
-  // 安装区块需要的分支
-  branch?: string;
 
   // 安装的文件地址
   path?: string;
@@ -56,6 +56,21 @@ export interface IAddBlockOption {
    * 加到文件中的变量
    */
   name: string;
+}
+
+export interface IAddBlockOption extends IBlockCommon {
+  url?: string;
+  // 安装区块需要的分支
+  branch?: string;
+}
+
+export interface IAddFilesBlockOption extends IBlockCommon {
+  files?: {
+    [key: string]: string;
+  };
+  devDependencies?: object;
+  peerDependencies?: object;
+  dependencies?: object;
 }
 
 export interface ICtxTypes {

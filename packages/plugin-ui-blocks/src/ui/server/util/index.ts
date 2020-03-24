@@ -142,7 +142,8 @@ export const DEFAULT_RESOURCES: Resource[] = [
       type: 'BLOCK',
       data: [
         {
-          name: 'Demo',
+          key: 'DemoTest',
+          name: 'Demo 页面',
           description: 'Demo block of umi, with antd.',
           files: {
             'index.tsx':

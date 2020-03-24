@@ -1,22 +1,22 @@
 import assert from 'assert';
-import { IApi, utils } from 'umi';
+import { utils } from 'umi';
 import chalk from 'chalk';
 import { join } from 'path';
 import { existsSync } from 'fs';
 import getNpmRegistry from 'getnpmregistry';
 
-import { IFlowContext, IAddBlockOption, ICtxFilesTypes } from '../../types';
+import { IFlowContext, IAddFilesBlockOption, ICtxFilesTypes } from '../../types';
 
-const { lodash, createDebug } = utils;
+const { createDebug } = utils;
 
-const debug = createDebug('umiui:UmiUI:block:tasks');
+const debug = createDebug('umi:umiui:UmiUI:block:filetasks');
 
 /**
  * 解析 url，
  * @param ctx
  * @param args
  */
-export default async (ctx: IFlowContext, args: IAddBlockOption) => {
+export default async (ctx: IFlowContext, args: IAddFilesBlockOption) => {
   const { files } = args;
   // ctx.logger.setId(url); // 设置这次 flow 的 log trace id
   ctx.result.files = files; // 记录当前的 url
@@ -39,4 +39,9 @@ export default async (ctx: IFlowContext, args: IAddBlockOption) => {
 
   ctx.stages.blockCtx = blockCtx;
   ctx.stages.registry = args.registry || registryUrl;
+  ctx.pkg = {
+    dependencies: args.dependencies || {},
+    peerDependencies: args.peerDependencies || {},
+    devDependencies: args.devDependencies || {},
+  };
 };

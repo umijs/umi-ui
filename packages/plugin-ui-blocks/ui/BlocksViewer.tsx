@@ -171,10 +171,8 @@ const BlocksViewer: React.FC<Props> = props => {
     },
   );
   // 当前的数据源列表
-  const current = useMemo<Resource>(
-    () => activeResource || resources.filter(item => item.blockType === type)[0],
-    [resources, activeResource, type],
-  );
+  const current = activeResource || resources.filter(item => item.blockType === type)[0];
+  console.log('currentcurrent', current);
   // 计算选中的区块
   const blocks = useMemo<Block[]>(
     () => (current && block.blockData[current.id] ? block.blockData[current.id] : []),

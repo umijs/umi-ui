@@ -63,17 +63,17 @@ export async function installDependencies(
   const projectPkg = require(projectPkgPath);
 
   // get _mock.js dependencie
-  let devDependencies = {};
+  let mockDevDependencies = {};
   const mockFilePath = join(ctx.sourcePath, 'src/_mock.js');
   if (existsSync(mockFilePath)) {
-    devDependencies = getMockDependencies(readFileSync(mockFilePath, 'utf-8'), ctx.pkg);
+    mockDevDependencies = getMockDependencies(readFileSync(mockFilePath, 'utf-8'), ctx.pkg);
   }
   const allBlockDependencies = getAllBlockDependencies(ctx.templateTmpDirPath, ctx.pkg);
   // 构造 _modifyBlockDependencies 的执行参数
   const initialValue = dependenciesConflictCheck(
     allBlockDependencies,
     projectPkg.dependencies,
-    devDependencies,
+    mockDevDependencies,
     {
       ...projectPkg.devDependencies,
       ...projectPkg.dependencies,
@@ -124,6 +124,131 @@ export async function installDependencies(
     );
     // 写入文件
     writeFileSync(projectPkgPath, content);
+    return;
+  }
+
+  // 安装依赖
+  if (lacks.length) {
+    const deps = lacks.map(dep => `${dep[0]}@${dep[1]}`);
+    spinner.start(
+      `📦  Install additional dependencies ${deps.join(
+        ',',
+      )} with ${npmClient} --registry ${registry}`,
+    );
+    try {
+      let npmArgs = npmClient.includes('yarn') ? ['add'] : ['install', '-d'];
+      npmArgs = [...npmArgs, ...deps, `--registry=${registry}`];
+
+      // 安装区块的时候不需要安装 puppeteer, 因为 yarn 会全量安装一次所有依赖。
+      // 加个环境变量规避一下
+      await exec(npmClient, npmClient.includes('yarn') ? npmArgs : [...npmArgs, '--save'], {
+        cwd: dirname(projectPkgPath),
+        env: {
+          ...process.env,
+          // ref  https://github.com/GoogleChrome/puppeteer/blob/411347cd7bb03edacf0854760712d32b0d9ba68f/docs/api.md#environment-variables
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true,
+        },
+      });
+    } catch (e) {
+      spinner.fail();
+      throw new Error(e);
+    }
+    spinner.succeed();
+  }
+
+  // 安装 dev 依赖
+  if (devLacks.length) {
+    // need skip devDependency which already install in dependencies
+    const devDeps = devLacks
+      .filter(dep => !lacks.find(item => item[0] === dep[0]))
+      .map(dep => `${dep[0]}@${dep[1]}`);
+    spinner.start(
+      `Install additional devDependencies ${devDeps.join(
+        ',',
+      )} with ${npmClient}  --registry ${registry}`,
+    );
+    try {
+      let npmArgs = npmClient.includes('yarn') ? ['add'] : ['install'];
+      npmArgs = [...npmArgs, ...devDeps, `--registry=${registry}`];
+      await exec(npmClient, npmClient.includes('yarn') ? npmArgs : [...npmArgs, '--save-dev'], {
+        cwd: dirname(projectPkgPath),
+      });
+    } catch (e) {
+      spinner.fail();
+      throw new Error(e);
+    }
+    spinner.succeed();
+  }
+}
+
+export async function installFilesDependencies(
+  {
+    npmClient,
+    registry,
+    applyPlugins,
+    ApplyPluginsType,
+    paths,
+    dryRun,
+    debug,
+    spinner,
+    skipDependencies,
+    execa: selfExeca,
+    args = {},
+  }: any,
+  ctx,
+) {
+  const exec = selfExeca || execa;
+  debug('files tasks - install');
+
+  // read project package.json
+  const projectPkgPath = await applyPlugins({
+    key: '_modifyBlockPackageJSONPath',
+    type: ApplyPluginsType.modify || 'modify',
+    initialValue: join(paths.cwd, 'package.json'),
+  });
+
+  // 判断 package.json 是否存在
+  assert(existsSync(projectPkgPath), `No package.json found in your project`);
+
+  // eslint-disable-next-line
+  const projectPkg = require(projectPkgPath);
+
+  // get _mock.js dependencie
+  const { dependencies: allBlockDependencies = {}, devDependencies = {} } = ctx.pkg;
+  // 构造 _modifyBlockDependencies 的执行参数
+  const initialValue = dependenciesConflictCheck(
+    allBlockDependencies,
+    projectPkg.dependencies,
+    devDependencies,
+    {
+      ...projectPkg.devDependencies,
+      ...projectPkg.dependencies,
+    },
+  );
+  // get conflict dependencies and lack dependencies
+  const { conflicts, lacks, devConflicts, devLacks } = await applyPlugins({
+    key: '_modifyBlockDependencies',
+    type: ApplyPluginsType?.modify || 'modify',
+    initialValue,
+  });
+  debug(
+    `conflictDeps ${conflicts}, lackDeps ${lacks}`,
+    `devConflictDeps ${devConflicts}, devLackDeps ${devLacks}`,
+  );
+
+  // find conflict dependencies throw error
+  const allConflicts = [...conflicts, ...devConflicts];
+  const ErrorInfo = allConflicts
+    .map(info => `* ${info[0]}: ${info[2]}(your project) not compatible with ${info[1]}(block)`)
+    .join('\n');
+  // 如果有冲突，抛出错误流程结束。
+  if (allConflicts.length) {
+    throw new Error(`find dependencies conflict between block and your project:${ErrorInfo}`);
+  }
+
+  // find lack conflict, auto install
+  if (dryRun) {
+    debug('dryRun is true, skip install dependencies');
     return;
   }
 

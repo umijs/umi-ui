@@ -1,16 +1,16 @@
+import { installFilesDependencies } from '@umijs/block-sdk';
 import { utils } from 'umi';
-import { installDependencies } from '@umijs/block-sdk';
 import { IFlowContext, IAddBlockOption } from '../../types';
 
 const { createDebug } = utils;
 
-const debug = createDebug('umiui:UmiUI:block:tasks');
+const debug = createDebug('umi:umiui:UmiUI:block:filetasks');
 
 const install = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { logger, execa, api } = ctx;
   const { registry } = ctx.stages;
 
-  await installDependencies(
+  await installFilesDependencies(
     {
       npmClient: args.npmClient,
       registry,
