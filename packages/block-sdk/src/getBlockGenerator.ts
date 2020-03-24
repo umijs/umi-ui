@@ -192,9 +192,14 @@ export const getBlockGenerator = (api: IApi) => {
 
   return class BlockGenerator extends Generator {
     public isTypeScript;
+    // 区块源目录路径（/tmp）
     public sourcePath;
     public dryRun;
+    // 相对 pages 的目录
     public path;
+    // 区块添加的目标路径
+    public blockFolderPath;
+    // 添加到的路由
     public routePath;
     public blockName;
     public isPageBlock;
@@ -202,12 +207,13 @@ export const getBlockGenerator = (api: IApi) => {
     public needCreateNewRoute;
     public blockFolderName;
     public entryPath;
-    public blockFolderPath;
     public routes;
     public on;
     public prompt;
     public fs;
     public store;
+    public type: string = 'git';
+    public files: string[];
 
     constructor({ args, name }) {
       // @ts-ignore
@@ -232,6 +238,9 @@ export const getBlockGenerator = (api: IApi) => {
       // 这个参数是当前区块的目录
       this.blockFolderPath = join(paths.absPagesPath, this.path);
       this.routes = args.routes || [];
+      // 资产类型：git 还是 files
+      this.type = args.files ? 'files' : 'git';
+      this.files = args.files || [];
     }
 
     run(): Promise<any> {
@@ -250,7 +259,8 @@ export const getBlockGenerator = (api: IApi) => {
       });
     }
 
-    async writing(): Promise<void> {
+    // git 类型写入
+    async gitBlockWriting() {
       let targetPath = winPath(join(paths.absPagesPath, this.path));
       debug(`this.path`, this.path);
       debug(`get targetPath ${targetPath}`);
@@ -346,17 +356,17 @@ export const getBlockGenerator = (api: IApi) => {
       }
 
       // create container
-      this.entryPath = findJS({
-        base: targetPath,
-        fileNameWithoutExt: '',
-      });
+      this.entryPath =
+        findJS({
+          base: targetPath,
+          fileNameWithoutExt: '',
+        }) ||
+        findJS({
+          base: targetPath,
+          fileNameWithoutExt: 'index',
+        });
       debug('this.entryPath', this.entryPath);
       debug('targetPath', targetPath);
-      if (!this.entryPath) {
-        // Bar/Bar.tsx
-        this.entryPath = join(targetPath, `index.${this.isTypeScript ? 'tsx' : 'js'}`);
-      }
-      // Bar.tsx
 
       if (!this.isPageBlock && !existsSync(this.entryPath)) {
         const confirmResult = (
@@ -460,6 +470,176 @@ export const getBlockGenerator = (api: IApi) => {
             await this.fs.copy(winPath(thePath), winPath(realTarget), { process });
           }
         }
+      }
+    }
+
+    async filesBlockWriting() {
+      let targetPath = winPath(join(paths.absPagesPath, this.path));
+      debug(`this.path`, this.path);
+      debug(`get targetPath ${targetPath}`);
+
+      // for old page block check for duplicate path
+      // if there is, prompt for input a new path
+      if (isEmptyFolder(targetPath)) {
+        rimraf.sync(targetPath);
+      }
+      while (this.isPageBlock && existsSync(targetPath)) {
+        if (this.execution === 'auto') {
+          throw new Error(`path ${this.path} already exist, press input a new path for it`);
+        }
+        // fix demo => /demo
+        const exp = /^\//;
+        if (!exp.test(this.path)) {
+          this.path = `/${this.path}`;
+        }
+        targetPath = join(paths.absPagesPath, this.path);
+        debug(`targetPath exist get new targetPath ${targetPath}`);
+      }
+
+      // 如果路由重复，重新输入
+      while (this.isPageBlock && routeExists(this.routePath, this.routes)) {
+        if (this.execution === 'auto') {
+          throw new Error(
+            `router path ${this.routePath} already exist, press input a new path for it`,
+          );
+        }
+        debug(`router path exist get new targetPath ${this.routePath}`);
+      }
+
+      this.blockFolderPath = targetPath;
+
+      const blockPath = this.path;
+      debug(`blockPath is ${blockPath}`);
+
+      if (this.dryRun) {
+        debug('dryRun is true, skip copy files');
+        return;
+      }
+
+      // check for duplicate block name under the path
+      // if there is, prompt for a new block name
+      while (!this.isPageBlock && existsSync(join(targetPath, this.blockFolderName))) {
+        debug('this.blockFolderName', this.blockFolderName);
+        // if (!/^\//.test(blockFolderName)) {
+        //   blockFolderName = `/${blockFolderName}`;
+        // }
+        debug(`blockFolderName exist get new blockFolderName ${this.blockFolderName}`);
+      }
+
+      // create container
+      this.entryPath =
+        findJS({
+          base: targetPath,
+          fileNameWithoutExt: '',
+        }) ||
+        findJS({
+          base: targetPath,
+          fileNameWithoutExt: 'index',
+        });
+      debug('this.entryPath', this.entryPath);
+      debug('targetPath', targetPath);
+
+      if (!this.isPageBlock && !existsSync(this.entryPath)) {
+        const confirmResult = (
+          await inquirer.prompt([
+            {
+              type: 'confirm',
+              name: 'needCreate',
+              message: `Not find a exist page file at ${this.path}. Do you want to create it and import this block.`,
+            },
+          ])
+        ).needCreate;
+
+        if (!confirmResult) {
+          throw new Error('You stop it!');
+        }
+
+        debug('start to generate the entry file for block(s) under the path...');
+
+        this.needCreateNewRoute = true;
+        debug('blockConfig.entryTemplatePath', blockConfig.entryTemplatePath);
+        const defaultBlockEntryTplPath = join(winPath(__dirname), 'blockEntry.js.tpl');
+        const blockEntryTpl = readFileSync(
+          blockConfig.entryTemplatePath || defaultBlockEntryTplPath,
+          'utf-8',
+        );
+        const tplContent = {
+          blockEntryName: `${this.path.slice(1)}Container`,
+        };
+        const entry = Mustache.render(blockEntryTpl, tplContent);
+        debug('targetPath', targetPath);
+        mkdirp.sync(targetPath);
+        debug('this.entryPath2', this.entryPath);
+        writeFileSync(this.entryPath, entry);
+      }
+
+      // copy block to target
+      // you can find the copy api detail in https://github.com/SBoudrias/mem-fs-editor/blob/master/lib/actions/copy.js
+      debug('start copy block file to your project...');
+
+      // 替换 相对路径
+      // eslint-disable-next-line
+      for (const folder of ['src', '@']) {
+        if (!this.isPageBlock && folder === '@') {
+          // @ folder not support anymore in new specVersion
+          return;
+        }
+        let targetFolder;
+        if (this.isPageBlock) {
+          targetFolder = folder === 'src' ? targetPath : paths.absSrcPath;
+        } else {
+          targetFolder = join(dirname(this.entryPath), this.blockFolderName);
+        }
+        const process = async (content, itemTargetPath) => {
+          content = String(content);
+          if (userConfig.singular) {
+            content = parseContentToSingular(content);
+          }
+          content = replaceContent(content, {
+            path: blockPath,
+          });
+          const blockFile = await applyPlugins({
+            key: '_modifyBlockFile',
+            type: api.ApplyPluginsType.modify,
+            initialValue: content,
+            args: {
+              blockPath,
+              targetPath: winPath(itemTargetPath),
+            },
+          });
+          debug('itemTargetPath', winPath(itemTargetPath));
+          return blockFile;
+        };
+
+        debug('files', this.files);
+        if (Object.keys(this.files || {}).length > 0) {
+          if (!existsSync(targetFolder)) {
+            mkdirp.sync(targetFolder);
+          }
+          // eslint-disable-next-line no-restricted-syntax
+          for (const name of Object.keys(this.files)) {
+            // ignore the dot files
+            if (name.charAt(0) === '.') {
+              return;
+            }
+            const realTarget = join(targetFolder, name);
+            debug(`copy ${name} to ${realTarget}`);
+            if (this.files[name]) {
+              // eslint-disable-next-line no-await-in-loop
+              const content = await process(this.files[name], realTarget);
+              writeFileSync(realTarget, content, 'utf-8');
+            }
+          }
+        }
+      }
+    }
+
+    async writing(): Promise<void> {
+      if (this.type !== 'files') {
+        await this.gitBlockWriting();
+      } else {
+        // files 类型
+        await this.filesBlockWriting();
       }
     }
   };

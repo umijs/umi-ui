@@ -1,21 +1,21 @@
 import { utils } from 'umi';
 import { join } from 'path';
 import { getBlockGenerator, getNameFromPkg } from '@umijs/block-sdk';
-import { IFlowContext, IAddBlockOption } from '../../types';
+import { IFlowContext, IAddFilesBlockOption } from '../../types';
 
 const { winPath, createDebug } = utils;
 
 const debug = createDebug('umi:umiui:UmiUI:block:filetasks');
 
-export default async (ctx: IFlowContext, args: IAddBlockOption) => {
+const generatorFunc = async (ctx: IFlowContext, args: IAddFilesBlockOption) => {
   const { logger, api } = ctx;
 
-  debug('Task files - run generator');
-
-  const { dryRun, page: isPage, js, execution = 'shell', uni18n, files } = args;
+  const { dryRun, page: isPage, js, execution = 'shell', uni18n } = args;
 
   logger.appendLog();
   logger.appendLog('📦  Start generate files');
+
+  const BlockGenerator = getBlockGenerator(ctx.api);
 
   const { pkg, sourcePath, filePath, routePath } = ctx.stages.blockCtx;
 
@@ -26,32 +26,66 @@ export default async (ctx: IFlowContext, args: IAddBlockOption) => {
   }
   debug(`isPageBlock: ${isPageBlock}`);
 
-  // const latestPkgPath = winPath(join(__dirname, '../../../../../package.json'));
+  const latestPkgPath = winPath(join(__dirname, '../../../../../package.json'));
 
-  // const generator = new BlockGenerator({
-  //   name: args._ ? args._.slice(2) : [],
-  //   args: {
-  //     sourcePath,
-  //     path: filePath,
-  //     routePath,
-  //     blockName: args.name || getNameFromPkg(pkg),
-  //     isPageBlock,
-  //     dryRun,
-  //     execution,
-  //     env: {
-  //       cwd: api.cwd,
-  //     },
-  //     resolved: latestPkgPath,
-  //   },
-  // });
+  const generator = new BlockGenerator({
+    name: args._ ? args._.slice(2) : [],
+    args: {
+      sourcePath,
+      files: args.files,
+      path: filePath,
+      routePath,
+      blockName: args.name || getNameFromPkg(pkg),
+      isPageBlock,
+      dryRun,
+      execution,
+      env: {
+        cwd: api.cwd,
+      },
+      resolved: latestPkgPath,
+    },
+  });
   try {
-    // 写区块到目录
-    console.log('files', files);
-    console.log('ctx.stages.blockCtx', ctx.stages.blockCtx);
+    await generator.run();
   } catch (e) {
     logger.appendLog(`Faild generate files: ${e.message}\n`);
     throw new Error(e);
   }
+
+  // TODO: 暂不加子模块
+  // write dependencies
+  // if (pkg.blockConfig && pkg.blockConfig.dependencies) {
+  //   const subBlocks = pkg.blockConfig.dependencies;
+  //   try {
+  //     await Promise.all(
+  //       subBlocks.map((block: string) => {
+  //         const subBlockPath = join(templateTmpDirPath, block);
+  //         debug(`subBlockPath: ${subBlockPath}`);
+  //         return new BlockGenerator({
+  //           name: args._ ? args._.slice(2) : [],
+  //           args: {
+  //             sourcePath: subBlockPath,
+  //             path: isPageBlock ? generator.path : join(generator.path, generator.blockFolderName),
+  //             blockName: getNameFromPkg(
+  //               // eslint-disable-next-line
+  //               require(join(subBlockPath, 'package.json')),
+  //             ),
+  //             isPageBlock: false,
+  //             dryRun,
+  //             env: {
+  //               cwd: api.cwd,
+  //             },
+  //             routes: api.userConfig.routes,
+  //             resolved: latestPkgPath,
+  //           },
+  //         }).run();
+  //       }),
+  //     );
+  //   } catch (e) {
+  //     logger.appendLog(`Faild generate files: ${e.message}\n`);
+  //     throw new Error(e);
+  //   }
+  // }
 
   debug('Success generate files');
   logger.appendLog('🎉  Success generate files\n');
@@ -59,20 +93,22 @@ export default async (ctx: IFlowContext, args: IAddBlockOption) => {
   // 调用 sylvanas 转化 ts
   if (js) {
     // 区块需要拼接一下 blockName
-    // const relayPath = generator.isPageBlock
-    //   ? generator.blockFolderPath
-    //   : `${generator.blockFolderPath}/${generator.blockName}`;
+    const relayPath = generator.isPageBlock
+      ? generator.blockFolderPath
+      : `${generator.blockFolderPath}/${generator.blockName}`;
     logger.appendLog('🎭  Start TypeScript to JavaScript');
-    // require('@umijs/block-sdk/lib/tsTojs').default(relayPath);
+    require('@umijs/block-sdk/lib/tsTojs').default(relayPath);
     logger.appendLog('🎉  Success TypeScript to JavaScript\n');
   }
 
   if (uni18n) {
     logger.appendLog('🌏  Start remove i18n code');
-    // require('@umijs/block-sdk/lib/remove-locale').default(generator.blockFolderPath, uni18n);
+    require('@umijs/block-sdk/lib/remove-locale').default(generator.blockFolderPath, uni18n);
     logger.appendLog('🎉  Success remove i18n code\n');
   }
 
-  // ctx.stages.generator = generator;
+  ctx.stages.generator = generator;
   debug('run_generator finish');
 };
+
+export default generatorFunc;

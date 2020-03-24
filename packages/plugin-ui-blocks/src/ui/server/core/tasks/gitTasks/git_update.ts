@@ -4,17 +4,9 @@ import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { getNameFromPkg } from '@umijs/block-sdk';
 import { IFlowContext, ICtxTypes, IAddBlockOption } from '../../types';
+import { isSubmodule, addPrefix } from '../helper';
 
 const { winPath } = utils;
-
-const isSubmodule = templateTmpDirPath => existsSync(join(templateTmpDirPath, '.gitmodules'));
-
-const addPrefix = path => {
-  if (!/^\//.test(path)) {
-    return `/${path}`;
-  }
-  return path;
-};
 
 const clone = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { logger, execa } = ctx;

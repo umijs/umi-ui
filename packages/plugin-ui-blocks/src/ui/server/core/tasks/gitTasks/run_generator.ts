@@ -5,7 +5,7 @@ import { IFlowContext, IAddBlockOption } from '../../types';
 
 const { winPath, createDebug } = utils;
 
-const debug = createDebug('umiui:UmiUI:block:tasks');
+const debug = createDebug('umi:umiui:UmiUI:block:tasks');
 
 const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { logger, api } = ctx;

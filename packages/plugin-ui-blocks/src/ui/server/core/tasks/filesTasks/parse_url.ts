@@ -6,8 +6,9 @@ import { existsSync } from 'fs';
 import getNpmRegistry from 'getnpmregistry';
 
 import { IFlowContext, IAddFilesBlockOption, ICtxFilesTypes } from '../../types';
+import { addPrefix } from '../helper';
 
-const { createDebug } = utils;
+const { createDebug, winPath } = utils;
 
 const debug = createDebug('umi:umiui:UmiUI:block:filetasks');
 
@@ -30,18 +31,24 @@ export default async (ctx: IFlowContext, args: IAddFilesBlockOption) => {
   const useYarn = existsSync(join(cwd, 'yarn.lock'));
   const defaultNpmClient = blockConfig.npmClient || (useYarn ? 'yarn' : 'npm');
   const registryUrl = await getNpmRegistry();
+  // setup route path
+  const { path } = args;
+
+  const filePath = winPath(path);
   const blockCtx: ICtxFilesTypes = {
     ...args,
     npmClient: args.npmClient || defaultNpmClient,
+    routePath: addPrefix(args.routePath || filePath),
+    filePath,
+    pkg: {
+      dependencies: args.dependencies || {},
+      peerDependencies: args.peerDependencies || {},
+      devDependencies: args.devDependencies || {},
+    },
   };
 
   debug('blockCtx', blockCtx);
 
   ctx.stages.blockCtx = blockCtx;
   ctx.stages.registry = args.registry || registryUrl;
-  ctx.pkg = {
-    dependencies: args.dependencies || {},
-    peerDependencies: args.peerDependencies || {},
-    devDependencies: args.devDependencies || {},
-  };
 };

@@ -2,16 +2,10 @@ import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { dirname, join } from 'path';
 import { createDebug } from '@umijs/utils';
 import insertComponent from './sdk/insertComponent';
+import { findJS } from './util';
 import { INSERT_BLOCK_PLACEHOLDER, UMI_UI_FLAG_PLACEHOLDER } from './sdk/constants';
 
 const debug = createDebug('umiui:block-sdk:appendBlockToContainer');
-
-function findIndexFile(dir) {
-  if (existsSync(join(dir, 'index.js'))) return join(dir, 'index.js');
-  if (existsSync(join(dir, 'index.jsx'))) return join(dir, 'index.jsx');
-  if (existsSync(join(dir, 'index.tsx'))) return join(dir, 'index.tsx');
-  if (existsSync(join(dir, 'index.ts'))) return join(dir, 'index.ts');
-}
 
 export const appendBlockToContainer = ({ entryPath, blockFolderName, dryRun, index }) => {
   debug('start to update the entry file for block(s) under the path...');
@@ -22,7 +16,15 @@ export const appendBlockToContainer = ({ entryPath, blockFolderName, dryRun, ind
   debug('blockFolderName', blockFolderName);
   const blockPath = join(dirname(entryPath), blockFolderName);
   debug('blockPath', blockPath);
-  const absolutePath = findIndexFile(blockPath);
+  const absolutePath =
+    findJS({
+      base: blockPath,
+      fileNameWithoutExt: '',
+    }) ||
+    findJS({
+      base: blockPath,
+      fileNameWithoutExt: 'index',
+    });
   debug('absolutePath', absolutePath);
   const blockContent = readFileSync(absolutePath, 'utf-8');
 

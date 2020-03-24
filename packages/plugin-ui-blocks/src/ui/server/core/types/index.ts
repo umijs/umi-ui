@@ -94,4 +94,5 @@ export interface ICtxFilesTypes {
   isLocal?: boolean;
   filePath?: string;
   npmClient?: string;
+  pkg?: any;
 }
