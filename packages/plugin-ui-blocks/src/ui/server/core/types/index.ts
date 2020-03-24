@@ -19,6 +19,7 @@ export interface IFlowContext {
 export interface IBlockCommon {
   // 从命令行传入会有这个
   _?: string[];
+  blockType?: 'block' | 'template';
 
   // 安装的文件地址
   path?: string;

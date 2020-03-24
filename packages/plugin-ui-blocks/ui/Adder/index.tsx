@@ -307,6 +307,7 @@ const Adder: React.FC<AdderProps> = props => {
                 path: await getPathFromFilename(api, values.path),
                 routePath: blockType === 'template' ? values.routePath : undefined,
                 page: blockType === 'template',
+                blockType,
                 // support: l-${index} or ${index}
                 index:
                   values.index && values.index.startsWith('l-')

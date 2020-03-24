@@ -127,7 +127,6 @@ export const DEFAULT_RESOURCES: Resource[] = [
     icon: 'https://img.alicdn.com/tfs/TB1HMEpmuH2gK0jSZFEXXcqMpXa-64-64.png',
     getData: async () => {
       const data = require('./blocks.json').list;
-      console.log('data', data);
       return {
         type: 'BLOCK',
         data,

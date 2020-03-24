@@ -212,7 +212,10 @@ export const getBlockGenerator = (api: IApi) => {
     public prompt;
     public fs;
     public store;
-    public type: string = 'git';
+    // 添加的 资产类型
+    public blockType: 'block' | 'template';
+    // 添加方式
+    public addType: 'git' | 'files' = 'git';
     public files: string[];
 
     constructor({ args, name }) {
@@ -238,8 +241,9 @@ export const getBlockGenerator = (api: IApi) => {
       // 这个参数是当前区块的目录
       this.blockFolderPath = join(paths.absPagesPath, this.path);
       this.routes = args.routes || [];
+      this.blockType = args.blockType;
       // 资产类型：git 还是 files
-      this.type = args.files ? 'files' : 'git';
+      this.addType = args.files ? 'files' : 'git';
       this.files = args.files || [];
     }
 
@@ -575,15 +579,16 @@ export const getBlockGenerator = (api: IApi) => {
 
       // copy block to target
       // you can find the copy api detail in https://github.com/SBoudrias/mem-fs-editor/blob/master/lib/actions/copy.js
-      debug('start copy block file to your project...');
+      debug('start files block file to your project...');
 
       // 替换 相对路径
       // eslint-disable-next-line
-      for (const folder of ['src', '@']) {
-        if (!this.isPageBlock && folder === '@') {
-          // @ folder not support anymore in new specVersion
-          return;
-        }
+      for (const folder of ['src']) {
+        // if (!this.isPageBlock && folder === '@') {
+        //   // @ folder not support anymore in new specVersion
+        //   return;
+        // }
+        debug('this.blockFolderName', this.blockFolderName);
         let targetFolder;
         if (this.isPageBlock) {
           targetFolder = folder === 'src' ? targetPath : paths.absSrcPath;
@@ -623,7 +628,7 @@ export const getBlockGenerator = (api: IApi) => {
               return;
             }
             const realTarget = join(targetFolder, name);
-            debug(`copy ${name} to ${realTarget}`);
+            debug(`write ${name} to ${realTarget}`);
             if (this.files[name]) {
               // eslint-disable-next-line no-await-in-loop
               const content = await process(this.files[name], realTarget);
@@ -635,7 +640,8 @@ export const getBlockGenerator = (api: IApi) => {
     }
 
     async writing(): Promise<void> {
-      if (this.type !== 'files') {
+      debug('this.addType', this.addType);
+      if (this.addType !== 'files') {
         await this.gitBlockWriting();
       } else {
         // files 类型

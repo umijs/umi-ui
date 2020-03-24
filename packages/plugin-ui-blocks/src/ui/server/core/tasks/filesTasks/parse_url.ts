@@ -19,6 +19,7 @@ const debug = createDebug('umi:umiui:UmiUI:block:filetasks');
  */
 export default async (ctx: IFlowContext, args: IAddFilesBlockOption) => {
   const { files } = args;
+  debug('files parse args', args);
   // ctx.logger.setId(url); // 设置这次 flow 的 log trace id
   ctx.result.files = files; // 记录当前的 url
 
@@ -46,8 +47,6 @@ export default async (ctx: IFlowContext, args: IAddFilesBlockOption) => {
       devDependencies: args.devDependencies || {},
     },
   };
-
-  debug('blockCtx', blockCtx);
 
   ctx.stages.blockCtx = blockCtx;
   ctx.stages.registry = args.registry || registryUrl;

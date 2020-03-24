@@ -76,8 +76,6 @@ const parseUrl = async (ctx: IFlowContext, args: IAddBlockOption) => {
     api: ctx.api,
   });
 
-  debug('blockCtx', blockCtx);
-
   ctx.stages.blockCtx = blockCtx;
   ctx.stages.registry = args.registry || registryUrl;
 };

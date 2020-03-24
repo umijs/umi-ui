@@ -34,6 +34,7 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
       sourcePath,
       path: filePath,
       routePath,
+      blockType: args.blockType,
       blockName: args.name || getNameFromPkg(pkg),
       isPageBlock,
       dryRun,
