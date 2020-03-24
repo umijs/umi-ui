@@ -11,7 +11,7 @@ import InfoToolTip from './InfoToolTip';
 import RouteFilesTreeData from './RouteFilesTreeData';
 import { getPathFromFilename } from '../BlockList/BlockItem';
 
-const AddBlockFormForUI: React.FC<{
+const AddBlockForm: React.FC<{
   form: FormInstance;
   visible: boolean;
 }> = ({ form, visible }) => {
@@ -100,4 +100,4 @@ const AddBlockFormForUI: React.FC<{
   );
 };
 
-export default AddBlockFormForUI;
+export default AddBlockForm;

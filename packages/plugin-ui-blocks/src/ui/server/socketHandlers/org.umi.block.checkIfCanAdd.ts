@@ -46,7 +46,7 @@ export default function({ success, payload, api, lang, failure }: IHandlerOpts) 
 
   const checkConfigRules = {
     dva: {
-      enable: api.userConfig.dva !== false,
+      enable: api.userConfig.dva,
       message: {
         'zh-CN': isBigfish
           ? `${payloadType}依赖 dva，请开启 dva 配置。`

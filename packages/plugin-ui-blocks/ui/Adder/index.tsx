@@ -340,10 +340,9 @@ const Adder: React.FC<AdderProps> = props => {
         }}
       >
         {blockType === 'template' && <AddTemplateForm visible={visible} blockType={blockType} />}
-        {blockType === 'block' && api.isMini() ? (
+        {blockType === 'block' && !api.isMini() && <AddBlockForm form={form} visible={visible} />}
+        {blockType === 'block' && api.isMini() && (
           <AddBlockFormForUI form={form} blockTarget={blockTarget} />
-        ) : (
-          <AddBlockForm form={form} visible={visible} />
         )}
         <Form.Item
           name="js"

@@ -95,7 +95,6 @@ class Flow extends EventEmitter {
     // 完成之后触发一下完成事件，前端更新一下按钮状态
     this.state = FlowState.SUCCESS;
     const { generator } = this.ctx.stages;
-    debug('Flow run generator', generator);
     this.emit('state', {
       data: {
         ...args,

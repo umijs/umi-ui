@@ -611,7 +611,7 @@ export const getBlockGenerator = (api: IApi) => {
           return blockFile;
         };
 
-        debug('files', this.files);
+        debug('files', Object.keys(this.files || {}));
         if (Object.keys(this.files || {}).length > 0) {
           if (!existsSync(targetFolder)) {
             mkdirp.sync(targetFolder);
