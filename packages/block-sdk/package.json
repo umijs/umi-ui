@@ -1,6 +1,6 @@
 {
   "name": "@umijs/block-sdk",
-  "version": "2.0.5",
+  "version": "2.1.0",
   "main": "./lib/index.js",
   "dependencies": {
     "@babel/generator": "7.4.4",
