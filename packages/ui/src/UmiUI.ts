@@ -918,6 +918,9 @@ export default class UmiUI {
       }
 
       ss.on('connection', conn => {
+        if (!conn) {
+          return;
+        }
         conns[conn.id] = conn;
         debugSocket(`🔗 ${chalk.green('Connected to')}: ${conn.id}`);
         function success(type, payload) {
