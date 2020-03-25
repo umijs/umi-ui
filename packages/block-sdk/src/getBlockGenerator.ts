@@ -632,7 +632,7 @@ export const getBlockGenerator = (api: IApi) => {
             if (this.files[name]) {
               // eslint-disable-next-line no-await-in-loop
               const content = await process(this.files[name], realTarget);
-              writeFileSync(realTarget, content, 'utf-8');
+              this.fs.write(realTarget, content);
             }
           }
         }
