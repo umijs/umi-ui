@@ -7,13 +7,13 @@ import { utils } from 'umi';
 import { IContext } from '../UmiUI';
 import getScripts, { normalizeHtml } from '../utils/scripts';
 
-const { got } = utils;
+const { got, winPath } = utils;
 
 export default (ctx: Partial<IContext>) => async (req: Request, res: Response) => {
   const scripts = await getScripts();
   // Index Page
   let content = null;
-  const localeDebug = !existsSync(join(__dirname, '../../web/dist/index.html'));
+  const localeDebug = !existsSync(join(winPath(__dirname), '../../web/dist/index.html'));
   if (localeDebug) {
     try {
       const { body } = await got(`http://localhost:8002${req.path}`);
@@ -24,7 +24,7 @@ export default (ctx: Partial<IContext>) => async (req: Request, res: Response) =
     }
   } else {
     if (!content) {
-      content = readFileSync(join(__dirname, '../web/dist/index.html'), 'utf-8');
+      content = readFileSync(join(winPath(__dirname), '../../web/dist/index.html'), 'utf-8');
     }
     res.send(normalizeHtml(content, scripts));
   }
