@@ -13,7 +13,7 @@ export default (ctx: Partial<IContext>) => async (req: Request, res: Response) =
   const scripts = await getScripts();
   // Index Page
   let content = null;
-  const localeDebug = !existsSync(join(__dirname, '../web/dist/index.html'));
+  const localeDebug = !existsSync(join(__dirname, '../../web/dist/index.html'));
   if (localeDebug) {
     try {
       const { body } = await got(`http://localhost:8002${req.path}`);
