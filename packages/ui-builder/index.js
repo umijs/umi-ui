@@ -120,10 +120,6 @@ module.exports = opts => {
             ],
           },
         },
-        {
-          test: /\.md$/,
-          loader: 'raw-loader',
-        },
       ],
     },
   };
