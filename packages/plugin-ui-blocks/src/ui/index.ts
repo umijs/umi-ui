@@ -11,7 +11,7 @@ export default (api: IApiBlock) => {
   const { winPath, lodash } = utils;
 
   // 客户端
-  api.addUIPlugin(() => require.resolve('../../ui/dist/index.umd'));
+  api.addUIPlugin(() => require.resolve('../../dist/index.umd'));
   // 服务端
   server(api);
 

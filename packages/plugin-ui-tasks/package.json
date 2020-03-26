@@ -5,11 +5,11 @@
   "main": "lib/index.js",
   "scripts": {
     "dev": "concurrently \"npm run build -- --watch\" \"CURRENT_PROJECT=example DEVELOP_MODE=1 ../umi/bin/umi.js ui\"",
-    "build": "node scripts/build.js",
+    "ui:build": "ui-build .",
     "lint": "eslint --ext .ts,.tsx src"
   },
   "files": [
-    "ui/dist",
+    "dist",
     "lib",
     "src"
   ],
@@ -21,6 +21,7 @@
     "umi-webpack-bundle-analyzer": "^3.5.0"
   },
   "devDependencies": {
+    "@umijs/ui-builder": "0.0.1",
     "@ant-design/icons": "^4.0.0-alpha.11",
     "@umijs/fabric": "^1.1.9",
     "@umijs/ui-types": "2.0.0-beta.2",

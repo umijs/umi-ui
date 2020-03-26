@@ -85,7 +85,9 @@ export async function render(oldRender): void {
   const isMini = 'mini' in qs;
 
   // proxy console.* in mini
-  proxyConsole(!!isMini);
+  if (process.env.NODE_ENV === 'production') {
+    proxyConsole(!!isMini);
+  }
 
   // mini open not in project
   // redirect full version

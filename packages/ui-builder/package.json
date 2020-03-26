@@ -1,0 +1,38 @@
+{
+  "name": "@umijs/ui-builder",
+  "description": "Umi UI plugin umd builder based on webpack 5",
+  "version": "0.0.1",
+  "bin": {
+    "ui-build": "bin/index.js"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "@umijs/babel-preset-umi": "3.0.14",
+    "babel-loader": "8.0.6",
+    "css-loader": "3.4.2",
+    "less": "3.11.1",
+    "less-loader": "5.0.0",
+    "postcss": "7.0.27",
+    "postcss-flexbugs-fixes": "4.2.0",
+    "postcss-loader": "3.0.0",
+    "postcss-preset-env": "6.7.0",
+    "rimraf": "^3.0.2",
+    "style-loader": "1.1.3",
+    "terser-webpack-plugin": "2.3.5",
+    "webpack": "5.0.0-beta.14",
+    "yargs-parser": "18.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/umijs/ui",
+    "directory": "packages/ui-builder"
+  },
+  "homepage": "http://github.com/umijs/ui/tree/master/packages/ui-builder",
+  "authors": [
+    "ycjcl868"
+  ],
+  "bugs": {
+    "url": "http://github.com/umijs/ui/issues"
+  },
+  "license": "MIT"
+}
