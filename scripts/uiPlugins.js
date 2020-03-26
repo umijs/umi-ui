@@ -1,11 +1,10 @@
 const uiPlugins = [];
 
 const uiDist = [
-  'packages/preset-ui/src/plugins/dashboard/dist/ui.umd.js',
-  // 'packages/preset-ui/src/plugins/configuration/dist/ui.umd.js',
+  'packages/preset-ui/dist/dashboard.umd.js',
+  'packages/preset-ui/dist/configuration.umd.js',
   'packages/plugin-ui-tasks/dist/index.umd.js',
   'packages/plugin-ui-blocks/dist/index.umd.js',
-  // 'packages/lib/dist/index.umd.js',
   'packages/ui/web/dist/index.html',
 ];
 
