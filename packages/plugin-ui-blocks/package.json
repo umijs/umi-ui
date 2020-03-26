@@ -8,14 +8,10 @@
     "lib",
     "src"
   ],
-  "scripts": {
-    "ui:build": "ui-build ."
-  },
   "peerDependencies": {
     "umi": "3.x"
   },
   "dependencies": {
-    "@umijs/ui-builder": "0.0.1",
     "@babel/parser": "7.4.5",
     "@babel/traverse": "7.4.5",
     "@babel/types": "7.4.4",
