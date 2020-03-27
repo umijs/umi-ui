@@ -99,7 +99,6 @@ module.exports = opts => {
               [
                 require.resolve('@umijs/babel-preset-umi/app'),
                 {
-                  // @ts-ignore
                   nodeEnv: process.env.NODE_ENV,
                   dynamicImportNode: false,
                   autoCSSModules: true,
