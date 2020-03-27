@@ -3,9 +3,9 @@
   "version": "2.1.3",
   "main": "./lib/index.js",
   "files": [
+    "dist",
     "lib",
-    "src/bubble",
-    "src/plugins/*/dist"
+    "src/bubble"
   ],
   "peerDependencies": {
     "umi": "3.x"
