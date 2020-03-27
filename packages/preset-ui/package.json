@@ -1,6 +1,6 @@
 {
   "name": "@umijs/preset-ui",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "main": "./lib/index.js",
   "files": [
     "dist",
@@ -11,9 +11,9 @@
     "umi": "3.x"
   },
   "dependencies": {
-    "@umijs/plugin-ui-blocks": "^2.1.0",
-    "@umijs/plugin-ui-tasks": "^2.1.0",
-    "@umijs/ui": "^2.1.3",
+    "@umijs/plugin-ui-blocks": "^2.1.1",
+    "@umijs/plugin-ui-tasks": "^2.1.1",
+    "@umijs/ui": "^2.1.4",
     "immer": "^5.0.0",
     "is-mobile": "2.1.0",
     "sockjs-client": "1.3.0",
