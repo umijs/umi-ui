@@ -28,7 +28,6 @@
     ]
   },
   "devDependencies": {
-    "@umijs/ui-builder": "0.0.1",
     "@babel/preset-typescript": "7.3.3",
     "@types/jest": "^24.0.5",
     "@umijs/fabric": "^2.0.3",

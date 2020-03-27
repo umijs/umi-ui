@@ -4,7 +4,7 @@ const { join } = require('path');
 const { existsSync } = require('fs');
 
 const UMI_BIN = require.resolve('umi/bin/umi');
-const UI_BUILD_BIN = require.resolve('@umijs/ui-builder/bin/index.js');
+const UI_BUILD_BIN = require.resolve('../packages/ui-builder/bin/index.js');
 
 const getPackages = require('./getPackage');
 
@@ -12,13 +12,8 @@ const watch = process.argv.includes('-w') || process.argv.includes('--watch');
 
 const { signale } = utils;
 
-const opts = {
-  watch,
-};
-
 const uiApp = () => {
   signale.pending('UI App building');
-  const { watch } = opts;
   return new Promise((resolve, reject) => {
     try {
       const child = fork(UMI_BIN, [watch ? 'dev' : 'build', ...(watch ? ['--watch'] : [])], {
@@ -46,7 +41,6 @@ const uiApp = () => {
 };
 
 const buildPlugin = cwd => {
-  const { watch } = opts;
   return new Promise((resolve, reject) => {
     try {
       const pluginProcess = fork(UI_BUILD_BIN, watch ? ['--watch'] : [], {
