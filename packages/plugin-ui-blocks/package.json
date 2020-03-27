@@ -4,7 +4,7 @@
   "description": "blocks ui",
   "main": "lib/index.js",
   "files": [
-    "ui/dist",
+    "dist",
     "lib",
     "src"
   ],

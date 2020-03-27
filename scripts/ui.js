@@ -1,10 +1,13 @@
 const { fork } = require('child_process');
 const { utils } = require('umi');
 const { join } = require('path');
-const { uiPlugins } = require('./uiPlugins');
+const { existsSync } = require('fs');
 
 const UMI_BIN = require.resolve('umi/bin/umi');
-const FATHER_BUILD_BIN = require.resolve('father-build/bin/father-build.js');
+const UI_BUILD_BIN = require.resolve('@umijs/ui-builder/bin/index.js');
+
+const getPackages = require('./getPackage');
+
 const watch = process.argv.includes('-w') || process.argv.includes('--watch');
 
 const { signale } = utils;
@@ -42,12 +45,12 @@ const uiApp = () => {
   });
 };
 
-const buildPlugin = plugin => {
+const buildPlugin = cwd => {
   const { watch } = opts;
   return new Promise((resolve, reject) => {
     try {
-      const pluginProcess = fork(FATHER_BUILD_BIN, watch ? ['--watch'] : [], {
-        cwd: join(__dirname, '..', plugin),
+      const pluginProcess = fork(UI_BUILD_BIN, watch ? ['--watch'] : [], {
+        cwd,
         env: {
           NODE_ENV: watch ? 'prod' : 'development',
         },
@@ -70,6 +73,11 @@ const buildPlugin = plugin => {
     signale.info('exit build by user');
     process.exit(0);
   });
+  const uiPlugins = getPackages()
+    .filter(
+      ({ pkgPath }) => existsSync(join(pkgPath, 'ui')) || existsSync(join(pkgPath, 'ui.config.js')),
+    )
+    .map(({ pkgPath }) => pkgPath);
 
   const buildQueue = [uiApp(), ...uiPlugins.map(buildPlugin)];
   try {
