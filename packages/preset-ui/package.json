@@ -1,6 +1,6 @@
 {
   "name": "@umijs/preset-ui",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "main": "./lib/index.js",
   "files": [
     "dist",
@@ -11,7 +11,7 @@
     "umi": "3.x"
   },
   "dependencies": {
-    "@umijs/plugin-ui-blocks": "^2.1.1",
+    "@umijs/plugin-ui-blocks": "^2.1.2",
     "@umijs/plugin-ui-tasks": "^2.1.1",
     "@umijs/ui": "^2.1.4",
     "immer": "^5.0.0",
