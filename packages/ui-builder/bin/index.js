@@ -48,7 +48,7 @@ const build = () =>
             } catch (e) {}
             return reject(new Error('build failed'));
           }
-          console.log('🌈[watch] ui build success');
+          console.log('🌈 [watch] ui build success');
         },
       );
 

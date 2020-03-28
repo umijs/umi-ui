@@ -1,8 +1,11 @@
+import { utils } from 'umi';
 import { transform } from '@babel/core';
 import { join, basename } from 'path';
 import { readdirSync, readFileSync, existsSync } from 'fs';
 
-const fixtures = join(__dirname, 'fixtures');
+const { winPath } = utils;
+
+const fixtures = join(winPath(__dirname), 'fixtures');
 
 function testTransform(dir) {
   const filename = existsSync(join(fixtures, dir, 'origin.js'))
@@ -10,7 +13,7 @@ function testTransform(dir) {
     : join(fixtures, dir, 'origin.tsx');
   const origin = readFileSync(filename, 'utf-8');
   const { code } = transform(origin, {
-    filename: `/tmp/${basename(filename)}`,
+    filename: `/tmp/pages/${basename(filename)}`,
     presets: [
       require.resolve('@umijs/babel-preset-umi/app.js'),
       require.resolve('@babel/preset-typescript'),
@@ -31,7 +34,7 @@ function testTransform(dir) {
     : join(fixtures, dir, 'expected.tsx');
   const expected = readFileSync(expectedFile, 'utf-8');
   const { code: expectCode } = transform(expected, {
-    filename: `/tmp/${basename(filename)}`,
+    filename: `/tmp/pages/${basename(filename)}`,
     presets: [
       require.resolve('@umijs/babel-preset-umi/app.js'),
       require.resolve('@babel/preset-typescript'),
