@@ -5,23 +5,23 @@ export default function() {
   return (
     <Step>
       <div>
-        <GUmiUIFlag filename="/tmp/origin.js" index="l-0" />
+        <GUmiUIFlag filename="/tmp/pages/origin.js" index="l-0" />
       </div>
       <div>
-        <GUmiUIFlag filename="/tmp/origin.js" index="l-1" />
+        <GUmiUIFlag filename="/tmp/pages/origin.js" index="l-1" />
         foo
       </div>
       <div>
-        <GUmiUIFlag filename="/tmp/origin.js" index="l-2" />
+        <GUmiUIFlag filename="/tmp/pages/origin.js" index="l-2" />
         bar
       </div>
       <div>
-        <GUmiUIFlag filename="/tmp/origin.js" index="l-3" />
+        <GUmiUIFlag filename="/tmp/pages/origin.js" index="l-3" />
       </div>
       <div>
-        <GUmiUIFlag filename="/tmp/origin.js" index="l-4" inline="true" />
+        <GUmiUIFlag filename="/tmp/pages/origin.js" index="l-4" inline="true" />
         Hello
-        <GUmiUIFlag filename="/tmp/origin.js" index="l-5" inline="true" />
+        <GUmiUIFlag filename="/tmp/pages/origin.js" index="l-5" inline="true" />
       </div>
     </Step>
   );

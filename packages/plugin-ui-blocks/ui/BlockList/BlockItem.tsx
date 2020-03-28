@@ -85,17 +85,21 @@ const onBeforeOpenModal = async (api, { item, type, onShowModal }) => {
 
   if (api.isMini() && type === 'block') {
     // umi ui 中区块有自己独有的打开方式
-    const position = (await getInsertPosition(api).catch(e => {
+    try {
+      const position = await getInsertPosition(api);
+      console.log('position', position);
+      const targetPath = await getPathFromFilename(api, position.filename);
+      const option = {
+        path: targetPath,
+        filename: position.filename,
+        index: position.index,
+        blockTarget: targetPath,
+      };
+      onShowModal(item, option);
+    } catch (e) {
       console.error('BlockItem error', e);
       message.error(e.message);
-    })) as PositionData;
-    const targetPath = await getPathFromFilename(api, position.filename);
-    const option = {
-      path: targetPath,
-      index: position.index,
-      blockTarget: targetPath,
-    };
-    onShowModal(item, option);
+    }
     return;
   }
 
@@ -162,13 +166,13 @@ const BlockItem: React.FC<BlockItemProps> = ({
                 disabledTitle={intl({
                   id: 'org.umi.ui.blocks.adder.disabledTitle',
                 })}
-                onClick={async () =>
+                onClick={async () => {
                   await onBeforeOpenModal(api, {
                     type,
                     item,
                     onShowModal,
-                  })
-                }
+                  });
+                }}
               >
                 {loading
                   ? intl({ id: 'org.umi.ui.blocks.list.viewlog' })

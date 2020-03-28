@@ -3,12 +3,12 @@ export default (function () {
     "div",
     null,
     React.createElement(GUmiUIFlag, {
-      filename: "/tmp/origin.tsx",
+      filename: "/tmp/pages/origin.tsx",
       index: "0"
     }),
     React.createElement("h1", null, "foo"),
     React.createElement(GUmiUIFlag, {
-      filename: "/tmp/origin.tsx",
+      filename: "/tmp/pages/origin.tsx",
       index: "1"
     })
   );

@@ -167,6 +167,11 @@ export default () => {
 
           const { filename, opts = {} } = state;
 
+          if (!(filename.indexOf('pages') > -1 || filename.indexOf('page') > -1)) {
+            // 只对 pages 处理，layout 不处理
+            return;
+          }
+
           assert(opts.doTransform, 'opts.doTransform must supplied');
           if (!opts.doTransform(filename)) return;
           const { node } = path;
@@ -206,6 +211,10 @@ export default () => {
         // 不限于路由组件，因为添加进来的区块不是路由组件
         // assert(opts.doTransform, 'opts.doTransform must supplied');
         // if (!opts.doTransform(filename)) return;
+        if (!(filename.indexOf('pages') > -1 || filename.indexOf('page') > -1)) {
+          // 只对 pages 处理，layout 不处理
+          return;
+        }
 
         const { node } = path;
         const { callee, arguments: args } = node;

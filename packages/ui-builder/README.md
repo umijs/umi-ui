@@ -70,6 +70,6 @@ $ npx ui-build
 🎉 ui build success
 
 $ npx ui-build -w
-🌈[watch] ui build success
+🌈 [watch] ui build success
 ```
 
