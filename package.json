@@ -1,6 +1,8 @@
 {
   "private": true,
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev": "cross-env DEBUG=umiui* ts-node-dev --no-notify --transpileOnly scripts/dev.ts",
     "build": "father-build",
@@ -52,6 +54,7 @@
     "shelljs": "0.8.3",
     "stringify-object": "3.3.0",
     "test-build-result": "^1.1.2",
+    "tnpm-sync": "^1.0.0",
     "ts-node-dev": "^1.0.0-pre.44",
     "umi": "^3.0.0"
   }

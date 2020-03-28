@@ -4,11 +4,11 @@ const shell = require('shelljs');
 const { existsSync } = require('fs');
 const { signale, execa, yParser } = require('@umijs/utils');
 const { join } = require('path');
+const tnpmSync = require('tnpm-sync');
 const { fork } = require('child_process');
 
 const lernaCli = require.resolve('lerna/cli');
 const getPackages = require('./getPackage');
-const syncTNPM = require('./syncTNPM');
 const { uiDist } = require('./uiPlugins');
 
 if (!shell.exec('npm config get registry').stdout.includes('https://registry.npmjs.org/')) {
@@ -78,14 +78,16 @@ cp.on('close', code => {
     process.exit(1);
   }
   publishToNpm();
-  syncTNPM();
 });
 
 function publishToNpm() {
   const pkgMap = getPackages();
   console.log(`repos to publish: ${updatedRepos.join(', ')}`);
-  updatedRepos.forEach(updatedPkg => {
-    const { version, repo } = pkgMap.find(pkg => pkg.name === updatedPkg);
+  const pkgs = updatedRepos.map(updatedPkg => {
+    return pkgMap.find(pkg => pkg.name === updatedPkg);
+  });
+  pkgs.forEach(pkg => {
+    const { version, repo } = pkg;
     shell.cd(join(cwd, 'packages', repo));
     if (version.includes('-rc.') || version.includes('-beta.') || version.includes('-alpha.')) {
       console.log(`[${repo}] npm publish --tag next`);
@@ -94,5 +96,8 @@ function publishToNpm() {
       console.log(`[${repo}] npm publish`);
       shell.exec(`npm publish`);
     }
+  });
+  tnpmSync({
+    packages: pkgs.map(pkg => pkg.name),
   });
 }
