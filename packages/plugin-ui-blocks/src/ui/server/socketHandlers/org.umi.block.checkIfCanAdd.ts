@@ -18,6 +18,7 @@ export default function({ success, payload, api, lang, failure }: IHandlerOpts) 
     return item.features && item.features.includes(feature);
   }
 
+  // 获取最后生成的路由
   const configRoutes = Array.isArray(api.config?.routes) && api.config?.routes?.length > 0;
   // 不支持约定式路由
   if (!configRoutes) {
@@ -45,6 +46,7 @@ export default function({ success, payload, api, lang, failure }: IHandlerOpts) 
   }
   const checkConfigRules = {
     dva: {
+      // 解决插件封装里开启 dva 的情况
       enable: api.config?.dva,
       message: {
         'zh-CN': isBigfish

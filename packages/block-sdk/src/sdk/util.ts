@@ -25,6 +25,7 @@ function findImportWithSource(importNodes, source) {
 function findSpecifier(importNode, specifier) {
   for (const s of importNode.specifiers) {
     if (t.isImportDefaultSpecifier(specifier) && t.isImportDefaultSpecifier(s)) return true;
+    // 这里没判断 specifier 类型，所以 name 会不存在
     if (specifier.imported?.name === s.imported?.name) {
       if (specifier.local?.name === s.local?.name) return true;
       throw new Error('specifier conflicts');
@@ -86,7 +87,7 @@ export function combineImportNodes(
 
 export function getIdentifierDeclaration(node, path) {
   let identifierNode = node;
-  // handle export default Form.create()
+  // 处理 HOC 的情况，将 HOC 里的 Identifier 筛选出来
   if (
     t.isCallExpression(node) &&
     node.arguments?.length > 0 &&
