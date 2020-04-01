@@ -55,11 +55,7 @@ export default (api): Promise<PositionData> => {
               '*',
             );
           } else {
-            reject(
-              new Error(
-                'The entry components in the paths with `pages` or `page` directory could be inserted',
-              ),
-            );
+            reject(new Error('只有 pages 或 page 目录下的页面才能插入资产'));
           }
         }
       } catch (error) {
