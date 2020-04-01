@@ -25,8 +25,8 @@ function findImportWithSource(importNodes, source) {
 function findSpecifier(importNode, specifier) {
   for (const s of importNode.specifiers) {
     if (t.isImportDefaultSpecifier(specifier) && t.isImportDefaultSpecifier(s)) return true;
-    if (specifier.imported.name === s.imported.name) {
-      if (specifier.local.name === s.local.name) return true;
+    if (specifier.imported?.name === s.imported?.name) {
+      if (specifier.local?.name === s.local?.name) return true;
       throw new Error('specifier conflicts');
     }
   }
@@ -85,8 +85,17 @@ export function combineImportNodes(
 }
 
 export function getIdentifierDeclaration(node, path) {
-  if (t.isIdentifier(node) && path.scope.hasBinding(node.name)) {
-    let bindingNode = path.scope.getBinding(node.name).path.node;
+  let identifierNode = node;
+  // handle export default Form.create()
+  if (
+    t.isCallExpression(node) &&
+    node.arguments?.length > 0 &&
+    node.arguments.some(argument => t.isIdentifier(argument))
+  ) {
+    identifierNode = node.arguments.find(argument => t.isIdentifier(argument));
+  }
+  if (t.isIdentifier(identifierNode) && path.scope.hasBinding(identifierNode.name)) {
+    let bindingNode = path.scope.getBinding(identifierNode.name).path.node;
     if (t.isVariableDeclarator(bindingNode)) {
       bindingNode = bindingNode.init;
     }
