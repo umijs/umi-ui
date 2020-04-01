@@ -15,6 +15,7 @@ export interface IFindJSOpts {
   base: string;
   fileNameWithoutExt?: string;
 }
+
 export const findJS = (opts): string => {
   const { base, fileNameWithoutExt } = opts;
   let i = 0;
@@ -202,19 +203,7 @@ export const getBlockListFromGit = async (gitUrl, useBuiltJSON?) => {
  * @param {*} mySpinner
  */
 export async function gitUpdate(ctx, mySpinner) {
-  mySpinner.start('🚒  Git fetch');
-  try {
-    await execa('git', ['fetch'], {
-      cwd: ctx.templateTmpDirPath,
-      stdio: 'inherit',
-    });
-  } catch (e) {
-    mySpinner.fail();
-    throw new Error(e);
-  }
-  mySpinner.succeed();
-
-  mySpinner.start(`🚛  Git checkout ${ctx.branch}`);
+  mySpinner.start(`🚛  sync file for git repo --branch ${ctx.branch}`);
 
   try {
     await execa('git', ['checkout', ctx.branch], {
@@ -225,9 +214,17 @@ export async function gitUpdate(ctx, mySpinner) {
     mySpinner.fail();
     throw new Error(e);
   }
-  mySpinner.succeed();
 
-  mySpinner.start('🚀  Git pull');
+  try {
+    await execa('git', ['fetch'], {
+      cwd: ctx.templateTmpDirPath,
+      stdio: 'inherit',
+    });
+  } catch (e) {
+    mySpinner.fail();
+    throw new Error(e);
+  }
+
   try {
     await execa('git', ['pull'], {
       cwd: ctx.templateTmpDirPath,
@@ -236,9 +233,6 @@ export async function gitUpdate(ctx, mySpinner) {
     // 如果是 git pull 之后有了
     // git module 只能通过这种办法来初始化一下
     if (isSubmodule(ctx.templateTmpDirPath)) {
-      // 结束  git pull 的 spinner
-      mySpinner.succeed();
-
       // 如果是分支切换过来，可能没有初始化，初始化一下
       await execa('git', ['submodule', 'init'], {
         cwd: ctx.templateTmpDirPath,
@@ -246,7 +240,6 @@ export async function gitUpdate(ctx, mySpinner) {
         stdio: 'inherit',
       });
 
-      mySpinner.start('👀  update submodule');
       await execa('git', ['submodule', 'update', '--recursive'], {
         cwd: ctx.templateTmpDirPath,
         stdio: 'inherit',
