@@ -19,7 +19,7 @@ describe('block interface socketHandlers test', () => {
         lang: 'zh-CN',
         payload: {},
         api: {
-          userConfig: {
+          config: {
             plugins: ['@umijs/preset-react'],
           },
         },
@@ -33,7 +33,7 @@ describe('block interface socketHandlers test', () => {
         lang: 'zh-CN',
         payload: {},
         api: {
-          userConfig: {
+          config: {
             routes: [],
             plugins: ['@umijs/preset-react'],
           },
@@ -53,7 +53,7 @@ describe('block interface socketHandlers test', () => {
         payload: {},
         api: {
           cwd: '/test/',
-          userConfig: {
+          config: {
             routes: [{ path: '/', component: './Index' }],
             plugins: ['@umijs/preset-react'],
           },
@@ -78,7 +78,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          userConfig: {
+          config: {
             routes: [{ path: '/', component: './Index' }],
             plugins: ['@umijs/preset-react'],
           },
@@ -97,7 +97,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          userConfig: {
+          config: {
             routes: [{ path: '/', component: './Index' }],
             dva: true,
             plugins: ['@umijs/preset-react'],
@@ -126,7 +126,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          userConfig: {
+          config: {
             routes: [{ path: '/', component: './Index' }],
             plugins: ['@umijs/preset-react'],
           },
@@ -148,7 +148,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          userConfig: {
+          config: {
             routes: [{ path: '/', component: './Index' }],
             react: true,
             locale: {
@@ -170,7 +170,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          userConfig: {
+          config: {
             routes: [{ path: '/', component: './Index' }],
             react: true,
             locale: true,
@@ -195,7 +195,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          userConfig: {
+          config: {
             routes: [{ path: '/', component: './Index' }],
             react: true,
             locale: {},
@@ -226,7 +226,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          userConfig: {
+          config: {
             dva: {},
             routes: [{ path: '/', component: './Index' }],
           },
@@ -249,7 +249,7 @@ describe('block interface socketHandlers test', () => {
           locale: {
             enable: false,
           },
-          userConfig: {
+          config: {
             dva: {},
             routes: [{ path: '/', component: './Index' }],
           },
@@ -269,7 +269,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          userConfig: {
+          config: {
             dva: false,
             routes: [{ path: '/', component: './Index' }],
           },
@@ -289,7 +289,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          userConfig: {
+          config: {
             routes: [{ path: '/', component: './Index' }],
             dva: true,
             locale: true,
@@ -314,7 +314,7 @@ describe('block interface socketHandlers test', () => {
         },
         api: {
           cwd: '/test/',
-          userConfig: {
+          config: {
             dva: false,
             routes: [{ path: '/', component: './Index' }],
           },
