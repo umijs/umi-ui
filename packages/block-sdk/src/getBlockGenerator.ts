@@ -274,7 +274,7 @@ export const getBlockGenerator = (api: IApi) => {
       if (isEmptyFolder(targetPath)) {
         rimraf.sync(targetPath);
       }
-      console.log(targetPath);
+
       while (this.isPageBlock && existsSync(targetPath)) {
         if (this.execution === 'auto') {
           throw new Error(`path ${this.path} already exist, press input a new path for it`);
