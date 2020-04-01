@@ -49,6 +49,6 @@ export const appendBlockToContainer = ({ entryPath, blockFolderName, dryRun, ind
       writeFileSync(entryPath, newEntry);
     }
   } catch (e) {
-    console.log(`Failed write block component: ${e.message}\n`);
+    console.error(`Failed write block component: ${e}\n`);
   }
 };

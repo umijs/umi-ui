@@ -18,7 +18,7 @@ export default function({ success, payload, api, lang, failure }: IHandlerOpts) 
     return item.features && item.features.includes(feature);
   }
 
-  const configRoutes = Array.isArray(api.userConfig.routes) && api.userConfig.routes.length > 0;
+  const configRoutes = Array.isArray(api.config?.routes) && api.config?.routes?.length > 0;
   // 不支持约定式路由
   if (!configRoutes) {
     failure({
@@ -43,10 +43,9 @@ export default function({ success, payload, api, lang, failure }: IHandlerOpts) 
     });
     return;
   }
-
   const checkConfigRules = {
     dva: {
-      enable: api.userConfig.dva,
+      enable: api.config?.dva,
       message: {
         'zh-CN': isBigfish
           ? `${payloadType}依赖 dva，请开启 dva 配置。`
@@ -57,7 +56,7 @@ export default function({ success, payload, api, lang, failure }: IHandlerOpts) 
       },
     },
     i18n: {
-      enable: api.userConfig.locale,
+      enable: api.config.locale,
       message: {
         'zh-CN': isBigfish
           ? `${payloadType}依赖 locale，请开启 locale 配置。`
