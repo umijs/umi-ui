@@ -16,7 +16,7 @@ import {
   UMI_UI_FLAG_PLACEHOLDER,
 } from '../constants';
 
-const { winPath } = utils;
+const { winPath, createDebug } = utils;
 
 export default () => {
   function buildGUmiUIFlag(opts) {
@@ -158,6 +158,18 @@ export default () => {
 
   let layoutIndexByFilename = {};
 
+  /**
+   * 检查是否走 Babel，目前只针对 /pages/ 或 /page/ 目录下的页面
+   * 其它不作为添加的入口
+   * @param filename 路径名
+   */
+  const checkPathFilename = (filename: string): boolean => {
+    if (filename.indexOf('/pages/') > -1 || filename.indexOf('/page/') > -1) {
+      return true;
+    }
+    return false;
+  };
+
   return {
     visitor: {
       Program: {
@@ -166,11 +178,6 @@ export default () => {
           layoutIndexByFilename = {};
 
           const { filename, opts = {} } = state;
-
-          if (!(filename.indexOf('pages') > -1 || filename.indexOf('page') > -1)) {
-            // 只对 pages 处理，layout 不处理
-            return;
-          }
 
           assert(opts.doTransform, 'opts.doTransform must supplied');
           if (!opts.doTransform(filename)) return;
@@ -195,7 +202,7 @@ export default () => {
           const ret = getReturnNode(d, path);
           if (ret) {
             const { node: retNode, replace } = ret;
-            if (retNode && !isInBlackList(retNode, path)) {
+            if (retNode && !isInBlackList(retNode, path) && checkPathFilename(filename)) {
               addUmiUIFlag(retNode, {
                 filename: winPath(filename),
                 replace,
@@ -211,10 +218,6 @@ export default () => {
         // 不限于路由组件，因为添加进来的区块不是路由组件
         // assert(opts.doTransform, 'opts.doTransform must supplied');
         // if (!opts.doTransform(filename)) return;
-        if (!(filename.indexOf('pages') > -1 || filename.indexOf('page') > -1)) {
-          // 只对 pages 处理，layout 不处理
-          return;
-        }
 
         const { node } = path;
         const { callee, arguments: args } = node;

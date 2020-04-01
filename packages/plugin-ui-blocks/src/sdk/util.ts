@@ -127,7 +127,10 @@ export function haveChildren(node) {
  */
 export function isChildFunc(node) {
   return (
-    (t.isJSXElement(node) && node.children.some(child => t.isJSXExpressionContainer(child))) ||
+    (t.isJSXElement(node) &&
+      node.children.some(child => t.isJSXExpressionContainer(child)) &&
+      // 并且没有一个 JSXElement 的时候，才不加 flag
+      node.children.every(child => !t.isJSXElement(child))) ||
     (isReactCreateElement(node) && node.arguments.some(arg => t.isArrowFunctionExpression(arg)))
   );
 }
