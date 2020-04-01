@@ -5,7 +5,7 @@ import upperCamelCase from 'uppercamelcase';
 import inquirer from 'inquirer';
 import { IApi } from '@umijs/types';
 import memFs from 'mem-fs';
-import editor from 'mem-fs-editor-async';
+import editor from '@umijs/mem-fs-editor';
 import { winPath, mkdirp, semver, Mustache, rimraf, createDebug, Generator } from '@umijs/utils';
 import replaceContent from './replaceContent';
 import { SINGULAR_SENSLTIVE } from './constants';
@@ -274,6 +274,7 @@ export const getBlockGenerator = (api: IApi) => {
       if (isEmptyFolder(targetPath)) {
         rimraf.sync(targetPath);
       }
+
       while (this.isPageBlock && existsSync(targetPath)) {
         if (this.execution === 'auto') {
           throw new Error(`path ${this.path} already exist, press input a new path for it`);
@@ -369,6 +370,7 @@ export const getBlockGenerator = (api: IApi) => {
           base: targetPath,
           fileNameWithoutExt: 'index',
         });
+
       debug('this.entryPath', this.entryPath);
       debug('targetPath', targetPath);
 
@@ -470,8 +472,9 @@ export const getBlockGenerator = (api: IApi) => {
               },
             });
             debug(`copy ${thePath} to ${realTarget}`);
+
             // eslint-disable-next-line no-await-in-loop
-            await this.fs.copy(winPath(thePath), winPath(realTarget), { process });
+            await this.fs.copyAsync(winPath(thePath), winPath(realTarget), { process });
           }
         }
       }

@@ -113,23 +113,7 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
   const blockConfig: {
     npmClient?: string;
   } = userConfig?.block || {};
-  const addLogs = [];
-
-  const getSpinner = () => {
-    const spinner = ora();
-    return {
-      ...spinner,
-      succeed: (info?: string) => spinner.succeed(info),
-      start: info => {
-        spinner.start(info);
-        addLogs.push(info);
-      },
-      fail: (info?: string) => spinner.fail(info),
-      stopAndPersist: (option?: any) => spinner.stopAndPersist(option),
-    };
-  };
-
-  const spinner = getSpinner();
+  const spinner = ora();
 
   if (!opts.remoteLog) {
     opts.remoteLog = () => {};
@@ -222,7 +206,6 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
   // 4. install additional dependencies
   // check dependencies conflict and install dependencies
   // install
-  opts.remoteLog('📦  Install extra dependencies');
   spinner.start('📦  install dependencies package');
   await installDependencies(
     {
@@ -241,18 +224,19 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
   spinner.succeed();
 
   // 5. run generator
-  opts.remoteLog('🔥  Generate files');
   spinner.start('🔥  Generate files');
-  spinner.stopAndPersist();
   const { getBlockGenerator } = require('./getBlockGenerator');
   const BlockGenerator = getBlockGenerator(api);
+
   let isPageBlock = ctx.pkg.blockConfig && ctx.pkg.blockConfig.specVersion === '0.1';
+
   if (isPage !== undefined) {
     // when user use `umi block add --page`
     isPageBlock = isPage;
   }
   debug(`isPageBlock: ${isPageBlock}`);
   debug(`ctx.filePath: ${ctx.filePath}`);
+
   const generator = new BlockGenerator({
     name: args._ ? args._.slice(2) : [],
     args: {
@@ -396,6 +380,6 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
   return {
     generator,
     ctx,
-    logs: addLogs,
+    logs: [],
   };
 }
