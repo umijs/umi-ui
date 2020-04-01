@@ -16,7 +16,7 @@ import {
   UMI_UI_FLAG_PLACEHOLDER,
 } from '../constants';
 
-const { winPath, createDebug } = utils;
+const { winPath } = utils;
 
 export default () => {
   function buildGUmiUIFlag(opts) {

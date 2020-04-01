@@ -55,7 +55,11 @@ export default (api): Promise<PositionData> => {
               '*',
             );
           } else {
-            reject(new Error('Can not find insert position'));
+            reject(
+              new Error(
+                'The entry components in the paths with `pages` or `page` directory could be inserted',
+              ),
+            );
           }
         }
       } catch (error) {
