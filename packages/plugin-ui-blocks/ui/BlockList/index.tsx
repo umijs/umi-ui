@@ -59,14 +59,12 @@ const BlockList: React.FC<BlockListProps> = props => {
   /**
    * 当前的列表项目，区块分页就是在这里做
    */
-  const currentPageList: Block[] = useMemo<Block[]>(
-    () =>
-      filteredList.slice(
-        (currentPage - 1) * pageSize,
-        currentPage * pageSize > filteredList.length ? filteredList.length : currentPage * pageSize,
-      ),
-    [filteredList, currentPage],
-  );
+  const currentPageList: Block[] = filteredList
+    .slice(
+      (currentPage - 1) * pageSize,
+      currentPage * pageSize > filteredList.length ? filteredList.length : currentPage * pageSize,
+    )
+    .filter(Boolean);
 
   /**
    * 是不是数据为空

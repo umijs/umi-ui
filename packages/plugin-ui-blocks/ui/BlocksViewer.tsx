@@ -172,7 +172,6 @@ const BlocksViewer: React.FC<Props> = props => {
   );
   // 当前的数据源列表
   const current = activeResource || resources.filter(item => item.blockType === type)[0];
-  console.log('currentcurrent', current);
   // 计算选中的区块
   const blocks = useMemo<Block[]>(
     () => (current && block.blockData[current.id] ? block.blockData[current.id] : []),
@@ -188,6 +187,71 @@ const BlocksViewer: React.FC<Props> = props => {
           resourceId: current.id,
         },
       });
+    }
+    const buttonPadding = isMini ? '0 4px' : '0 8px';
+
+    const handleSearchChange = (v: string) => {
+      setSearchValue(v.toLocaleLowerCase());
+    };
+
+    // 区块右上角的区域 三个按钮
+    if (api.setActionPanel) {
+      api.setActionPanel(() => [
+        <GlobalSearch key="global-search" onChange={handleSearchChange} api={api} />,
+        <Tooltip
+          title={intl({ id: 'org.umi.ui.blocks.actions.reload' })}
+          getPopupContainer={node => (node ? (node.parentNode as HTMLElement) : document.body)}
+          placement="bottom"
+        >
+          <Button
+            size={isMini ? 'small' : 'default'}
+            key="reload"
+            style={{ padding: buttonPadding }}
+            onClick={() => {
+              dispatch({
+                type: `${namespace}/fetch`,
+                payload: {
+                  reload: true,
+                },
+              });
+            }}
+          >
+            <ReloadOutlined />
+          </Button>
+        </Tooltip>,
+        <Tooltip
+          title={intl({ id: 'org.umi.ui.blocks.actions.clear' })}
+          getPopupContainer={node => (node ? (node.parentNode as HTMLElement) : document.body)}
+          placement="bottom"
+        >
+          <Button
+            size={isMini ? 'small' : 'default'}
+            key="clear"
+            onClick={() => clearCache(api)}
+            style={{
+              padding: buttonPadding,
+            }}
+          >
+            <Clear />
+          </Button>
+        </Tooltip>,
+        <Tooltip
+          title={intl({ id: 'org.umi.ui.blocks.actions.submit' })}
+          getPopupContainer={node => (node ? (node.parentNode as HTMLElement) : document.body)}
+          placement="bottom"
+        >
+          <Button
+            size={isMini ? 'small' : 'default'}
+            key="clear"
+            onClick={() => openUmiBlocks()}
+            style={{
+              padding: buttonPadding,
+            }}
+          >
+            <PlusOutlined />
+          </Button>
+        </Tooltip>,
+      ]);
     }
   }, [current]);
 
@@ -247,74 +311,6 @@ const BlocksViewer: React.FC<Props> = props => {
       scrollToById(willAddBlock.url, 'block-list-view');
     }
   }, [fetchDataLoading]);
-
-  // 区块右上角的区域 三个按钮
-  useEffect(() => {
-    const buttonPadding = isMini ? '0 4px' : '0 8px';
-
-    const handleSearchChange = (v: string) => {
-      setSearchValue(v.toLocaleLowerCase());
-    };
-
-    if (api.setActionPanel) {
-      api.setActionPanel(() => [
-        <GlobalSearch key="global-search" onChange={handleSearchChange} api={api} />,
-        <Tooltip
-          title={intl({ id: 'org.umi.ui.blocks.actions.reload' })}
-          getPopupContainer={node => (node ? (node.parentNode as HTMLElement) : document.body)}
-          placement="bottom"
-        >
-          <Button
-            size={isMini ? 'small' : 'default'}
-            key="reload"
-            style={{ padding: buttonPadding }}
-            onClick={() => {
-              dispatch({
-                type: `${namespace}/fetch`,
-                payload: {
-                  reload: true,
-                },
-              });
-            }}
-          >
-            <ReloadOutlined />
-          </Button>
-        </Tooltip>,
-        <Tooltip
-          title={intl({ id: 'org.umi.ui.blocks.actions.clear' })}
-          getPopupContainer={node => (node ? (node.parentNode as HTMLElement) : document.body)}
-          placement="bottom"
-        >
-          <Button
-            size={isMini ? 'small' : 'default'}
-            key="clear"
-            onClick={() => clearCache(api)}
-            style={{
-              padding: buttonPadding,
-            }}
-          >
-            <Clear />
-          </Button>
-        </Tooltip>,
-        <Tooltip
-          title={intl({ id: 'org.umi.ui.blocks.actions.submit' })}
-          getPopupContainer={node => (node ? (node.parentNode as HTMLElement) : document.body)}
-          placement="bottom"
-        >
-          <Button
-            size={isMini ? 'small' : 'default'}
-            key="clear"
-            onClick={() => openUmiBlocks()}
-            style={{
-              padding: buttonPadding,
-            }}
-          >
-            <PlusOutlined />
-          </Button>
-        </Tooltip>,
-      ]);
-    }
-  }, []);
 
   const onShowModal = (currentBlock, option) => {
     setAddModalVisible(true);
