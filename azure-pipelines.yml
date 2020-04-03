@@ -8,33 +8,6 @@ trigger:
   - master
 
 jobs:
-  - job: linux_test
-    timeoutInMinutes: 30
-    pool:
-      vmImage: 'Ubuntu-16.04'
-
-    container:
-      image: circleci/node:latest-browsers
-      options: '-u root'
-    steps:
-      - checkout: self
-        clean: all
-        fetchDepth: 1
-      - task: NodeTool@0
-        inputs:
-          versionSpec: '10.x'
-      - script: yarn install
-        displayName: install
-      - script: yarn build
-        displayName: build
-      - script: yarn ui:build
-        displayName: ui:build
-      - script: yarn test:coverage --forceExit
-        env:
-          PROGRESS: none
-          CI: true
-        displayName: test
-
   - job: windows_test
     timeoutInMinutes: 30
     pool:
