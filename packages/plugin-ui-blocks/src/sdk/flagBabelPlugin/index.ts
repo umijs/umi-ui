@@ -164,7 +164,7 @@ export default () => {
    * @param filename 路径名
    */
   const checkPathFilename = (filename: string): boolean => {
-    if (winPath(filename).indexOf('/pages/') > -1 || winPath(filename).indexOf('/page/') > -1) {
+    if (winPath(filename).indexOf('pages/') > -1 || winPath(filename).indexOf('page/') > -1) {
       return true;
     }
     return false;
