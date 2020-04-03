@@ -129,7 +129,7 @@ export const DEFAULT_RESOURCES: Resource[] = [
       fetchCDNBlocks({
         pkg: '@umijs/assets-umi',
         summary: 'blocks.json',
-        version: '^1.0.0',
+        version: '~1.0.0',
       }),
   },
   {
@@ -143,7 +143,7 @@ export const DEFAULT_RESOURCES: Resource[] = [
       fetchCDNBlocks({
         pkg: '@umijs/assets-umi',
         summary: 'templates.json',
-        version: '^1.0.0',
+        version: '~1.0.0',
       }),
   },
 ];
