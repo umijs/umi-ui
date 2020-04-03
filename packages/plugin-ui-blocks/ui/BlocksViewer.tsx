@@ -188,13 +188,73 @@ const BlocksViewer: React.FC<Props> = props => {
         },
       });
     }
+  }, [current]);
+
+  useEffect(() => {
+    /**
+     * 获取上次的安装的区块 url
+     * 成功之后会被清除
+     */
+    callRemote({
+      type: 'org.umi.block.get-adding-block-url',
+    }).then(({ data }: { data: string }) => {
+      if (data) {
+        setAddBlock({ url: data });
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    const handleMessage = event => {
+      try {
+        const { action, payload = {} } = JSON.parse(event.data);
+        switch (action) {
+          case 'umi.ui.block.addTemplate': {
+            setWillAddBlock(undefined);
+            setBlockParams(undefined);
+            if (payload) {
+              setType('template');
+              onShowModal(payload, {});
+            }
+            break;
+          }
+          default:
+          // no thing
+        }
+      } catch (_) {
+        // no thing
+      }
+      return false;
+    };
+    window.addEventListener('message', handleMessage, false);
+    // 告知父级页面，资产 准备就绪
+    window.parent.postMessage(
+      JSON.stringify({
+        action: 'umi.ui.block.addTemplate.ready',
+      }),
+      '*',
+    );
+    return () => {
+      window.removeEventListener('message', handleMessage, false);
+    };
+  }, []);
+
+  // 如果区块不在屏幕范围内，滚动过去
+  useEffect(() => {
+    if (willAddBlock) {
+      // 我把每个 item 都加了一个 id，就是他的 url
+      scrollToById(willAddBlock.url, 'block-list-view');
+    }
+  }, [fetchDataLoading]);
+
+  // 区块右上角的区域 三个按钮
+  useEffect(() => {
     const buttonPadding = isMini ? '0 4px' : '0 8px';
 
     const handleSearchChange = (v: string) => {
       setSearchValue(v.toLocaleLowerCase());
     };
 
-    // 区块右上角的区域 三个按钮
     if (api.setActionPanel) {
       api.setActionPanel(() => [
         <GlobalSearch key="global-search" onChange={handleSearchChange} api={api} />,
@@ -254,63 +314,6 @@ const BlocksViewer: React.FC<Props> = props => {
       ]);
     }
   }, [current]);
-
-  useEffect(() => {
-    /**
-     * 获取上次的安装的区块 url
-     * 成功之后会被清除
-     */
-    callRemote({
-      type: 'org.umi.block.get-adding-block-url',
-    }).then(({ data }: { data: string }) => {
-      if (data) {
-        setAddBlock({ url: data });
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    const handleMessage = event => {
-      try {
-        const { action, payload = {} } = JSON.parse(event.data);
-        switch (action) {
-          case 'umi.ui.block.addTemplate': {
-            setWillAddBlock(undefined);
-            setBlockParams(undefined);
-            if (payload) {
-              setType('template');
-              onShowModal(payload, {});
-            }
-            break;
-          }
-          default:
-          // no thing
-        }
-      } catch (_) {
-        // no thing
-      }
-      return false;
-    };
-    window.addEventListener('message', handleMessage, false);
-    // 告知父级页面，资产 准备就绪
-    window.parent.postMessage(
-      JSON.stringify({
-        action: 'umi.ui.block.addTemplate.ready',
-      }),
-      '*',
-    );
-    return () => {
-      window.removeEventListener('message', handleMessage, false);
-    };
-  }, []);
-
-  // 如果区块不在屏幕范围内，滚动过去
-  useEffect(() => {
-    if (willAddBlock) {
-      // 我把每个 item 都加了一个 id，就是他的 url
-      scrollToById(willAddBlock.url, 'block-list-view');
-    }
-  }, [fetchDataLoading]);
 
   const onShowModal = (currentBlock, option) => {
     setAddModalVisible(true);
