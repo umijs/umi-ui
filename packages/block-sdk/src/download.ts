@@ -103,10 +103,6 @@ export const urlAddGit = url => {
 const getAntdVersion = (ref: string) => {
   try {
     const { version } = require('antd');
-    // antd@3 和 umi@3 的分支
-    if (version.startsWith(3) && ref === 'umi@3') {
-      return 'antd@3&umi@3';
-    }
     // antd@3 且 umi@2 的分支
     if (version.startsWith(3) && ref === 'master') {
       return 'antd@3';
