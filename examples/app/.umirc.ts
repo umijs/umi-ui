@@ -2,6 +2,9 @@ import { IConfig } from 'umi'; // ref: https://umijs.org/config/
 
 const config: IConfig = {
   dva: {},
+  nodeModulesTransform: {
+    type: 'none',
+  },
   routes: [
     {
       path: '/',
