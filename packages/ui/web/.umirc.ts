@@ -19,6 +19,9 @@ const terserOptions =
 
 export default defineConfig({
   presets: ['@umijs/preset-react'],
+  nodeModulesTransform: {
+    type: 'none',
+  },
   publicPath: NODE_ENV === 'development' ? 'http://localhost:8002/' : '/',
   history: {
     type: 'browser',
