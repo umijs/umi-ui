@@ -12,6 +12,7 @@ export default (api: IApi) => {
   return {
     plugins: [
       require.resolve('./registerMethods'),
+      require.resolve('./UmiUIFlag'),
       require.resolve('./commands/ui'),
       ...(injectBubble ? [require.resolve('./addBubble')] : []),
       require.resolve('./plugins/dashboard/index'),
