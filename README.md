@@ -37,6 +37,29 @@ $ yarn add @umijs/preset-ui -D
 
 指定页面中可插入区块位置
 
+```tsx
+import React from 'react';
+import { UmiUIFlag } from 'umi';
+
+import { Button } from 'antd';
+
+export default () => (
+  <div>Hello
+    <div>
+      <p>World</p>
+      <UmiUIFlag />
+      <p>
+        aaaaa
+        <div>
+          <UmiUIFlag inline />Hello Inline<UmiUIFlag inline />
+        </div>
+      </p>
+    </div>
+    <Button type="primary">World</Button>
+  </div>
+)
+```
+
 ![https://user-images.githubusercontent.com/13595509/73427305-731f0680-4371-11ea-83de-1f19a99c32cd.png](https://user-images.githubusercontent.com/13595509/73427305-731f0680-4371-11ea-83de-1f19a99c32cd.png)
 
 ### 从页面打开资产
