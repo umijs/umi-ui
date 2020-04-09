@@ -40,8 +40,15 @@ function testTransform(dir) {
       require.resolve('@babel/preset-typescript'),
     ],
   });
+  // 处理下 babel 的问题
+  const replaceCode = (res: string) =>
+    res
+      .trim()
+      .replace(/[A-Z]:/g, '')
+      .replace(/\/\*#__PURE__\*\//gm, '');
+
   // window 专用，去掉一下盘符，其实表现是正常的，但是为了保证测试通过
-  expect(code.trim().replace(/[A-Z]:/g, '')).toEqual(expectCode.trim().replace(/[A-Z]:/g, ''));
+  expect(replaceCode(code)).toEqual(replaceCode(expectCode));
 }
 
 readdirSync(fixtures).forEach(dir => {
