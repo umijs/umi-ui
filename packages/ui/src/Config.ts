@@ -88,7 +88,11 @@ export default class Config {
     createOpts?: any;
     ignoreExistsCheck?: boolean;
   }): string {
-    name = name || basename(path);
+    console.log('name before', name);
+
+    name = basename(name || path);
+    console.log('name after', name);
+
     const str = `${path}____${name}`;
     const key = createHash('md5')
       .update(str)

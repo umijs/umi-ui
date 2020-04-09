@@ -350,6 +350,8 @@ export default class UmiUI {
   async createProject(opts = {}, { onSuccess, onFailure, onProgress, lang }) {
     let { key } = opts;
     let { retryFrom } = opts;
+    console.log('opts', opts);
+
 
     let createOpts = opts;
     if (key) {
