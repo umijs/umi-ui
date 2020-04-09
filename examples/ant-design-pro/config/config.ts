@@ -2,9 +2,7 @@
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
-
 const { REACT_APP_ENV } = process.env;
-
 export default defineConfig({
   hash: true,
   presets: ['../../packages/preset-ui/lib/index.js'],
@@ -37,7 +35,6 @@ export default defineConfig({
         {
           path: '/',
           component: '../layouts/BasicLayout',
-          authority: ['admin', 'user'],
           routes: [
             {
               path: '/',
@@ -54,14 +51,12 @@ export default defineConfig({
               name: 'admin',
               icon: 'crown',
               component: './Admin',
-              authority: ['admin'],
               routes: [
                 {
                   path: '/admin/sub-page',
                   name: 'sub-page',
                   icon: 'smile',
                   component: './Welcome',
-                  authority: ['admin'],
                 },
               ],
             },
@@ -70,6 +65,12 @@ export default defineConfig({
               icon: 'table',
               path: '/list',
               component: './ListTableList',
+            },
+            {
+              name: '空白页面',
+              icon: 'smile',
+              path: '/emptypage',
+              component: './EmptyPage',
             },
             {
               component: './404',
