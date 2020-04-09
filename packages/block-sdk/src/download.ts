@@ -103,10 +103,6 @@ export const urlAddGit = url => {
 const getAntdVersion = (ref: string) => {
   try {
     const { version } = require('antd');
-    // antd@3 和 umi@3 的分支
-    if (version.startsWith(3) && ref === 'umi@3') {
-      return 'antd@3&umi@3';
-    }
     // antd@3 且 umi@2 的分支
     if (version.startsWith(3) && ref === 'master') {
       return 'antd@3';
@@ -137,7 +133,7 @@ export async function parseGitUrl(url, closeFastGithub) {
   return {
     repo: urlAddGit(repo),
     // 当 name = ant-design/pro-blocks 时，应该使用 umi@3 分支的区块
-    branch: getAntdVersion(fullName === 'ant-design/pro-blocks' ? 'umi@3' : ref) || 'master',
+    branch: getAntdVersion(ref) || 'master',
     path: `/${filepath}`,
     id: `${resource}/${fullName}`, // 唯一标识一个 git 仓库
   };
