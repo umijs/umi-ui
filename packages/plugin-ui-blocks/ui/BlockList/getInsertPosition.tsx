@@ -55,7 +55,7 @@ export default (api): Promise<PositionData> => {
               '*',
             );
           } else {
-            reject(new Error('当前页面无区域能插入资产'));
+            reject(new Error('当前页面无法插入资产'));
           }
         }
       } catch (error) {
