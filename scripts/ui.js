@@ -20,6 +20,7 @@ const uiApp = () => {
         env: {
           APP_ROOT: './packages/ui/web',
           UMI_UI: 'none',
+          FRIENDLY_ERROR: 'none',
           UMI_UI_SERVER: 'none',
           PORT: 8002,
           BROWSER: 'none',
