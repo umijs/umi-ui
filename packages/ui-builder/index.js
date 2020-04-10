@@ -80,9 +80,7 @@ module.exports = opts => {
             {
               loader: require.resolve('less-loader'),
               options: {
-                modifyVars: {
-                  '@primary-color': 'red',
-                },
+                modifyVars: dark,
                 javascriptEnabled: true,
               },
             },
