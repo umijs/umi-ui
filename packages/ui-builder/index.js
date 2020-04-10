@@ -1,4 +1,5 @@
 const TerserPlugin = require('terser-webpack-plugin');
+const { dark } = require('@umijs/ui-theme');
 const terserOptions = require('./terser');
 
 module.exports = opts => {
