@@ -1,4 +1,5 @@
 const TerserPlugin = require('terser-webpack-plugin');
+const { dark } = require('@umijs/ui-theme');
 const terserOptions = require('./terser');
 
 module.exports = opts => {
@@ -79,9 +80,7 @@ module.exports = opts => {
             {
               loader: require.resolve('less-loader'),
               options: {
-                modifyVars: {
-                  '@primary-color': 'red',
-                },
+                modifyVars: dark,
                 javascriptEnabled: true,
               },
             },

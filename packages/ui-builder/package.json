@@ -9,6 +9,7 @@
   "dependencies": {
     "@umijs/babel-preset-umi": "3.0.14",
     "babel-loader": "8.0.6",
+    "@umijs/ui-theme": "1.0.1-beta.1",
     "css-loader": "3.4.2",
     "less": "3.11.1",
     "less-loader": "5.0.0",
