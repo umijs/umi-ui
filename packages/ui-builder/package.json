@@ -1,15 +1,15 @@
 {
   "name": "@umijs/ui-builder",
   "description": "Umi UI plugin umd builder based on webpack 5",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "bin": {
     "ui-build": "bin/index.js"
   },
   "main": "index.js",
   "dependencies": {
     "@umijs/babel-preset-umi": "3.0.14",
-    "babel-loader": "8.0.6",
     "@umijs/ui-theme": "1.0.1-beta.1",
+    "babel-loader": "8.0.6",
     "css-loader": "3.4.2",
     "less": "3.11.1",
     "less-loader": "5.0.0",
