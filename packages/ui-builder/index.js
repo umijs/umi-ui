@@ -4,7 +4,7 @@ const terserOptions = require('./terser');
 
 module.exports = opts => {
   const { config, mode } = opts;
-  const { entry } = config;
+  const { entry, theme = dark } = config;
 
   return {
     entry,
@@ -80,7 +80,7 @@ module.exports = opts => {
             {
               loader: require.resolve('less-loader'),
               options: {
-                modifyVars: dark,
+                modifyVars: theme,
                 javascriptEnabled: true,
               },
             },

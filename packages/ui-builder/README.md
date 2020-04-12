@@ -49,7 +49,11 @@ module.exports = {
   entry: {
     bar: 'ui/bar.tsx',
     foo: 'ui/foo.tsx',
-  }
+  },
+  // less theme vars
+  theme: {
+
+  },
 }
 ```
 
