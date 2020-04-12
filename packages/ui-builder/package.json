@@ -1,7 +1,7 @@
 {
   "name": "@umijs/ui-builder",
   "description": "Umi UI plugin umd builder based on webpack 5",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "bin": {
     "ui-build": "bin/index.js"
   },
