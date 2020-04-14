@@ -5,6 +5,7 @@ import express from 'express';
 import http from 'http';
 import compression from 'compression';
 
+import clearModule from 'clear-module';
 import sockjs from 'sockjs';
 import { join, resolve, dirname, isAbsolute } from 'path';
 import launchEditor from '@umijs/launch-editor';
