@@ -28,6 +28,7 @@ export default {
   'org.umi.ui.blocks.adder.npmClient': 'Package Manage Client',
   'org.umi.ui.blocks.adder.npmClient.required': 'Please select a package manage client',
   'org.umi.ui.blocks.adder.minirecommend': 'Open in mini ui for add, get a better experience.',
+  'org.umi.ui.blocks.adder.path.label': 'Blocks will be installed to',
   'org.umi.ui.blocks.adder.path': 'Add to',
   'org.umi.ui.blocks.adder.path.tooltip':
     'Select route in config.js, umi will find the file with route path!',

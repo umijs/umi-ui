@@ -10,16 +10,17 @@ import Context from '../UIApiContext';
 import InfoToolTip from './InfoToolTip';
 
 const PathLabel: React.FC<{
+  intl: any;
   value?: string;
   name?: string;
-}> = ({ value, name }) => (
+}> = ({ value, name, intl }) => (
   <div
     style={{
       display: 'flex',
       marginBottom: 24,
     }}
   >
-    区块将被安装到
+    {intl({ id: 'org.umi.ui.blocks.adder.path.label' })}
     <code
       style={{
         backgroundColor: '#3b3b4d',
@@ -61,7 +62,7 @@ const AddBlockFormForUI: React.FC<{
           },
         ]}
       >
-        <PathLabel name={varName} />
+        <PathLabel name={varName} intl={intl} />
       </Form.Item>
       <Form.Item
         name="name"
