@@ -26,6 +26,7 @@ export default (api: IApiBlock) => {
       routes.reduce((memo, route) => {
         if (
           route.component &&
+          typeof route.component === 'string' &&
           !route.component.startsWith('()') &&
           !route.component?.includes('node_modules')
         ) {
