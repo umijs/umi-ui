@@ -29,6 +29,7 @@ export default {
   'org.umi.ui.blocks.adder.npmClient': '包管理器',
   'org.umi.ui.blocks.adder.npmClient.required': '请选择包管理器',
   'org.umi.ui.blocks.adder.minirecommend': '在 mini ui 中添加，获取更好的使用体验。',
+  'org.umi.ui.blocks.adder.path.label': '区块将被安装到',
   'org.umi.ui.blocks.adder.path': '添加到',
   'org.umi.ui.blocks.adder.path.tooltip':
     '此处选择的是 config.js 中的路由，他会根据路由来找到需要添加到的文件！',
