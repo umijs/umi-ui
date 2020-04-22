@@ -27,7 +27,7 @@ export default (api: IApiBlock) => {
         if (
           route.component &&
           typeof route.component === 'string' &&
-          !route.component.startsWith('()') &&
+          !route.component.startsWith('(') &&
           !route.component?.includes('node_modules')
         ) {
           const routeComponent = route.component
