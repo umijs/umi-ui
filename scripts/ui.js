@@ -24,6 +24,7 @@ const uiApp = () => {
           UMI_UI_SERVER: 'none',
           PORT: 8002,
           BROWSER: 'none',
+          NODE_ENV: watch ? 'production' : 'development',
           BABEL_POLYFILL: 'none',
         },
       });
@@ -47,7 +48,7 @@ const buildPlugin = cwd => {
       const pluginProcess = fork(UI_BUILD_BIN, watch ? ['--watch'] : [], {
         cwd,
         env: {
-          NODE_ENV: watch ? 'prod' : 'development',
+          NODE_ENV: watch ? 'production' : 'development',
         },
       });
       pluginProcess.on('exit', code => {

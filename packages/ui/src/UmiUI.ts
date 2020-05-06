@@ -41,6 +41,7 @@ export interface IContext {
   browser: boolean;
   /** 完整版 */
   full: boolean;
+  env?: 'production' | 'development';
   cwd: string;
   developMode: boolean;
   npmClients: string[];
@@ -90,6 +91,7 @@ export default class UmiUI {
     this.ctx = {
       cwd: process.cwd(),
       developMode: !!process.env.DEVELOP_MODE,
+      env: process.env.NODE_ENV,
       config: this.config,
       basicUIPath: this.basicUIPath,
       servicesByKey: this.servicesByKey,
