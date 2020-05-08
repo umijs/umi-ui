@@ -8,7 +8,6 @@ import { stringify, parse } from 'qs';
 import { Clear } from './icon';
 import BlockList from './BlockList';
 import GlobalSearch from './GlobalSearch';
-import useCallData from './hooks/useCallData';
 import styles from './BlocksViewer.module.less';
 import Adder from './Adder';
 import AssetsMenu from './AssetsMenu';
@@ -136,10 +135,12 @@ const renderActiveResourceTag = ({
 const BlocksViewer: React.FC<Props> = props => {
   const { dispatch, block, loading: fetchDataLoading } = props;
   const { api, type, setType, activeResource, setActiveResource } = Container.useContainer();
-  const { callRemote, useIntl } = api;
+  const { callRemote, useIntl, hooks } = api;
+  const { useRequest } = hooks;
   const { formatMessage: intl } = useIntl();
+  console.log('type', type, block);
   /**
-   * 是不是umi
+   * 是不是 mini
    */
   const isMini = api.isMini();
 
@@ -163,20 +164,22 @@ const BlocksViewer: React.FC<Props> = props => {
     }
   }, []);
 
-  // 获取数据源
-  const { data: resources } = useCallData<Resource[]>(
+  // 获取资产数据源
+  const { data: resources, error, loading } = useRequest(
     () =>
       callRemote({
         type: 'org.umi.block.resource',
-      }) as any,
-    [],
+      }),
     {
-      defaultData: [],
+      formatResult: res => res?.data || [],
+      initialData: [],
     },
   );
+  console.log('resources', resources);
   // 当前的数据源列表
   const current = activeResource || resources.filter(item => item.blockType === type)[0];
   // 计算选中的区块
+  console.log('current', current);
   const blocks = useMemo<Block[]>(
     () => (current && block.blockData[current.id] ? block.blockData[current.id] : []),
     [block, current],
@@ -185,9 +188,11 @@ const BlocksViewer: React.FC<Props> = props => {
   // 初始化 block dva model data
   useEffect(() => {
     if (current && current.id) {
+      // 获取数据
       dispatch({
         type: `${namespace}/fetch`,
         payload: {
+          current,
           resourceId: current.id,
         },
       });
@@ -195,24 +200,11 @@ const BlocksViewer: React.FC<Props> = props => {
   }, [current]);
 
   useEffect(() => {
-    /**
-     * 获取上次的安装的区块 url
-     * 成功之后会被清除
-     */
-    callRemote({
-      type: 'org.umi.block.get-adding-block-url',
-    }).then(({ data }: { data: string }) => {
-      if (data) {
-        setAddBlock({ url: data });
-      }
-    });
-  }, []);
-
-  useEffect(() => {
     const handleMessage = event => {
       try {
         const { action, payload = {} } = JSON.parse(event.data);
         switch (action) {
+          // postMessage，ui 与项目的通讯
           case 'umi.ui.block.addTemplate': {
             setWillAddBlock(undefined);
             setBlockParams(undefined);
@@ -275,6 +267,7 @@ const BlocksViewer: React.FC<Props> = props => {
               dispatch({
                 type: `${namespace}/fetch`,
                 payload: {
+                  current,
                   reload: true,
                 },
               });
@@ -332,6 +325,8 @@ const BlocksViewer: React.FC<Props> = props => {
   };
 
   const matchedResources = resources.filter(r => r.blockType === type);
+  console.log('blocks', blocks);
+  console.log('current', current);
 
   return (
     <>
@@ -353,7 +348,7 @@ const BlocksViewer: React.FC<Props> = props => {
           <div className={`${styles.container} ${isMini && styles.min}`} id="block-list-view">
             {current ? (
               <div className={styles.blockList}>
-                {matchedResources.length > 0 ? (
+                {matchedResources.length > 0 && (
                   <BlockList
                     type={type}
                     keyword={searchValue}
@@ -364,9 +359,8 @@ const BlocksViewer: React.FC<Props> = props => {
                     onShowModal={onShowModal}
                     loading={fetchDataLoading}
                   />
-                ) : (
-                  <div>没有找到数据源</div>
                 )}
+                {!loading && !matchedResources?.length && <div>没有找到数据源</div>}
               </div>
             ) : (
               <div className={styles.loading}>

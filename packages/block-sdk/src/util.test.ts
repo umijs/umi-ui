@@ -5,7 +5,7 @@ import {
   depthRouterConfig,
   genRouterToTreeData,
   reduceData,
-  fetchDumiAssets,
+  fetchDumiResource,
 } from './util';
 import { PKG_ASSETS_META } from './index';
 import routerConfig from '../fixtures/util/routerConfig';
@@ -85,7 +85,7 @@ test('gen router config', () => {
   expect(depthRouterConfig(reduceData(genRouterToTreeData(routerConfig)))).toMatchSnapshot();
 });
 
-test('fetchDumiAssets latest', async () => {
+test('fetchDumiResource latest', async () => {
   const registry = 'http://test';
   const name = '@umijs/assets-umi';
   const prefix = `${registry}/${name}@latest`;
@@ -95,26 +95,59 @@ test('fetchDumiAssets latest', async () => {
         [PKG_ASSETS_META]: './assets/assets.json',
       }),
       [`${prefix}/assets/assets.json`]: JSON.stringify({
-        hello: 'world',
+        name: 'test',
+        assets: {
+          examples: [
+            { name: 'block1', type: 'BLOCK' },
+            { name: 'block2', type: 'BLOCK' },
+            { name: 'template1', type: 'TEMPLATE' },
+            { name: 'template2', type: 'TEMPLATE' },
+            { name: 'component1', type: 'COMPONENT' },
+            { name: 'component2', type: 'COMPONENT' },
+          ],
+        },
       }),
     };
     return Promise.resolve({
       body: urlMap[requestUrl],
     });
   });
-  const result = await fetchDumiAssets({
+  const result = await fetchDumiResource({
     name,
     registry,
   });
   expect(result).toEqual({
-    data: {
-      hello: 'world',
-    },
+    data: [
+      {
+        name: 'test',
+        blockType: 'block',
+        assets: [
+          { name: 'block1', type: 'BLOCK' },
+          { name: 'block2', type: 'BLOCK' },
+        ],
+      },
+      {
+        name: 'test',
+        blockType: 'template',
+        assets: [
+          { name: 'template1', type: 'TEMPLATE' },
+          { name: 'template2', type: 'TEMPLATE' },
+        ],
+      },
+      {
+        name: 'test',
+        blockType: 'component',
+        assets: [
+          { name: 'component1', type: 'COMPONENT' },
+          { name: 'component2', type: 'COMPONENT' },
+        ],
+      },
+    ],
   });
   gotMock.mockRestore();
 });
 
-test('fetchDumiAssets version', async () => {
+test('fetchDumiResource version', async () => {
   const registry = 'http://test';
   const name = '@umijs/assets-umi';
   const version = '~1.0.0';
@@ -125,21 +158,43 @@ test('fetchDumiAssets version', async () => {
         [PKG_ASSETS_META]: './assets/assets.json',
       }),
       [`${prefix}/assets/assets.json`]: JSON.stringify({
-        hello: 'world',
+        assets: {
+          examples: [
+            { name: 'block1', type: 'BLOCK' },
+            { name: 'block2', type: 'BLOCK' },
+            { name: 'template1', type: 'TEMPLATE' },
+            { name: 'template2', type: 'TEMPLATE' },
+            { name: 'component1', type: 'COMPONENT' },
+            { name: 'component2', type: 'COMPONENT' },
+          ],
+        },
       }),
     };
     return Promise.resolve({
       body: urlMap[requestUrl],
     });
   });
-  const result = await fetchDumiAssets({
+  const result = await fetchDumiResource({
     name,
     version,
     registry,
   });
   expect(result).toEqual({
     data: {
-      hello: 'world',
+      assets: {
+        block: [
+          { name: 'block1', type: 'BLOCK' },
+          { name: 'block2', type: 'BLOCK' },
+        ],
+        template: [
+          { name: 'template1', type: 'TEMPLATE' },
+          { name: 'template2', type: 'TEMPLATE' },
+        ],
+        component: [
+          { name: 'component1', type: 'COMPONENT' },
+          { name: 'component2', type: 'COMPONENT' },
+        ],
+      },
     },
   });
   gotMock.mockRestore();

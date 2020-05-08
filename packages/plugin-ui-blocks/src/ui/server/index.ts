@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { IApi, utils } from 'umi';
-import { AssetsType, AssetsConfig, fetchDumiAssets } from '@umijs/block-sdk';
+import { ResourceType, AssetsConfig, fetchDumiResource } from '@umijs/block-sdk';
 import { Resource } from '@umijs/block-sdk/lib/data.d';
 import { ILang } from '@umijs/ui-types';
 import Block from './core/Block';
@@ -49,21 +49,21 @@ export default (api: IApi) => {
         if (!resources?.length) {
           if (ui?.blocks?.assets?.length > 0) {
             const assets = lodash.groupBy(ui.blocks.assets, asset => asset.type);
-            if (assets?.[AssetsType.dumi]?.length > 0) {
+            if (assets?.[ResourceType.dumi]?.length > 0) {
               const dumiAssetsPromises = (ui.blocks.assets as AssetsConfig[]).map(async asset => {
-                const { err, data } = await fetchDumiAssets({
+                const { err, data } = await fetchDumiResource({
                   name: asset.name,
                   version: asset.version,
                   registry: asset.registry,
                 });
                 if (err) return null;
-                return {
+                return data.map(item => ({
+                  ...item,
                   id: asset.name,
-                  type: AssetsType.dumi,
-                  ...data,
-                };
+                  type: ResourceType.dumi,
+                }));
               });
-              resources = (await Promise.all(dumiAssetsPromises)).filter(Boolean);
+              resources = lodash.flatten((await Promise.all(dumiAssetsPromises)).filter(Boolean));
             }
           }
           resources = await api.applyPlugins({

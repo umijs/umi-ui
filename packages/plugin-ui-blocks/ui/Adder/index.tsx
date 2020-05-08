@@ -174,11 +174,9 @@ const Adder: React.FC<AdderProps> = props => {
     if (!block) {
       return;
     }
-    console.log('block', block);
     // 生成 defaultName
-    const defaultName = block?.url ? block?.url?.split('/')?.pop() : block?.key;
+    const defaultName = (block?.url ? block?.url?.split('/')?.pop() : block?.key) || '';
     const initPath = blockType !== 'template' ? '/' : `/${defaultName}`;
-    console.log('initPath', initPath);
     const resetInitialValues = async () => {
       // 自动生成一个不存在的变量名
       const noExitVar = await getNoExitVar({

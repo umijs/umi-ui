@@ -160,7 +160,7 @@ export default (content, opts) => {
       JSXText(path: any) {
         const { node } = path;
         const { value } = node;
-        if (value.trim().startsWith(INSERT_BLOCK_PLACEHOLDER)) {
+        if (typeof value === 'string' && value.trim().startsWith(INSERT_BLOCK_PLACEHOLDER)) {
           if (targetIndex === currIndex) {
             // 添加过之后无需提示
             node.value = INSERT_BLOCK_PLACEHOLDER;
