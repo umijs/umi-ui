@@ -129,6 +129,10 @@ const renderActiveResourceTag = ({
   return null;
 };
 
+/**
+ * 资产 主入口
+ * @param props
+ */
 const BlocksViewer: React.FC<Props> = props => {
   const { dispatch, block, loading: fetchDataLoading } = props;
   const { api, type, setType, activeResource, setActiveResource } = Container.useContainer();

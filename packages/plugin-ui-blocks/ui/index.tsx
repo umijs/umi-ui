@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IUiApi } from '@umijs/ui-types';
 
 import Context from './UIApiContext';

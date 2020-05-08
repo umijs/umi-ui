@@ -1,9 +1,10 @@
 import { IApi, utils } from 'umi';
 import { readFileSync } from 'fs';
-import { isAbsolute, join } from 'path';
+import { join } from 'path';
 import server from './server';
+import { getRouteComponents } from './utils';
 
-const { winPath, lodash, Mustache } = utils;
+const { winPath, Mustache } = utils;
 
 export interface IApiBlock extends IApi {
   sendLog: (info: string) => void;
@@ -23,35 +24,13 @@ export default (api: IApiBlock) => {
   //   routeComponents = api.getRouteComponents();
   // });
 
-  const getRouteComponents = (componentRoutes): string[] => {
-    const getComponents = routes =>
-      routes.reduce((memo, route) => {
-        if (
-          route.component &&
-          typeof route.component === 'string' &&
-          !route.component.startsWith('(') &&
-          !route.component?.includes('node_modules')
-        ) {
-          const routeComponent = route.component
-            ?.replace('@@', paths.absTmpPath)
-            ?.replace('@', paths.absSrcPath);
-          const component = isAbsolute(routeComponent)
-            ? require.resolve(routeComponent)
-            : require.resolve(join(api.cwd, routeComponent));
-          memo.push(winPath(component));
-        }
-        if (route.routes) {
-          memo = memo.concat(getComponents(route.routes));
-        }
-        return memo;
-      }, []);
-
-    return lodash.uniq(getComponents(componentRoutes));
-  };
-
   api.modifyBabelOpts(async babelOpts => {
     const routes = await api.getRoutes();
-    const routeComponents = getRouteComponents(routes);
+    const routeComponents = getRouteComponents({
+      componentRoutes: routes,
+      paths,
+      cwd: api.cwd,
+    });
     const { plugins } = babelOpts;
     return {
       ...babelOpts,
