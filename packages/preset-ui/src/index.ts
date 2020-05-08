@@ -9,6 +9,23 @@ export default (api: IApi) => {
     };
   }
 
+  api.describe({
+    key: 'ui',
+    config: {
+      schema(joi) {
+        return joi
+          .object({
+            blocks: joi
+              .object({
+                assets: joi.array().items(joi.any()),
+              })
+              .unknown(),
+          })
+          .unknown();
+      },
+    },
+  });
+
   return {
     plugins: [
       require.resolve('./registerMethods'),

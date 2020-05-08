@@ -8,6 +8,7 @@ import GitUrlParse from 'git-url-parse';
 import terminalLink from 'terminal-link';
 
 import { BlockData } from './data.d';
+import { IAssets, PKG_ASSETS_META, IAssetDumiConifg } from './index';
 import arrayToTree from './arrayToTree';
 
 const JS_EXTNAMES = ['.js', '.jsx', '.ts', '.tsx'];
@@ -424,22 +425,6 @@ export const fetchBlockList = async (repo: string): Promise<BlockData> => {
   }
 };
 
-export async function fetchUmiBlock(url) {
-  try {
-    const { body } = await got(url);
-    return {
-      data: JSON.parse(body).list,
-      success: true,
-    };
-  } catch (error) {
-    return {
-      message: error.message,
-      data: undefined,
-      success: false,
-    };
-  }
-}
-
 /**
  * 通过 npm CDN url 获取区块数据
  * @param pkg 包名
@@ -464,6 +449,37 @@ export async function fetchCDNBlocks({
       message: error.message,
       data: undefined,
       success: false,
+    };
+  }
+}
+
+interface IFetchDumiAssetsResult {
+  data?: IAssets | undefined;
+  err?: null | Error;
+}
+
+/**
+ * get dumi assets from npm/tnpm
+ * @param params
+ */
+export async function fetchDumiAssets(params: IAssetDumiConifg): Promise<IFetchDumiAssetsResult> {
+  const { name, version = 'latest', registry = `https://unpkg.com` } = params;
+  const assetPrefix = `${registry.replace(/\/$/g, '')}/${name}@${version}`;
+  const pkgUrl = `${assetPrefix}/package.json`;
+  try {
+    const { body } = await got.get(pkgUrl);
+    const pkg: IAssets = JSON.parse(body);
+    if (typeof pkg?.[PKG_ASSETS_META] === 'string') {
+      const assetsPath = `${assetPrefix}${pkg[PKG_ASSETS_META].replace(/^[./]*/, '/')}`;
+      const data: IAssets = JSON.parse((await got.get(assetsPath))?.body);
+      return {
+        data,
+      };
+    }
+    throw new Error('not found dumi assets');
+  } catch (err) {
+    return {
+      err,
     };
   }
 }

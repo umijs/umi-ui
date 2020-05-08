@@ -11,6 +11,7 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": false,
     "suppressImplicitAnyIndexErrors": true,
+    "emitDecoratorMetadata": true,
     "declaration": true
   },
   "exclude": ["node_modules", "dist", "**/*.spec.ts", "lib", "fixtures", "examples"]

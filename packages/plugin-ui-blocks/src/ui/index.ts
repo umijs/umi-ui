@@ -1,14 +1,16 @@
-import { IApi } from 'umi';
+import { IApi, utils } from 'umi';
+import { readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import server from './server';
+
+const { winPath, lodash, Mustache } = utils;
 
 export interface IApiBlock extends IApi {
   sendLog: (info: string) => void;
 }
 
 export default (api: IApiBlock) => {
-  const { utils, paths } = api;
-  const { winPath, lodash } = utils;
+  const { paths } = api;
 
   // 客户端
   api.addUIPlugin(() => require.resolve('../../dist/index.umd'));
@@ -69,40 +71,13 @@ export default (api: IApiBlock) => {
     };
   });
 
-  api.addEntryCodeAhead(
-    () => `
-(() => {
-  // Runtime block add component
-  window.GUmiUIFlag = require('${winPath(
-    require.resolve('../sdk/flagBabelPlugin/GUmiUIFlag'),
-  )}').default;
-
-  // Enable/Disable block add edit mode
-  window.addEventListener('message', (event) => {
-    try {
-      const { action, data } = JSON.parse(event.data);
-      switch (action) {
-        case 'umi.ui.checkValidEditSection':
-          const haveValid = !!document.querySelectorAll('div.g_umiuiBlockAddEditMode').length;
-          const frame = document.getElementById('umi-ui-bubble');
-          if (frame && frame.contentWindow) {
-            frame.contentWindow.postMessage(
-              JSON.stringify({
-                action: 'umi.ui.checkValidEditSection.success',
-                payload: {
-                  haveValid,
-                },
-              }),
-              '*',
-            );
-          }
-        default:
-          break;
-      }
-    } catch(e) {
-    }
-  }, false);
-})();
-  `,
-  );
+  api.addEntryCodeAhead(() => {
+    const injectUIFlagTpl = readFileSync(
+      join(__dirname, './templates/injectUIFlag.ts.tpl'),
+      'utf-8',
+    );
+    return Mustache.render(injectUIFlagTpl, {
+      GUmiUIFlagPath: winPath(require.resolve('../sdk/flagBabelPlugin/GUmiUIFlag')),
+    });
+  });
 };

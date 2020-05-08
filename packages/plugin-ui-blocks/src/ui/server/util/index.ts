@@ -2,7 +2,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import { join } from 'path';
 import { utils } from 'umi';
-import { fetchCDNBlocks } from '@umijs/block-sdk';
+import { fetchCDNBlocks, fetchDumiAssets } from '@umijs/block-sdk';
 import { Resource } from '@umijs/block-sdk/lib/data.d';
 
 const { winPath } = utils;
