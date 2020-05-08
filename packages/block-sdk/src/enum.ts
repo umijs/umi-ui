@@ -33,7 +33,7 @@ export interface IDumiResource extends IDumiResourceMeta {
 
 export interface IResource extends IDumiResource {
   id: string;
-  type: ResourceType;
+  resourceType: ResourceType;
 }
 
 export interface RequestParams {

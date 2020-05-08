@@ -4,7 +4,7 @@ const terserOptions = require('./terser');
 
 module.exports = opts => {
   const { config, mode } = opts;
-  const { entry, theme = dark } = config;
+  const { entry, theme = dark, externals = [], resolve = {} } = config;
 
   return {
     entry,
@@ -20,7 +20,7 @@ module.exports = opts => {
     target: 'web',
     cache: false,
     devtool: 'source-map',
-    externals: ['antd', 'react', 'react-dom', 'xterm'],
+    externals: ['antd', 'react', 'react-dom', 'xterm', ...externals],
 
     optimization: {
       minimize: mode === 'production',
@@ -38,6 +38,7 @@ module.exports = opts => {
     resolve: {
       extensions: ['.jsx', '.js', '.tsx', '.ts', '.json'],
       symlinks: true,
+      ...resolve,
     },
 
     module: {

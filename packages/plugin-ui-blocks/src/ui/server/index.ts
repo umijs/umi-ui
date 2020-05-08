@@ -60,7 +60,7 @@ export default (api: IApi) => {
                 return data.map(item => ({
                   ...item,
                   id: asset.name,
-                  type: ResourceType.dumi,
+                  resourceType: ResourceType.dumi,
                 }));
               });
               resources = lodash.flatten((await Promise.all(dumiAssetsPromises)).filter(Boolean));

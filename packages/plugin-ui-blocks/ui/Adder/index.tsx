@@ -5,6 +5,7 @@ import { Modal, Select, Switch, Form, message } from 'antd';
 import upperCamelCase from 'uppercamelcase';
 
 import { AddBlockParams, Block, Resource } from '@umijs/block-sdk/lib/data.d';
+import { ResourceType } from '@umijs/block-sdk/lib/enum';
 import Context from '../UIApiContext';
 import useCallData from '../hooks/useCallData';
 import LogPanel from '../LogPanel';
@@ -12,6 +13,7 @@ import ResultPanel from './ResultPanel';
 import AddTemplateForm from './AddTemplateForm';
 import AddBlockFormForUI from './AddBlockFormForUI';
 import AddBlockForm from './AddBlockForm';
+import BlockContext from '../components/BlockContext';
 import { getPathFromFilename } from '../BlockList/BlockItem';
 import { getNoExitVar, getNoExitRoute, getNoExitPath } from '../util';
 
@@ -60,6 +62,7 @@ const Adder: React.FC<AdderProps> = props => {
     blockType,
   } = props;
   const { api } = useContext(Context);
+  const { currentResource } = useContext(BlockContext);
   const { callRemote, useIntl, _analyze } = api;
   const { formatMessage: intl } = useIntl();
   const { gtag } = _analyze;
@@ -175,7 +178,11 @@ const Adder: React.FC<AdderProps> = props => {
       return;
     }
     // 生成 defaultName
-    const defaultName = (block?.url ? block?.url?.split('/')?.pop() : block?.key) || '';
+    const gitBlockUrlName = (block?.url ? block?.url?.split('/')?.pop() : block?.key) || '';
+    console.log('block', block);
+    const defaultName =
+      currentResource.resourceType === ResourceType.dumi ? block.identifier : gitBlockUrlName;
+    console.log('defaultName', defaultName);
     const initPath = blockType !== 'template' ? '/' : `/${defaultName}`;
     const resetInitialValues = async () => {
       // 自动生成一个不存在的变量名
@@ -207,7 +214,7 @@ const Adder: React.FC<AdderProps> = props => {
       form.setFieldsValue(initialValues);
     };
     resetInitialValues();
-  }, [block?.url || block?.files, blockTarget || '']);
+  }, [block, blockTarget || '']);
 
   useEffect(() => {
     if (index !== null && index !== undefined) {
@@ -215,7 +222,17 @@ const Adder: React.FC<AdderProps> = props => {
     }
   }, [index]);
 
-  if (!block || (!block.url && !block.files)) {
+  if (!block) {
+    return null;
+  }
+
+  if (currentResource?.resourceType === ResourceType.dumi) {
+    // dumi 资产类型
+    if (!block.dependencies) {
+      return null;
+    }
+    // git 资产类型
+  } else if (!block.url) {
     return null;
   }
 
@@ -302,6 +319,7 @@ const Adder: React.FC<AdderProps> = props => {
               const params: AddBlockParams = {
                 ...values,
                 ...block,
+                resourceType: currentResource.resourceType,
                 path: await getPathFromFilename(api, values.path),
                 routePath: blockType === 'template' ? values.routePath : undefined,
                 page: blockType === 'template',

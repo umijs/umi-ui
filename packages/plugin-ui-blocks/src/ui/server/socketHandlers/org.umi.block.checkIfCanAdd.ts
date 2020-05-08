@@ -3,7 +3,7 @@ import { join } from 'path';
 import { IHandlerOpts } from '../index';
 
 export default function({ success, payload, api, lang, failure }: IHandlerOpts) {
-  const { item } = payload as {
+  const { item, currentResource } = payload as {
     item: {
       features: string[];
     };
@@ -70,14 +70,16 @@ export default function({ success, payload, api, lang, failure }: IHandlerOpts) 
     },
   };
 
-  Object.keys(checkConfigRules).forEach(rule => {
-    if (haveFeature(rule) && checkConfigRules[rule] && !checkConfigRules[rule].enable) {
-      failure({
-        message: checkConfigRules[rule].message[lang] || checkConfigRules[rule].message['zh-CN'],
-      });
-      return false;
-    }
-  });
+  if (item.features) {
+    Object.keys(checkConfigRules).forEach(rule => {
+      if (haveFeature(rule) && checkConfigRules[rule] && !checkConfigRules[rule].enable) {
+        failure({
+          message: checkConfigRules[rule].message[lang] || checkConfigRules[rule].message['zh-CN'],
+        });
+        return false;
+      }
+    });
+  }
 
   success({ data: true, success: true });
 }

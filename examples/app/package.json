@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "start": "cross-env BABEL_CACHE=none FRIENDLY_ERROR=none DEBUG=*umiui* umi dev",
+    "start": "cross-env BABEL_CACHE=none FRIENDLY_ERROR=none umi dev",
     "build": "umi build",
     "test": "umi test",
     "lint": "eslint {src,mock,tests}/**/*.{ts,tsx} --fix",

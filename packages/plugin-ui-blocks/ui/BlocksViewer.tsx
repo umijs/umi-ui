@@ -2,16 +2,17 @@ import React, { useState, useEffect, useMemo, useLayoutEffect } from 'react';
 import { Spin, Radio, Button, message, Tooltip } from 'antd';
 import { ReloadOutlined, PlusOutlined } from '@ant-design/icons';
 import { IUiApi } from '@umijs/ui-types';
+import { ResourceType } from '@umijs/block-sdk/lib/enum';
 import { Resource, Block, AddBlockParams } from '@umijs/block-sdk/lib/data.d';
 import { stringify, parse } from 'qs';
 
 import { Clear } from './icon';
 import BlockList from './BlockList';
 import GlobalSearch from './GlobalSearch';
+import BlockContext from './components/BlockContext';
 import styles from './BlocksViewer.module.less';
 import Adder from './Adder';
 import AssetsMenu from './AssetsMenu';
-import { ModelState, namespace } from './model';
 import Container from './Container';
 
 /**
@@ -74,11 +75,7 @@ export const scrollToById = (id: string, target: string) => {
   }
 };
 
-interface Props {
-  dispatch: (params: any) => {};
-  loading: boolean;
-  block: ModelState;
-}
+interface Props {}
 
 /**
  * 渲染 数据源选择器
@@ -132,13 +129,12 @@ const renderActiveResourceTag = ({
  * 资产 主入口
  * @param props
  */
-const BlocksViewer: React.FC<Props> = props => {
-  const { dispatch, block, loading: fetchDataLoading } = props;
+const BlocksViewer: React.FC<Props> = () => {
   const { api, type, setType, activeResource, setActiveResource } = Container.useContainer();
   const { callRemote, useIntl, hooks } = api;
   const { useRequest } = hooks;
   const { formatMessage: intl } = useIntl();
-  console.log('type', type, block);
+  console.log('type', type);
   /**
    * 是不是 mini
    */
@@ -153,6 +149,61 @@ const BlocksViewer: React.FC<Props> = props => {
   const [blockParams, setBlockParams] = useState<AddBlockParams>(null);
   const [searchValue, setSearchValue] = useState<string>('');
   const [selectedTag, setSelectedTag] = useState<string>('');
+  const [blockData, setBlockData] = useState({});
+
+  // 获取资产数据源
+  const { data: resources, error, loading: fetchResourceLoading } = useRequest(
+    () =>
+      callRemote({
+        type: 'org.umi.block.resource',
+      }),
+    {
+      cacheKey: 'getResources',
+      formatResult: res => res?.data || [],
+      initialData: [],
+    },
+  );
+  console.log('loading', loading);
+
+  // 当前的数据源列表
+  const current = activeResource || resources.filter(item => item.blockType === type)[0];
+
+  // 请求资产列表
+  const { loading: fetchDataLoading, run } = useRequest(
+    async () => {
+      const { id: resourceId } = current;
+      console.log('resourceId', resourceId, resources);
+      const resource = resources.find(r => r.id === resourceId);
+      if (resource?.resourceType === ResourceType.dumi && resource.assets) {
+        return {
+          [resourceId]: resource.assets,
+        };
+      }
+      const { data: list } = await callRemote({
+        type: 'org.umi.block.list',
+        payload: {
+          resourceId,
+          force: false,
+        },
+      });
+      return {
+        [resourceId]: list,
+      };
+    },
+    {
+      cacheKey: 'getAssetsList',
+      refreshDeps: [current, resources],
+      formatResult: res => res,
+      onSuccess: data => {
+        setBlockData(prevData => ({
+          ...prevData,
+          ...data,
+        }));
+      },
+      initialData: {},
+    },
+  );
+  console.log('fetchDataLoading', fetchDataLoading);
 
   /**
    * 获取 query 中的设置
@@ -164,40 +215,11 @@ const BlocksViewer: React.FC<Props> = props => {
     }
   }, []);
 
-  // 获取资产数据源
-  const { data: resources, error, loading } = useRequest(
-    () =>
-      callRemote({
-        type: 'org.umi.block.resource',
-      }),
-    {
-      formatResult: res => res?.data || [],
-      initialData: [],
-    },
-  );
-  console.log('resources', resources);
-  // 当前的数据源列表
-  const current = activeResource || resources.filter(item => item.blockType === type)[0];
   // 计算选中的区块
-  console.log('current', current);
   const blocks = useMemo<Block[]>(
-    () => (current && block.blockData[current.id] ? block.blockData[current.id] : []),
-    [block, current],
+    () => (current && blockData[current.id] ? blockData[current.id] : []),
+    [blockData, current],
   );
-
-  // 初始化 block dva model data
-  useEffect(() => {
-    if (current && current.id) {
-      // 获取数据
-      dispatch({
-        type: `${namespace}/fetch`,
-        payload: {
-          current,
-          resourceId: current.id,
-        },
-      });
-    }
-  }, [current]);
 
   useEffect(() => {
     const handleMessage = event => {
@@ -263,15 +285,7 @@ const BlocksViewer: React.FC<Props> = props => {
             size={isMini ? 'small' : 'default'}
             key="reload"
             style={{ padding: buttonPadding }}
-            onClick={() => {
-              dispatch({
-                type: `${namespace}/fetch`,
-                payload: {
-                  current,
-                  reload: true,
-                },
-              });
-            }}
+            onClick={() => run()}
           >
             <ReloadOutlined />
           </Button>
@@ -313,9 +327,11 @@ const BlocksViewer: React.FC<Props> = props => {
   }, [current]);
 
   const onShowModal = (currentBlock, option) => {
+    console.log('currentBlock', currentBlock, option);
     setAddModalVisible(true);
     setWillAddBlock(currentBlock);
     setBlockParams(option);
+    console.log('aaaaa');
   };
 
   const onHideModal = () => {
@@ -327,9 +343,20 @@ const BlocksViewer: React.FC<Props> = props => {
   const matchedResources = resources.filter(r => r.blockType === type);
   console.log('blocks', blocks);
   console.log('current', current);
+  const currentResource = resources.find(r => r.id === current?.id);
+  const loading = fetchResourceLoading === true || fetchDataLoading === true;
+
+  console.log('addModalVisible', addModalVisible);
 
   return (
-    <>
+    <BlockContext.Provider
+      value={{
+        current,
+        resources,
+        ResourceType,
+        currentResource,
+      }}
+    >
       <div className={styles.wrapper}>
         <div className={styles.side}>
           <AssetsMenu
@@ -341,7 +368,7 @@ const BlocksViewer: React.FC<Props> = props => {
             selectedTag={selectedTag}
             current={current}
             blocks={blocks}
-            loading={fetchDataLoading}
+            loading={loading}
           />
         </div>
         <div className={styles.main}>
@@ -354,10 +381,11 @@ const BlocksViewer: React.FC<Props> = props => {
                     keyword={searchValue}
                     addingBlock={willAddBlock || addingBlock}
                     list={blocks}
+                    current={current}
                     setSelectedTag={setSelectedTag}
                     selectedTag={selectedTag}
                     onShowModal={onShowModal}
-                    loading={fetchDataLoading}
+                    loading={loading}
                   />
                 )}
                 {!loading && !matchedResources?.length && <div>没有找到数据源</div>}
@@ -378,7 +406,7 @@ const BlocksViewer: React.FC<Props> = props => {
         onAddBlockChange={addBlock => setAddBlock(addBlock)}
         onHideModal={onHideModal}
       />
-    </>
+    </BlockContext.Provider>
   );
 };
 
