@@ -17,10 +17,8 @@ export default (ctx: Partial<IContext>) => async (req: Request, res: Response) =
     try {
       const umiDevHost = 'http://localhost:8002';
       const { body } = await got(`${umiDevHost}${req.path}`);
-      // replace @@/devScripts.js
-      const html = body.replace('/@@/devScripts.js', `${umiDevHost}/@@/devScripts.js`);
       res.set('Content-Type', 'text/html');
-      res.send(normalizeHtml(html, scripts));
+      res.send(normalizeHtml(body, scripts));
     } catch (e) {
       console.error(e);
     }
