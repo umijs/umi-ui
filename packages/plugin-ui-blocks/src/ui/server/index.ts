@@ -56,7 +56,10 @@ export default (api: IApi) => {
                   version: asset.version,
                   registry: asset.registry,
                 });
-                if (err) return null;
+                if (err) {
+                  console.error('error', err);
+                  return null;
+                }
                 return data.map(item => ({
                   ...item,
                   id: asset.name,
