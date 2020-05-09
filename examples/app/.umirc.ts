@@ -2,11 +2,6 @@ import { defineConfig } from 'umi'; // ref: https://umijs.org/config/
 
 export default defineConfig({
   dva: {},
-  ui: {
-    blocks: {
-      assets: [{ type: 'dumi', name: '@umijs/assets-umi' }],
-    },
-  },
   nodeModulesTransform: {
     type: 'none',
   },

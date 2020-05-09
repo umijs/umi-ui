@@ -14,8 +14,7 @@ export default async function({ blockService, success, payload }: IHandlerOpts) 
           files[depName] = depValue.value;
         }
         if (depValue?.type === DEPS_TYPE.NPM) {
-          const [_, npmVer = 'latest'] = depValue.value?.split('@');
-          dependencies[depName] = npmVer;
+          dependencies[depName] = depValue.value;
         }
       }
     });

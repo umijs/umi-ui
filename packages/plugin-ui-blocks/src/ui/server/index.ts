@@ -1,12 +1,19 @@
-import { join } from 'path';
+import { join, dirname } from 'path';
 import { IApi, utils } from 'umi';
-import { ResourceType, AssetsConfig, fetchDumiResource } from '@umijs/block-sdk';
+import {
+  ResourceType,
+  AssetsConfig,
+  fetchDumiResource,
+  PKG_ASSETS_META,
+  IUIResource,
+  AssetType,
+} from '@umijs/block-sdk';
 import { Resource } from '@umijs/block-sdk/lib/data.d';
 import { ILang } from '@umijs/ui-types';
 import Block from './core/Block';
 import { DEFAULT_RESOURCES } from './util';
 
-const { winPath, glob, lodash, createDebug } = utils;
+const { winPath, glob, lodash: _, createDebug, pkgUp } = utils;
 
 const debug = createDebug('umi:umiui:plugin-ui-blocks:server');
 
@@ -22,9 +29,6 @@ export interface IHandlerOpts {
 }
 
 export default (api: IApi) => {
-  // 区块资源可扩展
-  let resources: Resource[] = [];
-
   // 避免每次请求都读取文件
   const dir = winPath(join(__dirname, 'socketHandlers'));
   const files = glob
@@ -43,43 +47,71 @@ export default (api: IApi) => {
 
     if (files.includes(type)) {
       try {
+        let resources: Resource[] = [];
         const fn = require(join(dir, type)).default;
-        // 处理资产
-        const { ui } = api.config;
-        if (!resources?.length) {
-          if (ui?.blocks?.assets?.length > 0) {
-            const assets = lodash.groupBy(ui.blocks.assets, asset => asset.type);
-            if (assets?.[ResourceType.dumi]?.length > 0) {
-              const dumiAssetsPromises = (ui.blocks.assets as AssetsConfig[]).map(async asset => {
-                const { err, data } = await fetchDumiResource({
-                  name: asset.name,
-                  version: asset.version,
-                  registry: asset.registry,
+        // api.pkg 有缓存，从最底层向上找，不会错
+        const pkgPath = pkgUp.sync({
+          cwd: api.cwd,
+        });
+        const {
+          devDependencies = {},
+          clientDependencies = {},
+          dependencies = {},
+        } = require(pkgPath);
+        const userDeps = Object.assign({}, devDependencies, clientDependencies, dependencies);
+        // 处理本地资产
+        const dumiAssets = _.flatten(
+          Object.keys(userDeps || {})
+            .map(library => {
+              try {
+                // 依赖的 package.json 路径
+                const libPkgPath = require.resolve(`${library}/package.json`, {
+                  paths: [api.cwd, process.cwd()],
                 });
-                if (err) {
-                  console.error('error', err);
-                  return null;
+                // 依赖路径
+                const libPath = dirname(libPkgPath);
+                const libPkg = require(libPkgPath);
+                const assetsRelativePath = libPkg?.[PKG_ASSETS_META] || libPkg?.assets;
+                if (assetsRelativePath) {
+                  const resourcePath = join(libPath, assetsRelativePath);
+                  const resource = require(resourcePath);
+                  if (resource?.assets?.examples) {
+                    const assets = _.groupBy(
+                      resource.assets.examples,
+                      example => AssetType[example.type],
+                    ) as IUIResource;
+                    const data: any = Object.keys(assets).map(blockType => ({
+                      ...resource,
+                      // 兼容之前的数据格式
+                      ...(resource?.logo ? { icon: resource.logo } : {}),
+                      blockType,
+                      assets: assets[blockType],
+                    }));
+                    return data.map(item => ({
+                      ...item,
+                      id: resource.name,
+                      resourceType: ResourceType.dumi,
+                    }));
+                  }
                 }
-                return data.map(item => ({
-                  ...item,
-                  id: asset.name,
-                  resourceType: ResourceType.dumi,
-                }));
-              });
-              resources = lodash.flatten((await Promise.all(dumiAssetsPromises)).filter(Boolean));
-            }
-          }
-          resources = await api.applyPlugins({
-            key: 'addBlockUIResource',
-            type: api.ApplyPluginsType.add,
-            initialValue: [...DEFAULT_RESOURCES, ...resources],
-          });
-          resources = await api.applyPlugins({
-            key: 'modifyBlockUIResources',
-            type: api.ApplyPluginsType.modify,
-            initialValue: resources,
-          });
-        }
+              } catch (e) {
+                debug('libPkg error', e);
+              }
+              return null;
+            })
+            .filter(Boolean),
+        );
+        delete require.cache[pkgPath];
+        resources = await api.applyPlugins({
+          key: 'addBlockUIResource',
+          type: api.ApplyPluginsType.add,
+          initialValue: [...DEFAULT_RESOURCES, ...dumiAssets, ...resources],
+        });
+        resources = await api.applyPlugins({
+          key: 'modifyBlockUIResources',
+          type: api.ApplyPluginsType.modify,
+          initialValue: resources,
+        });
         debug('resouces', resources);
         const handlerOpts: IHandlerOpts = {
           api,
