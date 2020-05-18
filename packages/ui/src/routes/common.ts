@@ -16,7 +16,7 @@ export default (ctx: Partial<IContext>) => async (req: Request, res: Response) =
   const localeDebug = !existsSync(join(winPath(__dirname), '../../web/dist/index.html'));
   if (localeDebug) {
     try {
-      const { body } = await got(`http://localhost:8002${req.path}`);
+      const { body } = await got(`http://127.0.0.1:8002${req.path}`);
       res.set('Content-Type', 'text/html');
       res.send(normalizeHtml(body, scripts));
     } catch (e) {
