@@ -57,8 +57,16 @@ export default (api: IApi) => {
           devDependencies = {},
           clientDependencies = {},
           dependencies = {},
+          // for child assets depend on
+          peerDependencies = {},
         } = require(pkgPath);
-        const userDeps = Object.assign({}, devDependencies, clientDependencies, dependencies);
+        const userDeps = Object.assign(
+          {},
+          devDependencies,
+          clientDependencies,
+          dependencies,
+          peerDependencies,
+        );
         // 处理本地资产
         const dumiAssets = _.flatten(
           Object.keys(userDeps || {})
