@@ -174,7 +174,6 @@ const Adder: React.FC<AdderProps> = props => {
     if (!block) {
       return;
     }
-    console.log('block', block);
     // 生成 defaultName
     const defaultName = block?.url ? block?.url?.split('/')?.pop() : block?.key;
     const initPath = blockType !== 'template' ? '/' : `/${defaultName}`;
@@ -349,7 +348,6 @@ const Adder: React.FC<AdderProps> = props => {
           name="js"
           label={intl({ id: 'org.umi.ui.blocks.adder.js' })}
           valuePropName="checked"
-          style={{ display: 'none' }}
         >
           <Switch size="small" />
         </Form.Item>
