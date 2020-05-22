@@ -25,6 +25,7 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
     config = {},
     terminalClassName,
     onResize = () => {},
+    onClose = () => {},
     // default use true
     visible = true,
     toolbar = true,
@@ -60,6 +61,16 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
     return true;
   };
 
+  const closeShortcut = (e: KeyboardEvent): boolean => {
+    // Ctrl + D
+    if (e.ctrlKey && e.keyCode === 68) {
+      e.preventDefault();
+      onClose();
+      return false;
+    }
+    return true;
+  };
+
   useEffect(() => {
     const handleTerminalInit = async () => {
       if (domContainer.current && xterm) {
@@ -67,6 +78,7 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
         xterm.loadAddon(fitAddon);
         xterm.loadAddon(webLinksAddon);
         xterm.attachCustomKeyEventHandler(copyShortcut);
+        xterm.attachCustomKeyEventHandler(closeShortcut);
         // last open
         xterm.open(domContainer.current);
         fitAddon.fit();
