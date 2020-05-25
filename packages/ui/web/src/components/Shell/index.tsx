@@ -11,12 +11,13 @@ interface ShellProps {
   style?: React.CSSProperties;
   visible?: boolean;
   className?: string;
+  onClose?: () => void;
 }
 
 let socket: any;
 
 const Shell: React.SFC<ShellProps> = (props, ref) => {
-  const { style, className, visible } = props;
+  const { style, className, visible, onClose } = props;
   const shellCls = cls(styles.shell, className);
   const [terminalRef, setTerminalRef] = React.useState();
 
@@ -60,6 +61,7 @@ const Shell: React.SFC<ShellProps> = (props, ref) => {
         }}
         onInit={handleInit}
         onResize={handleResize}
+        onClose={onClose}
         visible={visible}
         toolbar={false}
         className={styles.terminalWrapper}
