@@ -16,8 +16,7 @@ export default (api: IApi) => {
       require.resolve('./commands/ui'),
       ...(injectBubble ? [require.resolve('./addBubble')] : []),
       require.resolve('./plugins/dashboard/index'),
-      // TODO: 配置有变动，先关闭
-      // require.resolve('./plugins/configuration/index'),
+      require.resolve('./plugins/configuration/index'),
       require.resolve('@umijs/plugin-ui-tasks'),
       require.resolve('@umijs/plugin-ui-blocks'),
     ],
