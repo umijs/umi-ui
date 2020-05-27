@@ -152,6 +152,24 @@ export default () => {
         ) {
           return true;
         }
+
+        if (
+          t.isImportSpecifier(p.node) &&
+          t.isIdentifier(p.node.imported) &&
+          [
+            'Switch',
+            'Route',
+            'Router',
+            'StaticRouter',
+            'Redirect',
+            'Link',
+            'NavLink',
+            'HashRouter',
+            'BrowserRouter',
+          ].includes(p.node.imported.name)
+        ) {
+          return true;
+        }
       }
     }
   }
