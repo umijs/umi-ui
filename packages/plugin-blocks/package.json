@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugin-blocks",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "main": "./lib/index.js",
   "dependencies": {
     "@umijs/block-sdk": "^2.1.3"

@@ -365,7 +365,6 @@ const Adder: React.FC<AdderProps> = props => {
           name="js"
           label={intl({ id: 'org.umi.ui.blocks.adder.js' })}
           valuePropName="checked"
-          style={{ display: 'none' }}
         >
           <Switch size="small" />
         </Form.Item>

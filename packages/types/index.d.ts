@@ -181,6 +181,8 @@ declare namespace IUI {
     /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
     config?: ITerminalOptions;
     onResize?: (ins: XTerminal) => void;
+    /** terminal close */
+    onClose?: () => void;
     [key: string]: any;
   }
 

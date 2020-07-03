@@ -259,6 +259,7 @@ const Footer: React.SFC<IFooterProps> = props => {
                   },
                 })
               }
+              onClose={() => togglePanel('terminal')}
               className={styles['section-drawer-shell']}
             />
           )}

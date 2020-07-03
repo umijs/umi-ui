@@ -15,8 +15,7 @@ export default (ctx: Partial<IContext>) => async (req: Request, res: Response) =
   let content = null;
   if (ctx.env === 'development') {
     try {
-      const umiDevHost = 'http://localhost:8002';
-      const { body } = await got(`${umiDevHost}${req.path}`);
+      const { body } = await got(`http://127.0.0.1:8002${req.path}`);
       res.set('Content-Type', 'text/html');
       res.send(normalizeHtml(body, scripts));
     } catch (e) {

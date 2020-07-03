@@ -51,7 +51,7 @@ Commands:
 Options for the ${chalk.cyan(`add`)} command:
 
   ${chalk.green(`--path              `)} the file path, default the name in package.json
-  ${chalk.green(`--route-path       `)} the route path, default the name in package.json
+  ${chalk.green(`--route-path        `)} the route path, default the name in package.json
   ${chalk.green(`--branch            `)} git branch
   ${chalk.green(`--npm-client        `)} the npm client, default npm or yarn (if has yarn.lock)
   ${chalk.green(`--skip-dependencies `)} don't install dependencies
@@ -61,7 +61,8 @@ Options for the ${chalk.cyan(`add`)} command:
   ${chalk.green(`--layout            `)} add as a layout block (add route with empty children)
   ${chalk.green(`--js                `)} If the block is typescript, convert to js
   ${chalk.green(`--registry          `)} set up npm installation using the registry
-  ${chalk.green(`--uni18n          `)}   remove umi-plugin-locale formatMessage
+  ${chalk.green(`--uni18n            `)} remove umi-plugin-locale formatMessage
+  ${chalk.green(`--closeFastGithub   `)} If using custom block repository, please set it to true
 
 Examples:
 
