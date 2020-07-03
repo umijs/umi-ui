@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 
 import { Request, Response } from 'express';
 import { utils } from 'umi';
@@ -13,7 +13,8 @@ export default (ctx: Partial<IContext>) => async (req: Request, res: Response) =
   const scripts = await getScripts();
   // Index Page
   let content = null;
-  if (ctx.env === 'development') {
+  const localeDebug = !existsSync(join(winPath(__dirname), '../../web/dist/index.html'));
+  if (localeDebug) {
     try {
       const { body } = await got(`http://127.0.0.1:8002${req.path}`);
       res.set('Content-Type', 'text/html');
