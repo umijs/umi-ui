@@ -1,5 +1,10 @@
+import { utils } from 'umi';
 import { ResourceType, DEPS_TYPE } from '@umijs/block-sdk/lib/enum';
 import { IHandlerOpts } from '../index';
+
+const { createDebug } = utils;
+
+const debug = createDebug('umiui:UmiUI:block:add');
 
 export default async function({ blockService, success, payload }: IHandlerOpts) {
   const { url, resourceType } = payload;
@@ -20,7 +25,7 @@ export default async function({ blockService, success, payload }: IHandlerOpts) 
     });
   }
   const params = isDumi ? { ...payload, files, dependencies } : payload;
-  console.log('params', params);
+  debug('params', params);
   await blockService.run(params);
   success({
     data: {
