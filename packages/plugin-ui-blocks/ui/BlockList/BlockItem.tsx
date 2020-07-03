@@ -91,7 +91,6 @@ const onBeforeOpenModal = async (api, { item, type, onShowModal, currentResource
       ? type === AssetType.BLOCK
       : type === 'block';
   if (api.isMini() && isBlock) {
-    console.log('isMini block');
     // umi ui 中区块有自己独有的打开方式
     try {
       const position = await getInsertPosition(api);

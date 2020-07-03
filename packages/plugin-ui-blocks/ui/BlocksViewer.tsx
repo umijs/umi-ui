@@ -163,7 +163,6 @@ const BlocksViewer: React.FC<Props> = () => {
       initialData: [],
     },
   );
-  console.log('loading', loading);
 
   // 当前的数据源列表
   const current = activeResource || resources.filter(item => item.blockType === type)[0];
@@ -172,7 +171,6 @@ const BlocksViewer: React.FC<Props> = () => {
   const { loading: fetchDataLoading, run } = useRequest(
     async () => {
       const { id: resourceId } = current;
-      console.log('resourceId', resourceId, resources);
       const resource = resources.find(r => r.id === resourceId);
       if (resource?.resourceType === ResourceType.dumi && resource.assets) {
         return {
@@ -203,7 +201,6 @@ const BlocksViewer: React.FC<Props> = () => {
       initialData: {},
     },
   );
-  console.log('fetchDataLoading', fetchDataLoading);
 
   /**
    * 获取 query 中的设置
