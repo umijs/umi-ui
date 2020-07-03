@@ -134,7 +134,6 @@ const BlocksViewer: React.FC<Props> = () => {
   const { callRemote, useIntl, hooks } = api;
   const { useRequest } = hooks;
   const { formatMessage: intl } = useIntl();
-  console.log('type', type);
   /**
    * 是不是 mini
    */
