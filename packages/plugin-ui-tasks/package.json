@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugin-ui-tasks",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -22,7 +22,7 @@
   "devDependencies": {
     "@ant-design/icons": "^4.0.0-alpha.11",
     "@umijs/fabric": "^1.1.9",
-    "@umijs/ui-types": "^2.0.0",
+    "@umijs/ui-types": "^2.2.0",
     "antd": "^4.0.0",
     "classnames": "^2.2.6",
     "concurrently": "^4.1.1",

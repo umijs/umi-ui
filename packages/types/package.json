@@ -1,6 +1,6 @@
 {
   "name": "@umijs/ui-types",
-  "version": "2.0.0",
+  "version": "2.2.0",
   "description": "Type definitions for umi ui.",
   "typings": "index.d.ts",
   "types": "index.d.ts",
