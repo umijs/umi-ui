@@ -1,13 +1,6 @@
 import { join, dirname } from 'path';
 import { IApi, utils } from 'umi';
-import {
-  ResourceType,
-  AssetsConfig,
-  fetchDumiResource,
-  PKG_ASSETS_META,
-  IUIResource,
-  AssetType,
-} from '@umijs/block-sdk';
+import { ResourceType, PKG_ASSETS_META, IUIResource, AssetType } from '@umijs/block-sdk';
 import { Resource } from '@umijs/block-sdk/lib/data.d';
 import { ILang } from '@umijs/ui-types';
 import Block from './core/Block';
@@ -60,13 +53,12 @@ export default (api: IApi) => {
           // for child assets depend on
           peerDependencies = {},
         } = require(pkgPath);
-        const userDeps = Object.assign(
-          {},
-          devDependencies,
-          clientDependencies,
-          dependencies,
-          peerDependencies,
-        );
+        const userDeps = {
+          ...devDependencies,
+          ...clientDependencies,
+          ...dependencies,
+          ...peerDependencies,
+        };
         // 处理本地资产
         const dumiAssets = _.flatten(
           Object.keys(userDeps || {})

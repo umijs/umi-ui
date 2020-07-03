@@ -8,14 +8,6 @@ import GitUrlParse from 'git-url-parse';
 import terminalLink from 'terminal-link';
 
 import { BlockData } from './data.d';
-import {
-  AssetType,
-  IUIResource,
-  IUIDumiResource,
-  IDumiResource,
-  PKG_ASSETS_META,
-  IResourceDumiConifg,
-} from './index';
 import arrayToTree from './arrayToTree';
 
 const JS_EXTNAMES = ['.js', '.jsx', '.ts', '.tsx'];
@@ -456,54 +448,6 @@ export async function fetchCDNBlocks({
       message: error.message,
       data: undefined,
       success: false,
-    };
-  }
-}
-
-interface IFetchDumiResourceResult {
-  data?: IUIDumiResource[] | undefined;
-  err?: null | Error;
-}
-
-/**
- * 获取 dumi 资产源
- * 并对资产进行分组
- *
- * @param params
- */
-export async function fetchDumiResource(
-  params: IResourceDumiConifg,
-): Promise<IFetchDumiResourceResult> {
-  const { name, version = 'latest', registry = `https://unpkg.com` } = params;
-  const assetPrefix = `${registry.replace(/\/$/g, '')}/${name}@${version}`;
-  const pkgUrl = `${assetPrefix}/package.json`;
-  try {
-    const { body } = await got.get(pkgUrl);
-    const pkg = JSON.parse(body);
-    if (typeof pkg?.[PKG_ASSETS_META] === 'string') {
-      const assetsPath = `${assetPrefix}${pkg[PKG_ASSETS_META].replace(/^[./]*/, '/')}`;
-      const resource: IDumiResource = JSON.parse((await got.get(assetsPath))?.body);
-      if (resource?.assets?.examples) {
-        const assets = _.groupBy(
-          resource.assets.examples,
-          example => AssetType[example.type],
-        ) as IUIResource;
-        const data: any = Object.keys(assets).map(blockType => ({
-          ...resource,
-          // 兼容之前的数据格式
-          ...(resource?.logo ? { icon: resource.logo } : {}),
-          blockType,
-          assets: assets[blockType],
-        }));
-        return {
-          data,
-        };
-      }
-    }
-    throw new Error('not found dumi assets');
-  } catch (err) {
-    return {
-      err,
     };
   }
 }
