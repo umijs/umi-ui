@@ -134,7 +134,6 @@ export const getBlockList = async (resourceId: string, list: Resource[]) => {
       const { data } = await resource.getData();
       return data;
     }
-    return [];
   }
-  throw new Error(`not find resource ${resourceId}`);
+  return [];
 };
