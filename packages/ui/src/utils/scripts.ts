@@ -1,19 +1,20 @@
+import { utils } from 'umi';
 import macaddress from 'macaddress';
+
+const { cheerio } = utils;
 
 // 添加埋点脚本
 export function normalizeHtml(html, scripts) {
   const { bigfishScripts, umiScripts } = scripts;
+  const $ = cheerio.load(html);
   // basementMonitor
-  html = html.replace('<head>', '<head><meta name="bm_app_id" content="5d68ffc1d46d8743e5445b68">');
-  html = html.replace(
-    '<body>',
-    `<body>\n<script>window.g_umi = { version: "${process.env.UMI_VERSION || ''}"};</script>`,
+  $('head').append('<meta name="bm_app_id" content="5d68ffc1d46d8743e5445b68">');
+  $('body').append(
+    `<script>window.g_umi = { version: "${process.env.UMI_VERSION || ''}"};</script>`,
   );
   if (process.env.BIGFISH_COMPAT) {
-    html = html.replace(
-      '<body>',
-      `<body>\n<script>window.g_bigfish = { version: "${process.env.BIGFISH_VERSION ||
-        ''}" };</script>`,
+    $('body').append(
+      `<script>window.g_bigfish = { version: "${process.env.BIGFISH_VERSION || ''}" };</script>`,
     );
   }
 
@@ -22,12 +23,12 @@ export function normalizeHtml(html, scripts) {
     const headScript = process.env.BIGFISH_COMPAT
       ? bigfishScripts.head.join('\n')
       : umiScripts.head.join('\n');
-    html = html.replace('</head>', `${headScript}</head>`);
+    $('head').append(headScript);
 
     const footScript = process.env.BIGFISH_COMPAT
       ? bigfishScripts.foot.join('\n')
       : umiScripts.foot.join('\n');
-    html = html.replace('</body>', `${footScript}</body>`);
+    $('body').append(footScript);
   }
   return html;
 }

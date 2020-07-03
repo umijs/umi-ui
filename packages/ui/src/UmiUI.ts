@@ -52,18 +52,29 @@ export interface IContext {
 
 export default class UmiUI {
   cwd: string;
+
   servicesByKey: {
     [key: string]: Service;
   };
+
   ctx: Partial<IContext>;
+
   server: any;
+
   socketServer: any;
+
   logs: any;
+
   config: Config;
+
   send: any;
+
   developMode: boolean = false;
+
   npmClients: string[] = [];
+
   basicUIPath: string;
+
   basicConfigPath: string;
 
   constructor() {

@@ -1,6 +1,6 @@
-import { IConfig } from 'umi'; // ref: https://umijs.org/config/
+import { defineConfig } from 'umi'; // ref: https://umijs.org/config/
 
-const config: IConfig = {
+export default defineConfig({
   dva: {},
   nodeModulesTransform: {
     type: 'none',
@@ -18,5 +18,4 @@ const config: IConfig = {
     },
   ],
   presets: ['../../packages/preset-ui/lib/index.js', '@umijs/preset-react'],
-};
-export default config;
+});

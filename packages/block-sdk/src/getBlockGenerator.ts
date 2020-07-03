@@ -63,7 +63,7 @@ function checkConflict(blockDeps, projectDeps) {
   Object.keys(blockDeps).forEach(dep => {
     if (!projectDeps[dep]) {
       lacks.push([dep, blockDeps[dep]]);
-    } else if (!semver.intersects(projectDeps[dep], blockDeps[dep])) {
+    } else if (!semver.intersects(projectDeps[dep], blockDeps[dep], true)) {
       conflicts.push([dep, blockDeps[dep], projectDeps[dep]]);
     }
   });

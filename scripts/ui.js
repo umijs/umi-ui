@@ -13,7 +13,6 @@ const watch = process.argv.includes('-w') || process.argv.includes('--watch');
 const { signale } = utils;
 
 const uiApp = () => {
-  signale.pending('UI App building');
   return new Promise((resolve, reject) => {
     try {
       const child = fork(UMI_BIN, [watch ? 'dev' : 'build', ...(watch ? ['--watch'] : [])], {
@@ -24,10 +23,12 @@ const uiApp = () => {
           UMI_UI_SERVER: 'none',
           PORT: 8002,
           BROWSER: 'none',
+          NODE_ENV: watch ? 'production' : 'development',
           BABEL_POLYFILL: 'none',
         },
       });
       child.on('exit', code => {
+        console.log('exit ui app build', code);
         if (code === 1) {
           signale.fatal('UI App build error');
           process.exit(1);
@@ -47,7 +48,7 @@ const buildPlugin = cwd => {
       const pluginProcess = fork(UI_BUILD_BIN, watch ? ['--watch'] : [], {
         cwd,
         env: {
-          NODE_ENV: watch ? 'prod' : 'development',
+          NODE_ENV: watch ? 'production' : 'development',
         },
       });
       pluginProcess.on('exit', code => {
@@ -74,7 +75,7 @@ const buildPlugin = cwd => {
     )
     .map(({ pkgPath }) => pkgPath);
 
-  const buildQueue = [uiApp(), ...uiPlugins.map(buildPlugin)];
+  const buildQueue = [...uiPlugins.map(buildPlugin), uiApp()];
   try {
     await Promise.all(buildQueue);
   } catch (e) {

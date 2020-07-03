@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IUiApi } from '@umijs/ui-types';
 
 import Context from './UIApiContext';
@@ -7,20 +7,13 @@ import TitleTab from './TitleTab';
 import Icon from './icon';
 import zhCN from './locales/zh-CN';
 import enUS from './locales/en-US';
-import model, { initApiToGlobal, namespace } from './model';
 import Container from './Container';
 
 export default (api: IUiApi) => {
-  initApiToGlobal(api);
   api.addLocales({
     'zh-CN': zhCN,
     'en-US': enUS,
   });
-
-  const ConnectedBlockViewer = api.connect((state: any) => ({
-    block: state[namespace],
-    loading: state.loading.models[namespace],
-  }))(BlocksViewer);
 
   api.addPanel({
     title: 'org.umi.ui.blocks.content.title',
@@ -39,11 +32,8 @@ export default (api: IUiApi) => {
           api,
         }}
       >
-        <ConnectedBlockViewer />
+        <BlocksViewer />
       </Context.Provider>
     ),
   });
-
-  // 注册 model
-  api.registerModel(model);
 };

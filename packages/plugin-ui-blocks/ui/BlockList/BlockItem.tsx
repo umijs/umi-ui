@@ -3,12 +3,14 @@ import { Col, message, Spin, Typography, Button, Tooltip } from 'antd';
 import { ButtonProps } from 'antd/es/button';
 import { ExportOutlined } from '@ant-design/icons';
 import { Block, AddBlockParams, Resource } from '@umijs/block-sdk/lib/data.d';
+import { ResourceType, AssetType } from '@umijs/block-sdk/lib/enum';
 import { IUiApi } from '@umijs/ui-types';
 
 import styles from './index.module.less';
 import HighlightedText from './HighlightedText';
 import getInsertPosition, { PositionData } from './getInsertPosition';
 import Context from '../UIApiContext';
+import BlockContext from '../components/BlockContext';
 import ImageLoad from './ImageLoad';
 import ImagePreview from './ImagePreview';
 
@@ -69,13 +71,14 @@ export const getPathFromFilename = async (api: IUiApi, filenamePath: string): Pr
  * @param api  umi ui 的 api 全局对象
  * @param param 参数
  */
-const onBeforeOpenModal = async (api, { item, type, onShowModal }) => {
+const onBeforeOpenModal = async (api, { item, type, onShowModal, currentResource }) => {
   try {
     await api.callRemote({
       type: 'org.umi.block.checkIfCanAdd',
       payload: {
         item,
         type,
+        currentResource,
       },
     });
   } catch (e) {
@@ -83,7 +86,11 @@ const onBeforeOpenModal = async (api, { item, type, onShowModal }) => {
     return;
   }
 
-  if (api.isMini() && type === 'block') {
+  const isBlock =
+    currentResource?.resourceType === ResourceType.dumi
+      ? type === AssetType.BLOCK
+      : type === 'block';
+  if (api.isMini() && isBlock) {
     // umi ui 中区块有自己独有的打开方式
     try {
       const position = await getInsertPosition(api);
@@ -102,7 +109,6 @@ const onBeforeOpenModal = async (api, { item, type, onShowModal }) => {
     }
     return;
   }
-
   onShowModal(item, {});
 };
 
@@ -142,9 +148,20 @@ const BlockItem: React.FC<BlockItemProps> = ({
   selectedTag,
 }) => {
   const { api } = useContext(Context);
+  const { currentResource } = useContext(BlockContext);
   const { useIntl } = api;
   const { formatMessage: intl } = useIntl();
   const isMini = api.isMini();
+  const img = item.img || item.thumbnail;
+
+  const handleAddButtonClick = async () => {
+    await onBeforeOpenModal(api, {
+      type,
+      item,
+      onShowModal,
+      currentResource,
+    });
+  };
 
   return (
     <Col className={styles.col} key={item.url}>
@@ -166,13 +183,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
                 disabledTitle={intl({
                   id: 'org.umi.ui.blocks.adder.disabledTitle',
                 })}
-                onClick={async () => {
-                  await onBeforeOpenModal(api, {
-                    type,
-                    item,
-                    onShowModal,
-                  });
-                }}
+                onClick={handleAddButtonClick}
               >
                 {loading
                   ? intl({ id: 'org.umi.ui.blocks.list.viewlog' })
@@ -180,7 +191,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
               </ToolTipAddButton>
 
               <div className={`${styles.btnGroup} ${item.previewUrl ? styles.hasPreview : ''}`}>
-                <ImagePreview img={item.img} cls={styles.previewBtn} />
+                <ImagePreview img={img} cls={styles.previewBtn} />
                 <div className={styles.btnSep} />
                 {item.previewUrl && (
                   <Tooltip
@@ -195,7 +206,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
               </div>
             </div>
 
-            <ImageLoad src={item.img} />
+            <ImageLoad src={img} />
           </div>
         </Spin>
 

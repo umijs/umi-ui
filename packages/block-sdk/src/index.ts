@@ -7,3 +7,5 @@ export * from './download';
 export * from './appendBlockToContainer';
 export * from './writeNewRoute';
 export * from './installDependencies';
+export * from './enum';
+export * from './validate';

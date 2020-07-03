@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { join } from 'path';
 import { existsSync } from 'fs';
-import { got, execa } from '@umijs/utils';
+import { got, execa, lodash as _ } from '@umijs/utils';
 import ora from 'ora';
 
 import GitUrlParse from 'git-url-parse';
@@ -423,22 +423,6 @@ export const fetchBlockList = async (repo: string): Promise<BlockData> => {
     };
   }
 };
-
-export async function fetchUmiBlock(url) {
-  try {
-    const { body } = await got(url);
-    return {
-      data: JSON.parse(body).list,
-      success: true,
-    };
-  } catch (error) {
-    return {
-      message: error.message,
-      data: undefined,
-      success: false,
-    };
-  }
-}
 
 /**
  * 通过 npm CDN url 获取区块数据

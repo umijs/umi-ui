@@ -9,8 +9,10 @@
     "@babel/traverse": "7.4.5",
     "@babel/types": "7.4.4",
     "@umijs/mem-fs-editor": "^6.0.2",
+    "dumi-assets-types": "^1.0.0-beta.0",
     "@umijs/utils": "^3.0.0-beta.12",
     "clipboardy": "2.1.0",
+    "@hapi/joi": "16.1.8",
     "crequire": "1.8.1",
     "getnpmregistry": "^1.0.1",
     "git-url-parse": "^11.1.2",
@@ -21,10 +23,8 @@
     "sylvanas": "^0.4.0",
     "terminal-link": "1.3.0",
     "umi-uni18n": "^1.1.6",
+    "@umijs/types": "^3.0.0",
     "uppercamelcase": "3.0.0"
-  },
-  "devDependencies": {
-    "@umijs/types": ">3.0.0-beta.12"
   },
   "repository": {
     "type": "git",

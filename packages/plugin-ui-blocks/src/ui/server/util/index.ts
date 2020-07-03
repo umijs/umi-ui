@@ -118,34 +118,6 @@ export const DEFAULT_RESOURCES: Resource[] = [
         version: '^1.0.0',
       }),
   },
-  {
-    id: 'umi-blocks',
-    name: 'Umi Community',
-    resourceType: 'custom',
-    description: '来自 Umi 社区的区块',
-    blockType: 'block',
-    icon: 'https://img.alicdn.com/tfs/TB1HMEpmuH2gK0jSZFEXXcqMpXa-64-64.png',
-    getData: () =>
-      fetchCDNBlocks({
-        pkg: '@umijs/assets-umi',
-        summary: 'blocks.json',
-        version: '~1.0.0',
-      }),
-  },
-  {
-    id: 'umi-blocks-template',
-    name: 'Umi Community',
-    resourceType: 'custom',
-    description: '来自 Umi 社区的模板。',
-    blockType: 'template',
-    icon: 'https://img.alicdn.com/tfs/TB1HMEpmuH2gK0jSZFEXXcqMpXa-64-64.png',
-    getData: () =>
-      fetchCDNBlocks({
-        pkg: '@umijs/assets-umi',
-        summary: 'templates.json',
-        version: '~1.0.0',
-      }),
-  },
 ];
 
 // 日志带 block 前缀
@@ -162,7 +134,6 @@ export const getBlockList = async (resourceId: string, list: Resource[]) => {
       const { data } = await resource.getData();
       return data;
     }
-    return [];
   }
-  throw new Error(`not find resource ${resourceId}`);
+  return [];
 };

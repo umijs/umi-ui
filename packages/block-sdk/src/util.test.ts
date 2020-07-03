@@ -1,3 +1,4 @@
+import { got } from '@umijs/utils';
 import {
   routeExists,
   genBlockName,
@@ -5,6 +6,7 @@ import {
   genRouterToTreeData,
   reduceData,
 } from './util';
+import { PKG_ASSETS_META } from './index';
 import routerConfig from '../fixtures/util/routerConfig';
 
 test('not exists', () => {

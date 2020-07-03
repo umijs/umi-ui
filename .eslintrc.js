@@ -1,6 +1,7 @@
 module.exports = {
   extends: [require.resolve('@umijs/fabric/dist/eslint')],
   rules: {
+    '@typescript-eslint/naming-convention': [0],
     '@typescript-eslint/interface-name-prefix': [0],
     'jsx-a11y/alt-text': [0],
     'import/no-dynamic-require': [0],

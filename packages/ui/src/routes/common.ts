@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { existsSync, readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 
 import { Request, Response } from 'express';
 import { utils } from 'umi';
