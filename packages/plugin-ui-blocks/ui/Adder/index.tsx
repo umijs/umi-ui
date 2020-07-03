@@ -179,10 +179,8 @@ const Adder: React.FC<AdderProps> = props => {
     }
     // 生成 defaultName
     const gitBlockUrlName = (block?.url ? block?.url?.split('/')?.pop() : block?.key) || '';
-    console.log('block', block);
     const defaultName =
       currentResource.resourceType === ResourceType.dumi ? block.identifier : gitBlockUrlName;
-    console.log('defaultName', defaultName);
     const initPath = blockType !== 'template' ? '/' : `/${defaultName}`;
     const resetInitialValues = async () => {
       // 自动生成一个不存在的变量名

@@ -110,7 +110,6 @@ const onBeforeOpenModal = async (api, { item, type, onShowModal, currentResource
     }
     return;
   }
-  console.log('full version block');
   onShowModal(item, {});
 };
 

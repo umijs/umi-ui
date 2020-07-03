@@ -327,11 +327,9 @@ const BlocksViewer: React.FC<Props> = () => {
   }, [current]);
 
   const onShowModal = (currentBlock, option) => {
-    console.log('currentBlock', currentBlock, option);
     setAddModalVisible(true);
     setWillAddBlock(currentBlock);
     setBlockParams(option);
-    console.log('aaaaa');
   };
 
   const onHideModal = () => {
@@ -341,12 +339,8 @@ const BlocksViewer: React.FC<Props> = () => {
   };
 
   const matchedResources = resources.filter(r => r.blockType === type);
-  console.log('blocks', blocks);
-  console.log('current', current);
   const currentResource = resources.find(r => r.id === current?.id);
   const loading = fetchResourceLoading === true || fetchDataLoading === true;
-
-  console.log('addModalVisible', addModalVisible);
 
   return (
     <BlockContext.Provider
