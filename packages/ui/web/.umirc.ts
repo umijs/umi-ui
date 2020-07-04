@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { join, parse } from 'path';
 import LessThemePlugin from 'webpack-less-theme-plugin';
 import { defineConfig, utils } from 'umi';
 import { dark } from '@umijs/ui-theme';
@@ -27,12 +27,22 @@ const externalJS = [
 ];
 
 const publicPath = NODE_ENV === 'development' ? 'http://localhost:8002/' : '/';
+const outputPath = NODE_ENV === 'development' ? './public' : './dist';
 
 export default defineConfig({
   presets: ['@umijs/preset-react'],
   nodeModulesTransform: {
     type: 'none',
   },
+  outputPath,
+  devServer: {
+    // dev write assets into public
+    writeToDisk: (filePath: string) =>
+      [...externalJS, ...externalCSS].some(
+        external => parse(external).base === parse(filePath).base,
+      ),
+  },
+  esbuild: {},
   publicPath,
   history: {
     type: 'browser',
@@ -44,14 +54,14 @@ export default defineConfig({
   links: [
     ...externalCSS.map(external => ({
       rel: 'stylesheet',
-      href: `${publicPath}${external.split('/').slice(-1)[0]}`,
+      href: `${publicPath}${parse(external).base}`,
     })),
   ],
   antd: {},
   scripts: [
     // polyfill
     ...externalJS.map(external => ({
-      src: `${publicPath}${external.split('/').slice(-1)[0]}`,
+      src: `${publicPath}${parse(external).base}`,
       crossOrigin: 'anonymous',
     })),
   ],
@@ -136,16 +146,18 @@ export default defineConfig({
       }),
     );
     const { path: absOutputPath } = config.toConfig().output;
+    const to = NODE_ENV === 'development' ? join(__dirname, 'public') : absOutputPath;
+
     config.plugin('copy').tap(([args]) => [
       [
         ...args,
         ...externalCSS.map(external => ({
           from: require.resolve(external),
-          to: process.env.NODE_ENV === 'production' ? absOutputPath : join(__dirname, 'public'),
+          to,
         })),
         ...externalJS.map(external => ({
           from: require.resolve(external),
-          to: process.env.NODE_ENV === 'production' ? absOutputPath : join(__dirname, 'public'),
+          to,
         })),
       ],
     ]);
