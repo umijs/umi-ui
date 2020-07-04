@@ -31,6 +31,7 @@ const outputPath = NODE_ENV === 'development' ? './public' : './dist';
 
 export default defineConfig({
   presets: ['@umijs/preset-react'],
+  plugins: ['@umijs/plugin-esbuild'],
   nodeModulesTransform: {
     type: 'none',
   },
