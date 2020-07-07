@@ -233,11 +233,13 @@ class App extends React.Component {
     }
     if (open) {
       this.setState({
+        loading: false,
         open,
       });
     } else {
       this.setState(prevState => ({
         open: !prevState.open,
+        loading: false,
       }));
     }
   };
