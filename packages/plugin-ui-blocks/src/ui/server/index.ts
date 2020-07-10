@@ -105,7 +105,7 @@ export default (api: IApi) => {
         resources = await api.applyPlugins({
           key: 'addBlockUIResource',
           type: api.ApplyPluginsType.add,
-          initialValue: [...DEFAULT_RESOURCES, ...dumiAssets, ...resources],
+          initialValue: [...resources, ...dumiAssets, ...DEFAULT_RESOURCES],
         });
         resources = await api.applyPlugins({
           key: 'modifyBlockUIResources',
