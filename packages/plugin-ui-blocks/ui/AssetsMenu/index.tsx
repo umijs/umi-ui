@@ -21,7 +21,7 @@ export default props => {
   const { uniq, flatten } = api._;
 
   const tags: string[] = useMemo<string[]>(
-    () => uniq(flatten(blocks.map(item => (item.category ? [item.category] : item.tags)))).filter(Boolean),
+    () => uniq(flatten(blocks.map(item => (item?.category ? [item?.category] : item?.tags)))).filter(Boolean),
     [blocks],
   );
 

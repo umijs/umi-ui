@@ -82,6 +82,34 @@ window.postMessage(
 )
 ```
 
+### 小气泡信息提示
+
+![aaa](https://user-images.githubusercontent.com/13595509/86702323-6cde3600-c045-11ea-8293-0e62956b0410.gif)
+
+如果 UI 插件希望调用小气泡，可通过以下 API：
+
+```js
+// 小气泡开启 loading
+window.parent.postMessage(
+  JSON.stringify({
+    action: 'umi.ui.toggleIconLoading',
+  }),
+  '*',
+);
+
+// 修改小气泡显示的文字
+window.parent.postMessage(
+  JSON.stringify({
+    action: 'umi.ui.changeEdit',
+    payload: {
+      'zh-CN': 'OneAPI 更新了',
+      'en-US': 'OneAPI Updated',
+    },
+  }),
+  '*',
+);
+```
+
 ### 内置终端
 
 ![https://camo.githubusercontent.com/d627fa3b419e9231b32f8515db90e632d9dd2262/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323031392f6769662f38363032352f313537343134353634313431352d30366339626465372d303166392d343463652d383962392d3235616635613836643330392e676966](https://camo.githubusercontent.com/d627fa3b419e9231b32f8515db90e632d9dd2262/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323031392f6769662f38363032352f313537343134353634313431352d30366339626465372d303166392d343463652d383962392d3235616635613836643330392e676966)
