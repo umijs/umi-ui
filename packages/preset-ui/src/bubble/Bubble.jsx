@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import Dragger from './Dragger';
+import Badge from './Badge';
 import Hide from './Hide';
 import logoDecorator from './Logo';
 import IconLoading from './IconLoading';
@@ -90,7 +91,17 @@ class Bubble extends React.Component {
   // };
 
   render() {
-    const { isBigfish, open, loading, children, message, locale, edit, editText } = this.props;
+    const {
+      isBigfish,
+      open,
+      loading,
+      notice,
+      children,
+      message,
+      locale,
+      edit,
+      editText,
+    } = this.props;
     const { hide } = this.state;
     const Logo = logoDecorator({ isBigfish });
 
@@ -137,6 +148,7 @@ class Bubble extends React.Component {
         {!edit && <Tooltip isBigfish={isBigfish} message={message} />}
         <BubbleWrapper style={bubbleWrapperStyle} open={open}>
           {loading && <IconLoading />}
+          {notice && <Badge />}
           {edit ? (
             <p style={editTextStyle}>{editText[locale] || editText['zh-CN'] || ''}</p>
           ) : (

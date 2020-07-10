@@ -45,6 +45,7 @@ class App extends React.Component {
       connected: false,
       uiLoaded: false,
       loading: false,
+      notice: false,
       currentProject: props.currentProject,
       locale,
       edit: false,
@@ -126,6 +127,16 @@ class App extends React.Component {
           this.setState(({ loading }) => ({
             loading: !loading,
           }));
+          break;
+        }
+        // 触发 notice
+        case 'umi.ui.showNotice': {
+          this.setState({ notice: true });
+          break;
+        }
+        // 隐藏 notice
+        case 'umi.ui.hideNotice': {
+          this.setState({ notice: false });
           break;
         }
         // 打开对应模板
@@ -257,7 +268,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { open, connected, uiLoaded, loading, locale, edit, editText, tips } = this.state;
+    const { open, connected, uiLoaded, loading, notice, locale, edit, editText, tips } = this.state;
     const { isBigfish = false } = this.props;
     const miniUrl = this.getMiniUrl();
     // get locale when first render
@@ -273,6 +284,7 @@ class App extends React.Component {
         resetEdit={this.resetEdit}
         open={open}
         loading={loading}
+        notice={notice}
         message={message}
         edit={edit}
         editText={editText}
