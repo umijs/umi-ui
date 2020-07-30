@@ -319,6 +319,7 @@ const Adder: React.FC<AdderProps> = props => {
               const params: AddBlockParams = {
                 ...values,
                 ...block,
+                blockName: block.name,
                 resourceType: currentResource.resourceType,
                 path: await getPathFromFilename(api, values.path),
                 routePath: blockType === 'template' ? values.routePath : undefined,
