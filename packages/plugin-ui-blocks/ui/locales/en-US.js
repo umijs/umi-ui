@@ -56,6 +56,8 @@ export default {
   'org.umi.ui.blocks.adder.templatePath.required': 'Add path is required',
   'org.umi.ui.blocks.adder.templatePath.root': 'Add folder cannot be the root directory!',
   'org.umi.ui.blocks.adder.templatePath.exist': 'The target file path already exists!',
+  'org.umi.ui.blocks.adder.templatePath.uppercamelcase':
+    'Page filename please use camelcase, for example FooBar',
   'org.umi.ui.blocks.adder.result.success': 'Add Success!',
   'org.umi.ui.blocks.adder.result.subTitle':
     'The code has been inserted into the page. The page will refresh automatically after compilation.',
