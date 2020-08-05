@@ -56,6 +56,7 @@ export default {
   'org.umi.ui.blocks.adder.templatePath.required': '添加路径为必填项！',
   'org.umi.ui.blocks.adder.templatePath.root': '安装文件夹不能为根目录！',
   'org.umi.ui.blocks.adder.templatePath.exist': '安装文件路径已存在文件！',
+  'org.umi.ui.blocks.adder.templatePath.uppercamelcase': '页面文件名请使用驼峰命名，例如 FooBar',
   'org.umi.ui.blocks.adder.result.success': '安装成功！',
   'org.umi.ui.blocks.adder.result.subTitle': '代码已插入页面。编译完成后页面将会自动刷新。',
   'org.umi.ui.blocks.adder.result.done': '完成',

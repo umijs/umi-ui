@@ -3,6 +3,7 @@
  */
 import React, { useContext } from 'react';
 import { Form } from 'antd';
+import uppercamelcase from 'uppercamelcase';
 
 import Context from '../UIApiContext';
 import RoutePathTree from './RoutePathTree';
@@ -16,6 +17,7 @@ const AddBlockForm: React.FC<{
   const { api } = useContext(Context);
   const { useIntl } = api;
   const { formatMessage: intl } = useIntl();
+
   return (
     <>
       <Form.Item
@@ -76,6 +78,13 @@ const AddBlockForm: React.FC<{
             validator: async (rule, filePath) => {
               if (filePath === '/') {
                 throw new Error(intl({ id: 'org.umi.ui.blocks.adder.templatePath.root' }));
+              }
+              const [pageName = ''] = filePath?.split('/')?.slice(-1);
+              if (pageName !== uppercamelcase(pageName)) {
+                // 不是驼峰命名
+                throw new Error(
+                  intl({ id: 'org.umi.ui.blocks.adder.templatePath.uppercamelcase' }),
+                );
               }
               const { exists } = (await api.callRemote({
                 type: 'org.umi.block.checkExistFilePath',
