@@ -265,8 +265,8 @@ const BlocksViewer: React.FC<Props> = () => {
   useEffect(() => {
     const buttonPadding = isMini ? '0 4px' : '0 8px';
 
-    const handleSearchChange = (v: string) => {
-      setSearchValue(v.toLocaleLowerCase());
+    const handleSearchChange = (v: string = '') => {
+      setSearchValue(v?.toLocaleLowerCase?.() || '');
     };
 
     if (api.setActionPanel) {
