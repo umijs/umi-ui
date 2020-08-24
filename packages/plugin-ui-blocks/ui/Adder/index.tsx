@@ -181,7 +181,7 @@ const Adder: React.FC<AdderProps> = props => {
     const gitBlockUrlName = (block?.url ? block?.url?.split('/')?.pop() : block?.key) || '';
     // 默认使用 Demo
     const defaultName =
-      (currentResource.resourceType === ResourceType.dumi ? block?.identifier : gitBlockUrlName) ||
+      (currentResource?.resourceType === ResourceType.dumi ? block?.identifier : gitBlockUrlName) ||
       'Demo';
     const initPath = blockType !== 'template' ? '/' : `/${defaultName}`;
     const resetInitialValues = async () => {
@@ -320,7 +320,7 @@ const Adder: React.FC<AdderProps> = props => {
                 ...values,
                 ...block,
                 blockName: block.name,
-                resourceType: currentResource.resourceType,
+                resourceType: currentResource?.resourceType,
                 path: await getPathFromFilename(api, values.path),
                 routePath: blockType === 'template' ? values.routePath : undefined,
                 page: blockType === 'template',
