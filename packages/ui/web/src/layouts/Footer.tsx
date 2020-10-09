@@ -214,7 +214,7 @@ const Footer: React.SFC<IFooterProps> = props => {
         >
           <Logs logs={logs} type={type} className={styles['section-drawer-logs']} />
         </Drawer>
-        <Drawer
+        {/* <Drawer
           title={
             <FooterToolbar
               title={intl.formatMessage({ id: 'org.umi.ui.global.terminal.upperCase' })}
@@ -263,7 +263,7 @@ const Footer: React.SFC<IFooterProps> = props => {
               className={styles['section-drawer-shell']}
             />
           )}
-        </Drawer>
+        </Drawer> */}
       </div>
       <div className={styles.statusBar}>
         <div className={styles['statusBar-left']}>

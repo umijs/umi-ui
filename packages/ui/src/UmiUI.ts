@@ -28,7 +28,7 @@ import ActiveProjectError from './ActiveProjectError';
 import { BackToHomeAction, OpenProjectAction, ReInstallDependencyAction } from './Actions';
 import { isDepLost, isPluginLost, isUmiProject, isUsingBigfish, isUsingUmi } from './checkProject';
 import isDepFileExists from './utils/isDepFileExists';
-import initTerminal from './terminal';
+// import initTerminal from './terminal';
 import detectLanguage from './detectLanguage';
 import detectNpmClients from './detectNpmClients';
 import debug, { debugSocket } from './debug';
@@ -1059,7 +1059,7 @@ export default class UmiUI {
         prefix: '/umiui',
         log: () => {},
       });
-      initTerminal.call(this, server);
+      // initTerminal.call(this, server);
       this.socketServer = ss;
       this.server = server;
     });
