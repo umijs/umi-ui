@@ -9,7 +9,6 @@ import {
   QuestionCircleOutlined,
   CheckOutlined,
   MessageOutlined,
-  CodeOutlined,
 } from '@ant-design/icons';
 import { useIntl } from 'react-intl';
 import cls from 'classnames';
@@ -17,7 +16,7 @@ import { LOCALES, LOCALES_ICON } from '@/enums';
 import Context from '@/layouts/Context';
 import Logs from '@/components/Logs';
 import EditorIcon from '@/components/icons/Editor';
-import Shell from '@/components/Shell';
+// import Shell from '@/components/Shell';
 import { states, reducers } from '@/customModels/footer';
 import { handleBack } from '@/utils';
 import event, { MESSAGES } from '@/message';
@@ -127,7 +126,7 @@ const Footer: React.SFC<IFooterProps> = props => {
 
   const actionCls = cls(styles.section, styles.action);
   const logCls = cls(actionCls, styles.log);
-  const shellCls = cls(actionCls, styles.shell);
+  // const shellCls = cls(actionCls, styles.shell);
 
   const LocaleText = ({ locale: textLocale, checked, style }) => (
     <span style={style}>
@@ -214,7 +213,7 @@ const Footer: React.SFC<IFooterProps> = props => {
         >
           <Logs logs={logs} type={type} className={styles['section-drawer-logs']} />
         </Drawer>
-        <Drawer
+        {/* <Drawer
           title={
             <FooterToolbar
               title={intl.formatMessage({ id: 'org.umi.ui.global.terminal.upperCase' })}
@@ -263,7 +262,7 @@ const Footer: React.SFC<IFooterProps> = props => {
               className={styles['section-drawer-shell']}
             />
           )}
-        </Drawer>
+        </Drawer> */}
       </div>
       <div className={styles.statusBar}>
         <div className={styles['statusBar-left']}>
@@ -290,12 +289,12 @@ const Footer: React.SFC<IFooterProps> = props => {
             <ProfileFilled style={{ marginRight: 4 }} />{' '}
             {intl.formatMessage({ id: 'org.umi.ui.global.log' })}
           </div>
-          {projectDashboard && (
+          {/* {projectDashboard && (
             <div className={shellCls} onClick={() => togglePanel('terminal')}>
               <CodeOutlined style={{ marginRight: 4 }} />{' '}
               {intl.formatMessage({ id: 'org.umi.ui.global.terminal' })}
             </div>
-          )}
+          )} */}
         </div>
 
         {!!key && (
