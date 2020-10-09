@@ -907,7 +907,7 @@ export default class UmiUI {
       /**
        * Terminal shell resize server
        */
-      app.get('/terminal/resize', resizeRoute(this.ctx));
+      // app.get('/terminal/resize', resizeRoute(this.ctx));
       // 访问域名打开
       app.get('/', indexRoute(this.ctx));
       app.use('/*', commonRoute(this.ctx));
