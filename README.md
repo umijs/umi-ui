@@ -223,19 +223,19 @@ UI plug-ins and ordinary Umi plug-ins are actually the same principle.
 
 It just uses two more APIs than ordinary Umi plugins:
 
--ʻApi.addUIPlugin` is used to load the umd package of ui
--ʻApi.onUISocket` provides a server interface for the front-end ui
+- ʻApi.addUIPlugin` is used to load the umd package of ui
+- ʻApi.onUISocket` provides a server interface for the front-end ui
 
-[Learn more](https://umijs.org/plugin/umi-ui.html#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%8E%A5%E5%8F %A3)
+[Learn more](https://umijs.org/plugin/umi-ui.html#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%8E%A5%E5%8F%A3)
 
 ### UI plugin organization
 
 This warehouse includes:
 
--UI Server (@umijs/ui/src/UmiUI.ts, using Express)
--UI main frame (@umijs/ui/client, built with umi)
--UI plugin set (@umijs/plugin-ui)
-    -Dashboard panel (./plugins/dashboard)
-    -Configuration plugin (./plugins/configuration)
-    -Asset plugin (@umijs/plugin-ui-blocks)
-    -Task plugin (@umijs/plugin-ui-tasks)
+- UI Server (@umijs/ui/src/UmiUI.ts, using Express)
+- UI main frame (@umijs/ui/client, built with umi)
+- UI plugin set (@umijs/plugin-ui)
+    - Dashboard panel (./plugins/dashboard)
+    - Configuration plugin (./plugins/configuration)
+    - Asset plugin (@umijs/plugin-ui-blocks)
+    - Task plugin (@umijs/plugin-ui-tasks)
