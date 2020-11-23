@@ -304,13 +304,6 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
     spinner.succeed();
   }
 
-  if (uni18n) {
-    opts.remoteLog('🌎  remove i18n code');
-    spinner.start('🌎  remove i18n code');
-    require('./remove-locale').default(generator.blockFolderPath, uni18n);
-    spinner.succeed();
-  }
-
   // 6. write routes
   if (generator.needCreateNewRoute && api.userConfig.routes && !skipModifyRoutes) {
     opts.remoteLog('⛱  Write route');
