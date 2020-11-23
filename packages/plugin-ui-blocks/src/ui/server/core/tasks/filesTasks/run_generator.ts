@@ -10,7 +10,7 @@ const debug = createDebug('umi:umiui:UmiUI:block:filetasks');
 const generatorFunc = async (ctx: IFlowContext, args: IAddFilesBlockOption) => {
   const { logger, api } = ctx;
 
-  const { dryRun, page: isPage, js, execution = 'shell', uni18n } = args;
+  const { dryRun, page: isPage, js, execution = 'shell' } = args;
 
   logger.appendLog();
   logger.appendLog('📦  Start generate files');
@@ -100,12 +100,6 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddFilesBlockOption) => {
     logger.appendLog('🎭  Start TypeScript to JavaScript');
     require('@umijs/block-sdk/lib/tsTojs').default(relayPath);
     logger.appendLog('🎉  Success TypeScript to JavaScript\n');
-  }
-
-  if (uni18n) {
-    logger.appendLog('🌏  Start remove i18n code');
-    require('@umijs/block-sdk/lib/remove-locale').default(generator.blockFolderPath, uni18n);
-    logger.appendLog('🎉  Success remove i18n code\n');
   }
 
   ctx.stages.generator = generator;

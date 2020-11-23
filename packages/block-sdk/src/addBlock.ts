@@ -147,7 +147,6 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
     registry = registryUrl,
     js,
     execution = 'shell',
-    uni18n,
   } = args;
 
   const ctx = await getCtx(url, args, api);
@@ -301,13 +300,6 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
     opts.remoteLog('🤔  TypeScript to JavaScript');
     spinner.start('🤔  TypeScript to JavaScript');
     require('./tsTojs').default(generator.blockFolderPath);
-    spinner.succeed();
-  }
-
-  if (uni18n) {
-    opts.remoteLog('🌎  remove i18n code');
-    spinner.start('🌎  remove i18n code');
-    require('./remove-locale').default(generator.blockFolderPath, uni18n);
     spinner.succeed();
   }
 
