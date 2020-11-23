@@ -147,7 +147,6 @@ export async function addBlock(args: AddBlockOption = {}, opts: AddBlockOption =
     registry = registryUrl,
     js,
     execution = 'shell',
-    uni18n,
   } = args;
 
   const ctx = await getCtx(url, args, api);

@@ -10,7 +10,7 @@ const debug = createDebug('umi:umiui:UmiUI:block:tasks');
 const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { logger, api } = ctx;
 
-  const { dryRun, page: isPage, js, execution = 'shell', uni18n } = args;
+  const { dryRun, page: isPage, js, execution = 'shell' } = args;
 
   logger.appendLog();
   logger.appendLog('📦  Start generate files');
