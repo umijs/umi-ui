@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugin-ui-blocks",
-  "version": "2.2.6",
+  "version": "2.2.7",
   "description": "blocks ui",
   "main": "lib/index.js",
   "files": [
@@ -15,7 +15,7 @@
     "@babel/parser": "7.4.5",
     "@babel/traverse": "7.4.5",
     "@babel/types": "7.4.4",
-    "@umijs/block-sdk": "^2.2.1",
+    "@umijs/block-sdk": "^2.2.2",
     "chalk": "2.4.2",
     "execa": "1.0.0",
     "getnpmregistry": "^1.0.1",
