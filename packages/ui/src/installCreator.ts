@@ -26,7 +26,7 @@ export default async function(opts: IOpts) {
     // 更新时使用安装时用的 npmClient，否则会导致不可预知的问题
     await executeCommand(
       require(pkgPath).npmClient, // eslint-disable-line
-      ['update', '--registry=https://registry.npm.taobao.org'],
+      ['update', '--registry=https://registry.npmmirror.com'],
       baseDir,
       {
         unsafePerm: true,
@@ -52,7 +52,7 @@ export default async function(opts: IOpts) {
     // 安装依赖
     await executeCommand(
       npmClient,
-      ['install', '--registry=https://registry.npm.taobao.org'],
+      ['install', '--registry=https://registry.npmmirror.com'],
       baseDir,
       {
         unsafePerm: true,
