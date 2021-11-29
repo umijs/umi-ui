@@ -200,7 +200,7 @@ $ yarn build -w
 $ yarn ui:build -w
 ```
 
-进入 `cd example/app` 测试项目：
+进入 `cd examples/app` 测试项目：
 
 ```bash
 # 第三个终端
