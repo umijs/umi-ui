@@ -216,6 +216,12 @@ $ yarn start
 
 ![](https://raw.githubusercontent.com/ycjcl868/cdn/master/20200202091318.png?token=ADHXG5NO7FQGSB4U5HFYBH26GYRG6)
 
+#### 自定义调试端口
+
+Umi UI 的默认调试端口为 3000。如果你有需要调整该端口，可以通过 `UMI_UI_PORT` 或者 `MI_PORT` 环境变量来修改调试端口。
+
+关于环境变量可查看这里了解 [here](https://umijs.org/zh-CN/docs/env-variables)
+
 ### 插件开发原理
 
 UI 插件与普通 Umi 的插件实际是一样的原理。
