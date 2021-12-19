@@ -218,7 +218,7 @@ $ yarn start
 
 #### 自定义调试端口
 
-Umi UI 的默认调试端口为 3000。如果你有需要调整该端口，可以通过 `UMI_UI_PORT` 或者 `MI_PORT` 环境变量来修改调试端口。
+Umi UI 的默认调试端口为 `3000`。如果你有调整该端口需求，可以通过 `UMI_UI_PORT` 或者 `MI_PORT` 环境变量来修改调试端口。
 
 关于环境变量可查看这里了解 [here](https://umijs.org/zh-CN/docs/env-variables)
 
