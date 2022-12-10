@@ -37,7 +37,7 @@
     "lodash": "^4.17.15",
     "nanoid": "^2.0.3",
     "nprogress": "^0.2.0",
-    "qs": "^6.8.0",
+    "qs": "^6.9.7",
     "querystring": "^0.2.0",
     "rc-tween-one": "^2.6.0",
     "react-dom": "^16.11.0",
