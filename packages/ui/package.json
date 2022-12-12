@@ -77,7 +77,7 @@
     "cross-spawn": "6.0.5",
     "debug": "^4.1.1",
     "empty-dir": "2.0.0",
-    "express": "4.17.1",
+    "express": "4.17.3",
     "lodash": "^4.17.15",
     "macaddress": "0.2.9",
     "mkdirp": "0.5.1",
