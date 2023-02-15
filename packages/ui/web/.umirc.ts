@@ -1,20 +1,10 @@
 import { join, parse } from 'path';
 import LessThemePlugin from 'webpack-less-theme-plugin';
-import { defineConfig, utils } from 'umi';
+import { defineConfig } from 'umi';
+import { winPath } from '@umijs/utils';
 import { dark } from '@umijs/ui-theme';
 
 const { NODE_ENV } = process.env;
-const { winPath } = utils;
-
-const terserOptions =
-  NODE_ENV === 'production'
-    ? {
-        // remove console.* except console.error
-        compress: {
-          pure_funcs: ['console.log', 'console.info'],
-        },
-      }
-    : {};
 
 const externalCSS = ['xterm/css/xterm.css'];
 const externalJS = [
@@ -29,21 +19,22 @@ const externalJS = [
 const publicPath = NODE_ENV === 'development' ? 'http://localhost:8002/' : '/';
 const outputPath = NODE_ENV === 'development' ? './public' : './dist';
 
+// fix error: package subpath './umd/react.production.min.js' is not defined by "exports" in /[redacted folders]/node_modules/react/package.json
+const safeResolve = (subpath) => {
+  const [pkg, ...restPath] = subpath.split('/');
+  return require.resolve(pkg).replace(new RegExp(`(/${pkg}).*$`), `$1/${restPath.join('/')}`)
+};
+
 export default defineConfig({
-  presets: ['@umijs/preset-react'],
-  plugins: ['@umijs/plugin-esbuild'],
-  nodeModulesTransform: {
-    type: 'none',
-  },
   outputPath,
-  devServer: {
-    // dev write assets into public
-    writeToDisk: (filePath: string) =>
-      [...externalJS, ...externalCSS].some(
-        external => parse(external).base === parse(filePath).base,
-      ),
-  },
-  esbuild: {},
+  // devServer: {
+  //   // dev write assets into public
+  //   writeToDisk: (filePath: string) =>
+  //     [...externalJS, ...externalCSS].some(
+  //       external => parse(external).base === parse(filePath).base,
+  //     ),
+  // },
+  jsMinifier: 'esbuild',
   publicPath,
   history: {
     type: 'browser',
@@ -51,7 +42,6 @@ export default defineConfig({
   ignoreMomentLocale: true,
   hash: NODE_ENV === 'production',
   // uglifyJSOptions,
-  terserOptions,
   links: [
     ...externalCSS.map(external => ({
       rel: 'stylesheet',
@@ -59,7 +49,7 @@ export default defineConfig({
     })),
   ],
   antd: {},
-  scripts: [
+  headScripts: [
     // polyfill
     ...externalJS.map(external => ({
       src: `${publicPath}${parse(external).base}`,
@@ -140,28 +130,16 @@ export default defineConfig({
       },
     },
   },
+  copy: [
+    ...externalCSS.map(external => safeResolve(external)),
+    ...externalJS.map(external => safeResolve(external)),
+  ],
   chainWebpack(config) {
     config.plugin('webpack-less-theme').use(
       new LessThemePlugin({
         theme: join(__dirname, './src/styles/parameters.less'),
       }),
     );
-    const { path: absOutputPath } = config.toConfig().output;
-    const to = NODE_ENV === 'development' ? join(__dirname, 'public') : absOutputPath;
-
-    config.plugin('copy').tap(([args]) => [
-      [
-        ...args,
-        ...externalCSS.map(external => ({
-          from: require.resolve(external),
-          to,
-        })),
-        ...externalJS.map(external => ({
-          from: require.resolve(external),
-          to,
-        })),
-      ],
-    ]);
 
     return config;
   },

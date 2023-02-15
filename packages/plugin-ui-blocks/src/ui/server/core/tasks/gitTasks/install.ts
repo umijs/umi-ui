@@ -1,8 +1,6 @@
-import { utils } from 'umi';
+import { createDebug } from '@umijs/utils';
 import { installDependencies } from '@umijs/block-sdk';
 import { IFlowContext, IAddBlockOption } from '../../types';
-
-const { createDebug } = utils;
 
 const debug = createDebug('umiui:UmiUI:block:tasks');
 

@@ -1,7 +1,5 @@
-import { utils } from 'umi';
+import { lodash, winPath } from '@umijs/utils';
 import { isAbsolute, join } from 'path';
-
-const { lodash, winPath } = utils;
 
 export const getRouteComponents = ({ componentRoutes, paths, cwd }): string[] => {
   const getComponents = routes =>

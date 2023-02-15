@@ -1,9 +1,7 @@
 import { existsSync } from 'fs';
 import { SpawnOptions, execSync, fork } from 'child_process';
-import { utils } from 'umi';
+import { spawn } from '@umijs/utils';
 import { NpmClient } from '../core/enums';
-
-const { spawn } = utils;
 
 export const error = (msg: string, name = 'TaskError') => {
   const err = new Error(msg);

@@ -1,12 +1,10 @@
 import fs from 'fs';
-import { utils } from 'umi';
+import { getFile } from '@umijs/utils';
 import { join } from 'path';
 import haveRootBinding from '@umijs/block-sdk/lib/sdk/haveRootBinding';
 import { findJS } from '@umijs/block-sdk';
 import checkIfCanAdd from './org.umi.block.checkIfCanAdd';
 import checkBindingInFile from './org.umi.block.checkBindingInFile';
-
-const { getFile } = utils;
 
 jest.mock('@umijs/block-sdk/lib/sdk/haveRootBinding');
 

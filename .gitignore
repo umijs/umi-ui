@@ -30,3 +30,6 @@ yarn-error.log
 .eslintcache
 packages/ui/web/public/*
 !packages/ui/web/public/polyfill.min.js
+.idea
+/examples/app/lib
+

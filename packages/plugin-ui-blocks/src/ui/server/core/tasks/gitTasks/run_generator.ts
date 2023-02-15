@@ -1,9 +1,7 @@
-import { utils } from 'umi';
+import { winPath, createDebug } from '@umijs/utils';
 import { join } from 'path';
 import { getBlockGenerator, getNameFromPkg } from '@umijs/block-sdk';
 import { IFlowContext, IAddBlockOption } from '../../types';
-
-const { winPath, createDebug } = utils;
 
 const debug = createDebug('umi:umiui:UmiUI:block:tasks');
 

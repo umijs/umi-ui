@@ -1,7 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { history, IRoute } from 'umi';
-import { getApp } from '@@/plugin-dva/dva';
+import { getDvaApp } from '@@/plugin-dva/dva';
 import querystring from 'querystring';
 import { setCurrentProject, clearCurrentProject } from '@/services/project';
 import debug from '@/debug';
@@ -25,7 +25,7 @@ const service = (window.g_service = {
 class Container extends React.Component {
   constructor(props) {
     super(props);
-    const app = getApp();
+    const app = getDvaApp();
     window.g_service.models.forEach(model => {
       app.model(model);
     });
@@ -112,10 +112,7 @@ export async function render(oldRender): void {
   } catch (e) {
     console.error('Init socket failed', e);
   }
-  ReactDOM.render(
-    React.createElement(require('./pages/loading').default, {}),
-    document.getElementById('root'),
-  );
+  ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(require('./pages/loading').default, {}));
   await initBasicUI();
   const { data } = await callRemote({ type: '@@project/list' });
   const props = {
@@ -153,10 +150,7 @@ export async function render(oldRender): void {
     }
     if (props.error) {
       history.replace(`/error?key=${key}`);
-      ReactDOM.render(
-        React.createElement(require('./pages/loading').default, props),
-        document.getElementById('root'),
-      );
+      ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(require('./pages/loading').default, props));
       await clearCurrentProject();
       return false;
     }
@@ -173,14 +167,16 @@ export async function render(oldRender): void {
 }
 
 export function patchRoutes({ routes }: { routes: IRoute[] }) {
-  const dashboardIndex = routes.findIndex(route => route.key === 'dashboard');
-  if (dashboardIndex > -1) {
-    service.panels.forEach(panel => {
-      routes[dashboardIndex]?.routes?.unshift({
-        exact: true,
-        ...panel,
+  for (let route in routes) {
+    if (route.key === 'dashboard') {
+      service.panels.forEach(panel => {
+        routes?.routes?.unshift({
+          exact: true,
+          ...panel,
+        });
       });
-    });
+      return;
+    }
   }
 }
 

@@ -2,12 +2,10 @@ import { join } from 'path';
 import { readFileSync, existsSync } from 'fs';
 
 import { Request, Response } from 'express';
-import { utils } from 'umi';
+import { got, winPath } from '@umijs/utils';
 
 import { IContext } from '../UmiUI';
 import getScripts, { normalizeHtml } from '../utils/scripts';
-
-const { got, winPath } = utils;
 
 export default (ctx: Partial<IContext>) => async (req: Request, res: Response) => {
   const scripts = await getScripts();

@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { utils } from 'umi';
+import { winPath } from '@umijs/utils';
 import * as t from '@babel/types';
 import {
   findExportDefaultDeclaration,
@@ -15,8 +15,6 @@ import {
   INSERT_BLOCK_PLACEHOLDER,
   UMI_UI_FLAG_PLACEHOLDER,
 } from '../constants';
-
-const { winPath } = utils;
 
 export default () => {
   function buildGUmiUIFlag(opts) {

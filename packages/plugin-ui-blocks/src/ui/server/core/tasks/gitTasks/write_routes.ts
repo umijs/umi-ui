@@ -1,8 +1,6 @@
-import { utils } from 'umi';
+import { chalk, createDebug } from '@umijs/utils';
 import { appendBlockToContainer, writeNewRoute } from '@umijs/block-sdk';
 import { IFlowContext, IAddBlockOption } from '../../types';
-
-const { chalk, createDebug } = utils;
 
 const debug = createDebug('umiui:UmiUI:block');
 

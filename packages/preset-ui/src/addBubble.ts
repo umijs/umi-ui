@@ -1,9 +1,8 @@
 import { join } from 'path';
 import { IApi } from 'umi';
+import { winPath } from '@umijs/utils';
 
 export default (api: IApi) => {
-  const { utils } = api;
-  const { winPath } = utils;
   api.addEntryCode(
     () => `
     (() => {

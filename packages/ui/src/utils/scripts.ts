@@ -1,7 +1,5 @@
-import { utils } from 'umi';
+import { cheerio } from '@umijs/utils';
 import macaddress from 'macaddress';
-
-const { cheerio } = utils;
 
 // 添加埋点脚本
 export function normalizeHtml(html, scripts) {

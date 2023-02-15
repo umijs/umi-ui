@@ -1,8 +1,6 @@
-import { utils } from 'umi';
+import { createDebug } from '@umijs/utils';
 import { ResourceType, DEPS_TYPE } from '@umijs/block-sdk/lib/enum';
 import { IHandlerOpts } from '../index';
-
-const { createDebug } = utils;
 
 const debug = createDebug('umiui:UmiUI:block:add');
 

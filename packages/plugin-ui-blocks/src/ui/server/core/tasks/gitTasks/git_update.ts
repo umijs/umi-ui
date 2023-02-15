@@ -1,12 +1,10 @@
 import assert from 'assert';
-import { utils } from 'umi';
+import { winPath } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { getNameFromPkg } from '@umijs/block-sdk';
 import { IFlowContext, ICtxTypes, IAddBlockOption } from '../../types';
 import { isSubmodule, addPrefix } from '../helper';
-
-const { winPath } = utils;
 
 const clone = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { logger, execa } = ctx;

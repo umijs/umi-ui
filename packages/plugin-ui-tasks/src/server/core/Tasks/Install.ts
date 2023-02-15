@@ -1,11 +1,9 @@
 import { join } from 'path';
-import { utils } from 'umi';
+import { rimraf } from '@umijs/utils';
 import BinaryMirrorConfig from 'binary-mirror-config';
 import { BaseTask, ITaskOptions } from './Base';
 import { TaskType, TaskEventType, NpmClient, TaskState } from '../enums';
 import { runCommand, getNpmClient } from '../../util';
-
-const { rimraf } = utils;
 
 export class InstallTask extends BaseTask {
   private speedUpEnv;

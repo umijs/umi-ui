@@ -69,7 +69,7 @@ module.exports = opts => {
                 ident: 'postcss',
                 plugins: () => [
                   // https://github.com/luisrudge/postcss-flexbugs-fixes
-                  require('postcss-flexbugs-fixes'),
+                  // require('postcss-flexbugs-fixes'),
                   // https://github.com/csstools/postcss-preset-env
                   require('postcss-preset-env')({
                     // https://cssdb.org/

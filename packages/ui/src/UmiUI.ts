@@ -12,12 +12,15 @@ import launchEditor from '@umijs/launch-editor';
 import openBrowser from 'react-dev-utils/openBrowser';
 import { existsSync, readFileSync, statSync } from 'fs';
 import { execSync } from 'child_process';
-import { utils, Service } from 'umi';
+import { Service } from 'umi';
+import { winPath, lodash, semver, portfinder, rimraf, chalk } from '@umijs/utils';
 import resolveFrom from 'resolve-from';
 
 import indexRoute from './routes/index';
 import commonRoute from './routes/common';
-import resizeRoute from './routes/resize';
+// import resizeRoute from './routes/resize';
+
+import { version as UMI_VERSION } from 'umi/package.json';
 
 import Config from './Config';
 import getClientScript, { getBasicScriptContent } from './getClientScript';
@@ -33,7 +36,6 @@ import detectLanguage from './detectLanguage';
 import detectNpmClients from './detectNpmClients';
 import debug, { debugSocket } from './debug';
 
-const { winPath, lodash, semver, portfinder, rimraf, chalk } = utils;
 const { pick, uniq } = lodash;
 
 export interface IContext {
@@ -892,7 +894,7 @@ export default class UmiUI {
     this.ctx.browser = browser;
 
     return new Promise(async (resolve, reject) => {
-      console.log(`🚀 Starting Umi UI using umi@${process.env.UMI_VERSION}...`);
+      console.log(`🚀 Starting Umi UI using umi@${UMI_VERSION}...`);
 
       const app = express();
       app.use(compression());

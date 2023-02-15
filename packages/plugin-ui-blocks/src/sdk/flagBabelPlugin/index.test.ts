@@ -1,9 +1,7 @@
-import { utils } from 'umi';
+import { winPath } from '@umijs/utils';
 import { transform } from '@babel/core';
 import { join, basename } from 'path';
 import { readdirSync, readFileSync, existsSync } from 'fs';
-
-const { winPath } = utils;
 
 const fixtures = join(winPath(__dirname), 'fixtures');
 

@@ -1,16 +1,14 @@
 const { fork } = require('child_process');
-const { utils } = require('umi');
+const { signale } = require('@umijs/utils');
 const { join } = require('path');
 const { existsSync } = require('fs');
 
-const UMI_BIN = require.resolve('umi/bin/umi');
+const UMI_BIN = require.resolve('@umijs/max/bin/max');
 const UI_BUILD_BIN = require.resolve('../packages/ui-builder/bin/index.js');
 
 const getPackages = require('./getPackage');
 
 const watch = process.argv.includes('-w') || process.argv.includes('--watch');
-
-const { signale } = utils;
 
 const uiApp = () => {
   return new Promise((resolve, reject) => {
