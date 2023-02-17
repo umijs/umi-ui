@@ -1,6 +1,4 @@
-import { utils } from 'umi';
-
-const { createDebug } = utils;
+import { createDebug } from '@umijs/utils';
 
 const debug = createDebug('umiui:UmiUI');
 

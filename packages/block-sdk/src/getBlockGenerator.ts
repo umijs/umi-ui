@@ -3,7 +3,7 @@ import { join, dirname, parse } from 'path';
 import crequire from 'crequire';
 import upperCamelCase from 'uppercamelcase';
 import inquirer from 'inquirer';
-import { IApi } from '@umijs/types';
+import type { IApi } from '@umijs/types';
 import memFs from 'mem-fs';
 import editor from '@umijs/mem-fs-editor';
 import { winPath, mkdirp, semver, Mustache, rimraf, createDebug, Generator } from '@umijs/utils';
@@ -247,7 +247,7 @@ export const getBlockGenerator = (api: IApi) => {
       this.files = args.files || [];
     }
 
-    run(): Promise<any> {
+    run(): Promise<void> {
       return new Promise((resolve, reject) => {
         debug('run writing');
         this.writing()

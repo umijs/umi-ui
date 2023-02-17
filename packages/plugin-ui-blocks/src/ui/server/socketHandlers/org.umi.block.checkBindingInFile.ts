@@ -2,10 +2,8 @@ import { join } from 'path';
 import { existsSync, readFileSync } from 'fs';
 import haveRootBinding from '@umijs/block-sdk/lib/sdk/haveRootBinding';
 import { findJS } from '@umijs/block-sdk';
-import { utils } from 'umi';
+import { createDebug, winPath } from '@umijs/utils';
 import { IHandlerOpts } from '../index';
-
-const { createDebug, winPath } = utils;
 
 const debug = createDebug('umiui:UmiUI:block:checkBindingInFile');
 

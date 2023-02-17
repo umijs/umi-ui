@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
-import { utils } from 'umi';
+import { mkdirp, portfinder, lodash } from '@umijs/utils';
 
 interface IGetAnalyzeEnvOpts {
   analyze: boolean;
@@ -8,7 +8,6 @@ interface IGetAnalyzeEnvOpts {
   fileName: string;
 }
 
-const { mkdirp, portfinder, lodash } = utils;
 const { isPlainObject, isEmpty } = lodash;
 
 const getAvailablePort = async () => {

@@ -1,10 +1,8 @@
 import { AddBlockParams } from '@umijs/block-sdk/lib/data.d';
 import { join } from 'path';
-import { utils } from 'umi';
+import { winPath } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { IHandlerOpts } from '../index';
-
-const { winPath } = utils;
 
 export default function({ success, payload, api }: IHandlerOpts) {
   const { path: blockPath } = payload as AddBlockParams;

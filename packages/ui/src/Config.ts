@@ -1,12 +1,12 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { createHash } from 'crypto';
-import { utils } from 'umi';
+import { lodash } from '@umijs/utils';
 import { basename, dirname, join } from 'path';
 import { homedir } from 'os';
 import mkdirp from 'mkdirp';
 import assert from 'assert';
 
-const { get, pickBy, identity } = utils.lodash;
+const { get, pickBy, identity } = lodash;
 
 interface IOpts {
   dbPath?: string;

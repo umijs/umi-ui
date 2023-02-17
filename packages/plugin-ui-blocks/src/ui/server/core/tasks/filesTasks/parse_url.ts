@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { utils } from 'umi';
+import { createDebug, winPath } from '@umijs/utils';
 import chalk from 'chalk';
 import { join } from 'path';
 import { existsSync } from 'fs';
@@ -7,8 +7,6 @@ import getNpmRegistry from 'getnpmregistry';
 
 import { IFlowContext, IAddFilesBlockOption, ICtxFilesTypes } from '../../types';
 import { addPrefix } from '../helper';
-
-const { createDebug, winPath } = utils;
 
 const debug = createDebug('umi:umiui:UmiUI:block:filetasks');
 

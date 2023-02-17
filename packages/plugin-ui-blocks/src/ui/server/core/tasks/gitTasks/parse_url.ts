@@ -1,5 +1,6 @@
 import assert from 'assert';
-import { IApi, utils } from 'umi';
+import { IApi } from 'umi';
+import { lodash, createDebug } from '@umijs/utils';
 import chalk from 'chalk';
 import { join, dirname } from 'path';
 import { existsSync } from 'fs';
@@ -7,8 +8,6 @@ import getNpmRegistry from 'getnpmregistry';
 import { getParsedData, makeSureMaterialsTempPathExist } from '@umijs/block-sdk';
 
 import { IFlowContext, IAddBlockOption, ICtxTypes } from '../../types';
-
-const { lodash, createDebug } = utils;
 
 const debug = createDebug('umiui:UmiUI:block:tasks');
 

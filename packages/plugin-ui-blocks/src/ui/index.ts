@@ -1,10 +1,9 @@
-import { IApi, utils } from 'umi';
+import type { IApi } from 'umi';
+import { winPath, Mustache } from '@umijs/utils';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import server from './server';
 import { getRouteComponents } from './utils';
-
-const { winPath, Mustache } = utils;
 
 export interface IApiBlock extends IApi {
   sendLog: (info: string) => void;
@@ -24,30 +23,25 @@ export default (api: IApiBlock) => {
   //   routeComponents = api.getRouteComponents();
   // });
 
-  api.modifyBabelOpts(async babelOpts => {
-    const routes = await api.getRoutes();
+  api.addExtraBabelPlugins(() => {
+    const routes = api.config.routes;
     const routeComponents = getRouteComponents({
       componentRoutes: routes,
       paths,
       cwd: api.cwd,
     });
-    const { plugins } = babelOpts;
-    return {
-      ...babelOpts,
-      plugins: [
-        ...plugins,
-        [
-          require.resolve('../sdk/flagBabelPlugin'),
-          {
-            doTransform(filename) {
-              return routeComponents.some(
+    return [
+      [
+        require.resolve('../sdk/flagBabelPlugin'),
+        {
+          doTransform(filename) {
+            return routeComponents.some(
                 routeComponent => winPath(filename) === winPath(routeComponent),
-              );
-            },
+            );
           },
-        ],
+        },
       ],
-    };
+    ];
   });
 
   api.addEntryCodeAhead(() => {

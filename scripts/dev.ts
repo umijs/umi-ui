@@ -1,7 +1,5 @@
-import { utils } from 'umi';
+import { signale } from '@umijs/utils';
 import UmiUI from '../packages/ui/lib/UmiUI';
-
-const { signale } = utils;
 
 (async () => {
   process.env.CURRENT_PROJECT = 'examples/app';

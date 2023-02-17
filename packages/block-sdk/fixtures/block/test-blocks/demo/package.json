@@ -9,7 +9,7 @@
     "rc-select": "~2.1.0"
   },
   "devDependencies": {
-    "umi": "^3.0.0",
+    "umi": "^4.0.0",
     "umi-plugin-block-dev": "^2.0.0"
   }
 }

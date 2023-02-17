@@ -8,7 +8,7 @@
     "src/bubble"
   ],
   "peerDependencies": {
-    "umi": "3.x"
+    "umi": "4.x"
   },
   "dependencies": {
     "@umijs/plugin-ui-blocks": "^2.2.7",

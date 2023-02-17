@@ -1,12 +1,11 @@
 import { join, dirname } from 'path';
-import { IApi, utils } from 'umi';
+import { IApi } from 'umi';
+import { winPath, glob, lodash as _, createDebug, pkgUp } from '@umijs/utils';
 import { ResourceType, PKG_ASSETS_META, IUIResource, AssetType } from '@umijs/block-sdk';
 import { Resource } from '@umijs/block-sdk/lib/data.d';
 import { ILang } from '@umijs/ui-types';
 import Block from './core/Block';
 import { DEFAULT_RESOURCES } from './util';
-
-const { winPath, glob, lodash: _, createDebug, pkgUp } = utils;
 
 const debug = createDebug('umi:umiui:plugin-ui-blocks:server');
 

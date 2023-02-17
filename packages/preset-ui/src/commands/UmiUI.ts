@@ -1,7 +1,6 @@
-import { IApi, utils } from 'umi';
+import { IApi } from 'umi';
+import { signale } from '@umijs/utils';
 import UmiUI from '@umijs/ui';
-
-const { signale } = utils;
 
 export default (api: IApi) => {
   api.onStart(async () => {

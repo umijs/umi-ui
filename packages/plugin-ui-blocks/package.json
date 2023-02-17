@@ -9,7 +9,7 @@
     "src"
   ],
   "peerDependencies": {
-    "umi": "3.x"
+    "umi": "4.x"
   },
   "dependencies": {
     "@babel/parser": "7.4.5",

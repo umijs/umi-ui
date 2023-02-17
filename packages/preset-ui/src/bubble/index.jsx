@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import styled from 'styled-components';
 import isMobile from 'is-mobile';
 import { callRemote, init as initSocket } from './socket';
@@ -326,11 +326,10 @@ doc.body.appendChild(node);
 
 export default props => {
   if (!isMobile(navigator.userAgent)) {
-    ReactDOM.render(
+    ReactDOM.createRoot(node).render(
       <ErrorBoundary>
-        <App {...props} />
-      </ErrorBoundary>,
-      node,
+      <App {...props} />
+    </ErrorBoundary>
     );
   }
 };

@@ -1,9 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "start": "cross-env BABEL_CACHE=none FRIENDLY_ERROR=none umi dev",
-    "build": "umi build",
-    "test": "umi test",
+    "start": "cross-env BABEL_CACHE=none FRIENDLY_ERROR=none max dev",
+    "build": "max build",
+    "test": "max test",
     "lint": "eslint {src,mock,tests}/**/*.{ts,tsx} --fix",
     "precommit": "lint-staged"
   },

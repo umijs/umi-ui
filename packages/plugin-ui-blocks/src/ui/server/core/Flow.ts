@@ -1,4 +1,5 @@
-import { IApi, utils } from 'umi';
+import { IApi } from 'umi';
+import { createDebug } from '@umijs/utils';
 import { ChildProcess } from 'child_process';
 import { EventEmitter } from 'events';
 import { IFlowContext } from './types';
@@ -8,8 +9,6 @@ import execa from '../util/exec';
 
 import gitTasks from './tasks/gitTasks';
 import filesTasks from './tasks/filesTasks';
-
-const { createDebug } = utils;
 
 const debug = createDebug('umi:umiui:plugin-ui-blocks:addBlock');
 

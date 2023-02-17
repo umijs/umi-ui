@@ -1,12 +1,10 @@
 import { join } from 'path';
 import { readFileSync } from 'fs';
-import { utils } from 'umi';
+import { winEOL } from '@umijs/utils';
 
 import { getNewRouteCode, writeRouteNode } from './writeNewRoute';
 import routeNode from '../fixtures/routeNode.json';
 import relativeRouteNode from '../fixtures/relativeRouteNode.json';
-
-const { winEOL } = utils;
 
 const typeMap = [
   '../fixtures/exportDefaultRoutes.js',
