@@ -1,5 +1,6 @@
 import React from 'react';
 import { PageHeader } from 'antd';
+import { Outlet } from 'umi';
 import { PROJECT_STATUS, IProjectStatus } from '@/enums';
 import events, { MESSAGES } from '@/message';
 import scrollTop from '@/utils/scrollTop';
@@ -56,7 +57,7 @@ const Project: React.FC<IProjectProps> = props => {
                   className={styles['project-l-header']}
                 />
               )}
-              {props.children}
+              <Outlet />
             </div>
           </ProjectContext.Provider>
         )}

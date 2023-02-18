@@ -5,7 +5,7 @@ import { RawIntlProvider, createIntl, FormattedMessage } from 'react-intl';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import cls from 'classnames';
-import { history } from 'umi';
+import { history, Outlet } from 'umi';
 import 'moment/locale/zh-cn';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import event, { MESSAGES } from '@/message';
@@ -133,7 +133,9 @@ const Layout: React.FC<ILayoutProps> = props => {
               <title>{props.title ? intl.formatMessage({ id: props.title }) : 'Umi UI'}</title>
               <link rel="shortcut icon" href={icon} type="image/x-icon" />
             </Helmet>
-            <ErrorBoundary>{props.children}</ErrorBoundary>
+            <ErrorBoundary>
+              <Outlet />
+            </ErrorBoundary>
             <ErrorBoundary>
               <Footer type={type} />
             </ErrorBoundary>
