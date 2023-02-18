@@ -25,10 +25,13 @@ const service = (window.g_service = {
 class Container extends React.Component {
   constructor(props) {
     super(props);
-    const app = getDvaApp();
-    window.g_service.models.forEach(model => {
-      app.model(model);
-    });
+    // fix: getDvaApp() returned undefined
+    setTimeout(() => {
+      const app = getDvaApp();
+      window.g_service.models.forEach(model => {
+        app.model(model);
+      });
+    }, 0);
   }
   render() {
     return this.props.children;
