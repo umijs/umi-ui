@@ -5,7 +5,7 @@ import { RawIntlProvider, createIntl, FormattedMessage } from 'react-intl';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import cls from 'classnames';
-import { history, Outlet } from 'umi';
+import { history, useOutletContext } from 'umi';
 import 'moment/locale/zh-cn';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import event, { MESSAGES } from '@/message';
@@ -32,6 +32,7 @@ const Layout: React.FC<ILayoutProps> = props => {
   const [locale, setLocale] = useState<'zh-CN', 'en-US'>(() => getLocale());
   const [intl, setIntl] = useState(() => createIntl(localeInfo[locale]));
   const [theme, setTheme] = useState('dark');
+  const context = useOutletContext();
 
   const currentLocaleInfo = localeInfo[locale];
 
@@ -104,7 +105,6 @@ const Layout: React.FC<ILayoutProps> = props => {
     },
     className,
   );
-  window.g_uiContext = Context;
   const { basicUI } = window.g_service;
   // const frameworkName = basicUI.name || 'Umi';
   const icon = basicUI.logo_remote || '//gw.alipayobjects.com/zos/antfincdn/KjbXlRsRBz/umi.png';
@@ -112,35 +112,34 @@ const Layout: React.FC<ILayoutProps> = props => {
   return (
     <ConfigProvider locale={currentLocaleInfo?.antd}>
       <RawIntlProvider value={intl}>
-        <div className={layoutCls}>
-          <Context.Provider
-            value={{
-              locale,
-              theme,
-              isMini,
-              currentProject,
-              showLogPanel,
-              hideLogPanel,
-              setLocale,
-              formatMessage: intl.formatMessage,
-              FormattedMessage,
-              basicUI,
-              getLocale,
-            }}
-          >
-            <Helmet>
-              <html lang={locale === 'zh-CN' ? 'zh' : 'en'} />
-              <title>{props.title ? intl.formatMessage({ id: props.title }) : 'Umi UI'}</title>
-              <link rel="shortcut icon" href={icon} type="image/x-icon" />
-            </Helmet>
-            <ErrorBoundary>
-              <Outlet />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <Footer type={type} />
-            </ErrorBoundary>
-          </Context.Provider>
+        <Context.Provider value={{
+          ...context,
+          locale,
+          theme,
+          isMini,
+          currentProject,
+          showLogPanel,
+          hideLogPanel,
+          setLocale,
+          formatMessage: intl.formatMessage,
+          FormattedMessage,
+          basicUI,
+          getLocale,
+        }}>
+          <div className={layoutCls}>
+          <Helmet>
+            <html lang={locale === 'zh-CN' ? 'zh' : 'en'} />
+            <title>{props.title ? intl.formatMessage({ id: props.title }) : 'Umi UI'}</title>
+            <link rel="shortcut icon" href={icon} type="image/x-icon" />
+          </Helmet>
+          <ErrorBoundary>
+            { props.children }
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Footer type={type} />
+          </ErrorBoundary>
         </div>
+        </Context.Provider>
       </RawIntlProvider>
     </ConfigProvider>
   );

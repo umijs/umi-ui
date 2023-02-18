@@ -32,37 +32,37 @@ const Project: React.FC<IProjectProps> = props => {
   }, []);
 
   return (
-    <Layout type="list">
-      <Context.Consumer>
-        {context => (
-          <ProjectContext.Provider
-            value={{
-              ...context,
-              current,
-              currentData,
-              setCurrent: changeCurrent,
-            }}
-          >
-            <div className={styles['project-l']}>
-              {current !== 'list' && (
-                <PageHeader
-                  title={context.formatMessage({
-                    id: `org.umi.ui.global.project.${
-                      current === 'progress' ? 'create' : current
-                    }.title`,
-                  })}
-                  onBack={() => {
-                    changeCurrent('list');
+      <Layout type="list">
+        <Context.Consumer>
+          {context => (
+              <ProjectContext.Provider
+                  value={{
+                    ...context,
+                    current,
+                    currentData,
+                    setCurrent: changeCurrent,
                   }}
-                  className={styles['project-l-header']}
-                />
-              )}
-              <Outlet />
-            </div>
-          </ProjectContext.Provider>
-        )}
-      </Context.Consumer>
-    </Layout>
+              >
+                <div className={styles['project-l']}>
+                  {current !== 'list' && (
+                      <PageHeader
+                          title={context.formatMessage({
+                            id: `org.umi.ui.global.project.${
+                                current === 'progress' ? 'create' : current
+                            }.title`,
+                          })}
+                          onBack={() => {
+                            changeCurrent('list');
+                          }}
+                          className={styles['project-l-header']}
+                      />
+                  )}
+                  <Outlet context={context} />
+                </div>
+              </ProjectContext.Provider>
+          )}
+        </Context.Consumer>
+      </Layout>
   );
 };
 
