@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { history, IRoute } from 'umi';
+import forEach from 'lodash/forEach';
 import { getDvaApp } from '@@/plugin-dva/dva';
 import querystring from 'querystring';
 import { setCurrentProject, clearCurrentProject } from '@/services/project';
@@ -165,18 +166,17 @@ export async function render(oldRender): Promise<void> {
   oldRender();
 }
 
-export function patchRoutes({ routes }: { routes: IRoute[] }) {
-  for (const route in routes) {
+export function patchClientRoutes({ routes }: { routes: IRoute[] }) {
+  forEach(routes, route => {
     if (route.key === 'dashboard') {
       service.panels.forEach(panel => {
-        routes?.routes?.unshift({
+        route.routes.unshift({
           exact: true,
           ...panel,
         });
       });
-      return;
     }
-  }
+  });
 }
 
 // for ga analyse
