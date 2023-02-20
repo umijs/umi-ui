@@ -1,6 +1,6 @@
 import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col } from 'antd';
 import { LeftOutlined, CaretDownOutlined, ExportOutlined } from '@ant-design/icons';
-import { NavLink, withRouter } from 'umi';
+import { NavLink, useLocation, useOutlet } from 'umi';
 import { FormattedMessage } from 'react-intl';
 import React, { useState, useLayoutEffect, Fragment } from 'react';
 import * as IUi from '@umijs/ui-types';
@@ -25,9 +25,10 @@ const getActivePanel = pathname => window.g_service.panels.find(panel => panel.p
 
 const DefaultProvider = props => <div {...props}>{props.children}</div>;
 
-export default withRouter(props => {
+export default props => {
   const _log = debug.extend('Dashboard');
-  const { pathname } = props.location;
+  const outlet = useOutlet();
+  const { pathname } = useLocation();
   const activePanel = getActivePanel(pathname) ? getActivePanel(pathname) : {};
   const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
   const [actions, setActionPanel] = useState<IUi.IPanelAction>();
@@ -298,7 +299,7 @@ export default withRouter(props => {
                     {/* key pathname change transition will crash  */}
                     <div key={path} className={styles.content}>
                       <ErrorBoundary className={styles['dashboard-error-boundary']}>
-                        {props.children}
+                        {outlet}
                       </ErrorBoundary>
                     </div>
                   </Provider>
@@ -310,4 +311,4 @@ export default withRouter(props => {
       </Context.Consumer>
     </UiLayout>
   );
-});
+};

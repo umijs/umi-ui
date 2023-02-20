@@ -38,7 +38,7 @@ export default (api: IUiApi) => {
       </Layout>,
     ],
     icon: <DashboardFilled />,
-    component: () => (
+    element: (
       <Layout api={api}>
         <Dashboard />
       </Layout>

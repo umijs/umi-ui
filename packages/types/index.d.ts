@@ -95,7 +95,7 @@ declare namespace IUI {
 
   interface IPanel extends IRoute {
     path: string;
-    component: FunctionComponent | ComponentClass;
+    element: ReactNode;
     icon: IconType | string;
     actions?: IPanelAction;
     beta?: boolean;

@@ -196,6 +196,6 @@ export default (api: IUiApi) => {
     title: 'org.umi.ui.tasks.title',
     path: '/tasks',
     icon: <ProjectFilled />,
-    component: api.connect(state => ({ taskManager: state[model.namespace] }))(TasksView),
+    element: api.connect(state => ({ taskManager: state[model.namespace] }))(TasksView),
   });
 };

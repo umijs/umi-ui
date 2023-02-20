@@ -26,7 +26,7 @@ export default (api: IUiApi) => {
     path: '/blocks',
     icon: <Icon />,
     actions: [],
-    component: () => (
+    element: (
       <Context.Provider
         value={{
           api,

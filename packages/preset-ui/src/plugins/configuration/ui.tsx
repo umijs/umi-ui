@@ -51,6 +51,6 @@ export default (api: IUiApi) => {
     actions: [<ConfigAction api={api} />],
     path: '/configuration',
     icon: <ControlFilled />,
-    component: () => <ConfigManager api={api} />,
+    element: <ConfigManager api={api} />,
   });
 };
