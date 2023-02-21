@@ -5,7 +5,7 @@ export default defineConfig({
   routes: [
     {
       path: '/',
-      component: '@/pages/index.tsx',
+      component: 'index',
     },
   ],
   presets: ['../../packages/preset-ui/lib/index.js'],
