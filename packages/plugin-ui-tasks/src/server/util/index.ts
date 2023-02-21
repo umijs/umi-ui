@@ -155,7 +155,7 @@ function parseKeyScript(key: string, script: string): IParseKeyScriptRes {
       errMsg: 'Script contains && or || is not allowed',
     };
   }
-  if (!/bigfish|umi/.test(script)) {
+  if (!/bigfish|max|umi/.test(script)) {
     return {
       ...result,
       errMsg: 'Not umi',
@@ -167,7 +167,7 @@ function parseKeyScript(key: string, script: string): IParseKeyScriptRes {
     const envs = {};
     const args = []; // TODO: args 应该取 bin 之后的
     script.split(' ').forEach(item => {
-      if (['bigfish', 'umi'].indexOf(item) > -1) {
+      if (['bigfish', 'max', 'umi'].indexOf(item) > -1) {
         return;
       }
       if (/=/.test(item)) {
