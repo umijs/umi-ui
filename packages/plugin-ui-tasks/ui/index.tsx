@@ -192,10 +192,12 @@ export default (api: IUiApi) => {
         ],
   });
 
+  const Element = api.connect(state => ({ taskManager: state[model.namespace] }))(TasksView);
+
   api.addPanel({
     title: 'org.umi.ui.tasks.title',
     path: '/tasks',
     icon: <ProjectFilled />,
-    element: api.connect(state => ({ taskManager: state[model.namespace] }))(TasksView),
+    element: <Element />,
   });
 };
