@@ -123,7 +123,7 @@ export default {
           [currentCwd]: {
             ...state.tasks[currentCwd],
             [type]: {
-              ...state.tasks[currentCwd][type],
+              ...state.tasks[currentCwd]?.[type],
               analyze: stats ? new Analyze(stats) : null, // 若有 stats, 初始化 analyze instance
             },
           },
