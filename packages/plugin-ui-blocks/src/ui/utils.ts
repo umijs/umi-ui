@@ -2,17 +2,12 @@ import { lodash, winPath } from '@umijs/utils';
 import { isAbsolute, join } from 'path';
 
 const resolveComponent = (component: string, paths): string => {
-  const routeComponent = route.component
+  const routeComponent = component
     ?.replace('@@', paths.absTmpPath)
     ?.replace('@', paths.absSrcPath);
-  if (isAbsolute(routeComponent)) {
-    return routeComponent;
-  } else if (!routeComponent.includes('/')) {
-    // short path, eg. "component: 'index'"
-    return join(paths.absPagesPath, routeComponent);
-  } else {
-    return join(paths.cwd, routeComponent);
-  }
+  if (isAbsolute(routeComponent)) return routeComponent;
+  if (!routeComponent.includes('/')) return join(paths.absPagesPath, routeComponent);// short path, eg. "component: 'index'"
+  return join(paths.cwd, routeComponent);
 }
 
 export const getRouteComponents = ({ componentRoutes, paths, cwd }): string[] => {
